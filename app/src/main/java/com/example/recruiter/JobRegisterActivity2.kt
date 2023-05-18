@@ -1,0 +1,169 @@
+package com.example.recruiter
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
+import android.os.Bundle
+import android.provider.OpenableColumns
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
+import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.concurrent.TimeUnit
+
+class JobRegisterActivity2 : AppCompatActivity() {
+    lateinit var btn_next: Button
+    lateinit var btn_prev: Button;
+    lateinit var upload: Button
+    lateinit var select: TextView
+    lateinit var pdfTextView: TextView; lateinit var tv : TextView
+    lateinit var pdfUri: Uri
+    lateinit var mStorage: StorageReference
+    val pdf: Int = 0
+    var fileUrl = ""
+    lateinit var auth: FirebaseAuth
+    lateinit var database: DatabaseReference
+    var pdfName: String = ""
+    var phonereceived = ""
+    var mCallback: OnVerificationStateChangedCallbacks? = null
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_job_register2)
+        btn_next = findViewById(R.id.otpbtnrej)
+        btn_prev = findViewById(R.id.prevbtnregj)
+        select = findViewById(R.id.uploadfile)
+        upload = findViewById(R.id.uploadbtnregj)
+        pdfTextView = findViewById(R.id.pdftv)
+        tv = findViewById(R.id.loginbtnregj3)
+        auth=FirebaseAuth.getInstance()
+        mStorage = FirebaseStorage.getInstance().getReference("pdfs")
+        tv.setOnClickListener {
+            startActivity(Intent(this,JobLoginActivity::class.java))
+        }
+        select.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                selectpdf()
+            }
+        })
+        btn_next.setOnClickListener {
+            adddata()
+            val bundle = intent.extras
+
+            if(bundle!=null)
+            {
+                phonereceived = bundle.getString("phone").toString()
+            }
+            var intent = Intent(this, OTPJobActivity::class.java)
+            intent.putExtra("phonenum",phonereceived)
+            startActivity(intent)
+            finish()
+        }
+        btn_prev.setOnClickListener {
+            startActivity(Intent(this, JobRegisterActivity1::class.java))
+            finish()
+        }
+    }
+
+    private fun selectpdf() {
+        val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+        pdfIntent.type = "application/pdf"
+        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(pdfIntent, 12)
+    }
+
+    @SuppressLint("Range")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_CANCELED) {
+            when (requestCode) {
+                12 -> if (resultCode == RESULT_OK) {
+                    pdfUri = data?.data!!
+                    val uri: Uri = data?.data!!
+                    val uriString: String = uri.toString()
+                    pdfName = null.toString()
+                    if (uriString.startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this!!.contentResolver.query(
+                                uri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                pdfName =
+                                    myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                pdfTextView.text = pdfName
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
+                    }
+                }
+            }
+        }
+        val pdfRef = mStorage.child("$pdfName")
+        pdfRef.putFile(pdfUri).addOnSuccessListener {
+            pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                fileUrl = downloadUrl.toString()
+            }
+        }
+
+    }
+    private fun adddata() {
+        val bundle1 = intent.extras
+        var fname : String = ""; var lname : String = ""
+        var phone : String = ""; var email : String = ""
+        var city : String = ""; var expsal : String = ""
+        var workmode : String = ""; var degree : String = ""
+        var bio : String = ""; var jobtype : String = ""
+        var frshexp : String = ""; var compname : String = ""
+        var expesal : String = ""; var expdur : String = ""
+        if(bundle1!=null)
+        {
+            fname = bundle1.getString("fname").toString()
+            lname = bundle1.getString("lname").toString()
+            phone = bundle1.getString("phone").toString()
+            email = bundle1.getString("email").toString()
+            city = bundle1.getString("city").toString()
+            expsal = bundle1.getString("expsal").toString()
+            workmode = bundle1.getString("workmode").toString()
+            degree = bundle1.getString("degree").toString()
+            bio = bundle1.getString("bio").toString()
+            jobtype = bundle1.getString("jobtype").toString()
+            frshexp = bundle1.getString("frshexp").toString()
+            compname = bundle1.getString("compname").toString()
+            expesal = bundle1.getString("expesal").toString()
+            expdur = bundle1.getString("expdur").toString()
+        }
+        database = FirebaseDatabase.getInstance().getReference("JobSeekers")
+        val JobSeeker = JobSeekers(fname, lname, phone, email, city, expsal, workmode, degree,
+            bio, jobtype, frshexp, compname, expesal, expdur, fileUrl)
+        if (phone != null) {
+            database.child(phone).setValue(JobSeeker).addOnSuccessListener {
+                Toast.makeText(this,"Data Added", Toast.LENGTH_LONG).show()
+            }.addOnFailureListener {
+                Toast.makeText(this,"Failed", Toast.LENGTH_LONG).show()
+            }
+        }
+        else{
+            Toast.makeText(this,"Enter Phone", Toast.LENGTH_LONG).show()
+        }
+    }
+
+}

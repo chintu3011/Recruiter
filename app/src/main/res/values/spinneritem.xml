@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="degree_array">
+        <item>Select Degree</item>
+        <item>B.Tech CE</item>
+        <item>B.Tech CSE</item>
+        <item>B.Tech IT</item>
+        <item>B.Com</item>
+        <item>BBA</item>
+        <item>HSC</item>
+        <item>SSC</item>
+    </string-array>
+</resources>
