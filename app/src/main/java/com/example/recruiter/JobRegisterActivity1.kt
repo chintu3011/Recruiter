@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -15,7 +16,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-
+import android.view.View.*
 class JobRegisterActivity1 : AppCompatActivity() {
     lateinit var btn_next: Button
     lateinit var btn_prev : Button
@@ -23,10 +24,12 @@ class JobRegisterActivity1 : AppCompatActivity() {
     lateinit var compname : EditText; lateinit var expesal : EditText
     lateinit var expdur : EditText; lateinit var freshexp : RadioGroup
     lateinit var degree : Spinner; lateinit var tv : TextView
+    lateinit var decorView: View
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_register1)
+        fullScreen()
         btn_next = findViewById(R.id.nextbtnregj1)
         btn_prev = findViewById(R.id.prevbtnregj1)
         bio = findViewById(R.id.BioJ)
@@ -111,5 +114,28 @@ class JobRegisterActivity1 : AppCompatActivity() {
             startActivity(Intent(this,JobRegisterActivity::class.java))
             finish()
         }
+    }
+    private fun fullScreen() {
+        decorView = window.decorView
+        decorView.setOnSystemUiVisibilityChangeListener { i ->
+            if (i == 0) {
+                decorView.systemUiVisibility = hideSystemBars()
+            }
+        }
+    }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            decorView.systemUiVisibility = hideSystemBars()
+        }
+    }
+
+    private fun hideSystemBars(): Int {
+        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or SYSTEM_UI_FLAG_FULLSCREEN
+                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 }

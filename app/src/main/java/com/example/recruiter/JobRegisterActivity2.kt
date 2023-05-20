@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.concurrent.TimeUnit
-
+import android.view.View.*
 class JobRegisterActivity2 : AppCompatActivity() {
     lateinit var btn_next: Button
     lateinit var btn_prev: Button;
@@ -40,10 +40,12 @@ class JobRegisterActivity2 : AppCompatActivity() {
     var phonereceived = ""
     private lateinit var phoneAuthProvider: PhoneAuthProvider
     private var verificationId: String? = null
+    lateinit var decorView: View
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_register2)
+        fullScreen()
         btn_next = findViewById(R.id.otpbtnrej)
         btn_prev = findViewById(R.id.prevbtnregj)
         select = findViewById(R.id.uploadfile)
@@ -198,6 +200,30 @@ class JobRegisterActivity2 : AppCompatActivity() {
         else{
             Toast.makeText(this,"Enter Phone", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun fullScreen() {
+        decorView = window.decorView
+        decorView.setOnSystemUiVisibilityChangeListener { i ->
+            if (i == 0) {
+                decorView.systemUiVisibility = hideSystemBars()
+            }
+        }
+    }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            decorView.systemUiVisibility = hideSystemBars()
+        }
+    }
+
+    private fun hideSystemBars(): Int {
+        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or SYSTEM_UI_FLAG_FULLSCREEN
+                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 
 }
