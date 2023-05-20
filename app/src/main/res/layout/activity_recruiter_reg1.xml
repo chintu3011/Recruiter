@@ -260,7 +260,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btnborder"
                     android:fontFamily="serif"
-                    android:text="Next"
+                    android:text="Get OTP"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="20dp"

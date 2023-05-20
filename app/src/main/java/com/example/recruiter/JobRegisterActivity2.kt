@@ -38,7 +38,8 @@ class JobRegisterActivity2 : AppCompatActivity() {
     lateinit var database: DatabaseReference
     var pdfName: String = ""
     var phonereceived = ""
-    var mCallback: OnVerificationStateChangedCallbacks? = null
+    private lateinit var phoneAuthProvider: PhoneAuthProvider
+    private var verificationId: String? = null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,7 @@ class JobRegisterActivity2 : AppCompatActivity() {
         pdfTextView = findViewById(R.id.pdftv)
         tv = findViewById(R.id.loginbtnregj3)
         auth=FirebaseAuth.getInstance()
+        phoneAuthProvider = PhoneAuthProvider.getInstance()
         mStorage = FirebaseStorage.getInstance().getReference("pdfs")
         tv.setOnClickListener {
             startActivity(Intent(this,JobLoginActivity::class.java))
@@ -60,17 +62,18 @@ class JobRegisterActivity2 : AppCompatActivity() {
             }
         })
         btn_next.setOnClickListener {
-            adddata()
+            //adddata()
             val bundle = intent.extras
 
             if(bundle!=null)
             {
-                phonereceived = bundle.getString("phone").toString()
+                phonereceived = "+91 " + bundle.getString("phone").toString()
             }
-            var intent = Intent(this, OTPJobActivity::class.java)
-            intent.putExtra("phonenum",phonereceived)
-            startActivity(intent)
-            finish()
+            sendOtp()
+//            var intent = Intent(this, OTPJobActivity::class.java)
+//            intent.putExtra("phonenum",phonereceived)
+//            startActivity(intent)
+//            finish()
         }
         btn_prev.setOnClickListener {
             startActivity(Intent(this, JobRegisterActivity1::class.java))
@@ -78,6 +81,37 @@ class JobRegisterActivity2 : AppCompatActivity() {
         }
     }
 
+    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            //signInWithPhoneAuthCredential(credential)
+        }
+
+        override fun onVerificationFailed(e: FirebaseException) {
+            // Handle verification failure
+        }
+
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken
+        ) {
+            this@JobRegisterActivity2.verificationId = verificationId
+            // Start the OTP verification activity
+            val intent = Intent(this@JobRegisterActivity2, OTPJobActivity::class.java)
+            intent.putExtra("verification_id", verificationId)
+            intent.putExtra("phonenum",phonereceived)
+            startActivity(intent)
+        }
+    }
+
+    private fun sendOtp() {
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phonereceived)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(this)
+            .setCallbacks(callbacks)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
     private fun selectpdf() {
         val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
         pdfIntent.type = "application/pdf"

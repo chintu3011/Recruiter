@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JobLoginActivity">
+    tools:context=".RecruiterLoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,23 +53,24 @@
                 android:layout_marginTop="10dp">
 
                 <EditText
-                    android:id="@+id/phoneloginJ"
+                    android:id="@+id/phoneloginR"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:textSize="15dp"
                     android:background="@drawable/borderret"
                     android:drawableLeft="@drawable/phonefile"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/blue"
                     android:fontFamily="serif"
                     android:inputType="phone"
-                    android:hint="10 digit phone"
                     android:padding="10dp" />
 
                 <TextView
+                    android:id="@+id/mobileloginRtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -84,7 +85,7 @@
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/otpbtnloginj"
+                android:id="@+id/otpbtnloginR"
                 android:layout_width="245dp"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
@@ -123,7 +124,7 @@
                     tools:layout_editor_absoluteY="686dp" />
 
                 <TextView
-                    android:id="@+id/regbtnlogj"
+                    android:id="@+id/regbtnlogR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -138,4 +139,5 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
 </RelativeLayout>

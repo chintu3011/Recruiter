@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 
 class RecruiterRegActivity : AppCompatActivity() {
     lateinit var btn_next : Button
     lateinit var fname : EditText; lateinit var lname : EditText
     lateinit var phone : EditText; lateinit var email : EditText
-    lateinit var compname : EditText
+    lateinit var compname : EditText; lateinit var tv : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recruiter_reg)
@@ -21,8 +22,18 @@ class RecruiterRegActivity : AppCompatActivity() {
         phone = findViewById(R.id.PhoneR)
         email = findViewById(R.id.EmailR)
         compname = findViewById(R.id.CompnameR)
+        tv = findViewById(R.id.loginbtnregr)
         btn_next.setOnClickListener {
-            startActivity(Intent(this,RecruiterRegActivity1::class.java))
+            val bundle = Bundle()
+            bundle.putString("fname",fname.text.toString())
+            bundle.putString("lname",lname.text.toString())
+            bundle.putString("phone",phone.text.toString())
+            bundle.putString("email",email.text.toString())
+            bundle.putString("compname",compname.text.toString())
+            val intent = Intent(this,RecruiterRegActivity1::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+            finish()
         }
         fname.setOnFocusChangeListener { view, b ->
             fname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
@@ -38,6 +49,9 @@ class RecruiterRegActivity : AppCompatActivity() {
         }
         compname.setOnFocusChangeListener { view, b ->
             compname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+        }
+        tv.setOnClickListener {
+            startActivity(Intent(this,RecruiterLoginActivity::class.java))
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.recruiter
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
-class OTPActivityJobLogin : AppCompatActivity() {
+class OTPRecruiterLoginActivity : AppCompatActivity() {
     lateinit var tv : TextView; lateinit var btn : Button
     lateinit var ot_1 : EditText; lateinit var ot_2 : EditText
     lateinit var ot_3 : EditText; lateinit var ot_4 : EditText
@@ -26,15 +25,15 @@ class OTPActivityJobLogin : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_otpjob_login)
-        tv = findViewById(R.id.mobileotplog)
-        ot_1 = findViewById(R.id.ot1log)
-        ot_2 = findViewById(R.id.ot2log)
-        ot_3 = findViewById(R.id.ot3log)
-        ot_4 = findViewById(R.id.ot4log)
-        ot_5 = findViewById(R.id.ot5log)
-        ot_6 = findViewById(R.id.ot6log)
-        btn = findViewById(R.id.btnotplogJ)
+        setContentView(R.layout.activity_otp_recruiter_login)
+        tv = findViewById(R.id.mobileRlogin)
+        ot_1 = findViewById(R.id.ot1Rlog)
+        ot_2 = findViewById(R.id.ot2Rlog)
+        ot_3 = findViewById(R.id.ot3Rlog)
+        ot_4 = findViewById(R.id.ot4Rlog)
+        ot_5 = findViewById(R.id.ot5Rlog)
+        ot_6 = findViewById(R.id.ot6Rlog)
+        btn = findViewById(R.id.btnotpRlog)
         auth = FirebaseAuth.getInstance()
         phoneAuthProvider = PhoneAuthProvider.getInstance()
         ot_1.addTextChangedListener(object : TextWatcher {
@@ -120,7 +119,7 @@ class OTPActivityJobLogin : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Verification successful, proceed to next activity
-                    val intent = Intent(this@OTPActivityJobLogin, HomeActivity::class.java)
+                    val intent = Intent(this@OTPRecruiterLoginActivity, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
