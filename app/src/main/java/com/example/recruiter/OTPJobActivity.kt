@@ -130,6 +130,7 @@ class OTPJobActivity : AppCompatActivity() {
                     // Verification successful, proceed to next activity
                     val intent = Intent(this@OTPJobActivity, HomeActivity::class.java)
                     startActivity(intent)
+                    overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
                     finish()
                 } else {
                     // Verification failed
@@ -139,6 +140,14 @@ class OTPJobActivity : AppCompatActivity() {
                 }
             }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@OTPJobActivity,JobRegisterActivity2::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
+    }
+
     private fun fullScreen() {
         decorView = window.decorView
         decorView.setOnSystemUiVisibilityChangeListener { i ->
@@ -147,8 +156,6 @@ class OTPJobActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)

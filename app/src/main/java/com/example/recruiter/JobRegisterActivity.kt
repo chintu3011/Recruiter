@@ -36,6 +36,8 @@ class JobRegisterActivity : AppCompatActivity() {
         btn_next = findViewById(R.id.nextbtnregj)
         tv.setOnClickListener {
             startActivity(Intent(this,JobLoginActivity::class.java))
+            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+            finish()
         }
         fname.setOnFocusChangeListener { view, b ->
             fname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
@@ -73,9 +75,17 @@ class JobRegisterActivity : AppCompatActivity() {
             val intent = Intent(this,JobRegisterActivity1::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@JobRegisterActivity,JobLoginActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
     }
     private fun fullScreen() {
         decorView = window.decorView

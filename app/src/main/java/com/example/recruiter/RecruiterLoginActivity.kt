@@ -60,6 +60,8 @@ class RecruiterLoginActivity : AppCompatActivity() {
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterRegActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+            finish()
         }
     }
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -77,10 +79,12 @@ class RecruiterLoginActivity : AppCompatActivity() {
         ) {
             this@RecruiterLoginActivity.verificationId = verificationId
             // Start the OTP verification activity
-            val intent = Intent(this@RecruiterLoginActivity, OTPJobActivity::class.java)
+            val intent = Intent(this@RecruiterLoginActivity, OTPRecruiterActivity::class.java)
             intent.putExtra("verification_id", verificationId)
             intent.putExtra("phonenum",phonereceived)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+            finish()
         }
     }
 
@@ -112,6 +116,13 @@ class RecruiterLoginActivity : AppCompatActivity() {
             .translationY(0f)
             .alpha(1f)
             .setDuration(200)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@RecruiterLoginActivity,AskActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
     }
 
     private fun fullScreen() {

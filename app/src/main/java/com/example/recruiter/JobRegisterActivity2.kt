@@ -57,6 +57,8 @@ class JobRegisterActivity2 : AppCompatActivity() {
         mStorage = FirebaseStorage.getInstance().getReference("pdfs")
         tv.setOnClickListener {
             startActivity(Intent(this,JobLoginActivity::class.java))
+            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+            finish()
         }
         select.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
@@ -75,10 +77,12 @@ class JobRegisterActivity2 : AppCompatActivity() {
 //            var intent = Intent(this, OTPJobActivity::class.java)
 //            intent.putExtra("phonenum",phonereceived)
 //            startActivity(intent)
+//            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
 //            finish()
         }
         btn_prev.setOnClickListener {
             startActivity(Intent(this, JobRegisterActivity1::class.java))
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
             finish()
         }
     }
@@ -102,6 +106,8 @@ class JobRegisterActivity2 : AppCompatActivity() {
             intent.putExtra("verification_id", verificationId)
             intent.putExtra("phonenum",phonereceived)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+            finish()
         }
     }
 
@@ -200,6 +206,14 @@ class JobRegisterActivity2 : AppCompatActivity() {
         else{
             Toast.makeText(this,"Enter Phone", Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, JobRegisterActivity1::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
+
     }
 
     private fun fullScreen() {

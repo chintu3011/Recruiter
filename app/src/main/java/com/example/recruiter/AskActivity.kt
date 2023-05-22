@@ -1,7 +1,9 @@
 package com.example.recruiter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,7 +12,7 @@ import androidx.cardview.widget.CardView
 import android.view.View.*
 class AskActivity : AppCompatActivity() {
     lateinit var jobseek : CardView
-    lateinit var recruit : CardView
+    private lateinit var recruit : CardView
     lateinit var activity : Activity
     lateinit var decorView: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,17 +20,26 @@ class AskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ask)
 
         fullScreen()
+
+        
         jobseek = findViewById(R.id.buycv)
         recruit = findViewById(R.id.sellcv)
         activity = this
         jobseek.setOnClickListener {
             startActivity(Intent(activity,JobLoginActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
         recruit.setOnClickListener {
-            startActivity(Intent(activity,RecruiterRegActivity::class.java))
+            startActivity(Intent(activity,RecruiterLoginActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true)
     }
     private fun fullScreen() {
         decorView = window.decorView

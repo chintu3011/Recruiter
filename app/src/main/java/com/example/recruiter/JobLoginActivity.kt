@@ -40,6 +40,7 @@ class JobLoginActivity : AppCompatActivity() {
         }
         tv.setOnClickListener {
             startActivity(Intent(this,JobRegisterActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
 
@@ -67,6 +68,7 @@ class JobLoginActivity : AppCompatActivity() {
             intent.putExtra("verification_id", verificationId)
             intent.putExtra("phonenum",phonereceived)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
         }
     }
 
@@ -78,6 +80,12 @@ class JobLoginActivity : AppCompatActivity() {
             .setCallbacks(callbacks)
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@JobLoginActivity,AskActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
     }
     private fun fullScreen() {
         decorView = window.decorView

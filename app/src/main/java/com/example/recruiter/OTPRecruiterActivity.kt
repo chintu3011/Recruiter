@@ -130,6 +130,7 @@ class OTPRecruiterActivity : AppCompatActivity() {
                     // Verification successful, proceed to next activity
                     val intent = Intent(this@OTPRecruiterActivity, HomeActivity::class.java)
                     startActivity(intent)
+                    overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
                     finish()
                 } else {
                     // Verification failed
@@ -138,6 +139,13 @@ class OTPRecruiterActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@OTPRecruiterActivity,RecruiterRegActivity1::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
     }
 
     private fun fullScreen() {

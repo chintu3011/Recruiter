@@ -1,5 +1,6 @@
 package com.example.recruiter
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,8 +11,15 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         fullScreen()
-
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@HomeActivity,AskActivity::class.java))
+        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+        finish()
+    }
+
     private fun fullScreen() {
         decorView = window.decorView
         decorView.setOnSystemUiVisibilityChangeListener { i ->
@@ -26,7 +34,6 @@ class HomeActivity : AppCompatActivity() {
             decorView.systemUiVisibility = hideSystemBars()
         }
     }
-
     private fun hideSystemBars(): Int {
         return (SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or SYSTEM_UI_FLAG_IMMERSIVE_STICKY

@@ -43,6 +43,7 @@ class RecruiterRegActivity : AppCompatActivity() {
             val intent = Intent(this,RecruiterRegActivity1::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
         fname.setOnFocusChangeListener { view, b ->
@@ -62,9 +63,17 @@ class RecruiterRegActivity : AppCompatActivity() {
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterLoginActivity::class.java))
+            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+            finish()
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this,RecruiterLoginActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
+    }
     private fun fullScreen() {
         decorView = window.decorView
         decorView.setOnSystemUiVisibilityChangeListener { i ->

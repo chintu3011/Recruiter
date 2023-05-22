@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         if(!preferences.getBoolean(pref_show,true))
         {
             startActivity(Intent(activity,AskActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
         view_pager = findViewById(R.id.viewpager);
@@ -137,6 +138,11 @@ class MainActivity : AppCompatActivity() {
                 or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or SYSTEM_UI_FLAG_FULLSCREEN
                 or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true)
     }
 }
 class myPageAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager)

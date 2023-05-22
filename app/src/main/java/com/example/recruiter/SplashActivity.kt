@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -14,39 +14,53 @@ import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import androidx.appcompat.app.AppCompatActivity
+import render.animations.Render
+
 
 class SplashActivity : AppCompatActivity() {
     lateinit var decorView: View
     lateinit var activity: Activity
-    lateinit var preferences: SharedPreferences
-    val pref_show = "Intro"
+    private lateinit var preferencesForIntroScreen: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
         fullScreen()
-        preferences = getSharedPreferences("IntroSlider", Context.MODE_PRIVATE)
-        if(!preferences.getBoolean(pref_show,true))
-        {
-            android.os.Handler(Looper.getMainLooper()).postDelayed({
+        setPreferencesForIntroScreen()
 
-                val intent = Intent(this,AskActivity::class.java)
+    }
+
+
+    private fun setPreferencesForIntroScreen() {
+        preferencesForIntroScreen = getSharedPreferences("IntroductionScreen",Context.MODE_PRIVATE)
+        val hashShownIntro = preferencesForIntroScreen.getBoolean("isFirstTime",true)
+
+        if (hashShownIntro){
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                val editor = preferencesForIntroScreen.edit()
+                editor.putBoolean("isFirstTime",false)
+                editor.apply()
+                val intent = Intent(this@SplashActivity,IntroductionActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_top,R.anim.slide_out_down)
                 finish()
-            } ,
-                3000)
+            },4000)
         }
         else{
-            android.os.Handler(Looper.getMainLooper()).postDelayed({
-
-                val intent = Intent(this,MainActivity::class.java)
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intent = Intent(this@SplashActivity,AskActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
                 finish()
-            } ,
-                3000)
+            },4000)
         }
+    }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true)
     }
 
     private fun fullScreen() {

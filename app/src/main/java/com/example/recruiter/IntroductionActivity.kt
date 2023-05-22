@@ -1,0 +1,181 @@
+package com.example.recruiter
+
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.view.View.*
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+
+class IntroductionActivity : AppCompatActivity() {
+    lateinit var decorView: View
+
+    private lateinit var onboradingItemsAdapter: OnBoradingItemsAdapter
+
+    private lateinit var indicatorContainer : LinearLayout
+//    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_introduction)
+        fullScreen()
+
+//        sharedPreferences = getSharedPreferences("SplashScreen", Context.MODE_PRIVATE)
+        
+        setOnBoardingItems()
+        setupIndicators()
+        setCurrentIndicator(0)
+        
+    }
+
+    private fun setOnBoardingItems(){
+        onboradingItemsAdapter = OnBoradingItemsAdapter(
+            listOf(
+                OnBoardingItem(
+                    orboardingImage = R.drawable.recruitment_icon,
+                    title = "Recruit best employee.",
+                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                ),
+                OnBoardingItem(
+                    orboardingImage = R.drawable.job_seeker_icon,
+                    title = "Get your Best Jog Here.",
+                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                )
+
+            )
+        )
+        val onBoardingViewPager = findViewById<ViewPager2>(R.id.onBoardingViewPager)
+        onBoardingViewPager.adapter = onboradingItemsAdapter
+
+        onBoardingViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                setCurrentIndicator(position)
+
+            }
+        })
+        (onBoardingViewPager.getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+        findViewById<ImageView>(R.id.imageNext).setOnClickListener{
+            if(onBoardingViewPager.currentItem +1 < onboradingItemsAdapter.itemCount){
+                onBoardingViewPager.currentItem+=1
+            }
+            else{
+                navigationToNextActivity()
+            }
+        }
+
+        findViewById<TextView>(R.id.textSkip).setOnClickListener{
+            navigationToNextActivity()
+        }
+        findViewById<Button>(R.id.buttonGetStarted).setOnClickListener{
+            navigationToNextActivity()
+        }
+    }
+
+    private fun navigationToNextActivity() {
+        startActivity(Intent(this@IntroductionActivity,AskActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+        finish()
+    }
+
+    private fun setupIndicators (){
+        indicatorContainer = findViewById(R.id.indicatorsContainer)
+        val indicators = arrayOfNulls<ImageView>(onboradingItemsAdapter.itemCount)
+        val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.setMargins(8,0,8,0)
+        for(i in indicators.indices) {
+            indicators[i] = ImageView(applicationContext)
+            indicators[i]?.let{
+                it.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.indicator_inactivate_background
+                    )
+                )
+                it.layoutParams = layoutParams
+                indicatorContainer.addView(it)
+            }
+        }
+    }
+
+    private fun setCurrentIndicator(position : Int){
+        val childCount = indicatorContainer.childCount
+        for(i in 0 until childCount){
+            val imageView = indicatorContainer.getChildAt(i) as ImageView
+            if (i == position) {
+                imageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext, R.drawable.indicator_activity_background
+                    )
+                )
+            }
+            else{
+                imageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext, R.drawable.indicator_inactivate_background
+                    )
+                )
+            }
+        }
+    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        val editor = sharedPreferences.edit()
+//        editor.putBoolean("hasShownSplash", true)
+//        editor.apply()
+//    }
+//
+//    override fun onRestart() {
+//        super.onRestart()
+//        val editor = sharedPreferences.edit()
+//        editor.putBoolean("hasShownSplash", false)
+//        editor.apply()
+//
+//    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true);
+    }
+
+    private fun fullScreen() {
+        decorView = window.decorView
+        decorView.setOnSystemUiVisibilityChangeListener { i ->
+            if (i == 0) {
+                decorView.systemUiVisibility = hideSystemBars()
+            }
+        }
+    }
+
+
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            decorView.systemUiVisibility = hideSystemBars()
+        }
+    }
+
+    private fun hideSystemBars(): Int {
+        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or SYSTEM_UI_FLAG_FULLSCREEN
+                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+}

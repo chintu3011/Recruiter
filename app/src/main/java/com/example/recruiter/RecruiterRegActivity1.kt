@@ -58,6 +58,8 @@ class RecruiterRegActivity1 : AppCompatActivity() {
         }
         btn_prev.setOnClickListener {
             startActivity(Intent(this,RecruiterRegActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+            finish()
         }
         desg.setOnFocusChangeListener { view, b ->
             desg.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
@@ -73,6 +75,8 @@ class RecruiterRegActivity1 : AppCompatActivity() {
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterLoginActivity::class.java))
+            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+            finish()
         }
     }
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -90,10 +94,12 @@ class RecruiterRegActivity1 : AppCompatActivity() {
         ) {
             this@RecruiterRegActivity1.verificationId = verificationId
             // Start the OTP verification activity
-            val intent = Intent(this@RecruiterRegActivity1, OTPJobActivity::class.java)
+            val intent = Intent(this@RecruiterRegActivity1, OTPRecruiterActivity::class.java)
             intent.putExtra("verification_id", verificationId)
             intent.putExtra("phonenum",phonereceived)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+            finish()
         }
     }
     private fun sendOtp() {
@@ -106,6 +112,12 @@ class RecruiterRegActivity1 : AppCompatActivity() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this,RecruiterRegActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+        finish()
+    }
     private fun fullScreen() {
         decorView = window.decorView
         decorView.setOnSystemUiVisibilityChangeListener { i ->
