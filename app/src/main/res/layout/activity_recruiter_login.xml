@@ -46,6 +46,35 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="25dp"
             android:orientation="vertical">
+            
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/textip"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                app:hintAnimationEnabled="true"-->
+<!--                android:hint="Mobile"-->
+<!--                app:boxBackgroundMode="outline"-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+<!--                app:hintTextColor="@color/blue"-->
+<!--                android:textColorHint="@color/blue">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/phoneloginR"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:inputType="phone"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:drawableLeft="@drawable/phonefile"-->
+<!--                    android:drawablePadding="10dp"-->
+<!--                    android:fontFamily="serif"-->
+<!--                    android:background="@drawable/borderret"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="20dp"-->
+<!--                    android:drawableTint="@color/blue"/>-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -60,6 +89,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:hint="10 digit Phone"
                     android:textSize="15dp"
                     android:background="@drawable/borderret"
                     android:drawableLeft="@drawable/phonefile"

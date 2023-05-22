@@ -1,16 +1,16 @@
 package com.example.recruiter
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -22,6 +22,7 @@ class RecruiterLoginActivity : AppCompatActivity() {
     lateinit var btn_otp : Button
     lateinit var phone : EditText
     lateinit var tv: TextView
+    lateinit var til : TextInputLayout
     private lateinit var phoneAuthProvider: PhoneAuthProvider
     private var verificationId: String? = null
     lateinit var auth : FirebaseAuth
@@ -35,18 +36,24 @@ class RecruiterLoginActivity : AppCompatActivity() {
         phone = findViewById(R.id.phoneloginR)
         tv = findViewById(R.id.regbtnlogR)
         auth = FirebaseAuth.getInstance()
-        label = findViewById(R.id.mobileloginRtv)
+        //label = findViewById(R.id.mobileloginRtv)
         phoneAuthProvider = PhoneAuthProvider.getInstance()
-        phone.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                phone.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
-                animateLabelUp()
-            } else {
-                if (phone.text.isNullOrEmpty()) {
-                    animateLabelDown()
-                }
+        til.editText?.setOnFocusChangeListener { view, b ->
+            if(b) {
+                phone.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+            } else{
+                phone.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
             }
         }
+//        phone.setOnFocusChangeListener { view, b ->
+//            if(b)
+//            {
+//                phone.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+//            }
+//            else{
+//                phone.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
+//            }
+//        }
         btn_otp.setOnClickListener {
             phonereceived = "+91 " + phone.text.toString()
             sendOtp()
@@ -88,25 +95,5 @@ class RecruiterLoginActivity : AppCompatActivity() {
             .setCallbacks(callbacks)
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-    }
-    private fun animateLabelUp() {
-        label.animate()
-            .translationY(-label.height.toFloat())
-            .alpha(0f)
-            .setDuration(200)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    label.visibility = View.GONE
-                }
-            })
-    }
-
-    private fun animateLabelDown() {
-        label.visibility = View.VISIBLE
-        label.animate()
-            .translationY(0f)
-            .alpha(1f)
-            .setDuration(200)
     }
 }

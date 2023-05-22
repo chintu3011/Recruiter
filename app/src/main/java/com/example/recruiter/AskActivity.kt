@@ -22,7 +22,7 @@ class AskActivity : AppCompatActivity() {
             finish()
         }
         recruit.setOnClickListener {
-            startActivity(Intent(activity,RecruiterRegActivity::class.java))
+            startActivity(Intent(activity,RecruiterLoginActivity::class.java))
             finish()
         }
     }

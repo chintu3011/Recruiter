@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BDC5E8"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -21,7 +20,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/white"
+            android:background="@color/blue"
             android:layout_above="@id/bottomRL"/>
 
         <RelativeLayout
@@ -36,10 +35,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="SKIP"
+                android:fontFamily="serif"
                 android:layout_margin="5dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/black"
                 android:layout_marginLeft="5dp"
+                android:textStyle="bold"
                 app:cornerRadius="0dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,6 +81,8 @@
                 android:background="@android:color/transparent"
                 android:layout_centerVertical="true"
                 android:text="NEXT"
+                android:textStyle="bold"
+                android:fontFamily="serif"
                 android:textColor="@color/black"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="5dp"

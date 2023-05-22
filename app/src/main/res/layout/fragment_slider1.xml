@@ -10,6 +10,18 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AmriHire"
+            android:textSize="45dp"
+            android:textColor="#004C96"
+            android:fontFamily="cursive"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,6 +31,7 @@
             android:fontFamily="serif"
             android:textStyle="bold"
             android:gravity="center"
+            android:layout_below="@id/tv1"
             android:layout_marginTop="15dp"/>
 
         <ImageView
