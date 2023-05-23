@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InformationActivity">
+
+    <RelativeLayout
+        android:id="@+id/RLJob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="First Name"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/Fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/usernamefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text=" Last Name "
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/Lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/usernamefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Phone"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/PhoneJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/phonefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Email"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/EmailJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/mailfile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text=" City Preference "
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/CityJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/cityfile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:inputType="phone"
+                    android:text="Expected Salary"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/ExpSalJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/rupeefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here... "
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Working Mode"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/radiogrp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/onsiteradio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/blue"
+                            android:text="On-Site"
+                            android:textColor="@color/black" />
+
+                        <RadioButton
+                            android:id="@+id/remoteradio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/blue"
+                            android:text="Remote"
+                            android:textColor="@color/black" />
+
+                        <RadioButton
+                            android:id="@+id/hybridradio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/blue"
+                            android:text="Hybrid"
+                            android:textColor="@color/black" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Last Graduation &amp; Degree"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/degreetype"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Add Bio"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/BioJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/biofile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textPersonName"
+                    android:lines="10"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:scrollbars="vertical"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Job Type"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/jobtypeJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/jobtypefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Type Here..."
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Fresher/Experienced"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/radiogrpfrsh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/freshradio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/blue"
+                            android:text="Fresher" />
+
+                        <RadioButton
+                            android:id="@+id/expradio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/blue"
+                            android:text="Experienced" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:inputType="phone"
+                    android:text="If Experienced,"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/ExpCompJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/companyfile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Company Name"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <EditText
+                    android:id="@+id/ExpeSalJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/rupeefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Salary"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <EditText
+                    android:id="@+id/ExpDurJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/durationfile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="Duration of job in years"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Upload CV"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/uploadfile" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/uploadfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:fontFamily="serif"
+                            android:text="Choose File"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:fontFamily="serif"
+                            android:text="Add Upto 15 MB"
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/pdftv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="No File Chosen"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/uploadbtnregj"
+                    android:layout_width="245dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/btnborder"
+                    android:fontFamily="serif"
+                    android:text="Upload"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RLRecruit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/RLJob">
+        <ScrollView
+            android:id="@+id/scroll1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/FRname"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/usernamefile"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="First Name"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" First Name "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/LRname"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/usernamefile"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="Last Name"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"
+                        android:text=" Last Name "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/PhoneR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/phonefile"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="10 digit mobile"
+                        android:inputType="phone"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Phone "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+
+                    <EditText
+                        android:id="@+id/EmailR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/mailfile"
+                        android:drawableTint="@color/blue"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="abc@example.com"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Email "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/CompnameR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/companyfile"
+                        android:drawableTint="@color/blue"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="E.g. Amri Systems"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp" />
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Company Name "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"/>
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Working Mode"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/jobtypeR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/jobtypefile"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="Enter your job title"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Designation "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/jobdescR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/biofile"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="Job Description"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"
+                        android:text=" Job Description "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/SalaryR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/rupeefile"
+                        android:drawableTint="@color/blue"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="Package per Annum"
+                        android:inputType="phone"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp"
+                        android:layout_marginTop="10dp"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Salary Package "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+
+                    <EditText
+                        android:id="@+id/JoblocationR"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/borderret"
+                        android:drawableLeft="@drawable/cityfile"
+                        android:drawableTint="@color/blue"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:fontFamily="serif"
+                        android:hint="abc@example.com"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="15dp"
+                        android:textColorHint="#606060"
+                        tools:layout_editor_absoluteX="101dp"
+                        tools:layout_editor_absoluteY="123dp" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:gravity="left"
+                        android:text=" Job Location "
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+</RelativeLayout>
+</RelativeLayout>

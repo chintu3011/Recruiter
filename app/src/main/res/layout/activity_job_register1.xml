@@ -103,7 +103,7 @@
                     android:drawableTint="@color/blue"
                     android:ems="10"
                     android:fontFamily="serif"
-                    android:hint="About Yourself"
+                    android:hint="Type Here..."
                     android:inputType="textPersonName"
                     android:lines="10"
                     android:paddingLeft="10dp"
@@ -137,7 +137,7 @@
                     android:drawableTint="@color/blue"
                     android:ems="10"
                     android:fontFamily="serif"
-                    android:hint="E.g Manager"
+                    android:hint="Type Here..."
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:paddingRight="15dp"
@@ -254,8 +254,6 @@
                     android:textColorHint="#606060"
                     tools:layout_editor_absoluteX="101dp"
                     tools:layout_editor_absoluteY="123dp" />
-
-
             </LinearLayout>
         </ScrollView>
 
