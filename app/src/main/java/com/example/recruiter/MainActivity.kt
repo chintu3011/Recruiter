@@ -7,13 +7,14 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-
+import android.view.View.*
 class MainActivity : AppCompatActivity() {
     val frag1 = SliderFragment()
     val frag2 = SliderFragment1()
@@ -24,11 +25,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: myPageAdapter
     lateinit var activity: Activity
     lateinit var preferences: SharedPreferences
-
+    lateinit var decorView: View
     val pref_show = "Intro"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        fullScreen()
         adapter = myPageAdapter(supportFragmentManager)
         adapter.list.add(frag1)
         adapter.list.add(frag2)
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         if(!preferences.getBoolean(pref_show,true))
         {
             startActivity(Intent(activity,AskActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
         view_pager = findViewById(R.id.viewpager);
@@ -109,6 +112,37 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+    private fun fullScreen() {
+        decorView = window.decorView
+        decorView.setOnSystemUiVisibilityChangeListener { i ->
+            if (i == 0) {
+                decorView.systemUiVisibility = hideSystemBars()
+            }
+        }
+    }
+
+
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            decorView.systemUiVisibility = hideSystemBars()
+        }
+    }
+
+    private fun hideSystemBars(): Int {
+        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or SYSTEM_UI_FLAG_FULLSCREEN
+                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(true)
     }
 }
 class myPageAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager)
