@@ -60,112 +60,90 @@
                 android:layout_marginBottom="25dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Last Graduation &amp; Degree"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/degreetype"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/borderret" />
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:background="@color/white"
-                        android:fontFamily="serif"
-                        android:gravity="left"
-                        android:text=" Last Graduation &amp; Degree "
-                        android:textColor="@color/blue"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <RelativeLayout
+                <Spinner
+                    android:id="@+id/degreetype"
                     android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Add Bio"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/BioJ"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/borderret"
-                        android:drawableLeft="@drawable/biofile"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/blue"
-                        android:ems="10"
-                        android:fontFamily="serif"
-                        android:hint="About Yourself"
-                        android:inputType="textPersonName"
-                        android:lines="10"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="15dp"
-                        android:scrollbars="vertical"
-                        android:textColorHint="#606060"
-                        tools:layout_editor_absoluteX="101dp"
-                        tools:layout_editor_absoluteY="123dp" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:background="@color/white"
-                        android:fontFamily="serif"
-                        android:gravity="left"
-                        android:text=" Add Bio "
-                        android:textColor="@color/blue"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <RelativeLayout
+                <EditText
+                    android:id="@+id/BioJ"
                     android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/biofile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="About Yourself"
+                    android:inputType="textPersonName"
+                    android:lines="10"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:scrollbars="vertical"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text="Job Type"
+                    android:textColor="@color/blue"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/jobtypeJ"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/borderret"
-                        android:drawableLeft="@drawable/jobtypefile"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/blue"
-                        android:ems="10"
-                        android:fontFamily="serif"
-                        android:hint="E.g Manager"
-                        android:inputType="textPersonName"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="15dp"
-                        android:textColorHint="#606060"
-                        tools:layout_editor_absoluteX="101dp"
-                        tools:layout_editor_absoluteY="123dp" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:background="@color/white"
-                        android:fontFamily="serif"
-                        android:gravity="left"
-                        android:text=" Job Type "
-                        android:textColor="@color/blue"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
+                <EditText
+                    android:id="@+id/jobtypeJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    android:drawableLeft="@drawable/jobtypefile"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
+                    android:ems="10"
+                    android:fontFamily="serif"
+                    android:hint="E.g Manager"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#606060"
+                    tools:layout_editor_absoluteX="101dp"
+                    tools:layout_editor_absoluteY="123dp" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -227,8 +205,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/borderret"
                     android:drawableLeft="@drawable/companyfile"
-                    android:drawableTint="@color/blue"
                     android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
                     android:ems="10"
                     android:fontFamily="serif"
                     android:hint="Company Name"
@@ -246,8 +224,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/borderret"
                     android:drawableLeft="@drawable/rupeefile"
-                    android:drawableTint="@color/blue"
                     android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
                     android:ems="10"
                     android:fontFamily="serif"
                     android:hint="Salary"
@@ -265,8 +243,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/borderret"
                     android:drawableLeft="@drawable/durationfile"
-                    android:drawableTint="@color/blue"
                     android:drawablePadding="10dp"
+                    android:drawableTint="@color/blue"
                     android:ems="10"
                     android:fontFamily="serif"
                     android:hint="Duration of job in years"

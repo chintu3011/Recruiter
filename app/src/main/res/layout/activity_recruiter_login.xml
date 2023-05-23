@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".RecruiterLoginActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/appname"
             android:layout_width="match_parent"
@@ -24,7 +20,7 @@
         <ImageView
             android:id="@+id/phoneimg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_below="@id/appname"
             android:src="@drawable/phone" />
 
@@ -168,6 +164,4 @@
                     tools:layout_editor_absoluteY="686dp" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-
 </RelativeLayout>

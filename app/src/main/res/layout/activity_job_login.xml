@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/halfcircleback"
     tools:context=".JobLoginActivity">
 
     <RelativeLayout
@@ -17,40 +18,79 @@
             android:fontFamily="cursive"
             android:gravity="center"
             android:text="AmriHire"
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             android:textSize="55dp"
             android:textStyle="bold" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/phoneimg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_below="@id/appname"
-            android:src="@drawable/phone" />
+            android:src="@drawable/phone"
+            app:civ_border_color="@color/white"
+            app:civ_border_overlay="true"
+            app:civ_border_width="3dp"
+            app:civ_circle_background_color="@color/black" />
 
-        <TextView
-            android:id="@+id/tv"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_below="@id/phoneimg"
-            android:gravity="center"
-            android:text="You'll receive a 6 digit\ncode to verify."
-            android:textColor="@color/black"
-            android:textSize="25dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tv"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="25dp"
-            android:orientation="vertical">
+            android:layout_marginBottom="15dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="8dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/phoneimg"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:text="OTP Verification"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/phoneimg"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:text="We will send you a 6-digit one-time password to this number"
+                    android:textColor="#656464" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text="Phone Number"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/phoneloginJ"
@@ -65,77 +105,64 @@
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/blue"
                     android:fontFamily="serif"
+                    android:hint="Type Here..."
                     android:inputType="phone"
-                    android:hint="10 digit phone"
                     android:padding="10dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:background="@color/white"
-                    android:text=" Mobile "
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/otpbtnloginj"
+                    android:layout_width="245dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/btnborder"
                     android:fontFamily="serif"
+                    android:text="Get OTP"
+                    android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textStyle="bold"
-                    android:textSize="15dp"
-                    android:textAllCaps="false"/>
-            </RelativeLayout>
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/otpbtnloginj"
-                android:layout_width="245dp"
-                android:layout_height="45dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/btnborder"
-                android:fontFamily="serif"
-                android:text="Get OTP"
-                android:textAllCaps="false"
-                android:layout_gravity="center"
-                android:textColor="@color/blue"
-                android:textSize="25dp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/bottomnav"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/nextbtnregj"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/UsertextView5"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/bottomnav"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/nextbtnregj"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="Not A Member?"
-                    android:textSize="15dp"
-                    tools:layout_editor_absoluteX="94dp"
-                    tools:layout_editor_absoluteY="686dp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/regbtnlogj"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@id/UsertextView5"
-                    android:gravity="center"
-                    android:text="  Register Now"
-                    android:textColor="@color/blue"
-                    android:textSize="15dp"
-                    tools:layout_editor_absoluteX="94dp"
-                    tools:layout_editor_absoluteY="686dp" />
+                    <TextView
+                        android:id="@+id/UsertextView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="Not A Member?"
+                        android:textSize="15dp"
+                        tools:layout_editor_absoluteX="94dp"
+                        tools:layout_editor_absoluteY="686dp" />
+
+                    <TextView
+                        android:id="@+id/regbtnlogj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toRightOf="@id/UsertextView5"
+                        android:gravity="center"
+                        android:text="  Register Now"
+                        android:textColor="@color/blue"
+                        android:textSize="15dp"
+                        tools:layout_editor_absoluteX="94dp"
+                        tools:layout_editor_absoluteY="686dp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.recruiter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ class AskActivity : AppCompatActivity() {
     lateinit var jobseek : CardView
     lateinit var recruit : CardView
     lateinit var activity : Activity
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ask)
