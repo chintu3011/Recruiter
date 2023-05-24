@@ -89,7 +89,7 @@ class IntroductionActivity : AppCompatActivity() {
     }
 
     private fun navigationToNextActivity() {
-        startActivity(Intent(this@IntroductionActivity,AskActivity::class.java))
+        startActivity(Intent(this@IntroductionActivity,LoginActivity::class.java))
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
         finish()
     }
