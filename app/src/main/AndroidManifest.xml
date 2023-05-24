@@ -22,12 +22,6 @@
         android:theme="@style/Theme.Recruiter"
         tools:targetApi="31">
         <activity
-            android:name=".InformationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".loginsignupActivity"
-            android:exported="false" />
-        <activity
             android:name=".IntroductionActivity"
             android:exported="false" />
         <activity

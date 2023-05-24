@@ -39,9 +39,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/tvdesc"
-            android:src="@drawable/jobsearch"
+            android:layout_below="@id/tv"
             android:layout_centerInParent="true"
-            android:layout_below="@id/tv" />
+            android:src="@drawable/jobsearch" />
 
         <TextView
             android:id="@+id/tvdesc"

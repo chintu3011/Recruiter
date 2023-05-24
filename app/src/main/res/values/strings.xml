@@ -45,4 +45,6 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="otp_instruction">We will send you a 6-digit ont time password on this number</string>
+    <string name="textDegree"><![CDATA[Last Graduation & Degree]]></string>
 </resources>

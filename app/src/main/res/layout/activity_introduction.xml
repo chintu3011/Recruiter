@@ -32,13 +32,13 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:text="Skip"
-        android:textColor="@color/cust_pri_"
+        android:textColor="@color/blue"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <View
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:background="@drawable/icon_outer_background"
         app:layout_constraintStart_toStartOf="@id/imageNext"
         app:layout_constraintBottom_toBottomOf="@id/imageNext"
@@ -55,8 +55,8 @@
 
     <ImageView
         android:id="@+id/imageNext"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="50dp"
         android:background="@drawable/icon_background"
         android:contentDescription="@string/app_name"
@@ -79,7 +79,8 @@
         android:backgroundTint="#00B8D4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
