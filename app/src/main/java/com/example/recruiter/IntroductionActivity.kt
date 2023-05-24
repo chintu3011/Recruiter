@@ -41,12 +41,17 @@ class IntroductionActivity : AppCompatActivity() {
         onboradingItemsAdapter = OnBoradingItemsAdapter(
             listOf(
                 OnBoardingItem(
-                    orboardingImage = R.drawable.recruitment_icon,
+                    orboardingImage = R.drawable.logo,
+                    title = "Welcome to AmriHire",
+                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                ),
+                OnBoardingItem(
+                    orboardingImage = R.drawable.hiring,
                     title = "Recruit best employee.",
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 ),
                 OnBoardingItem(
-                    orboardingImage = R.drawable.job_seeker_icon,
+                    orboardingImage = R.drawable.jobsearch,
                     title = "Get your Best Jog Here.",
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 )
@@ -149,7 +154,7 @@ class IntroductionActivity : AppCompatActivity() {
 //    }
     override fun onBackPressed() {
         super.onBackPressed()
-        moveTaskToBack(true);
+        moveTaskToBack(true)
     }
 
     private fun fullScreen() {

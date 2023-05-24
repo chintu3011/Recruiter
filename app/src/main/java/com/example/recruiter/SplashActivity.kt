@@ -30,8 +30,6 @@ class SplashActivity : AppCompatActivity() {
         setPreferencesForIntroScreen()
 
     }
-
-
     private fun setPreferencesForIntroScreen() {
         preferencesForIntroScreen = getSharedPreferences("IntroductionScreen",Context.MODE_PRIVATE)
         val hashShownIntro = preferencesForIntroScreen.getBoolean("isFirstTime",true)
@@ -50,7 +48,7 @@ class SplashActivity : AppCompatActivity() {
         }
         else{
             Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this@SplashActivity,AskActivity::class.java)
+                val intent = Intent(this@SplashActivity,LoginActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
                 finish()

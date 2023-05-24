@@ -22,8 +22,30 @@
         android:theme="@style/Theme.Recruiter"
         tools:targetApi="31">
         <activity
-            android:name=".IntroductionActivity"
+            android:name=".OTPVerificationLoginActivity"
             android:exported="false" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".InformationActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".OTPVerificationRegistrationActivity"
+            android:exported="false" >
+
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".IntroductionActivity"
+            android:exported="false" >
+
+        </activity>
         <activity
             android:name=".OTPRecruiterLoginActivity"
             android:exported="false" />
@@ -67,7 +89,7 @@
             android:exported="false" />
         <activity
             android:name=".AskActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -76,6 +98,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

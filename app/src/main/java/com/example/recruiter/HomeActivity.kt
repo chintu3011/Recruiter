@@ -5,19 +5,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
+import android.widget.TextView
+
 class HomeActivity : AppCompatActivity() {
+
+    lateinit var userName:TextView
     lateinit var decorView: View
+    lateinit var fullname:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         fullScreen()
+
+        userName = findViewById(R.id.userName)
+        fullname = intent.getStringExtra("name").toString()
+        userName.text = fullname
+
+
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this@HomeActivity,AskActivity::class.java))
-        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-        finish()
+        moveTaskToBack(true)
     }
 
     private fun fullScreen() {

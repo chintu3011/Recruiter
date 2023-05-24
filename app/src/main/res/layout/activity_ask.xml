@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/img"
     tools:context=".AskActivity">
+
+
 
     <ImageView
         android:id="@+id/textView4"
         android:layout_width="139dp"
-        android:layout_height="167dp"
-        android:layout_gravity="start"
-        android:fontFamily="cursive"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
         android:src="@drawable/logo" />
 
     <TextView
@@ -22,40 +22,44 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:gravity="end"
-        android:text="Select User\n Type"
+        android:gravity="center"
+        android:text="Choose your role"
         android:textColor="@color/black"
-        android:textSize="35sp"
+        android:fontFamily="serif"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/buycv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="55dp"
-        app:cardBackgroundColor="#004C96"
-        app:cardCornerRadius="15dp"
-        android:background="?android:attr/selectableItemBackground"
-        app:cardElevation="10dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/buycv"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewbuy"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/jobp" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="25dp"
+            app:cardBackgroundColor="@color/white"
+            android:background="?android:attr/selectableItemBackground"
+            app:cardElevation="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:orientation="vertical"
-                android:layout_marginLeft="15dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/job_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/jobp"
+                    android:layout_gravity="center"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
 
                 <TextView
                     android:id="@+id/textView5"
@@ -63,51 +67,86 @@
                     android:layout_height="match_parent"
                     android:fontFamily="serif"
                     android:gravity="center"
-                    android:text="JobSeeker"
+                    android:text="I need Job"
+                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="25sp" />
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/sellcv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="15dp"
-        app:cardBackgroundColor="#A5A5A7"
-        app:cardCornerRadius="15dp"
-        android:layout_below="@id/buycv"
-        android:background="?android:attr/selectableItemBackground"
-        app:cardElevation="10dp">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewsell"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/hiringp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#676262"
+                android:text="Or" />
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:fontFamily="serif"
-                android:text="Recruiter"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText"
+                android:background="#676262" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText"
+                android:background="#676262" />
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sellcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/buycv"
+            android:background="?android:attr/selectableItemBackground"
+            app:cardElevation="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/hiringp"
+                    android:layout_gravity="center"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:fontFamily="serif"
+                    android:text="I am Hiring"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
 
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </LinearLayout>
