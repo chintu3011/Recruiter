@@ -115,9 +115,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     lateinit var resume:String
     lateinit var termsConditionsAcceptance:String
 
-    private val jobLocations = arrayOf("Ahmedabad(India)","US","Germany","UK")
-    private val qualifications = arrayOf("B.com","B.E.","B.Tech","M.com","B.FAM")
-    private val jobs = arrayOf("Android Developer","Web Developer.","HR","Project Manager","CEO")
+    private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
+    private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
+    private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
 
     private lateinit var selectedQualification:String
     private lateinit var selectedJobLocation:String
@@ -130,7 +130,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
         setXMlIds()
         setOnClickListener()
-        jobType = intent.getStringExtra("jobType").toString()
+        //jobType = intent.getStringExtra("jobType").toString()
+        jobType = "JobSeeker"
         setLayout(jobType)
         setAdapters()
 
@@ -202,7 +203,6 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
         termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString()
-
 
     }
 

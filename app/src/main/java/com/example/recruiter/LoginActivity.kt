@@ -15,6 +15,7 @@ import android.view.View.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -55,6 +56,9 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener {
         setOnClickListener()
         cpp.registerCarrierNumberEditText(inputPhoneNo)
 
+        inputPhoneNo.setOnFocusChangeListener { view, b ->
+            inputPhoneNo.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+        }
     }
 
     private fun setOnClickListener() {

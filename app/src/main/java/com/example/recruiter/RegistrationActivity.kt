@@ -34,8 +34,8 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
     lateinit var inputPhoneNo: EditText
     lateinit var inputEmail: EditText
 
-    lateinit var btnTerms:TextView
-    lateinit var btnConditions:TextView
+//    lateinit var btnTerms:TextView
+//    lateinit var btnConditions:TextView
     lateinit var checkBox:CheckBox
     lateinit var btnRegistration: Button
     lateinit var progressBar:ProgressBar
@@ -76,8 +76,8 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
 
     private fun setOnClickListener() {
         btnRegistration.setOnClickListener(this)
-        btnConditions.setOnClickListener(this)
-        btnTerms.setOnClickListener(this)
+//        btnConditions.setOnClickListener(this)
+//        btnTerms.setOnClickListener(this)
         FirebaseApp.initializeApp(this)
     }
 
@@ -86,12 +86,12 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
             R.id.btnRegistration -> {
                 registerUser()
             }
-            R.id.btnTerms -> {
-
-            }
-            R.id.btnConditions -> {
-
-            }
+//            R.id.btnTerms -> {
+//
+//            }
+//            R.id.btnConditions -> {
+//
+//            }
         }
     }
     private fun registerUser() {
@@ -246,8 +246,8 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         cpp = findViewById(R.id.cpp)
         inputPhoneNo = findViewById(R.id.inputPhoneNo)
         inputEmail = findViewById(R.id.inputEmail)
-        btnTerms = findViewById(R.id.btnTerms)
-        btnConditions = findViewById(R.id.btnConditions)
+//        btnTerms = findViewById(R.id.btnTerms)
+//        btnConditions = findViewById(R.id.btnConditions)
         checkBox = findViewById(R.id.checkBox)
         btnRegistration = findViewById(R.id.btnRegistration)
         progressBar = findViewById(R.id.progressBar)
