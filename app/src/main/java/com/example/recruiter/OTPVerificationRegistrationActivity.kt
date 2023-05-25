@@ -1,15 +1,20 @@
 package com.example.recruiter
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewTreeObserver
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -21,6 +26,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
     lateinit var btnChange: TextView
     lateinit var inputOTP: PinView
     lateinit var btnVerify: Button
+    lateinit var cardView: CardView
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -42,6 +48,34 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         setXmlIDs()
         setOnClickListener()
 
+
+        cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // This callback will be triggered when the layout has been measured and has dimensions
+
+                // Get the measured width of the layout
+                val layoutWidth = cardView.width
+
+                // If the layout width is 0, it means it hasn't been measured yet, so return
+                if (layoutWidth == 0) {
+                    return
+                }
+
+                // Remove the listener to avoid multiple callbacks
+                cardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Perform the division
+                val division = layoutWidth / 6
+
+                inputOTP.itemWidth = division
+                inputOTP.itemHeight = division
+                inputOTP.itemSpacing = 0
+
+                // Use the division as needed
+                // ...
+            }
+        })
+
         firstName = intent.getStringExtra("fName").toString()
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
@@ -51,6 +85,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         termsConditions = intent.getStringExtra("termsConditions").toString()
 
         txtPhoneNo.text = phoneNo
+
 
 
     }
@@ -98,6 +133,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         btnChange = findViewById(R.id.btnChange)
         inputOTP = findViewById(R.id.inputOTP)
         btnVerify = findViewById(R.id.btnVerify)
+        cardView = findViewById(R.id.cardView)
     }
 
     private fun passInfoToNextActivity() {
