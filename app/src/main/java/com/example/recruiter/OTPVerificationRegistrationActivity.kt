@@ -54,7 +54,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                 // This callback will be triggered when the layout has been measured and has dimensions
 
                 // Get the measured width of the layout
-                val layoutWidth = cardView.width
+                val layoutWidth = inputOTP.width-cardView.paddingStart-cardView.paddingEnd
 
                 // If the layout width is 0, it means it hasn't been measured yet, so return
                 if (layoutWidth == 0) {
@@ -62,7 +62,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                 }
 
                 // Remove the listener to avoid multiple callbacks
-                cardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                 // Perform the division
                 val division = layoutWidth / 6
