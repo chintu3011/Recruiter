@@ -15,10 +15,10 @@
             android:id="@+id/btnSkip"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
-            android:text="Skip"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Skip"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -80,10 +80,10 @@
             android:id="@+id/appname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/checkTikLayout"
             android:fontFamily="cursive"
             android:gravity="center"
             android:text="AmriHire"
-            android:layout_below="@id/checkTikLayout"
             android:textColor="@color/white"
             android:textSize="55dp"
             android:textStyle="bold" />
@@ -93,35 +93,23 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@id/appname"
+            android:elevation="10dp"
             android:src="@drawable/info"
             app:civ_border_color="@color/white"
             app:civ_border_overlay="true"
-            android:elevation="10dp"
             app:civ_circle_background_color="@color/black" />
-
-<!--        <TextView-->
-<!--            android:id="@+id/textView8"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="serif"-->
-<!--            android:text="Information"-->
-<!--            android:textAlignment="center"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:layout_below="@id/phoneimg"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="35dp"-->
-<!--            android:textStyle="bold" />-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/phoneimg"
+            android:layout_centerInParent="true"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:padding="10dp"
             app:cardBackgroundColor="@color/white"
@@ -130,22 +118,27 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:weightSum="4">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/inputLayoutJobSeeker"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -156,23 +149,29 @@
                             android:orientation="vertical"
                             android:visibility="visible">
                             <!--                    Last Degree & graduation-->
-                            <TextView
-                                android:id="@+id/textDegree"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="@string/textDegree"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <Spinner
-                                android:id="@+id/inputDegreeTypeSpinner"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/borderret" />
+                                android:layout_height="wrap_content">
+
+                                <Spinner
+                                    android:id="@+id/inputDegreeTypeSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret" />
+
+                                <TextView
+                                    android:id="@+id/textDegree"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Last Graduation &amp; Degree "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
@@ -180,42 +179,50 @@
 
 
                             <!--                    Bio-->
-                            <TextView
-                                android:id="@+id/textBio"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="Add Bio"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/inputBioJ"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:layout_gravity="top"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/borderret"
-                                android:drawableLeft="@drawable/biofile"
-                                android:drawablePadding="10dp"
-                                android:drawableTint="@color/blue"
-                                android:fontFamily="serif"
-                                android:hint="Type Here..."
-                                android:inputType="textPersonName"
-                                android:lines="10"
-                                android:padding="7dp"
-                                android:scrollbars="vertical"
-                                android:textColorHint="#606060"
-                                tools:layout_editor_absoluteX="101dp"
-                                tools:layout_editor_absoluteY="123dp" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <EditText
+                                    android:id="@+id/inputBioJ"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:layout_gravity="top"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret"
+                                    android:drawableLeft="@drawable/biofile"
+                                    android:drawablePadding="10dp"
+                                    android:drawableTint="@color/blue"
+                                    android:fontFamily="serif"
+                                    android:hint="Type Here..."
+                                    android:inputType="textPersonName"
+                                    android:lines="10"
+                                    android:padding="7dp"
+                                    android:scrollbars="vertical"
+                                    android:textColorHint="#606060"
+                                    tools:layout_editor_absoluteX="101dp"
+                                    tools:layout_editor_absoluteY="123dp" />
+
+                                <TextView
+                                    android:id="@+id/textBio"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Add Bio "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp" />
 
                             <!--                    Fresher or experience-->
+
                             <TextView
                                 android:id="@+id/textFreshExp"
                                 android:layout_width="match_parent"
@@ -265,100 +272,120 @@
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <TextView
-                                android:id="@+id/textCompanyName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="Comapny Name"
-                                android:textColor="@color/blue"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/inputPrevCompany"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/borderret"
-                                android:drawableLeft="@drawable/rupeefile"
-                                android:drawablePadding="10dp"
-                                android:drawableTint="@color/blue"
-                                android:fontFamily="serif"
-                                android:hint="Comapny Name"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="15dp"
-                                android:textColorHint="#606060"
-                                tools:layout_editor_absoluteX="101dp"
-                                tools:layout_editor_absoluteY="123dp" />
+                                android:layout_height="wrap_content"
+                                >
+
+                                <EditText
+                                    android:id="@+id/inputPrevCompany"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret"
+                                    android:drawableLeft="@drawable/companyfile"
+                                    android:drawablePadding="10dp"
+                                    android:drawableTint="@color/blue"
+                                    android:fontFamily="serif"
+                                    android:hint="Comapny Name"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="15dp"
+                                    android:textColorHint="#606060"
+                                    tools:layout_editor_absoluteX="101dp"
+                                    tools:layout_editor_absoluteY="123dp" />
+
+                                <TextView
+                                    android:id="@+id/textCompanyName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Comapny Name "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp" />
 
-                            <TextView
-                                android:id="@+id/textDesignation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="Designation"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/inputDesignation"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/borderret"
-                                android:drawableLeft="@drawable/rupeefile"
-                                android:drawablePadding="10dp"
-                                android:drawableTint="@color/blue"
-                                android:fontFamily="serif"
-                                android:hint="Designation"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="15dp"
-                                android:textColorHint="#606060"
-                                tools:layout_editor_absoluteX="101dp"
-                                tools:layout_editor_absoluteY="123dp" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+
+                                <EditText
+                                    android:id="@+id/inputDesignation"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret"
+                                    android:drawableLeft="@drawable/rupeefile"
+                                    android:drawablePadding="10dp"
+                                    android:drawableTint="@color/blue"
+                                    android:fontFamily="serif"
+                                    android:hint="Designation"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="15dp"
+                                    android:textColorHint="#606060"
+                                    tools:layout_editor_absoluteX="101dp"
+                                    tools:layout_editor_absoluteY="123dp" />
+
+                                <TextView
+                                    android:id="@+id/textDesignation"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Designation "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp" />
 
-                            <TextView
-                                android:id="@+id/textDuration"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="Duration"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/inputDuration"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/borderret"
-                                android:drawableLeft="@drawable/rupeefile"
-                                android:drawablePadding="10dp"
-                                android:drawableTint="@color/blue"
-                                android:fontFamily="serif"
-                                android:hint="Duration"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="15dp"
-                                android:textColorHint="#606060"
-                                tools:layout_editor_absoluteX="101dp"
-                                tools:layout_editor_absoluteY="123dp" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <EditText
+                                    android:id="@+id/inputDuration"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret"
+                                    android:drawableLeft="@drawable/rupeefile"
+                                    android:drawablePadding="10dp"
+                                    android:drawableTint="@color/blue"
+                                    android:fontFamily="serif"
+                                    android:hint=" Duration "
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="15dp"
+                                    android:textColorHint="#606060"
+                                    tools:layout_editor_absoluteX="101dp"
+                                    tools:layout_editor_absoluteY="123dp" />
+
+                                <TextView
+                                    android:id="@+id/textDuration"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Duration "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
@@ -374,64 +401,79 @@
                             android:visibility="gone">
 
                             <!--                    salary-->
-                            <TextView
-                                android:id="@+id/textSalary"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="Expected Salary"
-                                android:textColor="@color/blue"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/inputSalaryJ"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/borderret"
-                                android:drawableLeft="@drawable/rupeefile"
-                                android:drawablePadding="10dp"
-                                android:drawableTint="@color/blue"
-                                android:fontFamily="serif"
-                                android:hint="Salary"
-                                android:inputType="number"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="15dp"
-                                android:textColorHint="#606060"
-                                tools:layout_editor_absoluteX="101dp"
-                                tools:layout_editor_absoluteY="123dp" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+
+                                <EditText
+                                    android:id="@+id/inputSalaryJ"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret"
+                                    android:drawableLeft="@drawable/rupeefile"
+                                    android:drawablePadding="10dp"
+                                    android:drawableTint="@color/blue"
+                                    android:fontFamily="serif"
+                                    android:hint="Salary"
+                                    android:inputType="number"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="15dp"
+                                    android:textColorHint="#606060"
+                                    tools:layout_editor_absoluteX="101dp"
+                                    tools:layout_editor_absoluteY="123dp" />
+
+                                <TextView
+                                    android:id="@+id/textSalary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" Expected Salary "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp" />
 
                             <!--                    city preference-->
-                            <TextView
-                                android:id="@+id/textCityPref"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:text="City Preference"
-                                android:textColor="@color/blue"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
-
-                            <Spinner
-                                android:id="@+id/inputCitySpinnerJ"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/borderret" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <Spinner
+                                    android:id="@+id/inputCitySpinnerJ"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret" />
+
+                                <TextView
+                                    android:id="@+id/textCityPref"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:text=" City Preference "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
                             <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp" />
 
                             <!--                    working mode-->
+
                             <TextView
                                 android:id="@+id/textWorkingMode"
                                 android:layout_width="match_parent"
@@ -483,27 +525,32 @@
                             </LinearLayout>
 
                             <!--                    job Type-->
-                            <TextView
-                                android:id="@+id/textJobType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/white"
-                                android:fontFamily="serif"
-                                android:gravity="left"
-                                android:text="Job Type"
-                                android:textColor="@color/blue"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
-
-                            <Spinner
-                                android:id="@+id/inputJobTypeSpinner"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/borderret" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
 
+                                <Spinner
+                                    android:id="@+id/inputJobTypeSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/borderret" />
 
+                                <TextView
+                                    android:id="@+id/textJobType"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="25dp"
+                                    android:background="@color/white"
+                                    android:fontFamily="serif"
+                                    android:gravity="left"
+                                    android:text=" Job Type "
+                                    android:textColor="@color/blue"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -656,7 +703,8 @@
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
 
                                 <EditText
                                     android:id="@+id/inputDesignationR"
@@ -948,13 +996,13 @@
             android:id="@+id/btnNext"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/app_name"
             android:elevation="7dp"
             android:visibility="visible"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             app:shapeAppearanceOverlay="@style/circle"
             app:srcCompat="@drawable/right_arrow" />
 
@@ -963,13 +1011,14 @@
             android:id="@+id/btnBack"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:contentDescription="@string/app_name"
             android:elevation="7dp"
+            android:layout_marginBottom="10dp"
             android:scaleType="centerInside"
             android:visibility="gone"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             app:shapeAppearanceOverlay="@style/circle"
             app:srcCompat="@drawable/left_arrow" />
     </RelativeLayout>
