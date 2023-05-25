@@ -9,8 +9,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
         android:layout_margin="15dp"
         app:cardCornerRadius="25dp"
         app:cardElevation="8dp"
@@ -25,11 +26,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_20sdp"
             android:orientation="vertical"
-            android:paddingBottom="50dp"
-            android:paddingTop="50dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            android:gravity="center">
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
@@ -59,8 +58,8 @@
                     android:layout_marginTop="25dp"
                     android:layout_weight="1"
                     android:fontFamily="serif"
-                    android:gravity="center"
                     android:text="Phone number"
+                    android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     tools:layout_editor_absoluteX="266dp"
@@ -73,7 +72,7 @@
                     android:layout_marginTop="25dp"
                     android:layout_weight="2"
                     android:fontFamily="serif"
-                    android:gravity="center"
+                    android:textAlignment="textEnd"
                     android:text="(CHANGE)"
                     android:textColor="@color/blue"
                     android:textSize="20dp"
@@ -87,7 +86,6 @@
                 style="@style/PinWidget.PinView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:cursorVisible="true"
                 android:inputType="number"
@@ -97,7 +95,9 @@
                 app:itemCount="6"
                 app:itemRadius="5dp"
                 app:lineColor="@color/theme_blue"
-                app:lineWidth="1dp" />
+                app:lineWidth="1dp"
+                android:scrollbars="horizontal"
+                android:isScrollContainer="true"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnVerify"
@@ -121,9 +121,7 @@
                 android:backgroundTint="@color/card_theme"/>
 
         </LinearLayout>
-
-
-
     </com.google.android.material.card.MaterialCardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

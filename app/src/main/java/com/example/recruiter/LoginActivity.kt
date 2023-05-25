@@ -104,8 +104,10 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener {
                     }
                     override fun onVerificationFailed(e: FirebaseException) {
                         progressBar.visibility = GONE
+                        btnLogin.visibility = VISIBLE
                         Log.d("Task", "${e.message}")
                         makeToast("verificationFailed : ${e.message}",1)
+
                     }
 
                     override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {

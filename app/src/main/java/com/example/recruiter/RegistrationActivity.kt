@@ -18,6 +18,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
@@ -69,7 +70,7 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         Firebase.initialize(context = this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
         firebaseAppCheck.installAppCheckProviderFactory(
-            DebugAppCheckProviderFactory.getInstance(),
+            PlayIntegrityAppCheckProviderFactory.getInstance(),
         )
         cpp.registerCarrierNumberEditText(inputPhoneNo)
     }
