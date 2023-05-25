@@ -28,7 +28,6 @@ class SplashActivity : AppCompatActivity() {
 
         fullScreen()
         setPreferencesForIntroScreen()
-
     }
     private fun setPreferencesForIntroScreen() {
         preferencesForIntroScreen = getSharedPreferences("IntroductionScreen",Context.MODE_PRIVATE)

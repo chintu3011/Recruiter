@@ -8,6 +8,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -84,7 +85,7 @@
             <com.chaos.view.PinView
                 android:id="@+id/inputOTP"
                 style="@style/PinWidget.PinView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
@@ -94,9 +95,7 @@
                 app:cursorColor="#386AFE"
                 app:hideLineWhenFilled="true"
                 app:itemCount="6"
-                app:itemHeight="50dp"
                 app:itemRadius="5dp"
-                app:itemWidth="50dp"
                 app:lineColor="@color/theme_blue"
                 app:lineWidth="1dp" />
 
