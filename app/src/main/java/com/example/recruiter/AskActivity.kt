@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.cardview.widget.CardView
 import android.view.View.*
+import android.view.Window
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 
 class AskActivity : AppCompatActivity() {
     lateinit var jobseek : CardView
@@ -20,7 +23,15 @@ class AskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ask)
-        fullScreen()
+
+        val window: Window = this@AskActivity.window
+        val background = ContextCompat.getDrawable(this@AskActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@AskActivity,android.R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this@AskActivity,R.color.royal_blue)
+        window.setBackgroundDrawable(background)
+
         jobseek = findViewById(R.id.buycv)
         recruit = findViewById(R.id.sellcv)
         activity = this
@@ -49,27 +60,5 @@ class AskActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun fullScreen() {
-        decorView = window.decorView
-        decorView.setOnSystemUiVisibilityChangeListener { i ->
-            if (i == 0) {
-                decorView.systemUiVisibility = hideSystemBars()
-            }
-        }
-    }
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            decorView.systemUiVisibility = hideSystemBars()
-        }
-    }
 
-    private fun hideSystemBars(): Int {
-        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or SYSTEM_UI_FLAG_FULLSCREEN
-                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-    }
 }

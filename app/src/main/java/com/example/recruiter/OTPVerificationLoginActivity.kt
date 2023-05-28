@@ -7,9 +7,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewTreeObserver
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -21,6 +26,7 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
     lateinit var btnChange: TextView
     lateinit var inputOTP: PinView
     lateinit var btnVerify: Button
+    lateinit var cardView: CardView
 
 
     private lateinit var mAuth: FirebaseAuth
@@ -32,6 +38,15 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otpverification_login)
+
+        val window: Window = this@OTPVerificationLoginActivity.window
+        val background = ContextCompat.getDrawable(this@OTPVerificationLoginActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,android.R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,android.R.color.white)
+        window.setBackgroundDrawable(background)
+
         mAuth = FirebaseAuth.getInstance()
 
         setXmlIDs()
@@ -41,7 +56,39 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
 
         txtPhoneNo.text = phoneNo
+
+        setPinViewSize()
+
     }
+
+    private fun setPinViewSize() {
+        cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // This callback will be triggered when the layout has been measured and has dimensions
+
+                // Get the measured width of the layout
+                val layoutWidth = inputOTP.width
+
+                // If the layout width is 0, it means it hasn't been measured yet, so return
+                if (layoutWidth == 0) {
+                    return
+                }
+
+                // Remove the listener to avoid multiple callbacks
+                inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Perform the division
+                val division = layoutWidth / 6
+
+                inputOTP.itemWidth = division
+                inputOTP.itemHeight = division
+
+                // Use the division as needed
+                // ...
+            }
+        })
+    }
+
     private fun setOnClickListener() {
         btnVerify.setOnClickListener(this)
         btnChange.setOnClickListener(this)
@@ -89,6 +136,7 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
         btnChange = findViewById(R.id.btnChange)
         inputOTP = findViewById(R.id.inputOTP)
         btnVerify = findViewById(R.id.btnVerify)
+        cardView = findViewById(R.id.cardView)
     }
     private fun makeToast(msg: String, len: Int){
         if(len == 0) Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()

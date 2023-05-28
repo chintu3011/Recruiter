@@ -13,6 +13,7 @@
     <color name="cust_text_sec">#464747</color>
     <color name="card_theme">#1B5AB1</color>
     <color name="glass_color">#38D6FE</color>
-    <color name="check_color">#043A7C</color>
+    <color name="check_color">#02397C</color>
     <color name="check_def_color">#3E043A7C</color>
+    <color name="royal_blue">#2F7FF8</color>
 </resources>

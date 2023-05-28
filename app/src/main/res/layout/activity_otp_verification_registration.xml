@@ -4,124 +4,184 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".OTPVerificationRegistrationActivity">
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:layout_margin="15dp"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="#4D000450"
-        android:clickable="true"
-        android:focusable="true"
-        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            app:srcCompat="@drawable/otp_screen_icon"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_20sdp"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:text="Enter the Verification Code"
+                android:textAlignment="center"
                 android:fontFamily="serif"
-                android:gravity="center"
-                android:text="OTP Verification"
                 android:textAllCaps="false"
                 android:textColor="@color/blue"
-                android:textSize="36dp"
+                android:textSize="27dp"
                 android:textStyle="bold"
+                android:layout_gravity="center"
                 tools:layout_editor_absoluteX="12dp"
                 tools:layout_editor_absoluteY="118dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="6 - digit verification code sent to"
+                android:textAlignment="center"
+                android:textColor="@color/cust_text_sec"
+                android:textSize="20dp"
+                tools:layout_editor_absoluteX="266dp"
+                tools:layout_editor_absoluteY="611dp" />
+            <TextView
+                android:id="@+id/txtPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="Phone number"
+                android:textAlignment="center"
+                android:textColor="@color/cust_text_sec"
+                android:textSize="20dp"
+                tools:layout_editor_absoluteX="266dp"
+                tools:layout_editor_absoluteY="611dp" />
+
+            <TextView
+                android:id="@+id/btnChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="serif"
+                android:textAlignment="textStart"
+                android:text="You can change phone number"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                tools:layout_editor_absoluteX="266dp"
+                tools:layout_editor_absoluteY="611dp" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="#4D000450"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <com.chaos.view.PinView
+                        android:id="@+id/inputOTP"
+                        style="@style/PinWidget.PinView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="true"
+                        android:inputType="number"
+                        android:itemBackground="#AEE2EAF8"
+                        app:cursorColor="#386AFE"
+                        app:hideLineWhenFilled="true"
+                        app:itemCount="6"
+                        app:itemRadius="@dimen/_5sdp"
+                        app:lineColor="@color/theme_blue"
+                        app:lineWidth="1dp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_30sdp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
+                android:id="@+id/btn_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView2"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtPhoneNo"
-                    android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="visible"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerify"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="25dp"
+                    android:text="Verify"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:cornerRadius="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="15dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    app:rippleColor="@color/glass_color"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_background"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:fontFamily="serif"
-                    android:text="Phone number"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    tools:layout_editor_absoluteX="266dp"
-                    tools:layout_editor_absoluteY="611dp" />
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/btnChange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:layout_weight="2"
-                    android:fontFamily="serif"
-                    android:textAlignment="textEnd"
-                    android:text="(CHANGE)"
-                    android:textColor="@color/blue"
-                    android:textSize="20dp"
-                    tools:layout_editor_absoluteX="266dp"
-                    tools:layout_editor_absoluteY="611dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" Don't Receive code? "
+                        android:textStyle="normal"
+                        android:textColor="@color/cust_text_sec"
+                        android:textAlignment="textEnd"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" Resend Code"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue"
+                        android:textAlignment="textStart"
+                        android:textSize="15sp"/>
 
+
+
+                </LinearLayout>
             </LinearLayout>
-
-            <com.chaos.view.PinView
-                android:id="@+id/inputOTP"
-                style="@style/PinWidget.PinView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:cursorVisible="true"
-                android:inputType="number"
-                android:itemBackground="#65EAEAEA"
-                app:cursorColor="#386AFE"
-                app:hideLineWhenFilled="true"
-                app:itemCount="6"
-                app:itemRadius="5dp"
-                app:lineColor="@color/theme_blue"
-                app:lineWidth="1dp"
-                android:scrollbars="horizontal"
-                android:isScrollContainer="true"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnVerify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="Verify"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:cornerRadius="50dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:padding="15dp"
-                android:foreground="@drawable/glass_effect_left"
-                android:focusable="true"
-                android:clickable="true"
-                app:rippleColor="@color/glass_color"
-                android:backgroundTint="@color/card_theme"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:progressBarStyleInverse"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

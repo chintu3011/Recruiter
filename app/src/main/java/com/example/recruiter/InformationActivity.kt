@@ -55,6 +55,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     lateinit var jsLayout3:LinearLayout
 
     lateinit var textPdfName:TextView
+    lateinit var uploadProgressBar: ProgressBar
     lateinit var uploadBtn:Button
 
 
@@ -126,7 +127,6 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
-        fullScreen()
 
         setXMlIds()
         setOnClickListener()
@@ -220,6 +220,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.uploadBtn -> {
+                uploadBtn.visibility = GONE
+                uploadProgressBar.visibility = VISIBLE
+                btnSubmit.visibility = VISIBLE
 
             }
             R.id.btnBack -> {
@@ -485,7 +488,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 jsLayout3.visibility = VISIBLE
                 btnBack.visibility = VISIBLE
                 btnNext.visibility = GONE
-                btnSubmit.visibility = VISIBLE
+                btnSubmit.visibility = GONE
+                uploadBtn.visibility = VISIBLE
+                uploadProgressBar.visibility = GONE
 
                 check1.setBackgroundResource(R.color.check_color)
                 check2.setBackgroundResource(R.color.check_color)
@@ -536,6 +541,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
         jsLayout3 = findViewById(R.id.jsLayout3)
         textPdfName = findViewById(R.id.textPdfName)
+        uploadProgressBar = findViewById(R.id.uploadProgressBar)
         uploadBtn = findViewById(R.id.uploadBtn)
 
 
@@ -581,30 +587,6 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         startActivity(Intent(this@InformationActivity,RegistrationActivity::class.java))
         overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
         finish()
-    }
-    private fun fullScreen() {
-        decorView = window.decorView
-        decorView.setOnSystemUiVisibilityChangeListener { i ->
-            if (i == 0) {
-                decorView.systemUiVisibility = hideSystemBars()
-            }
-        }
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            decorView.systemUiVisibility = hideSystemBars()
-        }
-    }
-
-    private fun hideSystemBars(): Int {
-        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or SYSTEM_UI_FLAG_FULLSCREEN
-                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 
 

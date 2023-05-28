@@ -10,11 +10,13 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
+import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -43,18 +45,43 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp_verification_registration)
+
+        val window: Window = this@OTPVerificationRegistrationActivity.window
+        val background = ContextCompat.getDrawable(this@OTPVerificationRegistrationActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationRegistrationActivity,android.R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this@OTPVerificationRegistrationActivity,android.R.color.white)
+        window.setBackgroundDrawable(background)
+
         mAuth = FirebaseAuth.getInstance()
 
         setXmlIDs()
         setOnClickListener()
 
 
+        setPinViewSize()
+
+        firstName = intent.getStringExtra("fName").toString()
+        phoneNo = intent.getStringExtra("phoneNo").toString()
+        email = intent.getStringExtra("email").toString()
+        lastName = intent.getStringExtra("lName").toString()
+        jobType = intent.getStringExtra("jobType").toString()
+        storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
+        termsConditions = intent.getStringExtra("termsConditions").toString()
+
+        txtPhoneNo.text = phoneNo
+
+
+
+    }
+    private fun setPinViewSize() {
         cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // This callback will be triggered when the layout has been measured and has dimensions
 
                 // Get the measured width of the layout
-                val layoutWidth = inputOTP.width-cardView.paddingStart-cardView.paddingEnd
+                val layoutWidth = inputOTP.width
 
                 // If the layout width is 0, it means it hasn't been measured yet, so return
                 if (layoutWidth == 0) {
@@ -69,25 +96,11 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
 
                 inputOTP.itemWidth = division
                 inputOTP.itemHeight = division
-                inputOTP.itemSpacing = 0
 
                 // Use the division as needed
                 // ...
             }
         })
-
-        firstName = intent.getStringExtra("fName").toString()
-        phoneNo = intent.getStringExtra("phoneNo").toString()
-        email = intent.getStringExtra("email").toString()
-        lastName = intent.getStringExtra("lName").toString()
-        jobType = intent.getStringExtra("jobType").toString()
-        storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
-        termsConditions = intent.getStringExtra("termsConditions").toString()
-
-        txtPhoneNo.text = phoneNo
-
-
-
     }
 
     private fun setOnClickListener() {

@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,7 +29,14 @@ class IntroductionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_introduction)
-        fullScreen()
+
+        val window: Window = this@IntroductionActivity.window
+        val background = ContextCompat.getDrawable(this@IntroductionActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
+        window.setBackgroundDrawable(background)
 
 //        sharedPreferences = getSharedPreferences("SplashScreen", Context.MODE_PRIVATE)
         
@@ -155,32 +164,5 @@ class IntroductionActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         moveTaskToBack(true)
-    }
-
-    private fun fullScreen() {
-        decorView = window.decorView
-        decorView.setOnSystemUiVisibilityChangeListener { i ->
-            if (i == 0) {
-                decorView.systemUiVisibility = hideSystemBars()
-            }
-        }
-    }
-
-
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            decorView.systemUiVisibility = hideSystemBars()
-        }
-    }
-
-    private fun hideSystemBars(): Int {
-        return (SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or SYSTEM_UI_FLAG_FULLSCREEN
-                or SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 }

@@ -95,7 +95,6 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:fontFamily="serif"
-                        android:gravity="left"
                         android:text="First Name"
                         android:textColor="@color/blue"
                         android:textSize="20sp"
@@ -116,9 +115,7 @@
                         android:inputType="textPersonName"
                         android:paddingLeft="10dp"
                         android:paddingRight="15dp"
-                        android:textColorHint="#606060"
-                        tools:layout_editor_absoluteX="101dp"
-                        tools:layout_editor_absoluteY="123dp" />
+                        android:textColorHint="#606060" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -154,9 +151,7 @@
                         android:inputType="textPersonName"
                         android:paddingLeft="10dp"
                         android:paddingRight="15dp"
-                        android:textColorHint="#606060"
-                        tools:layout_editor_absoluteX="101dp"
-                        tools:layout_editor_absoluteY="123dp" />
+                        android:textColorHint="#606060" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -277,10 +272,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="70dp"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="@color/card_theme"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_background"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="@drawable/glass_effect_left"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:padding="15dp"

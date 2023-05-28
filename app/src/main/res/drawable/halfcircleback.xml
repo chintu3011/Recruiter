@@ -10,7 +10,12 @@
         android:left="-100dp"
         android:right="-100dp">
         <shape android:shape="oval">
-            <solid android:color="@color/blue"/>
+            <gradient
+                android:angle="0"
+                android:centerColor="#0855EF"
+                android:endColor="#042F85"
+                android:startColor="#38AFFE"
+                android:type="linear" />
         </shape>
     </item>
 </layer-list>

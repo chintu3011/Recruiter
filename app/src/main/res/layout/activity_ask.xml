@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/ask_background"
+    android:fitsSystemWindows="true"
     tools:context=".AskActivity">
-
-
-
     <ImageView
         android:id="@+id/textView4"
         android:layout_width="139dp"
@@ -20,13 +19,12 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="Choose your role"
         android:textColor="@color/black"
         android:fontFamily="serif"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -35,21 +33,27 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/buycv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="25dp"
             app:cardBackgroundColor="@color/white"
             android:background="?android:attr/selectableItemBackground"
-            app:cardElevation="10dp">
+            app:cardElevation="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="#7A1B5AB1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -68,12 +72,11 @@
                     android:fontFamily="serif"
                     android:gravity="center"
                     android:text="I need Job"
-                    android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -107,21 +110,27 @@
                 android:background="#676262" />
         </RelativeLayout>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/sellcv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="25dp"
             android:layout_below="@id/buycv"
             android:background="?android:attr/selectableItemBackground"
-            app:cardElevation="10dp">
+            app:cardElevation="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="#7A1B5AB1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -137,16 +146,15 @@
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:fontFamily="serif"
                     android:text="I am Hiring"
                     android:textColor="@color/black"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </LinearLayout>

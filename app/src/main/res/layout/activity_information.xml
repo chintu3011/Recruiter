@@ -42,8 +42,7 @@
                 android:layout_margin="5dp"
                 android:background="@color/check_def_color"
                 android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/ic_check" />
+                app:shapeAppearanceOverlay="@style/circle" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/check2"
@@ -53,7 +52,7 @@
                 android:background="@color/check_def_color"
                 android:visibility="visible"
                 app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/ic_check" />
+                 />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/check3"
@@ -63,7 +62,7 @@
                 android:background="@color/check_def_color"
                 android:visibility="visible"
                 app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/ic_check" />
+                />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/check4"
@@ -73,7 +72,7 @@
                 android:background="@color/check_def_color"
                 android:visibility="visible"
                 app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/ic_check" />
+                />
         </LinearLayout>
 
         <TextView
@@ -140,14 +139,14 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:id="@+id/jsLayout1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:visibility="visible">
+                            android:visibility="gone">
                             <!--                    Last Degree & graduation-->
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -558,7 +557,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:visibility="gone">
+                            android:layout_margin="10dp"
+                            android:visibility="visible">
                             <!--                    upload CV-->
                             <TextView
                                 android:id="@+id/textUploadCV"
@@ -620,6 +620,15 @@
                                 android:text="No File Chosen"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
+                            <ProgressBar
+                                android:id="@+id/uploadProgressBar"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:progressTint="@color/blue"
+                                android:progressBackgroundTint="#971B5AB1"
+                                />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/uploadBtn"
@@ -642,7 +651,8 @@
                                 app:cornerRadius="20dp"
                                 app:rippleColor="@color/glass_color"
                                 app:strokeColor="@color/card_theme"
-                                app:strokeWidth="3dp" />
+                                app:strokeWidth="3dp"
+                                android:visibility="visible"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -965,10 +975,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="70dp"
                         android:layout_marginBottom="10dp"
-                        android:backgroundTint="@color/card_theme"
+                        app:backgroundTint="@null"
+                        android:background="@drawable/btn_background"
                         android:clickable="true"
                         android:focusable="true"
-                        android:foreground="@drawable/glass_effect_left"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:padding="15dp"
@@ -977,8 +987,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:visibility="gone"
-                        app:cornerRadius="30dp"
-                        app:rippleColor="@color/glass_color" />
+                        app:cornerRadius="30dp" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
