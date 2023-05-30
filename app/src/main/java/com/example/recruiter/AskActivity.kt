@@ -28,7 +28,8 @@ class AskActivity : AppCompatActivity() {
         val background = ContextCompat.getDrawable(this@AskActivity, R.drawable.status_bar_color)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@AskActivity,android.R.color.white)
+
+        window.statusBarColor = ContextCompat.getColor(this@AskActivity,R.color.royal_blue)
         window.navigationBarColor = ContextCompat.getColor(this@AskActivity,R.color.royal_blue)
         window.setBackgroundDrawable(background)
 

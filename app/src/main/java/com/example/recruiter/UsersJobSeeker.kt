@@ -16,6 +16,7 @@ data class UsersJobSeeker(
     var cityPreferences :String ?= null,
     var expectedSalary :String ?= null,
     var workingMode :String ?= null,
+    var resume: String ?= null,
     var termsConditionsAcceptance :String ?= null
 
 )

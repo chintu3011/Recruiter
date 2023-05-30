@@ -1,11 +1,17 @@
 package com.example.recruiter
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.View
 import android.view.View.*
+import android.view.Window
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -18,9 +24,12 @@ import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
+
 
 
     lateinit var inputLayoutJobSeeker:LinearLayout
@@ -55,6 +64,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     lateinit var jsLayout3:LinearLayout
 
     lateinit var textPdfName:TextView
+    lateinit var btnSelectPdf: ImageView
     lateinit var uploadProgressBar: ProgressBar
     lateinit var uploadBtn:Button
 
@@ -97,6 +107,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     var layoutID = -1
     var btnPointer = 0
 
+    private lateinit var pdfUri: Uri
+
     lateinit var firstName:String
     lateinit var lastName:String
     lateinit var phoneNo:String
@@ -115,6 +127,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     lateinit var jobDes:String
     lateinit var resume:String
     lateinit var termsConditionsAcceptance:String
+    lateinit var pdfName:String
 
     private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
     private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
@@ -127,6 +140,15 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
+
+        val window: Window = this@InformationActivity.window
+        val background = ContextCompat.getDrawable(this@InformationActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.transparent)
+        window.navigationBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.white)
+        window.setBackgroundDrawable(background)
+
 
         setXMlIds()
         setOnClickListener()
@@ -207,6 +229,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     }
 
     private fun setOnClickListener() {
+        btnSelectPdf.setOnClickListener(this)
         uploadBtn.setOnClickListener(this)
         btnBack.setOnClickListener(this)
         btnNext.setOnClickListener(this)
@@ -220,11 +243,23 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.uploadBtn -> {
-                uploadBtn.visibility = GONE
                 uploadProgressBar.visibility = VISIBLE
+                uploadProgressBar.progress = 70
+                val mStorage = FirebaseStorage.getInstance().getReference("pdfs")
+                val pdfRef = mStorage.child(pdfName)
+                pdfRef.putFile(pdfUri).addOnSuccessListener {
+                    pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                        uploadProgressBar.progress = 100
+                        resume = downloadUrl.toString()
+                    }
+                }
+                uploadBtn.visibility = GONE
                 btnSubmit.visibility = VISIBLE
-
             }
+            R.id.btnSelectPdf -> {
+                  selectpdf()
+            }
+
             R.id.btnBack -> {
                 btnPointer -= 1
                 changeLayout(layoutID,btnPointer)
@@ -243,6 +278,47 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 //                makeToast("$btnPointer",0)
             }
         }
+    }
+    private fun selectpdf() {
+        val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+        pdfIntent.type = "application/pdf"
+        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(pdfIntent, 12)
+    }
+
+    @SuppressLint("Range")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_CANCELED) {
+            when (requestCode) {
+                12 -> if (resultCode == RESULT_OK) {
+                    pdfUri = data?.data!!
+                    val uri: Uri = data?.data!!
+                    val uriString: String = uri.toString()
+                    pdfName = null.toString()
+                    if (uriString.startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this!!.contentResolver.query(
+                                uri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                pdfName =
+                                    myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                textPdfName.text = pdfName
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private fun storeInfoJ() {
@@ -276,6 +352,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 city,
                 salary,
                 workingMode,
+                resume,
                 termsConditionsAcceptance
             )
 
@@ -434,8 +511,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             else if (btnPointer == 1 ) {
                 experience = getSelectedRadioItem(radioGrpFreshExp)
                 if(experience == "Experienced") {
-                    makeToast("You Selected $experience",0)
-                    makeToast("press next for further step",0)
+//                    makeToast("You Selected $experience",0)
+//                    makeToast("press next for further step",0)
                     jsLayout1.visibility = GONE
                     jsLayout2.visibility = GONE
                     jsSubLayout1.visibility = VISIBLE
@@ -541,6 +618,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
         jsLayout3 = findViewById(R.id.jsLayout3)
         textPdfName = findViewById(R.id.textPdfName)
+        btnSelectPdf = findViewById(R.id.btnSelectPdf)
         uploadProgressBar = findViewById(R.id.uploadProgressBar)
         uploadBtn = findViewById(R.id.uploadBtn)
 
