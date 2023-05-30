@@ -56,7 +56,7 @@ class SplashActivity : AppCompatActivity() {
         }
         else{
             Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this@SplashActivity,LoginActivity::class.java)
+                val intent = Intent(this@SplashActivity,loginsignupActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
                 finish()

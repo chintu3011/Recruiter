@@ -6,33 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/halfcircleback"
     tools:context=".RegistrationActivity">
-    <!--    <com.google.android.material.imageview.ShapeableImageView-->
-    <!--        android:id="@+id/shapeableImageView"-->
-    <!--        android:layout_width="100dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        android:background="@drawable/circle_stroke"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@id/backgroundView"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.13999999"-->
-    <!--        app:shapeAppearanceOverlay="@style/circle"-->
-    <!--        app:srcCompat="@drawable/ic_arrow_down" />-->
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/textView8"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="20dp"-->
-    <!--        android:text="Register"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:textAllCaps="true"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        android:textSize="40dp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

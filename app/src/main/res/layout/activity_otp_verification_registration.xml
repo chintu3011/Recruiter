@@ -129,6 +129,7 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    android:fontFamily="serif"
                     app:cornerRadius="50dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="50dp"
@@ -151,8 +152,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=" Don't Receive code? "
+                        android:text=" Didn't Receive code? "
                         android:textStyle="normal"
+                        android:fontFamily="serif"
                         android:textColor="@color/cust_text_sec"
                         android:textAlignment="textEnd"
                         android:textSize="15sp"/>
@@ -160,13 +162,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=" Resend Code"
+                        android:text="Resend Code"
+                        android:fontFamily="serif"
                         android:textStyle="bold"
                         android:textColor="@color/blue"
                         android:textAlignment="textStart"
                         android:textSize="15sp"/>
-
-
 
                 </LinearLayout>
             </LinearLayout>
