@@ -70,6 +70,11 @@ dependencies {
 
     //PinView Dependency
     implementation 'io.github.chaosleung:pinview:1.4.4'
+
+    //sdp dimen
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
+
+    //expandable textview
+    implementation 'com.github.gifffert:ExpandableTextView:0.1.6'
 
 }

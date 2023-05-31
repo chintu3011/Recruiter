@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         fragview = inflater.inflate(R.layout.fragment_home, container, false)
         gridView = fragview.findViewById(R.id.gv)

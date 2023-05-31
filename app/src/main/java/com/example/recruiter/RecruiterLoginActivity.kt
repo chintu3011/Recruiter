@@ -59,7 +59,7 @@ class RecruiterLoginActivity : AppCompatActivity() {
             sendOtp()
         }
         phone.setOnFocusChangeListener { view, b ->
-            phone.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            phone.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterRegActivity::class.java))

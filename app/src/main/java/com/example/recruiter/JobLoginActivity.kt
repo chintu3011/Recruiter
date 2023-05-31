@@ -36,7 +36,7 @@ class JobLoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         phoneAuthProvider = PhoneAuthProvider.getInstance()
         phonenum.setOnFocusChangeListener { view, b ->
-            phonenum.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            phonenum.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         tv.setOnClickListener {
             startActivity(Intent(this,JobRegisterActivity::class.java))

@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             finish()
         }
-        view_pager = findViewById(R.id.viewpager);
-        btn_skip = findViewById(R.id.skipbtn);
-        btn_next = findViewById(R.id.nextbtn);
-        tv_1 = findViewById(R.id.tv1);
-        tv_2 = findViewById(R.id.tv2);
-        tv_3 = findViewById(R.id.tv3);
+        view_pager = findViewById(R.id.viewpager)
+        btn_skip = findViewById(R.id.skipbtn)
+        btn_next = findViewById(R.id.nextbtn)
+        tv_1 = findViewById(R.id.tv1)
+        tv_2 = findViewById(R.id.tv2)
+        tv_3 = findViewById(R.id.tv3)
         view_pager.adapter = adapter
         btn_skip.setOnClickListener {
             startActivity(Intent(activity,AskActivity::class.java))
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 }
 class myPageAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager)
 {
-    val list:MutableList<Fragment> = ArrayList();
+    val list:MutableList<Fragment> = ArrayList()
     override fun getCount(): Int {
         return list.size
     }

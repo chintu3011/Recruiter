@@ -46,22 +46,22 @@ class JobRegisterActivity1 : AppCompatActivity() {
             finish()
         }
         bio.setOnFocusChangeListener { view, b ->
-            bio.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            bio.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         jobtype.setOnFocusChangeListener { view, b ->
-            jobtype.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            jobtype.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         compname.setOnFocusChangeListener { view, b ->
-            compname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            compname.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         expesal.setOnFocusChangeListener { view, b ->
-            expesal.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            expesal.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         expdur.setOnFocusChangeListener { view, b ->
-            expdur.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            expdur.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         degree.setOnFocusChangeListener { view, b ->
-            degree.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            degree.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         val adapter = ArrayAdapter.createFromResource(
             this,

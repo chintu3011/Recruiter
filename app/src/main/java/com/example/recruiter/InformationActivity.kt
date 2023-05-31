@@ -162,18 +162,18 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private fun setAdapters() {
 
         val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobLocations)
-        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         JobLocationSpinnerR.adapter = jobLocationAdapter
         inputCitySpinnerJ.adapter = jobLocationAdapter
 
 
         val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
-        qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         inputDegreeTypeSpinner.adapter = qualificationsAdapter
 
 
         val jobsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobs)
-        jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         inputJobTitleSpinner.adapter = jobsAdapter
         inputJobTypeSpinner.adapter = jobsAdapter
     }
@@ -293,13 +293,13 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             when (requestCode) {
                 12 -> if (resultCode == RESULT_OK) {
                     pdfUri = data?.data!!
-                    val uri: Uri = data?.data!!
+                    val uri: Uri = data.data!!
                     val uriString: String = uri.toString()
                     pdfName = null.toString()
                     if (uriString.startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
-                            myCursor = this!!.contentResolver.query(
+                            myCursor = this.contentResolver.query(
                                 uri,
                                 null,
                                 null,

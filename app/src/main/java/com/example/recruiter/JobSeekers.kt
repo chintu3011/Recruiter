@@ -10,6 +10,3 @@ data class JobSeekers(
     val sal: String? = null, val dur: String? = null,
     val cv: String? = null
 )
-{
-
-}

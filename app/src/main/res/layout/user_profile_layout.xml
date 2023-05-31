@@ -1,41 +1,838 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    android:scrollbars="vertical">
-
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        tools:context=".MainActivity2">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuidLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="16dp" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeableImageView"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"
-            android:scaleType="centerInside"
+            android:id="@+id/profileBackImg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_100sdp"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/circle"
-            app:srcCompat="@drawable/profile_img_icon" />
+            app:srcCompat="@drawable/profile_image_background" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImg"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:elevation="@dimen/_6sdp"
+            android:padding="@dimen/_5sdp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/profileBackImg"
+            app:layout_constraintEnd_toEndOf="@+id/profileBackImg"
+            app:layout_constraintStart_toStartOf="@+id/profileBackImg"
+            app:layout_constraintTop_toTopOf="@id/profileBackImg"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/profile_img_icon"
+            app:strokeColor="@color/white"
+            app:strokeWidth="@dimen/_5sdp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/view_back"
+            android:elevation="@dimen/_6sdp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImg"
+            app:layout_constraintEnd_toEndOf="@+id/profileImg"
+            app:layout_constraintHorizontal_bias="0.836"
+            app:layout_constraintStart_toStartOf="@+id/profileImg"
+            app:layout_constraintTop_toTopOf="@+id/profileImg"
+            app:layout_constraintVertical_bias="0.863">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/addProfileImg"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/circle"
+                app:srcCompat="@drawable/add_circle" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:text="Person Name"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/profileBackImg">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/changeBackImg"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/materialTextView3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Job Seeker"
+                    android:textColor="@color/blue"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/changeBackImg"
+                    app:layout_constraintEnd_toStartOf="@+id/changeBackImg"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/changeBackImg"
+                    app:layout_constraintWidth_default="wrap" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="materialTextView3,changeBackImg"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:fontFamily="serif"
+                    android:text="Person Name"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/changeBackImg" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtExpertise"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:text="Passionate Software Engineer || Tech Enthusiast || Problem Solver"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtCurrentCompany"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="serif"
+                    android:text="Amri Systems Ptv. Ltd"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtExpertise" />
+
+                <Space
+                    android:id="@+id/spacer1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtCurrentCompany">
+
+                </Space>
+
+                <com.google.android.material.imageview.ShapeableImageView
+
+                    android:id="@+id/bntPhone"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_2sdp"
+                    android:padding="@dimen/_2sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEmail"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spacer1"
+                    app:shapeAppearanceOverlay="@style/cornerCut"
+                    app:srcCompat="@drawable/phone_icon" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnEmail"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:elevation="@dimen/_2sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/bntPhone"
+                    app:layout_constraintTop_toBottomOf="@+id/spacer1"
+                    app:shapeAppearanceOverlay="@style/cornerCut"
+                    app:srcCompat="@drawable/email_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/layout1" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/space">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="About"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/editBio"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/editBio"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtAbout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtAbout"
+                    app:layout_constraintTop_toTopOf="@+id/txtAbout"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <ru.embersoft.expandabletextview.ExpandableTextView
+                    android:id="@+id/txtBio"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:etv_animationTime="20"
+                    app:etv_expandLines="0"
+                    app:etv_showLine="false"
+                    app:etv_textExpand="Show more"
+                    app:etv_textShrink="Show less"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editBio" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtQualification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="serif"
+                    android:text="Qualification"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtBio" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/qualification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="serif"
+                    android:text="Graduated in CSE"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtQualification" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:id="@+id/space1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/layout2" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/space1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Experience"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/editExperience"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/editExperience"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtExperience"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtExperience"
+                    app:layout_constraintTop_toTopOf="@+id/txtExperience"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtDesignation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="serif"
+                    android:text="Designation"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editExperience" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtCompanyName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Amri Systems Ptv. Ltd"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    app:layout_constraintEnd_toStartOf="@id/txtDuration"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtDesignation"
+                    app:layout_constraintWidth_default="wrap" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="3 Years"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtCompanyName"
+                    app:layout_constraintTop_toBottomOf="@id/txtDesignation"
+                    app:layout_constraintWidth_default="wrap" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/layout3" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/space2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtResume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Resume"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/editResume"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/editResume"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtResume"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtResume"
+                    app:layout_constraintTop_toTopOf="@+id/txtResume"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtFileName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="serif"
+                    android:text="file_name.pdf"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#FF02397C"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/btnDownload"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtResume" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnDownload"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtFileName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtFileName"
+                    app:layout_constraintTop_toTopOf="@+id/txtFileName"
+                    app:srcCompat="@drawable/ic_download" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:id="@+id/space3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/layout4" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/space3">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtJobPref"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Job Preference"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/editJobPref"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/editJobPref"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtJobPref"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtJobPref"
+                    app:layout_constraintTop_toTopOf="@+id/txtJobPref"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtJobTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="serif"
+                    android:text="Job Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="#FF02397C"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/txtSalaryJ"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editJobPref" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtSalaryJ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="$12 LPA"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/txtJobTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtJobTitle"
+                    app:layout_constraintTop_toTopOf="@+id/txtJobTitle" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="serif"
+                    android:text="Location: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toStartOf="@+id/txtJobLocation"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSalaryJ" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtJobLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Ahmedabad"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtLocation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtLocation"
+                    app:layout_constraintTop_toTopOf="@+id/txtLocation" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtWorkingModeJ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="serif"
+                    android:text="Working Mode: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toStartOf="@id/txtModeJ"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtJobLocation" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtModeJ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Hybrid"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtWorkingModeJ"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtWorkingModeJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtWorkingModeJ"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:id="@+id/space4"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/layout5" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupJobSeeker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="layout2,space1,layout3,space2,layout4,space3,layout5,space4" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout2R"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/space">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/textAboutR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="About"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/editInfo"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/editInfo"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/textAboutR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textAboutR"
+                    app:layout_constraintTop_toTopOf="@+id/textAboutR"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/pencil_edit" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/jobTitleR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="serif"
+                    android:text="Job Title"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    android:textColor="#FF02397C"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/SalaryR"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editInfo" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/SalaryR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$ 25 LPA"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/jobTitleR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/jobTitleR"
+                    app:layout_constraintTop_toTopOf="@+id/jobTitleR" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/jobLocationR"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ahmedabad"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/SalaryR" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/designationR"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="serif"
+                    android:text="Designation"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/jobLocationR" />
+
+                <ru.embersoft.expandabletextview.ExpandableTextView
+                    android:id="@+id/txtJobDesR"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:etv_animationTime="20"
+                    app:etv_expandLines="0"
+                    app:etv_showLine="false"
+                    app:etv_textExpand="Show more"
+                    app:etv_textShrink="Show less"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/designationR" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtWorkingModeR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Working Mode:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/workingModeR"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtJobDesR" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/workingModeR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="Work From Home"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtWorkingModeR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/editInfo"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/txtWorkingModeR"
+                    app:layout_constraintTop_toTopOf="@+id/txtWorkingModeR" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="layout2R" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
+

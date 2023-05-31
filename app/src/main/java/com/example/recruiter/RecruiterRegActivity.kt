@@ -47,19 +47,19 @@ class RecruiterRegActivity : AppCompatActivity() {
             finish()
         }
         fname.setOnFocusChangeListener { view, b ->
-            fname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            fname.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         lname.setOnFocusChangeListener { view, b ->
-            lname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            lname.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         phone.setOnFocusChangeListener { view, b ->
-            phone.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            phone.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         email.setOnFocusChangeListener { view, b ->
-            email.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            email.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         compname.setOnFocusChangeListener { view, b ->
-            compname.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            compname.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterLoginActivity::class.java))

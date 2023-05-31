@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 import android.view.View.*
 class JobRegisterActivity2 : AppCompatActivity() {
     lateinit var btn_next: Button
-    lateinit var btn_prev: Button;
+    lateinit var btn_prev: Button
     lateinit var upload: Button
     lateinit var select: TextView
     lateinit var pdfTextView: TextView; lateinit var tv : TextView
@@ -60,7 +60,7 @@ class JobRegisterActivity2 : AppCompatActivity() {
             overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
             finish()
         }
-        select.setOnClickListener(object : View.OnClickListener {
+        select.setOnClickListener(object : OnClickListener {
             override fun onClick(p0: View?) {
                 selectpdf()
             }
@@ -87,7 +87,7 @@ class JobRegisterActivity2 : AppCompatActivity() {
         }
     }
 
-    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+    private val callbacks = object : OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             //signInWithPhoneAuthCredential(credential)
         }
@@ -98,7 +98,7 @@ class JobRegisterActivity2 : AppCompatActivity() {
 
         override fun onCodeSent(
             verificationId: String,
-            token: PhoneAuthProvider.ForceResendingToken
+            token: ForceResendingToken
         ) {
             this@JobRegisterActivity2.verificationId = verificationId
             // Start the OTP verification activity
@@ -134,13 +134,13 @@ class JobRegisterActivity2 : AppCompatActivity() {
             when (requestCode) {
                 12 -> if (resultCode == RESULT_OK) {
                     pdfUri = data?.data!!
-                    val uri: Uri = data?.data!!
+                    val uri: Uri = data.data!!
                     val uriString: String = uri.toString()
                     pdfName = null.toString()
                     if (uriString.startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
-                            myCursor = this!!.contentResolver.query(
+                            myCursor = this.contentResolver.query(
                                 uri,
                                 null,
                                 null,

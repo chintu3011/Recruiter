@@ -17,13 +17,13 @@ import com.google.firebase.auth.PhoneAuthProvider
 import android.view.View.*
 class OTPJobActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
-    lateinit var otp_ver: Button;
+    lateinit var otp_ver: Button
     lateinit var tv: TextView
-    lateinit var ot_1: EditText;
+    lateinit var ot_1: EditText
     lateinit var ot_2: EditText
-    lateinit var ot_3: EditText;
+    lateinit var ot_3: EditText
     lateinit var ot_4: EditText
-    lateinit var ot_5: EditText;
+    lateinit var ot_5: EditText
     lateinit var ot_6: EditText
     private lateinit var verificationId: String
     private lateinit var phoneAuthProvider: PhoneAuthProvider

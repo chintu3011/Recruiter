@@ -62,16 +62,16 @@ class RecruiterRegActivity1 : AppCompatActivity() {
             finish()
         }
         desg.setOnFocusChangeListener { view, b ->
-            desg.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            desg.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         jobloc.setOnFocusChangeListener { view, b ->
-            jobloc.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            jobloc.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         jobdesc.setOnFocusChangeListener { view, b ->
-            jobdesc.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            jobdesc.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         sal.setOnFocusChangeListener { view, b ->
-            sal.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            sal.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
         tv.setOnClickListener {
             startActivity(Intent(this,RecruiterLoginActivity::class.java))

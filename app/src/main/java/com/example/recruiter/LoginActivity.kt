@@ -29,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.util.concurrent.TimeUnit
 
-class LoginActivity : AppCompatActivity(),View.OnClickListener {
+class LoginActivity : AppCompatActivity(),OnClickListener {
 
     private lateinit var mAuth: FirebaseAuth
     
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener {
         cpp.registerCarrierNumberEditText(inputPhoneNo)
 
         inputPhoneNo.setOnFocusChangeListener { view, b ->
-            inputPhoneNo.setBackground(ContextCompat.getDrawable(this,R.drawable.borderr))
+            inputPhoneNo.background = ContextCompat.getDrawable(this,R.drawable.borderr)
         }
     }
 

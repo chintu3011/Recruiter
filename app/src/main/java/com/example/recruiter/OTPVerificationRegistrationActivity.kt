@@ -131,7 +131,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     makeToast("Registration successful!",1)
-                    passInfoToNextActivity();
+                    passInfoToNextActivity()
                     finish()
                 } else {
                     makeToast("Registration failed: ${task.exception}",1)

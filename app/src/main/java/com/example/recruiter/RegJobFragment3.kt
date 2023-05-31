@@ -53,13 +53,13 @@ class RegJobFragment3 : Fragment() {
                 12 -> if (resultCode == RESULT_OK) {
 
                     pdfUri = data?.data!!
-                    val uri: Uri = data?.data!!
+                    val uri: Uri = data.data!!
                     val uriString: String = uri.toString()
                     var pdfName: String? = null
                     if (uriString.startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
-                            myCursor = requireContext()!!.contentResolver.query(
+                            myCursor = requireContext().contentResolver.query(
                                 uri,
                                 null,
                                 null,
