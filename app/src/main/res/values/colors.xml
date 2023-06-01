@@ -16,4 +16,5 @@
     <color name="check_color">#02397C</color>
     <color name="check_def_color">#3E043A7C</color>
     <color name="royal_blue">#0787CC</color>
+    <color name="card_ripple_color">#3C0073FF</color>
 </resources>
