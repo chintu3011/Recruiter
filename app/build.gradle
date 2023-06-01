@@ -77,4 +77,11 @@ dependencies {
     //expandable textview
     implementation 'com.github.gifffert:ExpandableTextView:0.1.6'
 
+    //image cropper
+//    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+//    implementation 'com.squareup.picasso:picasso:2.8'
+
+    //glide image Dependency
+//    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
 }

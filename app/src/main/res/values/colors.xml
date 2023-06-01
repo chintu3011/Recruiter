@@ -6,8 +6,6 @@
     <color name="grey">#9F9F9F</color>
     <color name="dark_grey">#A5A5A7</color>
     <color name="theme_blue">#0960a2</color>
-    <color name="cust_pri_">#643AE7</color>
-    <color name="cust_sec">#FF8F00</color>
     <color name="cust_backgroung">#FFFFFF</color>
     <color name="cust_text_pri">#060906</color>
     <color name="cust_text_sec">#464747</color>
@@ -17,4 +15,5 @@
     <color name="check_def_color">#3E043A7C</color>
     <color name="royal_blue">#0787CC</color>
     <color name="card_ripple_color">#3C0073FF</color>
+    <color name="ed_theme_color">#FF0960A2</color>
 </resources>

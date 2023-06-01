@@ -150,7 +150,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtName"
+                    android:id="@+id/userName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_50sdp"
@@ -165,7 +165,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/changeBackImg" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtExpertise"
+                    android:id="@+id/expertise"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -176,10 +176,10 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtName" />
+                    app:layout_constraintTop_toBottomOf="@+id/userName" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtCurrentCompany"
+                    android:id="@+id/currentCompany"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
@@ -191,7 +191,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtExpertise" />
+                    app:layout_constraintTop_toBottomOf="@+id/expertise" />
 
                 <Space
                     android:id="@+id/spacer1"
@@ -199,7 +199,7 @@
                     android:layout_height="@dimen/_10sdp"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtCurrentCompany">
+                    app:layout_constraintTop_toBottomOf="@+id/currentCompany">
 
                 </Space>
 
@@ -279,7 +279,7 @@
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtAbout"
+                    android:id="@+id/txtAboutJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
@@ -287,28 +287,28 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/editBio"
+                    app:layout_constraintEnd_toStartOf="@+id/editBioJ"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/editBio"
+                    android:id="@+id/editBioJ"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:padding="3dp"
                     android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtAbout"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtAboutJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtAbout"
-                    app:layout_constraintTop_toTopOf="@+id/txtAbout"
+                    app:layout_constraintStart_toEndOf="@+id/txtAboutJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtAboutJ"
                     app:shapeAppearanceOverlay="@style/circle"
                     app:srcCompat="@drawable/pencil_edit" />
 
                 <ru.embersoft.expandabletextview.ExpandableTextView
-                    android:id="@+id/txtBio"
+                    android:id="@+id/bioJ"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -320,21 +320,21 @@
                     app:etv_textShrink="Show less"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editBio" />
+                    app:layout_constraintTop_toBottomOf="@+id/editBioJ" />
 
                 <View
                     android:id="@+id/view1"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_2sdp"
                     android:background="#46C8C8C8"
-                    app:layout_constraintTop_toBottomOf="@id/txtBio"
+                    app:layout_constraintTop_toBottomOf="@id/bioJ"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"/>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtQualification"
+                    android:id="@+id/txtQualificationJ"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -347,7 +347,7 @@
                     app:layout_constraintTop_toBottomOf="@id/view1" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/qualification"
+                    android:id="@+id/qualificationJ"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -358,7 +358,7 @@
                     android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtQualification" />
+                    app:layout_constraintTop_toBottomOf="@id/txtQualificationJ" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -393,35 +393,35 @@
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtExperience"
+                    android:id="@+id/txtExperienceJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:text="Experience"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/editExperience"
+                    app:layout_constraintEnd_toStartOf="@+id/editExperienceJ"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/editExperience"
+                    android:id="@+id/editExperienceJ"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:padding="3dp"
                     android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtExperience"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtExperienceJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtExperience"
-                    app:layout_constraintTop_toTopOf="@+id/txtExperience"
+                    app:layout_constraintStart_toEndOf="@+id/txtExperienceJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtExperienceJ"
                     app:shapeAppearanceOverlay="@style/circle"
                     app:srcCompat="@drawable/pencil_edit" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtDesignation"
+                    android:id="@+id/designationJ"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
@@ -433,24 +433,24 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editExperience" />
+                    app:layout_constraintTop_toBottomOf="@id/editExperienceJ" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtCompanyName"
+                    android:id="@+id/companyNameJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:text="Amri Systems Ptv. Ltd"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    app:layout_constraintEnd_toStartOf="@id/txtDuration"
+                    app:layout_constraintEnd_toStartOf="@id/duration"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtDesignation"
+                    app:layout_constraintTop_toBottomOf="@id/designationJ"
                     app:layout_constraintWidth_default="wrap"/>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtDuration"
+                    android:id="@+id/duration"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
@@ -458,14 +458,14 @@
                     android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/txtCompanyName"
-                    app:layout_constraintTop_toBottomOf="@id/txtDesignation"
+                    app:layout_constraintStart_toEndOf="@id/companyNameJ"
+                    app:layout_constraintTop_toBottomOf="@id/designationJ"
                     app:layout_constraintWidth_default="wrap"/>
 
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="txtCompanyName,txtDuration"
+                    app:constraint_referenced_ids="companyNameJ,duration"
                     app:flow_horizontalStyle="spread_inside"
                     app:flow_verticalStyle="packed"
                     app:flow_wrapMode="chain"
@@ -473,7 +473,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtDesignation" />
+                    app:layout_constraintTop_toBottomOf="@id/designationJ" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -509,7 +509,7 @@
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtResume"
+                    android:id="@+id/txtResumeJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
@@ -517,28 +517,28 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/editResume"
+                    app:layout_constraintEnd_toStartOf="@+id/editResumeJ"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/editResume"
+                    android:id="@+id/editResumeJ"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:padding="3dp"
                     android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtResume"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtResumeJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtResume"
-                    app:layout_constraintTop_toTopOf="@+id/txtResume"
+                    app:layout_constraintStart_toEndOf="@+id/txtResumeJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtResumeJ"
                     app:shapeAppearanceOverlay="@style/circle"
                     app:srcCompat="@drawable/pencil_edit" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtFileName"
+                    android:id="@+id/resumeFileNameJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
@@ -547,37 +547,37 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#FF02397C"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/btnDownload"
+                    app:layout_constraintEnd_toStartOf="@+id/btnDownloadJ"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editResume" />
+                    app:layout_constraintTop_toBottomOf="@+id/editResumeJ" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/btnDownload"
+                    android:id="@+id/btnDownloadJ"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtFileName"
+                    app:layout_constraintBottom_toBottomOf="@+id/resumeFileNameJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtFileName"
-                    app:layout_constraintTop_toTopOf="@+id/txtFileName"
+                    app:layout_constraintStart_toEndOf="@+id/resumeFileNameJ"
+                    app:layout_constraintTop_toTopOf="@+id/resumeFileNameJ"
                     app:srcCompat="@drawable/ic_download" />
 
                 <androidx.constraintlayout.helper.widget.Flow
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    app:constraint_referenced_ids="txtFileName,btnDownload"
-                    app:flow_horizontalStyle="spread_inside"
+                    app:constraint_referenced_ids="resumeFileNameJ,btnDownloadJ"
+                    app:flow_horizontalStyle="packed"
                     app:flow_verticalStyle="packed"
                     app:flow_wrapMode="chain"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editResume" />
+                    app:layout_constraintTop_toBottomOf="@id/editResumeJ" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -610,51 +610,51 @@
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtJobPref"
+                    android:id="@+id/txtJobPrefJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:text="Job Preference"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/editJobPref"
+                    app:layout_constraintEnd_toStartOf="@+id/editJobPrefJ"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/editJobPref"
+                    android:id="@+id/editJobPrefJ"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:padding="3dp"
                     android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtJobPref"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtJobPrefJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtJobPref"
-                    app:layout_constraintTop_toTopOf="@+id/txtJobPref"
+                    app:layout_constraintStart_toEndOf="@+id/txtJobPrefJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtJobPrefJ"
                     app:shapeAppearanceOverlay="@style/circle"
                     app:srcCompat="@drawable/pencil_edit" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtJobTitle"
+                    android:id="@+id/jobTitleJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="serif"
-                    android:text="Job Title"
+                    android:text="Android Developer"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textColor="#FF02397C"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/txtSalaryJ"
+                    app:layout_constraintEnd_toStartOf="@+id/salaryJ"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editJobPref" />
+                    app:layout_constraintTop_toBottomOf="@+id/editJobPrefJ" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtSalaryJ"
+                    android:id="@+id/salaryJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
@@ -662,26 +662,26 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
 
-                    app:layout_constraintBottom_toBottomOf="@+id/txtJobTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/jobTitleJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/txtJobTitle"
-                    app:layout_constraintTop_toTopOf="@+id/txtJobTitle" />
+                    app:layout_constraintStart_toEndOf="@+id/jobTitleJ"
+                    app:layout_constraintTop_toTopOf="@+id/jobTitleJ" />
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    app:constraint_referenced_ids="txtJobTitle,txtSalaryJ"
+                    app:constraint_referenced_ids="jobTitleJ,salaryJ"
                     app:flow_horizontalStyle="spread_inside"
                     app:flow_verticalStyle="packed"
                     app:flow_wrapMode="chain"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editJobPref" />
+                    app:layout_constraintTop_toBottomOf="@id/editJobPrefJ" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtLocation"
+                    android:id="@+id/txtLocationJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -690,24 +690,24 @@
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textColor="@color/black"
                     android:textStyle="normal"
-                    app:layout_constraintEnd_toStartOf="@+id/txtJobLocation"
+                    app:layout_constraintEnd_toStartOf="@+id/jobLocationJ"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtSalaryJ" />
+                    app:layout_constraintTop_toBottomOf="@+id/salaryJ" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtJobLocation"
+                    android:id="@+id/jobLocationJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:text="Ahmedabad"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtLocation"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtLocationJ"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtLocation"
-                    app:layout_constraintTop_toTopOf="@+id/txtLocation" />
+                    app:layout_constraintStart_toEndOf="@+id/txtLocationJ"
+                    app:layout_constraintTop_toTopOf="@+id/txtLocationJ" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtWorkingModeJ"
@@ -719,14 +719,14 @@
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:textColor="@color/black"
                     android:textStyle="normal"
-                    app:layout_constraintEnd_toStartOf="@id/txtModeJ"
+                    app:layout_constraintEnd_toStartOf="@id/workingModeJ"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtJobLocation" />
+                    app:layout_constraintTop_toBottomOf="@+id/jobLocationJ" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtModeJ"
+                    android:id="@+id/workingModeJ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
@@ -754,7 +754,7 @@
             android:id="@+id/groupJobSeeker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="layout2,space1,layout3,space2,layout4,space3,layout5,space4" />
 
         <com.google.android.material.card.MaterialCardView
@@ -785,14 +785,14 @@
                     android:text="About"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/editInfo"
+                    app:layout_constraintEnd_toStartOf="@+id/editInfoR"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/editInfo"
+                    android:id="@+id/editInfoR"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:padding="3dp"
@@ -819,7 +819,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editInfo" />
+                    app:layout_constraintTop_toBottomOf="@id/editInfoR" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/SalaryR"
@@ -858,7 +858,7 @@
                     app:layout_constraintTop_toBottomOf="@id/jobLocationR" />
 
                 <ru.embersoft.expandabletextview.ExpandableTextView
-                    android:id="@+id/txtJobDesR"
+                    android:id="@+id/jobDesR"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -880,7 +880,7 @@
                     android:background="#46C8C8C8"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtJobDesR" />
+                    app:layout_constraintTop_toBottomOf="@id/jobDesR" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/designationR"
@@ -923,10 +923,10 @@
             app:layout_constraintTop_toBottomOf="@+id/layout2R" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/group4"
+            android:id="@+id/groupRecruiter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="layout2R,space5" />
 
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutBio"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Biography"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:counterEnabled="true"
+        app:counterMaxLength="2000"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutQualification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
+        app:startIconDrawable="@drawable/ic_biography"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxEms="2000"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutQualification"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Qualification"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:helperText="include | after each qualification"
+        app:helperTextTextColor="@color/blue"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutBio"
+        app:placeholderText="Graduated in B.Com"
+        app:startIconDrawable="@drawable/ic_qualification"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/qualification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="13"
+            android:inputType="textAutoComplete"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,7 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
-    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeColor">#fff</item>
-        <item name="boxStrokeWidth">2dp</item>
-    </style>
+
     <style name="Theme.Recruiter" parent="Base.Theme.Recruiter" >
         
     </style>
@@ -15,18 +12,8 @@
         <item name="cornerSize">30%</item>
     </style>
 
-    <style name="cornerCut_1">
-        <item name="cornerSize">20%</item>
-    </style>
-
     <style name="circle">
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="ButtonStyle" parent="@android:style/Widget.Holo.Button">
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-    </style>
 </resources>

@@ -4,23 +4,16 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+    <style name="TextInputEditText">
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    </style>
     <style name="Theme.Recruiter" parent= "Base.Theme.Recruiter" />
     <style name="cornerCut">
         <item name="cornerSize">30%</item>
     </style>
 
-    <style name="cornerCut_1">
-        <item name="cornerSize">20%</item>
-    </style>
-
     <style name="circle">
         <item name="cornerSize">50%</item>
     </style>
-    <style name="ButtonStyle" parent="@android:style/Widget.Holo.Button">
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-    </style>
-    
+
 </resources>
