@@ -14,40 +14,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="10dp">
+            android:weightSum="3">
 
             <SearchView
                 android:id="@+id/search"
-                android:layout_width="match_parent"
+                android:layout_width="236dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_weight="2"
                 android:background="@drawable/searchbg"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search"
-                android:queryBackground="@null"/>
+                android:queryHint="Search" />
 
             <ImageView
                 android:id="@+id/voicesearch"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_width="11dp"
+                android:layout_height="51dp"
                 android:layout_gravity="center"
-                android:layout_weight="5"
+                android:layout_weight="1"
                 android:src="@drawable/baseline_keyboard_voice_24" />
         </LinearLayout>
-
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_10sdp"
-            android:layout_below="@+id/Linearr"/>
-
         <GridView
             android:id="@+id/gv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/spacer"
+            android:layout_below="@id/Linearr"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:numColumns="1" />
+            android:layout_margin="@dimen/_11sdp"
+            android:numColumns="1"
+            android:paddingBottom="5dp" />
     </RelativeLayout>
 
 </FrameLayout>

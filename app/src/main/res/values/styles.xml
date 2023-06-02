@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
-<!--    </style>-->
+    <style name="CustomAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize the title style -->
+        <item name="android:windowTitleStyle">@style/CustomDialogTitleStyle</item>
+        <!-- Customize the positive button style -->
+        <item name="android:buttonBarButtonStyle">@style/CustomPositiveButtonStyle</item>
+
+        <!-- Customize the negative button style -->
+        <item name="android:buttonBarButtonStyle" tools:ignore="DuplicateDefinition">@style/CustomNegativeButtonStyle</item>
+    </style>
+
+    <style name="CustomDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <!-- Customize the title text color, size, etc. -->
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">25sp</item>
+        <item name="fontFamily">serif</item>
+        <!-- Add any other desired style attributes -->
+    </style>
+
+    <style name="CustomPositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- Customize the positive button style -->
+        <item name="android:textColor">@color/blue</item>
+        <item name="fontFamily">serif</item>
+        <!-- Add any other desired style attributes -->
+    </style>
+
+    <style name="CustomNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- Customize the negative button style -->
+        <item name="android:textColor">@color/blue</item>
+        <item name="fontFamily">serif</item>
+        <!-- Add any other desired style attributes -->
+    </style>
+
 
 </resources>

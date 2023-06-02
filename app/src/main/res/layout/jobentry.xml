@@ -58,6 +58,7 @@
                         android:fontFamily="serif"
                         android:text="Amri Systems"
                         android:textColor="@color/blue"
+                        android:textStyle="bold"
                         android:textSize="13sp" />
                 </LinearLayout>
 

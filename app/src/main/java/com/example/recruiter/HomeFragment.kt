@@ -1,9 +1,9 @@
 package com.example.recruiter
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +11,16 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     lateinit var gridView: GridView
@@ -45,8 +45,32 @@ class HomeFragment : Fragment() {
         jobListAdapter = CustomAdapter()
         gridView.adapter = jobListAdapter
         retrieveJobData()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String): Boolean {
+                filterJobList(p0)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                filterJobList(query)
+                return false
+            }
+
+        })
         return fragview
 
+    }
+
+    private fun filterJobList(query: String) {
+        val filteredlist = mutableListOf<Jobs>()
+        for (job in dataList) {
+            if (TextUtils.isEmpty(query) || job.Role?.toLowerCase()
+                    ?.contains(query.toLowerCase()) == true
+            ) {
+                dataList.add(job)
+            }
+        }
+        jobListAdapter.notifyDataSetChanged()
     }
 
     private fun retrieveJobData() {
@@ -98,7 +122,7 @@ class HomeFragment : Fragment() {
             val type: TextView = myview.findViewById(R.id.jobtype)
             val contact: TextView = myview.findViewById(R.id.contact)
             val compname: TextView = myview.findViewById(R.id.compname)
-            val email : TextView = myview.findViewById(R.id.email)
+            val email: TextView = myview.findViewById(R.id.email)
             val job: Jobs = dataList[position]
             name.text = job.Role
             skill.text = job.Skills
@@ -111,12 +135,19 @@ class HomeFragment : Fragment() {
                 val num: String = contact.text.toString()
                 makePhoneCall(num)
             }
+            email.setOnClickListener {
+                val emailsend = email.text.toString()
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
+                intent.type = "message/rfc822"
+                startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+            }
             return myview
         }
     }
 
     private fun makePhoneCall(num: String) {
-            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
-            startActivity(dialIntent)
+        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
+        startActivity(dialIntent)
     }
 }
