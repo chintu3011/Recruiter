@@ -6,6 +6,6 @@ import android.os.Bundle
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_recruter_info)
+        setContentView(R.layout.row_post_design)
     }
 }
