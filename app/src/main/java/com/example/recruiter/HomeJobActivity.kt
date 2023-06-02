@@ -48,6 +48,9 @@ class HomeJobActivity : AppCompatActivity() {
                 R.id.profile -> {
                     replaceFragment(ProfileFragment())
                 }
+                R.id.chat -> {
+                    replaceFragment(ChatFragment())
+                }
             }
             true
         }

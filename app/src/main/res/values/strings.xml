@@ -2,6 +2,8 @@
     <string name="app_name">AmriHire</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_job_register1">JobRegisterActivity1</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>
