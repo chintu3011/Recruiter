@@ -42,6 +42,7 @@
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textLayoutSalary"
         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -61,7 +62,7 @@
         app:endIconMode="clear_text"
         app:endIconTint="@color/gray"
         app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobDes"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +79,6 @@
             android:inputType="number"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textLayoutJobLocation"
         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -97,12 +97,12 @@
         app:endIconCheckable="true"
         app:endIconMode="clear_text"
         app:endIconTint="@color/gray"
-        app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobDes"
         app:layout_constraintEnd_toEndOf="parent"
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobDes"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
         app:placeholderText="New York"
         app:startIconDrawable="@drawable/ic_job_location"
         app:startIconTint="@color/ed_theme_color">
@@ -114,7 +114,6 @@
             android:inputType="none"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textLayoutJobDes"
         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -136,11 +135,11 @@
         app:endIconMode="clear_text"
         app:endIconTint="@color/gray"
         app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobLocation"
+        app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLocation"
         app:placeholderText="I am john Mcavan. I am Recruiter of Conway company. I am Head Of HR department"
         app:startIconDrawable="@drawable/ic_biography"
         app:startIconTint="@color/ed_theme_color">
@@ -154,7 +153,41 @@
             android:maxEms="2000"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutDesignation"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Designation"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobDes"
+        app:placeholderText="Back-Hand Developer"
+        app:startIconDrawable="@drawable/ic_job_location"
+        app:startIconTint="@color/ed_theme_color">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/designation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
     <RadioGroup
         android:id="@+id/radioGrpWorkingMode"
         android:layout_width="match_parent"
@@ -171,7 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLocation">
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/radioBtnOnsite"
