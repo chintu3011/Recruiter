@@ -18,6 +18,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -31,9 +35,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    buildFeatures {
-        viewBinding = true
     }
 }
 
@@ -54,6 +55,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'androidx.datastore:datastore-core-android:1.1.0-alpha04'
+    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha04'
+    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha04'
+    implementation 'com.karumi:dexter:6.2.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.0'
     implementation 'com.google.firebase:firebase-auth:22.0.0'
@@ -61,20 +66,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-appcheck-debug:17.0.1'
     implementation 'com.google.firebase:firebase-appcheck-playintegrity:17.0.1'
 
-    //data-store
-    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha04'
-    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha04'
 
-    // Coroutine Lifecycle Scopes
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-
-    // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
-    // Activity KTX for viewModels()
-    implementation "androidx.activity:activity-ktx:1.7.2"
 
     //Animation Dependency
     implementation 'com.github.gayanvoice:android-animations:1.0.2'
@@ -93,7 +85,6 @@ dependencies {
 
     //Expandable TV
     implementation 'com.github.gifffert:ExpandableTextView:0.1.6'
-    implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.3'
 
     //DialogPlus
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
@@ -107,7 +98,12 @@ dependencies {
     //Lottie Dependency
     implementation 'com.airbnb.android:lottie:6.0.0'
 
-    //dexter
-    implementation 'com.karumi:dexter:6.2.3'
+    //Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
 }

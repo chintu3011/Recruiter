@@ -219,7 +219,6 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/gray"
             app:hintTextColor="@color/ed_theme_color"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textLayoutdesc"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textLayoutEmail"
@@ -261,7 +260,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textLayoutCity"
-            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textLayoutCity"
             app:placeholderText="Jon Description Here"
             app:startIconDrawable="@drawable/ic_biography"
             app:startIconTint="@color/ed_theme_color">
