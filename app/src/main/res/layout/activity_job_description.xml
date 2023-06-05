@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JobDescriptionActivity"
+    android:scrollbars="vertical"
+    android:paddingBottom="@dimen/_10sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_15sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_15sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/_15sdp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Android Developer"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/companyLogo"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="@dimen/_3sdp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toStartOf="@+id/companyName"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/jobTitle"
+            app:shapeAppearanceOverlay="@style/cornerCut"
+            app:srcCompat="@drawable/default_company_logo" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/companyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="Company Name"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@+id/companyLogo"
+            app:layout_constraintTop_toTopOf="@+id/companyLogo"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Bengaluru"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/companyLogo"
+            app:layout_constraintEnd_toEndOf="@+id/companyName"
+            app:layout_constraintStart_toStartOf="@+id/companyName"
+            app:layout_constraintTop_toBottomOf="@+id/companyName" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobPostDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="22 hours ago"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/dotDivider1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/companyLogo"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dotDivider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/jobPostDuration"
+            app:layout_constraintEnd_toStartOf="@+id/applications"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/jobPostDuration"
+            app:layout_constraintTop_toTopOf="@+id/jobPostDuration"
+            app:srcCompat="@drawable/ic_dot" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/applications"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="55 applications"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="#60000000"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@id/dotDivider1"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/dotDivider1"
+            app:layout_constraintTop_toTopOf="@id/dotDivider1" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:constraint_referenced_ids="jobPostDuration,dotDivider1,applications"
+            app:flow_horizontalGap="@dimen/_6sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="@dimen/_6sdp"
+            app:flow_verticalStyle="spread_inside"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/companyLogo" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/workingMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawableLeft="@drawable/ic_job_working_mode"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="Part time"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="#302F2F"
+            android:textStyle="bold"
+            app:drawableTint="#CB302F2F"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/flow1"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dashDivider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/workingMode"
+            app:layout_constraintEnd_toStartOf="@+id/experience"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/workingMode"
+            app:layout_constraintTop_toTopOf="@+id/workingMode"
+            app:layout_constraintWidth_default="wrap"
+            app:srcCompat="@drawable/ic_dash" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobRoll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Junior Developer"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/dashDivider1"
+            app:layout_constraintTop_toBottomOf="@id/flow1" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:constraint_referenced_ids="workingMode,dashDivider1,jobRoll"
+            app:flow_horizontalGap="@dimen/_5sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/flow1" />
+
+        <View
+            android:id="@+id/lineDivider"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/divider_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow8" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtJobDes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_biography"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="Job Description"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:drawableTint="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/jobDes"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/lineDivider" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobDes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:ellipsize="end"
+            android:lines="5"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu sit amet, sodales dignissim mauris. Maecenas consequat tortor vel nunc auctor tempus vitae quis enim. Nunc arcu ipsum, lobortis porta fermentum in, pulvinar et velit. Nullam eu magna a lacus sagittis gravida ut sed sem. Suspendisse ullamcorper neque augue, ornare consectetur diam cursus porta. Suspendisse lacinia dignissim lectus a ullamcorper. Cras imperdiet sodales metus at tincidunt. In condimentum fermentum augue sit amet fermentum. Sed in mattis est. Aenean faucibus enim velit, ornare sagittis tortor tristique eu. Integer posuere laoreet lacus a bibendum."
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/txtJobDes" />
+
+        <View
+            android:id="@+id/lineDivider1"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/divider_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/jobDes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtSkills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_skills"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="Skills"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:drawableTint="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/lineDivider1" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTechSkills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Technical Skills"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/txtSkills" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/technicalSkills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Front end development - Kotlin - Java"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/txtTechSkills" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtSoftSkills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Soft Skills"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/technicalSkills" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/softSkills"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Presentation - Team Player - communication"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/txtSoftSkills" />
+
+        <View
+            android:id="@+id/lineDivider2"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/divider_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/softSkills" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtQualification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_qualification"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="Qualification"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:drawableTint="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/lineDivider2" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtExperience"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Experience"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dashDivider"
+            app:layout_constraintEnd_toStartOf="@+id/dashDivider"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/txtQualification"
+            app:layout_constraintWidth_default="wrap" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dashDivider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txtExperience"
+            app:layout_constraintEnd_toStartOf="@+id/experience"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/txtExperience"
+            app:layout_constraintTop_toTopOf="@+id/txtExperience"
+            app:layout_constraintWidth_default="wrap"
+            app:srcCompat="@drawable/ic_dash" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/experience"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="5+ Years"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/dashDivider"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dashDivider"
+            app:layout_constraintTop_toTopOf="@+id/dashDivider" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:constraint_referenced_ids="txtExperience,dashDivider,experience"
+            app:flow_horizontalGap="@dimen/_5sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/txtQualification" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtEducation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Education"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dashDivider2"
+            app:layout_constraintEnd_toStartOf="@+id/dashDivider2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/experience"
+            app:layout_constraintWidth_default="wrap" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dashDivider2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txtEducation"
+            app:layout_constraintEnd_toStartOf="@+id/experience"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/txtEducation"
+            app:layout_constraintTop_toTopOf="@+id/txtEducation"
+            app:layout_constraintWidth_default="wrap"
+            app:srcCompat="@drawable/ic_dash" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/education"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="B.Tech in CSE"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/dashDivider2"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dashDivider2"
+            app:layout_constraintTop_toTopOf="@+id/dashDivider2" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:constraint_referenced_ids="txtEducation,dashDivider2,education"
+            app:flow_horizontalGap="@dimen/_5sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/flow6" />
+
+        <View
+            android:id="@+id/lineDivider3"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            app:layout_constraintWidth_percent=".5"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/divider_design"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow7" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/theme_blue"
+            android:insetTop="0dp"
+            android:insetRight="@dimen/_5sdp"
+            android:insetBottom="0dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:cornerRadius="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnApply"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/lineDivider3"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="@color/glass_color"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnApply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/theme_blue"
+            android:insetLeft="@dimen/_5sdp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:cornerRadius="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/btnCancel"
+            app:layout_constraintTop_toTopOf="@+id/btnCancel"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="@color/glass_color"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
