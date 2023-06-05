@@ -144,7 +144,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/SalaryR"
+                        android:id="@+id/salary_r"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/borderret"

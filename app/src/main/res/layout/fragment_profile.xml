@@ -115,19 +115,19 @@
                     android:layout_marginBottom="@dimen/_10sdp">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/changeBackImg"
+                        android:id="@+id/editBasicInfo"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/materialTextView3"
+                        app:layout_constraintStart_toEndOf="@+id/userType"
                         app:layout_constraintTop_toTopOf="parent"
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView3"
+                        android:id="@+id/userType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="serif"
@@ -135,17 +135,17 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/blue"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/changeBackImg"
-                        app:layout_constraintEnd_toStartOf="@+id/changeBackImg"
+                        app:layout_constraintBottom_toBottomOf="@+id/editBasicInfo"
+                        app:layout_constraintEnd_toStartOf="@+id/editBasicInfo"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/changeBackImg"
+                        app:layout_constraintTop_toTopOf="@+id/editBasicInfo"
                         app:layout_constraintWidth_default="wrap" />
 
                     <androidx.constraintlayout.helper.widget.Flow
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="materialTextView3,changeBackImg"
+                        app:constraint_referenced_ids="userType,editBasicInfo"
                         app:flow_horizontalStyle="spread_inside"
                         app:flow_wrapMode="chain"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -159,13 +159,16 @@
                         android:layout_marginTop="@dimen/_50sdp"
                         android:fontFamily="serif"
                         android:text="Person Name"
+                        app:autoSizeTextType="uniform"
+                        android:lines="1"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/changeBackImg" />
+                        app:layout_constraintTop_toBottomOf="@+id/editBasicInfo"
+                        tools:targetApi="o" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/expertise"
@@ -290,14 +293,14 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/editBioJ"
+                        app:layout_constraintEnd_toStartOf="@+id/editAboutJ"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/editBioJ"
+                        android:id="@+id/editAboutJ"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
@@ -316,14 +319,17 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        app:etv_animationTime="20"
-                        app:etv_expandLines="0"
+                        app:etv_animationTime="10"
+                        app:etv_expandLines="3"
+                        app:collapsedLines="3"
                         app:etv_showLine="false"
-                        app:etv_textExpand="Show more"
                         app:etv_textShrink="Show less"
+                        app:etv_textContentSize="15sp"
+                        app:etv_textContentColor="@color/black"
+                        app:etv_textStateColor="#9F000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editBioJ" />
+                        app:layout_constraintTop_toBottomOf="@+id/editAboutJ" />
 
                     <View
                         android:id="@+id/view1"
@@ -356,7 +362,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="serif"
                         android:text="Graduated in CSE"
-                        android:textColor="@color/black"
+                        android:textColor="#333333"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -431,6 +437,7 @@
                         android:fontFamily="serif"
                         android:text="Designation"
                         android:textAlignment="textStart"
+                        app:autoSizeTextType="uniform"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="#FF02397C"
                         android:textStyle="bold"
@@ -440,17 +447,16 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/companyNameJ"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="serif"
                         android:text="Amri Systems Ptv. Ltd"
                         android:textAlignment="textStart"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                         app:layout_constraintEnd_toStartOf="@id/duration"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/designationJ"
-                        app:layout_constraintWidth_default="wrap"/>
+                        app:layout_constraintTop_toBottomOf="@id/designationJ" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/duration"
@@ -459,7 +465,8 @@
                         android:fontFamily="serif"
                         android:text="3 Years"
                         android:textAlignment="textEnd"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        app:autoSizeTextType="uniform"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/companyNameJ"
                         app:layout_constraintTop_toBottomOf="@id/designationJ"
@@ -472,7 +479,6 @@
                         app:flow_horizontalStyle="spread_inside"
                         app:flow_verticalStyle="packed"
                         app:flow_wrapMode="chain"
-
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -545,42 +551,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
+                        android:autoSizeTextType="uniform"
+                        android:drawableEnd="@drawable/ic_download"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:fontFamily="serif"
                         android:text="file_name.pdf"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#FF02397C"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/btnDownloadJ"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/editResumeJ" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/btnDownloadJ"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_margin="@dimen/_5sdp"
-                        android:scaleType="centerInside"
-                        app:layout_constraintBottom_toBottomOf="@+id/resumeFileNameJ"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/resumeFileNameJ"
-                        app:layout_constraintTop_toTopOf="@+id/resumeFileNameJ"
-                        app:srcCompat="@drawable/ic_download" />
-
-                    <androidx.constraintlayout.helper.widget.Flow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        app:constraint_referenced_ids="resumeFileNameJ,btnDownloadJ"
-                        app:flow_horizontalStyle="packed"
-                        app:flow_verticalStyle="packed"
-                        app:flow_wrapMode="chain"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/editResumeJ" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -818,14 +802,14 @@
                         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                         android:textColor="#FF02397C"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/SalaryR"
+                        app:layout_constraintEnd_toStartOf="@+id/salary_r"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/editInfoR" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/SalaryR"
+                        android:id="@+id/salary_r"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$ 25 LPA"
@@ -846,7 +830,7 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/SalaryR" />
+                        app:layout_constraintTop_toBottomOf="@id/salary_r" />
 
                     <View
                         android:id="@+id/view2"
@@ -865,11 +849,14 @@
                         style="@style/TextAppearance.AppCompat.Body1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:etv_animationTime="20"
-                        app:etv_expandLines="0"
+                        app:etv_animationTime="10"
+                        app:etv_expandLines="3"
+                        app:collapsedLines="3"
                         app:etv_showLine="false"
-                        app:etv_textExpand="Show more"
                         app:etv_textShrink="Show less"
+                        app:etv_textContentSize="15sp"
+                        app:etv_textContentColor="@color/black"
+                        app:etv_textStateColor="#9F000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/view2" />

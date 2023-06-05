@@ -19,6 +19,7 @@ class AskActivity : AppCompatActivity() {
     lateinit var decorView: View
 
     lateinit var jobType: String
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

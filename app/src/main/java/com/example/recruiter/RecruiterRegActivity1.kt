@@ -42,7 +42,7 @@ class RecruiterRegActivity1 : AppCompatActivity() {
         btn_next = findViewById(R.id.nextbtnregr1)
         desg = findViewById(R.id.jobtypeR)
         jobdesc = findViewById(R.id.jobdescR)
-        sal = findViewById(R.id.SalaryR)
+        sal = findViewById(R.id.salary_r)
         jobloc = findViewById(R.id.JoblocationR)
         tv = findViewById(R.id.loginbtnregr1)
         auth=FirebaseAuth.getInstance()
