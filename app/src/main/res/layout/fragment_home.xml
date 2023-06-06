@@ -1,49 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_5sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_5sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/_10sdp" />
 
         <LinearLayout
             android:id="@+id/Linearr"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:background="@drawable/searchbg"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            android:elevation="@dimen/_5sdp">
 
             <SearchView
                 android:id="@+id/search"
-                android:layout_width="236dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="2"
-                android:background="@drawable/searchbg"
+                android:layout_weight="1"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search" />
+                android:queryHint="Search"
+                android:queryBackground="@null"/>
 
             <ImageView
                 android:id="@+id/voicesearch"
-                android:layout_width="11dp"
-                android:layout_height="51dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:src="@drawable/baseline_keyboard_voice_24" />
         </LinearLayout>
+
         <GridView
             android:id="@+id/gv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_below="@id/Linearr"
-            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_margin="@dimen/_11sdp"
             android:numColumns="1"
-            android:paddingBottom="5dp" />
-    </RelativeLayout>
+            android:paddingBottom="5dp"
+            app:layout_constraintTop_toBottomOf="@id/Linearr"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
