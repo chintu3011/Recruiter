@@ -64,8 +64,8 @@ class HomeFragment : Fragment() {
     private fun filterJobList(query: String) {
         val filteredlist = mutableListOf<Jobs>()
         for (job in dataList) {
-            if (TextUtils.isEmpty(query) || job.Role?.toLowerCase()
-                    ?.contains(query.toLowerCase()) == true
+            if (TextUtils.isEmpty(query) || job.Role?.lowercase(Locale.getDefault())
+                    ?.contains(query.lowercase(Locale.getDefault())) == true
             ) {
                 dataList.add(job)
             }
