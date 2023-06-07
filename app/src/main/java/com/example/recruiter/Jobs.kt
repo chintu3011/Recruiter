@@ -1,13 +1,23 @@
 package com.example.recruiter
 
 data class Jobs(
-    var JobDescription : String ?=null,
-    var Location : String ?=null,
-    var Role : String ?=null,
-    var Skills : String ?=null,
-    var Type : String ?=null,
-    var compname : String ?=null,
+    var aboutPost : String ?=null,
+    var companyName : String ?=null,
+    var education : String ?=null,
     var email : String ?=null,
-    var phone : String ?=null
-)
+    var employeeNeed : String ?=null,
+    var experienceDuration: String ?=null,
+    var jobApplications : String ?=null,
+    var jobDescription : String ?=null,
+    var jobLocation : String ?=null,
+    var jobRoll : String ?= null,
+    var jobTile : String ?= null,
+    var phone : String ?=null,
+    var postDuration : String ?=null,
+    var salary : String?= null,
+    var softSkills : String?= null,
+    var technicalSkills : String?= null,
+    var workingmode : String?= null,
+    var companyLogo : String?= null
+    )
 

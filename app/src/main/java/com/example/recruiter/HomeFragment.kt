@@ -1,5 +1,6 @@
 package com.example.recruiter
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,10 +12,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.ImageView
-import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -64,8 +68,8 @@ class HomeFragment : Fragment() {
     private fun filterJobList(query: String) {
         val filteredlist = mutableListOf<Jobs>()
         for (job in dataList) {
-            if (TextUtils.isEmpty(query) || job.Role?.toLowerCase()
-                    ?.contains(query.toLowerCase()) == true
+            if (TextUtils.isEmpty(query) || job.jobTile?.lowercase(Locale.ROOT)
+                    ?.contains(query.lowercase(Locale.ROOT)) == true
             ) {
                 dataList.add(job)
             }
@@ -111,37 +115,51 @@ class HomeFragment : Fragment() {
             return position.toLong()
         }
 
+        @SuppressLint("SetTextI18n")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview = convertView
             if (myview == null) {
-                myview = layoutInflater.inflate(R.layout.jobentry, null)
+                myview = layoutInflater.inflate(R.layout.row_post_design, null)
             }
-            val name: TextView = myview!!.findViewById(R.id.jobname)
-            val skill: TextView = myview.findViewById(R.id.jobskill)
-            val loc: TextView = myview.findViewById(R.id.jobloc)
-            val type: TextView = myview.findViewById(R.id.jobtype)
-            val contact: TextView = myview.findViewById(R.id.contact)
-            val compname: TextView = myview.findViewById(R.id.compname)
-            val email: TextView = myview.findViewById(R.id.email)
+            val name: MaterialTextView = myview!!.findViewById(R.id.jobTitle)
+            val sal : MaterialTextView = myview.findViewById(R.id.salary)
+            val exp : MaterialTextView = myview.findViewById(R.id.experiencedDuration)
+            val qual : MaterialTextView = myview.findViewById(R.id.qualification)
+            val loc: TextView = myview.findViewById(R.id.city)
+            val img : ImageView = myview.findViewById(R.id.profileImg)
+            val about : MaterialTextView = myview.findViewById(R.id.aboutPost)
+            val compname: MaterialTextView = myview.findViewById(R.id.companyName)
+            val employess : MaterialTextView = myview.findViewById(R.id.employees)
+            val cv : CardView = myview.findViewById(R.id.cardViewinfo)
             val job: Jobs = dataList[position]
-            name.text = job.Role
-            skill.text = job.Skills
-            loc.text = job.Location
-            type.text = job.Type
-            compname.text = job.compname
-            contact.text = job.phone
-            email.text = job.email
-            contact.setOnClickListener {
-                val num: String = contact.text.toString()
-                makePhoneCall(num)
+            name.text = job.jobTile
+            sal.text = job.salary
+            exp.text = job.experienceDuration
+            qual.text = job.education
+            loc.text = job.jobLocation
+            about.text = job.aboutPost
+            compname.text = job.companyName
+            employess.text = job.employeeNeed + " Employees"
+            Glide.with(img.context).load(job.companyLogo).into(img)
+            cv.setOnClickListener {
+                val activity : AppCompatActivity = view?.context as AppCompatActivity
+                val selectedjob = dataList[position]
+                val frag = JobPostDescriptionFragment.newInstance(job)
+                activity.supportFragmentManager.beginTransaction().replace(R.id.frameLayout, frag)
+                    .addToBackStack(null)
+                    .commit()
             }
-            email.setOnClickListener {
-                val emailsend = email.text.toString()
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
-                intent.type = "message/rfc822"
-                startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
-            }
+//            contact.setOnClickListener {
+//                val num: String = contact.text.toString()
+//                makePhoneCall(num)
+//            }
+//            email.setOnClickListener {
+//                val emailsend = email.text.toString()
+//                val intent = Intent(Intent.ACTION_SEND)
+//                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
+//                intent.type = "message/rfc822"
+//                startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+//            }
             return myview
         }
     }
