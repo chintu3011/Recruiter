@@ -74,6 +74,21 @@ data class RecruiterProfileInfo(val context: Context){
             it[userCurrentCompany] = currentCompany
         }
     }
+    suspend fun storeProfileImg(
+        profileImg:String
+    ){
+        context.datastore.edit {
+            it[userProfileImg] = profileImg
+        }
+    }
+
+    suspend fun storeProfileBannerImg(
+        profileBannerImg:String
+    ){
+        context.datastore.edit {
+            it[userProfileBannerImg] = profileBannerImg
+        }
+    }
 
     fun getUserType() = context.datastore.data.map{
         it[userType]?:""

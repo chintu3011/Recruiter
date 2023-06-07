@@ -211,7 +211,7 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
 
-                        android:id="@+id/bntPhone"
+                        android:id="@+id/btnPhone"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_margin="@dimen/_5sdp"
@@ -235,7 +235,7 @@
                         android:scaleType="centerInside"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/bntPhone"
+                        app:layout_constraintStart_toEndOf="@+id/btnPhone"
                         app:layout_constraintTop_toBottomOf="@+id/spacer1"
                         app:shapeAppearanceOverlay="@style/cornerCut"
                         app:srcCompat="@drawable/email_icon" />
@@ -243,7 +243,7 @@
                     <androidx.constraintlayout.helper.widget.Flow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="bntPhone,btnEmail"
+                        app:constraint_referenced_ids="btnPhone,btnEmail"
                         app:flow_horizontalStyle="packed"
                         app:flow_verticalStyle="packed"
                         app:flow_wrapMode="chain"

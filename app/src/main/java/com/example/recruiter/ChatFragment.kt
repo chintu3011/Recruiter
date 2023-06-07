@@ -11,7 +11,7 @@ class ChatFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragView = inflater.inflate(R.layout.fragment_chat, container, false)
         // Inflate the layout for this fragment
         return fragView
