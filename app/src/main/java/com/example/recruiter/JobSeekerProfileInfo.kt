@@ -2,41 +2,44 @@ package com.example.recruiter
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import java.lang.reflect.TypeVariable
 
 private val Context.datastore : DataStore<Preferences> by preferencesDataStore("JOB_SEEKER_PROFILE_INFO")
 
 data class JobSeekerProfileInfo(val context: Context) {
 
     companion object{
-        val userType = stringPreferencesKey("USER_TYPE")
+        val userType = stringPreferencesKey("userType")
+        val userId = stringPreferencesKey("userId")
 
-        val userName = stringPreferencesKey("USER_NAME")
-        val userPhoneNumber = stringPreferencesKey("PHONE_NUMBER")
-        val userEmailId = stringPreferencesKey("EMAIL_ID")
-        val userProfileImg = stringPreferencesKey("PROFILE_IMG")
-        val userProfileBannerImg = stringPreferencesKey("PROFILE_BANNER_IMG")
-        val userTagLine = stringPreferencesKey("TAG_LINE")
-        val userCurrentCompany = stringPreferencesKey("USER_CURRENT_COMPANY")
+        val userFName = stringPreferencesKey("userFName")
+        val userLName = stringPreferencesKey("userLName")
+        val userPhoneNumber = stringPreferencesKey("userPhoneNumber")
+        val userEmailId = stringPreferencesKey("userEmailId")
+        val userProfileImg = stringPreferencesKey("userProfileImg")
+        val userProfileBannerImg = stringPreferencesKey("userProfileBannerImg")
+        val userTagLine = stringPreferencesKey("userTagLine")
+        val userCurrentCompany = stringPreferencesKey("userCurrentCompany")
 
-        val userBio = stringPreferencesKey("BIO")
-        val userQualification = stringPreferencesKey("QUALIFICATION")
-        val userExperienceState = stringPreferencesKey("EXPERIENCE_STATE")
-        val userDesignation = stringPreferencesKey("DESIGNATION")
-        val userPrevCompany = stringPreferencesKey("USER_PREV_COMPANY")
-        val userPrevJobDuration = stringPreferencesKey("PREV_JOB_DURATION")
-        val userResumeUri = stringPreferencesKey("RESUME_URI")
-        val userResumeFileName = stringPreferencesKey("USER_RESUME_FILE_NAME")
-        val userPerfJobTitle = stringPreferencesKey("PREF_JOB_TITLE")
-        val userExpectedSalary = stringPreferencesKey("EXPECTED_SALARY")
-        val userPrefJobLocation = stringPreferencesKey("PREF_JOB_LOCATION")
-        val userWorkingMode = stringPreferencesKey("WORKING_MODE")
-
-
+        val userBio = stringPreferencesKey("userBio")
+        val userQualification = stringPreferencesKey("userQualification")
+        val userExperienceState = stringPreferencesKey("userExperienceState")
+        val userDesignation = stringPreferencesKey("userDesignation")
+        val userPrevCompany = stringPreferencesKey("userPrevCompany")
+        val userPrevJobDuration = stringPreferencesKey("userPrevJobDuration")
+        val userResumeUri = stringPreferencesKey("userResumeUri")
+        val userResumeFileName = stringPreferencesKey("userResumeFileName")
+        val userPerfJobTitle = stringPreferencesKey("userPerfJobTitle")
+        val userExpectedSalary = stringPreferencesKey("userExpectedSalary")
+        val userPrefJobLocation = stringPreferencesKey("userPrefJobLocation")
+        val userWorkingMode = stringPreferencesKey("userWorkingMode")
     }
 
     suspend fun storeAboutData(
@@ -85,7 +88,8 @@ data class JobSeekerProfileInfo(val context: Context) {
         }
     }
     suspend fun storeBasicProfileData(
-        name:String,
+        fName:String,
+        lName:String,
         phoneNumber:String,
         emailId:String,
         tageLine:String,
@@ -93,11 +97,21 @@ data class JobSeekerProfileInfo(val context: Context) {
 
     ){
         context.datastore.edit {
-            it[userName] = name
+            it[userFName] = fName
+            it[userLName] = lName
             it[userPhoneNumber] = phoneNumber
             it[userEmailId] = emailId
             it[userTagLine] = tageLine
             it[userCurrentCompany] = currentCompany
+        }
+    }
+    suspend fun storeUserType(
+        type:String,
+        id:String
+    ){
+        context.datastore.edit {
+            it[userType] = type
+            it[userId] = id
         }
     }
 
@@ -116,13 +130,34 @@ data class JobSeekerProfileInfo(val context: Context) {
             it[userProfileBannerImg] = profileBannerImg
         }
     }
-
-
+    fun getData(variable:Preferences.Key<String>) = context.datastore.data.map{
+        it[variable]?:""
+    }
+    suspend fun readAllKeys(): Set<Preferences.Key<*>>? {
+        val keys = context.datastore.data
+            .map {
+                it.asMap().keys
+            }
+        return keys.firstOrNull()
+    }
+    suspend fun getValueByKey(key: Preferences.Key<*>): Any? {
+        val value = context.datastore.data
+            .map {
+                it[key]
+            }
+        return value.firstOrNull()
+    }
     fun getUserType() = context.datastore.data.map{
         it[userType]?:""
     }
-    fun getUserName() = context.datastore.data.map {
-        it[userName]?:""
+    fun getUserId() = context.datastore.data.map{
+        it[userId]?:""
+    }
+    fun getUserFName() = context.datastore.data.map {
+        it[userFName]?:""
+    }
+    fun getUserLName() = context.datastore.data.map {
+        it[userLName]?:""
     }
     fun getUserPhoneNumber() = context.datastore.data.map {
         it[userPhoneNumber]?:""

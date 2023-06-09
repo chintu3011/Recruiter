@@ -17,8 +17,10 @@ data class RecruiterProfileInfo(val context: Context){
     companion object {
 
         val userType = stringPreferencesKey("USER_TYPE")
-
-        val userName = stringPreferencesKey("USER_NAME")
+        val userId = stringPreferencesKey("USER_ID")
+        val userCom = stringPreferencesKey("user_com")
+        val userFName = stringPreferencesKey("USER_F_NAME")
+        val userLName = stringPreferencesKey("USER_L_NAME")
         val userPhoneNumber = stringPreferencesKey("PHONE_NUMBER")
         val userEmailId = stringPreferencesKey("EMAIL_ID")
         val userProfileImg = stringPreferencesKey("PROFILE_IMG")
@@ -52,24 +54,30 @@ data class RecruiterProfileInfo(val context: Context){
         }
     }
 
+    suspend fun storeUserType(
+        type:String,
+        id:String
+    ){
+        context.datastore.edit {
+            it[userType] = type
+            it[userId]  = id
+        }
+    }
+
     suspend fun storeBasicProfileData(
-//        type:String,
-        name:String,
+        fName:String,
+        lName:String,
         phoneNumber:String,
         emailId:String,
-//        profileImg:String,
-//        profileBannerImg:String,
         tageLine:String,
         currentCompany:String
     ){
 
         context.datastore.edit {
-//            it[userType] = type
-            it[userName] = name
+            it[userFName] = fName
+            it[userLName] = lName
             it[userPhoneNumber] = phoneNumber
             it[userEmailId] = emailId
-//            it[userProfileImg] = profileImg
-//            it[userProfileBannerImg] = profileBannerImg
             it[userTagLine] = tageLine
             it[userCurrentCompany] = currentCompany
         }
@@ -93,8 +101,14 @@ data class RecruiterProfileInfo(val context: Context){
     fun getUserType() = context.datastore.data.map{
         it[userType]?:""
     }
-    fun getUserName() = context.datastore.data.map {
-        it[userName]?:""
+    fun getUserId() = context.datastore.data.map{
+        it[userId]?:""
+    }
+    fun getUserFName() = context.datastore.data.map {
+        it[userFName]?:""
+    }
+    fun getUserLName() = context.datastore.data.map {
+        it[userLName]?:""
     }
     fun getUserPhoneNumber() = context.datastore.data.map {
         it[userPhoneNumber]?:""

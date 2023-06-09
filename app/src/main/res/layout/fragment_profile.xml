@@ -322,6 +322,7 @@
                         app:etv_animationTime="10"
                         app:etv_expandLines="3"
                         app:etv_showLine="false"
+                        app:etv_textExpand="show more"
                         app:etv_textShrink="Show less"
                         app:etv_textContentSize="15sp"
                         app:etv_textContentColor="@color/black"

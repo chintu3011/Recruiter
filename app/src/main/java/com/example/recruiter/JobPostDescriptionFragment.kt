@@ -22,7 +22,7 @@ class JobPostDescriptionFragment() : Fragment() {
         fun newInstance(job: Jobs): JobPostDescriptionFragment {
             val fragment = JobPostDescriptionFragment()
             val args = Bundle()
-            args.putParcelable(ARG_PRODUCT, job)
+//            args.putParcelable(ARG_PRODUCT, )
             fragment.arguments = args
             return fragment
         }

@@ -1,22 +1,28 @@
 package com.example.recruiter
 
+import androidx.datastore.preferences.core.stringPreferencesKey
+
 data class UsersJobSeeker(
-    var firstName: String ?= null,
-    var lastName: String ?= null,
-    var phoneNo : String ?= null,
-    var email: String ?= null,
 
-    var qualification: String ?= null,
-    var experience :String ?= null,
-    var prevCompanyName :String ?= null,
-    var designation :String ?= null,
-    var duration :String ?= null,
-    var bio :String ?= null,
-    var job :String ?= null,
-    var cityPreferences :String ?= null,
-    var expectedSalary :String ?= null,
-    var workingMode :String ?= null,
-    var resume: String ?= null,
-    var termsConditionsAcceptance :String ?= null
+    var userFName :String ?= null,
+    var userLName :String ?= null,
+    var userPhoneNumber :String ?= null,
+    var userEmailId :String ?= null,
+    var userProfileImg :String ?= null,
+    var userProfileBannerImg :String ?= null,
+    var userTagLine :String ?= null,
+    var userCurrentCompany :String ?= null,
 
+    var userBio :String ?= null,
+    var userQualification :String ?= null,
+    var userExperienceState :String ?= null,
+    var userDesignation :String ?= null,
+    var userPrevCompany :String ?= null,
+    var userPrevJobDuration :String ?= null,
+    var userResumeUri :String ?= null,
+    var userResumeFileName :String ?= null,
+    var userPerfJobTitle :String ?= null,
+    var userExpectedSalary :String ?= null,
+    var userPrefJobLocation :String ?= null,
+    var userWorkingMode :String ?= null
 )

@@ -122,13 +122,13 @@ class HomeRecruitFragment : Fragment() {
             val jobrole: TextView = myview.findViewById(R.id.jobrole)
             val email: TextView = myview.findViewById(R.id.jsemail)
             val job: UsersJobSeeker = dataList[position]
-            name.text = job.firstName + job.lastName
-            skill.text = job.qualification
-            loc.text = job.cityPreferences
-            type.text = job.workingMode
-            jobrole.text = job.job
-            contact.text = job.phoneNo
-            email.text = job.email
+            name.text = job.userFName + job.userLName
+            skill.text = job.userQualification
+            loc.text = job.userPrefJobLocation
+            type.text = job.userWorkingMode
+            jobrole.text = job.userPerfJobTitle
+            contact.text = job.userPhoneNumber
+            email.text = job.userEmailId
             contact.setOnClickListener {
                 val num: String = contact.text.toString()
                 makePhoneCall(num)

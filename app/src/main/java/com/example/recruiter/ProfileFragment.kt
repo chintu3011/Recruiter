@@ -24,21 +24,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import com.example.recruiter.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -46,55 +53,60 @@ import java.io.ByteArrayOutputStream
 
 class ProfileFragment : Fragment(),View.OnClickListener {
 
-    lateinit var alertDialogBasicInfo: AlertDialog;
-    lateinit var alertDialogAboutInfo: AlertDialog
-    lateinit var alertDialogExperience: AlertDialog;
-    lateinit var alertDialogResumeInfo: AlertDialog
-    lateinit var alertDialogRecruiterInfo: AlertDialog;
-    lateinit var alertDialogPrefInfo: AlertDialog
-    lateinit var alertDialogProfileBanner: AlertDialog;
-    lateinit var alertDialogProfileImg: AlertDialog
 
-    lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
-    lateinit var recruiterProfileInfo: RecruiterProfileInfo
+    private lateinit var alertDialogBasicInfo: AlertDialog;
+    private lateinit var alertDialogAboutInfo: AlertDialog
+    private lateinit var alertDialogExperience: AlertDialog;
+    private lateinit var alertDialogResumeInfo: AlertDialog
+    private lateinit var alertDialogRecruiterInfo: AlertDialog;
+    private lateinit var alertDialogPrefInfo: AlertDialog
+    private lateinit var alertDialogProfileBanner: AlertDialog;
+    private lateinit var alertDialogProfileImg: AlertDialog
+
+    private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
+    private lateinit var recruiterProfileInfo: RecruiterProfileInfo
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    var type: String? = null
-    var name: String? = null
-    var phoneNumber: String? = null
-    var emailId: String? = null
-    var profileImg: String? = null
-    var profileImgUri: Uri? = null
-    var profileBannerImg: String? = null
-    var photoBitmap: Bitmap? = null
-    var profileBannerImgUri: Uri? = null
-    var tageLine: String? = null
-    var currentCompany: String? = null
+    private var type: String? = null
+    private var id: String? = null
+    private var name: String? = null
+    private var phoneNumber: String? = null
+    private var emailId: String? = null
+    private var profileImg: String? = null
+    private var profileImgUri: Uri? = null
+    private var profileBannerImg: String? = null
+    private var photoBitmap: Bitmap? = null
+    private var profileBannerImgUri: Uri? = null
+    private var tageLine: String? = null
+    private var currentCompany: String? = null
 
     //jobSeeker Data
-    var bio: String? = null
-    var qualification: String? = null
-    var experienceState: String? = null
-    var designation: String? = null
-    var prevCompany: String? = null
-    var prevJobDuration: String? = null
-    var resumeUri: String? = null
-    var resumeFileName: String? = null
-    val resumeFirebaseUri: String? = null
-    var pdfUri: Uri? = null
-    var prefJobTitle: String? = null
-    var expectedSalary: String? = null
-    var prefJobLocation: String? = null
-    var prefWorkingMode: String? = null
+    private var bio: String? = null
+    private var qualification: String? = null
+    private var experienceState: String? = null
+    private var designation: String? = null
+    private var prevCompany: String? = null
+    private var prevJobDuration: String? = null
+    private var resumeUri: String? = null
+    private var resumeFileName: String? = null
+    private val resumeFirebaseUri: String? = null
+    private var pdfUri: Uri? = null
+    private var prefJobTitle: String? = null
+    private var expectedSalary: String? = null
+    private var prefJobLocation: String? = null
+    private var prefWorkingMode: String? = null
 
     //Recruiter Data
-    var jobTitleR: String? = null
-    var salaryR: String? = null
-    var jobLocationR: String? = null
-    var jobDesR: String? = null
-    var designationR: String? = null
-    var workingModeR: String? = null
+    private var jobTitleR: String? = null
+    private var salaryR: String? = null
+    private var jobLocationR: String? = null
+    private var jobDesR: String? = null
+    private var designationR: String? = null
+    private var workingModeR: String? = null
+
+    lateinit var map:MutableMap<String,String>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,10 +117,23 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
         jobSeekerProfileInfo = JobSeekerProfileInfo(context)
         recruiterProfileInfo = RecruiterProfileInfo(context)
+        val bundle = arguments
+        if (bundle != null) {
+            type = bundle.getString("userType")
+            id = bundle.getString("userId")
+
+        }
+
+        binding.userType.text = "Job Seeker"
+        type = binding.userType.text.toString()
+        id = "-NXP2dCP9AxGGyG0A-ko"
 
         setProfileData()
         setOnClickListener()
-
+//        storeUpdatedDataInServer()
+//        map.forEach {
+//            Log.d("updated entities","${it.key}:${it.value}")
+//        }
         return binding.root
     }
 
@@ -140,10 +165,17 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                 }
             }
             lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserName().collect {
+                jobSeekerProfileInfo.getUserFName().collect {
                     binding.userName.text = it
+                    name = it
                 }
             }
+            lifecycle.coroutineScope.launch {
+                jobSeekerProfileInfo.getUserLName().collect {
+                    name = "$name $it"
+                }
+            }
+            binding.userName.text = name
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -211,7 +243,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             }
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserExpectedSalary().collect {
-                    binding.salaryJ.text = it
+                    binding.salaryJ.text = "$it LPA"
                 }
             }
             lifecycle.coroutineScope.launch {
@@ -263,10 +295,17 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                 }
             }
             lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserName().collect {
+                recruiterProfileInfo.getUserFName().collect {
                     binding.userName.text = it
+                    name = it
                 }
             }
+            lifecycle.coroutineScope.launch {
+                recruiterProfileInfo.getUserLName().collect {
+                    name = "$name $it"
+                }
+            }
+            binding.userName.text = name
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -299,7 +338,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             }
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserSalary().collect {
-                    binding.salaryR.text = it
+                    binding.salaryR.text = "$it LPA"
                 }
             }
             lifecycle.coroutineScope.launch {
@@ -444,7 +483,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
                 prefJobTitle = edJobTitle.text.toString()
                 expectedSalary =
-                    edExpectedSalary.text.toString() + " " + tvLSalary.suffixText.toString()
+                    edExpectedSalary.text.toString()
                 prefJobLocation = edJobLocation.text.toString()
                 prefWorkingMode = getSelectedRadioItem(radioGroupWorkingMode, jobPrefDialogView)
 
@@ -506,8 +545,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
     }
 
-    lateinit var profileBackImg: ImageView
-    lateinit var btnSelectImg: ImageView
+    private lateinit var profileBackImg: ImageView
+    private lateinit var btnSelectImg: ImageView
     private fun profileBannerDialogView(userType: String) {
         val profileBannerDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_cover_img, null)
@@ -582,8 +621,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         alertDialogProfileBanner.show()
 
     }
-    lateinit var profileImgDia: ImageView
-    lateinit var btnChangeImg: ImageView
+    private lateinit var profileImgDia: ImageView
+    private lateinit var btnChangeImg: ImageView
     private fun profileImgDialogView(userType: String) {
         val profileImgDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_img, null)
@@ -745,6 +784,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                     CoroutineScope(IO).launch {
                         jobSeekerProfileInfo.storeBasicProfileData(
                             name!!,
+                            "",
                             phoneNumber!!,
                             emailId!!,
                             tageLine!!,
@@ -756,6 +796,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                     CoroutineScope(IO).launch {
                         recruiterProfileInfo.storeBasicProfileData(
                             name!!,
+                            "",
                             phoneNumber!!,
                             emailId!!,
                             tageLine!!,
@@ -886,16 +927,70 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         return ""
     }
 
-
-
     private fun makeToast(msg: String, len: Int) {
         if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        makeToast("destroyed",0)
+    }
+
+    private fun storeUpdatedDataInServer() {
+        FirebaseDatabase.getInstance().getReference("Users")
+            .child(type.toString())
+            .child(id.toString())
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    var keySet: Set<Preferences.Key<*>>? = null
+
+                    lifecycle.coroutineScope.launch(Dispatchers.Main.immediate) {
+                        keySet = jobSeekerProfileInfo.readAllKeys()
+                        for (variableName in keySet!!) {
+                            val childSnapshot = snapshot.child(variableName.toString())
+                            if (childSnapshot.exists()) {
+                                // Retrieve the value from Firebase
+                                val firebaseValue = childSnapshot.value
+                                // Retrieve the local value
+                                CoroutineScope(IO).launch(Dispatchers.Main.immediate) {
+                                    val localValue = jobSeekerProfileInfo.getValueByKey(variableName).toString()
+                                    if (firebaseValue == localValue) {
+                                        Log.d("Comparison","$variableName is the same")
+                                    } else {
+//                                        showUpdateDialog()
+                                        addDataToMap(variableName.toString(),localValue)
+                                        Log.d("Comparison","$variableName is updated")
+                                    }
+                                }
+                            } else {
+                                Log.d("Comparison","$variableName does not exist in Firebase")
+                            }
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    makeToast("error: ${error.message}",0)
+                }
+            })
+    }
+
+    private fun addDataToMap(variableName: String, localValue: String) {
+//        map[variableName] = localValue
+        Log.d("updated entities","${variableName}:${localValue}")
+        map.putIfAbsent(variableName,localValue)
+    }
+
+    private fun showUpdateDialog() {
+        val updateDialog = AlertDialog.Builder(context,R.style.CustomAlertDialogStyle)
+            .setTitle("Attention..")
+            .setMessage("You updated your data. You need to save it.")
+            .setPositiveButton("Save"){dialog,_->
+
+                dialog.dismiss()
+
+            }
     }
 
     private fun requestPermissions(s: String) {

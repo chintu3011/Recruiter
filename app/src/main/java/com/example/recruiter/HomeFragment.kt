@@ -14,6 +14,7 @@ import android.widget.GridView
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -34,12 +35,24 @@ class HomeFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
     private lateinit var jobListAdapter: CustomAdapter
+
+    private var userType:String ?= null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+
+
+//        if(companyName.isEmpty()){
+//            recyclerView.setVisibility(View.INVISIBLE);
+//        }
+        val bundle = arguments
+        if (bundle != null) {
+            userType = bundle.getString("userType")
+        }
+        makeToast(userType!!,0)
         fragview = inflater.inflate(R.layout.fragment_home, container, false)
         gridView = fragview.findViewById(R.id.gv)
         searchView = fragview.findViewById(R.id.search)
@@ -167,5 +180,9 @@ class HomeFragment : Fragment() {
     private fun makePhoneCall(num: String) {
         val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
         startActivity(dialIntent)
+    }
+    private fun makeToast(msg: String, len: Int) {
+        if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 }

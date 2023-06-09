@@ -18,7 +18,7 @@ class AskActivity : AppCompatActivity() {
     lateinit var activity : Activity
     lateinit var decorView: View
 
-    lateinit var jobType: String
+    lateinit var userType: String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,18 +38,18 @@ class AskActivity : AppCompatActivity() {
         recruit = findViewById(R.id.sellcv)
         activity = this
         jobseek.setOnClickListener {
-            jobType = "JobSeeker"
-            navigateToNextActivity(jobType)
+            userType = "Job Seeker"
+            navigateToNextActivity(userType)
         }
         recruit.setOnClickListener {
-            jobType = "Recruiter"
-            navigateToNextActivity(jobType)
+            userType = "Recruiter"
+            navigateToNextActivity(userType)
         }
     }
 
-    private fun navigateToNextActivity(jobType: String) {
+    private fun navigateToNextActivity(userType: String) {
         val intent = Intent(this@AskActivity,RegistrationActivity::class.java)
-        intent.putExtra("jobType",jobType)
+        intent.putExtra("userType",userType)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
         finish()

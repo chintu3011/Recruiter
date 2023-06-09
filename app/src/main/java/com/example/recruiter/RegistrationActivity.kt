@@ -23,6 +23,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.hbb20.CountryCodePicker
@@ -31,35 +35,35 @@ import java.util.concurrent.TimeUnit
 
 class RegistrationActivity : AppCompatActivity() ,OnClickListener{
 
-    lateinit var Fname:EditText
-    lateinit var Lname:EditText
-    lateinit var cpp: CountryCodePicker
-    lateinit var inputPhoneNo: EditText
-    lateinit var inputEmail: EditText
+    private lateinit var Fname:EditText
+    private lateinit var Lname:EditText
+    private lateinit var cpp: CountryCodePicker
+    private lateinit var inputPhoneNo: EditText
+    private lateinit var inputEmail: EditText
 
 //    lateinit var btnTerms:TextView
 //    lateinit var btnConditions:TextView
-    lateinit var checkBox:CheckBox
-    lateinit var btnRegistration: Button
-    lateinit var progressBar:ProgressBar
+    private lateinit var checkBox:CheckBox
+    private lateinit var btnRegistration: Button
+    private lateinit var progressBar:ProgressBar
 
 
-    
+
     private lateinit var mAuth: FirebaseAuth
 
-    lateinit var storedVerificationId:String
-    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var storedVerificationId:String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 
-    lateinit var firstName: String
-    lateinit var lastName: String
-    lateinit var phoneNo: String
-    lateinit var email: String
-    lateinit var jobType: String
-    lateinit var termsConditionsAcceptance:String
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var phoneNo: String
+    private lateinit var email: String
+    private lateinit var userType: String
+    private lateinit var termsConditionsAcceptance:String
 
 
-    lateinit var decorView: View
-    lateinit var copyCredential : PhoneAuthCredential
+    private lateinit var decorView: View
+    private lateinit var copyCredential : PhoneAuthCredential
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,17 +113,16 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         phoneNo = "+" + cpp.fullNumber.toString()
         email = inputEmail.text.toString()
         lastName = Lname.text.toString()
-        jobType = intent.getStringExtra("jobType").toString()
+        userType = intent.getStringExtra("userType").toString()
         termsConditionsAcceptance =  if (checkBox.isChecked) {
             "Accepted"
         }
         else{
             "Not Accepted"
         }
+        val correct = inputFieldConformation(userType,firstName,lastName,phoneNo,email,termsConditionsAcceptance)
 
-        val correct = inputFieldConformation(jobType,firstName,lastName,phoneNo,email,termsConditionsAcceptance)
-
-
+        isPhNoRegBefore(phoneNo,exist)
         if (!correct) return
         else{
             progressBar.visibility = VISIBLE
@@ -168,9 +171,9 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         email = inputEmail.text.toString()
         lastName = Lname.text.toString()
 
-
+        isPhNoRegBefore(phoneNo,exist)
         val correct = inputFieldConformation(
-            jobType,
+            userType,
             firstName,
             lastName,
             phoneNo,
@@ -185,7 +188,7 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
             intent.putExtra("lName",lastName)
             intent.putExtra("phoneNo",phoneNo)
             intent.putExtra("email",email)
-            intent.putExtra("jobType",jobType)
+            intent.putExtra("userType",userType)
             intent.putExtra("termsConditions",termsConditionsAcceptance)
             intent.putExtra("storedVerificationId",storedVerificationId)
             startActivity(intent)
@@ -198,16 +201,16 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         if(len == 0) Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()
         if (len == 1) Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
     }
-
+    var exist:Boolean=false
     private fun inputFieldConformation(
-        jobType: String,
+        userType: String,
         firstName: String,
         lastName: String,
-        mobileNo: String,
+        phoneNo: String,
         email: String,
         termsConditionsAcceptance: String
     ): Boolean {
-        if(jobType.isEmpty()){
+        if(userType.isEmpty()){
             makeToast("Please go back and select one job type.", 1)
             return false
         }
@@ -226,8 +229,14 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
             inputPhoneNo.requestFocus()
             return false
         }
-        if (inputPhoneNo.text.toString().length in 11 downTo 9 && !Patterns.PHONE.matcher(mobileNo).matches()) {
+        if (inputPhoneNo.text.toString().length in 11 downTo 9 && !Patterns.PHONE.matcher(phoneNo).matches()) {
             inputPhoneNo.error = "Please provide valid 10 digit mobile no"
+            inputPhoneNo.requestFocus()
+            return false
+        }
+//        makeToast(exist.toString(),0)
+        if(exist){
+            inputPhoneNo.error = "This phone number is already exist"
             inputPhoneNo.requestFocus()
             return false
         }
@@ -243,10 +252,33 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
         }
         if (termsConditionsAcceptance != "Accepted"){
             checkBox.error = "Accept terms & conditions"
+            return false
         }
         return true
     }
 
+    private fun isPhNoRegBefore(phoneNo: String, exist: Boolean){
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.reference.child("Users")
+
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userTypeSnapshot in snapshot.children) {
+                    for (userSnapshot in userTypeSnapshot.children) {
+                        val userMobileNo = userSnapshot.child("phoneNo").getValue(String::class.java)
+                        if (userMobileNo == phoneNo) {
+                            this@RegistrationActivity.exist = true
+                            break
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                makeToast("error: ${error.message}",0)
+            }
+        })
+    }
 
 
     private fun setXmlIDs() {

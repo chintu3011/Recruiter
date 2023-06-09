@@ -3,7 +3,6 @@ package com.example.recruiter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.Cursor
-import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,107 +26,110 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
 
 
 
-    lateinit var inputLayoutJobSeeker:LinearLayout
-    
-    lateinit var jsLayout1:LinearLayout
+    private lateinit var inputLayoutJobSeeker:LinearLayout
 
-    lateinit var inputDegreeTypeSpinner:Spinner
-    lateinit var inputBioJ:EditText
-    lateinit var radioGrpFreshExp:RadioGroup
-    lateinit var radioBtnFresher:RadioButton
-    lateinit var radioBtnExperience:RadioButton
+    private lateinit var jsLayout1:LinearLayout
 
-    lateinit var jsLayout2:LinearLayout
+    private lateinit var inputDegreeTypeSpinner:Spinner
+    private lateinit var inputBioJ:EditText
+    private lateinit var radioGrpFreshExp:RadioGroup
+    private lateinit var radioBtnFresher:RadioButton
+    private lateinit var radioBtnExperience:RadioButton
 
-    lateinit var jsSubLayout1:LinearLayout
+    private lateinit var jsLayout2:LinearLayout
 
-    lateinit var inputPrevCompany:EditText
-    lateinit var inputDesignation:EditText
-    lateinit var inputDuration:EditText
+    private lateinit var jsSubLayout1:LinearLayout
+
+    private lateinit var inputPrevCompany:EditText
+    private lateinit var inputDesignation:EditText
+    private lateinit var inputDuration:EditText
 
 
 //    lateinit var jsSubLayout2:LinearLayout
 
-    lateinit var inputSalaryJ:EditText
-    lateinit var inputCitySpinnerJ:Spinner //
-    lateinit var radioGrpWorkingMode:RadioGroup
-    lateinit var radioBtnOnsite:RadioButton
-    lateinit var radioBtnRemote:RadioButton
-    lateinit var radioBtnHybrid:RadioButton
-    lateinit var inputJobTypeSpinner:Spinner//
+    private lateinit var inputSalaryJ:EditText
+    private lateinit var inputCitySpinnerJ:Spinner //
+    private lateinit var radioGrpWorkingMode:RadioGroup
+    private lateinit var radioBtnOnsite:RadioButton
+    private lateinit var radioBtnRemote:RadioButton
+    private lateinit var radioBtnHybrid:RadioButton
+    private lateinit var inputJobTypeSpinner:Spinner//
 
-    lateinit var jsLayout3:LinearLayout
+    private lateinit var jsLayout3:LinearLayout
 
-    lateinit var textPdfName:TextView
-    lateinit var btnSelectPdf: ImageView
-    lateinit var uploadProgressBar: ProgressBar
-    lateinit var uploadBtn:Button
+    private lateinit var textPdfName:TextView
+    private lateinit var btnSelectPdf: ImageView
+    private lateinit var uploadProgressBar: ProgressBar
+    private lateinit var uploadBtn:Button
 
 
-    lateinit var inputLayoutRecruiter:LinearLayout
+    private lateinit var inputLayoutRecruiter:LinearLayout
 
-    lateinit var recruiterLayout1:LinearLayout
+    private lateinit var recruiterLayout1:LinearLayout
 
-    lateinit var inputPrevCompanyR:EditText
-    lateinit var inputDesignationR:EditText
-    lateinit var inputJobTitleSpinner:Spinner//
-    lateinit var inputJobDesR:EditText
+    private lateinit var inputPrevCompanyR:EditText
+    private lateinit var inputDesignationR:EditText
+    private lateinit var inputJobTitleSpinner:Spinner//
+    private lateinit var inputJobDesR:EditText
 
-    lateinit var recruiterLayout2:LinearLayout
+    private lateinit var recruiterLayout2:LinearLayout
 
-    lateinit var inputSalaryR:EditText
-    lateinit var JobLocationSpinnerR:Spinner //
-    lateinit var radioGrpWorkingModeR:RadioGroup
-    lateinit var radioBtnOnsiteR:RadioButton
-    lateinit var radioBtnRemoteR:RadioButton
-    lateinit var radioBtnHybridR:RadioButton
+    private lateinit var inputSalaryR:EditText
+    private lateinit var JobLocationSpinnerR:Spinner
+    private lateinit var radioGrpWorkingModeR:RadioGroup
+    private lateinit var radioBtnOnsiteR:RadioButton
+    private lateinit var radioBtnRemoteR:RadioButton
+    private lateinit var radioBtnHybridR:RadioButton
 
-    lateinit var submitBtnLayout:LinearLayout
-    lateinit var btnSubmit:Button
-    lateinit var progressBar:ProgressBar
-    lateinit var btnNext:ImageView
-    lateinit var btnBack:ImageView
+    private lateinit var submitBtnLayout:LinearLayout
+    private lateinit var btnSubmit:Button
+    private lateinit var progressBar:ProgressBar
+    private lateinit var btnNext:ImageView
+    private lateinit var btnBack:ImageView
 
-    lateinit var check1:ImageView
-    lateinit var check2:ImageView
-    lateinit var check3:ImageView
-    lateinit var check4:ImageView
+    private lateinit var check1:ImageView
+    private lateinit var check2:ImageView
+    private lateinit var check3:ImageView
+    private lateinit var check4:ImageView
 
-    lateinit var btnSkip : TextView
+    private lateinit var btnSkip : TextView
 
-    lateinit var decorView: View
+    private lateinit var decorView: View
 
-    lateinit var jobType:String
+    private lateinit var userType:String
 
-    var layoutID = -1
-    var btnPointer = 0
+    private var layoutID = -1
+    private var btnPointer = 0
 
     private lateinit var pdfUri: Uri
 
-    lateinit var firstName:String
-    lateinit var lastName:String
-    lateinit var phoneNo:String
-    lateinit var email:String
-    lateinit var userId:String
-    lateinit var qualification:String
-    lateinit var bio:String
-    lateinit var experience:String
-    lateinit var companyName:String
-    lateinit var designation:String
-    lateinit var duration:String
-    lateinit var salary:String
-    lateinit var city:String
-    lateinit var workingMode:String
-    lateinit var jobTitle:String
-    lateinit var jobDes:String
-    lateinit var resume:String
-    lateinit var termsConditionsAcceptance:String
-    lateinit var pdfName:String
+    private lateinit var firstName:String
+    private lateinit var lastName:String
+    private lateinit var phoneNo:String
+    private lateinit var email:String
+    private lateinit var userId:String
+    private lateinit var qualification:String
+    private lateinit var bio:String
+    private lateinit var experience:String
+    private lateinit var companyName:String
+    private lateinit var designation:String
+    private lateinit var duration:String
+    private lateinit var salary:String
+    private lateinit var city:String
+    private lateinit var workingMode:String
+    private lateinit var jobTitle:String
+    private lateinit var jobDes:String
+    private lateinit var resume:String
+    private lateinit var termsConditionsAcceptance:String
+    private lateinit var pdfName:String
 
     private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
     private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
@@ -152,9 +154,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
         setXMlIds()
         setOnClickListener()
-        //jobType = intent.getStringExtra("jobType").toString()
-        jobType = "JobSeeker"
-        setLayout(jobType)
+        userType = intent.getStringExtra("userType").toString()
+        setLayout(userType)
         setAdapters()
 
 
@@ -187,9 +188,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
     }
 
-    private fun setLayout(jobType: String) {
+    private fun setLayout(userType: String) {
 
-        if (jobType == "Recruiter") {
+        if (userType == "Recruiter") {
             inputLayoutRecruiter.visibility = VISIBLE
             layoutID = 0
             recruiterLayout1.visibility = VISIBLE
@@ -203,7 +204,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             check4.visibility = GONE
             check4.setBackgroundResource(R.color.check_def_color)
         }
-        if(jobType == "JobSeeker"){
+        if(userType == "Job Seeker"){
             inputLayoutJobSeeker.visibility = VISIBLE
             layoutID = 1
             jsLayout1.visibility = VISIBLE
@@ -268,8 +269,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             R.id.btnSubmit -> {
                 btnSubmit.visibility = GONE
                 btnBack.visibility = GONE
-                if(jobType == "Recruiter") storeInfoR()
-                if (jobType == "JobSeeker") storeInfoJ()
+                if(userType == "Recruiter") storeInfoR()
+                if (userType == "Job Seeker") storeInfoJ()
 
             }
             R.id.btnNext -> {
@@ -342,26 +343,66 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 lastName,
                 phoneNo,
                 email,
+                "",
+                "",
+                "",
+                companyName,
+                bio,
                 qualification,
                 experience,
-                companyName,
                 designation,
+                companyName,
                 duration,
-                bio,
-                jobTitle,
-                city,
-                salary,
-                workingMode,
                 resume,
-                termsConditionsAcceptance
+                pdfName,
+                jobTitle,
+                salary,
+                city,
+                workingMode,
             )
 
-            userId = FirebaseDatabase.getInstance().getReference("Users").child("JobSeeker").push().key.toString()
+            userId = FirebaseDatabase.getInstance().getReference("Users").child(userType).push().key.toString()
             FirebaseDatabase.getInstance().getReference("Users")
-                .child("JobSeeker")
+                .child(userType)
                 .child(userId)
                 .setValue(user).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val jobSeekerProfileInfo = JobSeekerProfileInfo(this@InformationActivity)
+
+                            jobSeekerProfileInfo.storeBasicProfileData(
+                                firstName,
+                                lastName,
+                                phoneNo,
+                                email,
+                                "",
+                                companyName
+                            )
+                            jobSeekerProfileInfo.storeAboutData(
+                                bio,
+                                qualification
+                            )
+                            jobSeekerProfileInfo.storeExperienceData(
+                                experience,
+                                designation,
+                                companyName,
+                                duration
+                            )
+                            jobSeekerProfileInfo.storeResumeData(
+                                pdfName,
+                                pdfUri.toString()
+                            )
+                            jobSeekerProfileInfo.storeJobPreferenceData(
+                                jobTitle,
+                                salary,
+                                city,
+                                workingMode
+                            )
+                            jobSeekerProfileInfo.storeUserType(
+                                userType,
+                                userId
+                            )
+                        }
                         makeToast("Data stored successfully",1)
                         navigateToHomeActivity()
                     } else {
@@ -403,11 +444,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private fun storeInfoR() {
         companyName = inputPrevCompanyR.text.toString()
         designation = inputDesignationR.text.toString()
-        jobTitle = selectedJob.toString()
+        jobTitle = selectedJob
         jobDes = inputJobDesR.text.toString()
         salary = inputSalaryR.text.toString()
-        city = selectedJobLocation.toString()
-        workingMode = getSelectedRadioItem(radioGrpWorkingModeR).toString()
+        city = selectedJobLocation
+        workingMode = getSelectedRadioItem(radioGrpWorkingModeR)
         val correct = inputFieldConformationR(jobDes,salary)
         if (!correct) return
         else{
@@ -426,12 +467,38 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 workingMode,
                 termsConditionsAcceptance
             )
-            userId = FirebaseDatabase.getInstance().getReference("Users").child("Recruiter").push().key.toString()
+            userId = FirebaseDatabase.getInstance().getReference("Users").child(userType).push().key.toString()
             FirebaseDatabase.getInstance().getReference("Users")
-                .child("Recruiter")
+                .child(userType)
                 .child(userId)
                 .setValue(user).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val recruiterProfileInfo =
+                                RecruiterProfileInfo(this@InformationActivity)
+
+                            recruiterProfileInfo.storeBasicProfileData(
+                                firstName,
+                                lastName,
+                                phoneNo,
+                                email,
+                                "",
+                                companyName
+                            )
+                            recruiterProfileInfo.storeAboutData(
+                                jobTitle,
+                                salary,
+                                city,
+                                jobDes,
+                                designation,
+                                workingMode
+                            )
+                            recruiterProfileInfo.storeUserType(
+                                userType,
+                                userId
+                            )
+                        }
                         makeToast("Data stored successfully",1)
                         navigateToHomeActivity()
                     } else {
@@ -456,14 +523,28 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     }
 
     private fun navigateToHomeActivity() {
-        val intent = Intent(this@InformationActivity,HomeActivity::class.java)
-        intent.putExtra("jobType",jobType)
-        val fullName = firstName + lastName
-        makeToast(fullName,0)
-        intent.putExtra("name",fullName)
-        startActivity(intent)
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
-        finish()
+        if (userType == "Job Seeker") {
+            val intent = Intent(this@InformationActivity, HomeJobActivity::class.java)
+            intent.putExtra("userType", userType)
+            val fullName = firstName + lastName
+            makeToast("Welcome $fullName", 0)
+            intent.putExtra("name", fullName)
+            intent.putExtra("userId",userId)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+        if (userType == "Recruiter"){
+            val intent = Intent(this@InformationActivity, HomeJobActivity::class.java)/** need **/
+            intent.putExtra("userType", userType)
+            val fullName = firstName + lastName
+            makeToast("Welcome $fullName", 0)
+            intent.putExtra("name", fullName)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+
     }
 
     private fun changeLayout(layoutID: Int, btnPointer: Int) {

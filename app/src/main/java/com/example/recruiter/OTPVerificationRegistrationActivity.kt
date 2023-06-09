@@ -1,12 +1,11 @@
 package com.example.recruiter
 
-import android.content.Context
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
@@ -24,23 +23,23 @@ import com.google.firebase.auth.PhoneAuthProvider
 
 class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener {
 
-    lateinit var txtPhoneNo : TextView
-    lateinit var btnChange: TextView
-    lateinit var inputOTP: PinView
-    lateinit var btnVerify: Button
-    lateinit var cardView: CardView
+    private lateinit var txtPhoneNo : TextView
+    private lateinit var btnChange: TextView
+    private lateinit var inputOTP: PinView
+    private lateinit var btnVerify: Button
+    private lateinit var cardView: CardView
 
     private lateinit var mAuth: FirebaseAuth
 
-    lateinit var storedVerificationId:String
-    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var storedVerificationId:String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 
-    lateinit var firstName: String
-    lateinit var lastName: String
-    lateinit var phoneNo: String
-    lateinit var email: String
-    lateinit var jobType: String
-    lateinit var termsConditions:String
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var phoneNo: String
+    private lateinit var email: String
+    private lateinit var userType: String
+    private lateinit var termsConditions:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +65,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
         lastName = intent.getStringExtra("lName").toString()
-        jobType = intent.getStringExtra("jobType").toString()
+        userType = intent.getStringExtra("userType").toString()
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
         termsConditions = intent.getStringExtra("termsConditions").toString()
 
@@ -155,7 +154,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         intent.putExtra("lName",lastName)
         intent.putExtra("phoneNo",phoneNo)
         intent.putExtra("email",email)
-        intent.putExtra("jobType",jobType)
+        intent.putExtra("userType",userType)
         intent.putExtra("termsConditions",termsConditions)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
@@ -19,6 +20,10 @@ import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
@@ -35,6 +40,7 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
     lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 
     lateinit var phoneNo: String
+    private var userType:String ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otpverification_login)
@@ -56,7 +62,7 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
 
         txtPhoneNo.text = phoneNo
-
+        getUserType(phoneNo)
         setPinViewSize()
 
     }
@@ -118,8 +124,9 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     makeToast("Login successful!",0)
-                    val intent = Intent(this@OTPVerificationLoginActivity,HomeActivity::class.java)
+                    val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
                     intent.putExtra("phoneNo",txtPhoneNo.text.toString())
+                    intent.putExtra("userType",userType)
                     startActivity(intent)
                     overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
                     finish()
@@ -130,6 +137,40 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                     },1000)
                 }
             }
+    }
+    private fun getUserType(mobileNo: String){
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.reference.child("Users")
+
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var grandParentKey: String? = null
+
+                for (userTypeSnapshot in snapshot.children) {
+                    for (userSnapshot in userTypeSnapshot.children) {
+                        val userMobileNo = userSnapshot.child("phoneNo").getValue(String::class.java)
+                        if (userMobileNo == mobileNo) {
+                            grandParentKey =
+                                userTypeSnapshot.key // Key of the grandparent ("Job Seeker" or "Recruiter")
+                            break
+                        }
+                    }
+                }
+
+                if (grandParentKey != null) {
+                    Log.d("Grandparent Key: ","$grandParentKey")
+                    userType = grandParentKey.toString()
+                } else {
+                    makeToast("Mobile number not found.",0)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                makeToast("error: ${error.message}",0)
+            }
+        })
+
+
     }
     private fun setXmlIDs() {
         txtPhoneNo = findViewById(R.id.txtPhoneNo)

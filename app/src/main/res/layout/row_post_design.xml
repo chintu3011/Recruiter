@@ -205,7 +205,7 @@
             android:id="@+id/profileImg"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/recruiterName"
             app:layout_constraintEnd_toStartOf="@+id/recruiterName"
             app:layout_constraintHorizontal_bias="0.5"
@@ -214,7 +214,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/recruiterName"
             app:shapeAppearanceOverlay="@style/circle"
-            app:srcCompat="@drawable/profile_default_image" />
+            app:srcCompat="@drawable/profile_default_image"
+            android:elevation="@dimen/_1sdp"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/recruiterName"
@@ -248,7 +249,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/designatio"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="HR"
             android:textAlignment="textStart"
@@ -282,7 +283,7 @@
             app:layout_constraintTop_toBottomOf="@id/flow3"
             app:layout_constraintWidth_default="wrap" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -291,6 +292,8 @@
             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
             android:textColor="#777575"
             android:textStyle="normal"
+            app:autoSizeTextType="uniform"
+            android:lines="1"
             app:layout_constraintBottom_toBottomOf="@+id/flow4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/endGuildLine"
@@ -307,7 +310,6 @@
             app:flow_horizontalStyle="spread_inside"
             app:flow_verticalStyle="packed"
             app:flow_verticalGap="@dimen/_10sdp"
-            app:flow_horizontalGap="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
             app:layout_constraintStart_toStartOf="@+id/startGuildLine"

@@ -1,32 +1,28 @@
 package com.example.recruiter
 
+//import android.content.Intent
+//import android.net.Uri
+//import android.os.Build
+//import android.provider.Settings
+//import androidx.appcompat.app.AlertDialog
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-//import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-//import android.net.Uri
-//import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-//import android.provider.Settings
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-//import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -55,20 +51,24 @@ class HomeJobActivity : AppCompatActivity() {
     private  var isReceiveSmsGranted = false
     private var isSendSmsGranted = false
 
+    private var userType:String ?= null
+    private var userId:String ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_job)
 
         val window: Window = this@HomeJobActivity.window
-//        val background = ContextCompat.getDrawable(this@HomeJobActivity, R.drawable.status_bar_color)
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
         window.statusBarColor = ContextCompat.getColor(this@HomeJobActivity,android.R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//        window.setBackgroundDrawable(background)
+
         if (!isGrantedPermission()) {
             requestPermissions("bannerImg")
         }
+
+        userType = intent.getStringExtra("userType").toString()
+        userId = intent.getStringExtra("userId").toString()
+
+        
         bottomNavigationView = findViewById(R.id.bottomnavigation)
         frame = findViewById(R.id.frameLayout)
         replaceFragment(HomeFragment())
@@ -95,6 +95,11 @@ class HomeJobActivity : AppCompatActivity() {
         }
     }
     private fun replaceFragment(fragment: Fragment) {
+
+        val bundle = Bundle()
+        bundle.putString("userType", userType!!)
+        bundle.putString("userId", userId!!)
+        fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
