@@ -167,7 +167,7 @@
                     android:id="@+id/bottomnav"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/nextbtnregj"
+                    android:layout_below="@id/btnLogin"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">

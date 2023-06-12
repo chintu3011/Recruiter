@@ -40,7 +40,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 class HomeJobActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var homeFragment: HomeFragment
-    lateinit var postFragment: PostFragment
     lateinit var profileFragment: ProfileFragment
     lateinit var frame : FrameLayout
 
@@ -78,10 +77,6 @@ class HomeJobActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     replaceFragment(HomeFragment())
-                }
-
-                R.id.post -> {
-                    replaceFragment(PostFragment())
                 }
 
                 R.id.profile -> {

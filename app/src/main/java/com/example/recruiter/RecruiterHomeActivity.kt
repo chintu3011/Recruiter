@@ -11,11 +11,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class RecruiterHomeActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var frame : FrameLayout
+    private var userType:String ?= null
+    private var userId:String ?= null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recruiter_home)
         bottomNavigationView = findViewById(R.id.bottomnavigationR)
+        userType = intent.getStringExtra("userType").toString()
+        userId = intent.getStringExtra("userId").toString()
         frame = findViewById(R.id.frameRLayout)
         replaceFragment(HomeRecruitFragment())
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -27,9 +31,8 @@ class RecruiterHomeActivity : AppCompatActivity() {
                 R.id.postR -> {
                     replaceFragment(PostRecruitFragment())
                 }
-
                 R.id.profileR -> {
-                    replaceFragment(ProfileRecruitFragment())
+                    replaceFragment(ProfileFragment())
                 }
                 R.id.chatR -> {
                     replaceFragment(ChatRecruitFragment())
