@@ -24,7 +24,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
@@ -35,7 +34,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import com.example.recruiter.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -70,7 +68,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     private val binding get() = _binding!!
     private var type: String? = null
     private var id: String? = null
-    private var name: String? = null
+    private var fName: String? = null
+    private var lName: String? = null
     private var phoneNumber: String? = null
     private var emailId: String? = null
     private var profileImg: String? = null
@@ -105,7 +104,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     private var designationR: String? = null
     private var workingModeR: String? = null
 
-    lateinit var map:MutableMap<String,String>
+    private var map:MutableMap<String,String> ? = null
 
 
     override fun onCreateView(
@@ -124,14 +123,14 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
         }
 
-        binding.userType.text = "Job Seeker"
-        type = binding.userType.text.toString()
-        id = "-NXP2dCP9AxGGyG0A-ko"
+//        binding.userType.text = "Job Seeker"
+//        type = binding.userType.text.toString()
+//        id = "-NXP2dCP9AxGGyG0A-ko"
 
         setProfileData()
         setOnClickListener()
 //        storeUpdatedDataInServer()
-//        map.forEach {
+//        map?.forEach {
 //            Log.d("updated entities","${it.key}:${it.value}")
 //        }
         return binding.root
@@ -167,15 +166,17 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserFName().collect {
                     binding.userName.text = it
-                    name = it
+                    fName = it
                 }
             }
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserLName().collect {
-                    name = "$name $it"
+                    val fullName = "${binding.userName.text} $it"
+                    binding.userName.text = fullName
+                    lName = it
                 }
             }
-            binding.userName.text = name
+            binding.userName.text = fName
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -297,15 +298,15 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserFName().collect {
                     binding.userName.text = it
-                    name = it
+                    fName = it
                 }
             }
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserLName().collect {
-                    name = "$name $it"
+                    fName = "$fName $it"
                 }
             }
-            binding.userName.text = name
+            binding.userName.text = fName
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -469,7 +470,6 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         val jobPrefDialogView = layoutInflater.inflate(R.layout.dialog_job_preference_info, null)
 
         val edJobTitle = jobPrefDialogView.findViewById<EditText>(R.id.jobTitle)
-        val tvLSalary = jobPrefDialogView.findViewById<TextInputLayout>(R.id.textLayoutSalary)
         val edExpectedSalary = jobPrefDialogView.findViewById<EditText>(R.id.salary)
         val edJobLocation = jobPrefDialogView.findViewById<EditText>(R.id.jobLocation)
         val radioGroupWorkingMode =
@@ -482,10 +482,13 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             .setPositiveButton("Done") { dialog, _ ->
 
                 prefJobTitle = edJobTitle.text.toString()
+
                 expectedSalary =
                     edExpectedSalary.text.toString()
                 prefJobLocation = edJobLocation.text.toString()
                 prefWorkingMode = getSelectedRadioItem(radioGroupWorkingMode, jobPrefDialogView)
+
+
 
                 CoroutineScope(IO).launch {
                     jobSeekerProfileInfo.storeJobPreferenceData(
@@ -764,7 +767,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         val basicDialogView = layoutInflater.inflate(R.layout.dialog_profile_basic_info, null)
 
 
-        val edUserName = basicDialogView.findViewById<EditText>(R.id.userName)
+        val edUserFName = basicDialogView.findViewById<EditText>(R.id.userFName)
+        val edUserLName = basicDialogView.findViewById<EditText>(R.id.userLName)
         val edExpertise = basicDialogView.findViewById<EditText>(R.id.expertise)
         val edCurrentCompany = basicDialogView.findViewById<EditText>(R.id.currentCompany)
         val edPhoneNo = basicDialogView.findViewById<EditText>(R.id.phoneNo)
@@ -774,7 +778,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
 
-                name = edUserName.text.toString().trim()
+                fName = edUserFName.text.toString().trim()
+                lName = edUserLName.text.toString().trim()
                 tageLine = edExpertise.text.toString().trim()
                 currentCompany = edCurrentCompany.text.toString().trim()
                 phoneNumber = edPhoneNo.text.toString().trim()
@@ -783,8 +788,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                 if (binding.userType.text.toString().trim() == "Job Seeker") {
                     CoroutineScope(IO).launch {
                         jobSeekerProfileInfo.storeBasicProfileData(
-                            name!!,
-                            "",
+                            fName!!,
+                            lName!!,
                             phoneNumber!!,
                             emailId!!,
                             tageLine!!,
@@ -795,8 +800,8 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                 if (binding.userType.text.toString().trim() == "Recruiter") {
                     CoroutineScope(IO).launch {
                         recruiterProfileInfo.storeBasicProfileData(
-                            name!!,
-                            "",
+                            fName!!,
+                            lName!!,
                             phoneNumber!!,
                             emailId!!,
                             tageLine!!,
@@ -934,7 +939,12 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        makeToast("destroyed",0)
+        val updateDataServiceIntent = Intent(activity,UpdateProfileDataService::class.java)
+        updateDataServiceIntent.putExtra("userType",type)
+        updateDataServiceIntent.putExtra("userId",id)
+        activity?.startService(updateDataServiceIntent)
+
+//        makeToast("destroyed",0)
     }
 
     private fun storeUpdatedDataInServer() {
@@ -974,12 +984,13 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                     makeToast("error: ${error.message}",0)
                 }
             })
+
     }
 
     private fun addDataToMap(variableName: String, localValue: String) {
 //        map[variableName] = localValue
         Log.d("updated entities","${variableName}:${localValue}")
-        map.putIfAbsent(variableName,localValue)
+        map!![variableName] = localValue
     }
 
     private fun showUpdateDialog() {

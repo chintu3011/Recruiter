@@ -18,7 +18,6 @@ data class RecruiterProfileInfo(val context: Context){
 
         val userType = stringPreferencesKey("USER_TYPE")
         val userId = stringPreferencesKey("USER_ID")
-        val userCom = stringPreferencesKey("user_com")
         val userFName = stringPreferencesKey("USER_F_NAME")
         val userLName = stringPreferencesKey("USER_L_NAME")
         val userPhoneNumber = stringPreferencesKey("PHONE_NUMBER")

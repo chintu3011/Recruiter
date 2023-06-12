@@ -741,7 +741,7 @@
                 android:id="@+id/groupJobSeeker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:constraint_referenced_ids="layout2,space1,layout3,space2,layout4,space3,layout5,space4" />
 
             <com.google.android.material.card.MaterialCardView
@@ -915,7 +915,7 @@
                 android:id="@+id/groupRecruiter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:constraint_referenced_ids="layout2R,space5" />
 
 

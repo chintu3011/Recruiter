@@ -1,18 +1,21 @@
 package com.example.recruiter
 
 data class UsersRecruiter(
-    var firstName: String ?= null,
-    var lastName: String ?= null,
-    var phoneNo : String ?= null,
-    var email: String ?= null,
+    var userFName :String ?= null,
+    var userLName :String ?= null,
+    var userPhoneNumber :String ?= null,
+    var userEmailId :String ?= null,
+    var userProfileImg :String ?= null,
+    var userProfileBannerImg :String ?= null,
+    var userTagLine :String ?= null,
+    var userCurrentCompany :String ?= null,
 
-    var prevCompanyName :String ?= null,
-    var designation :String ?= null,
-    var job :String ?= null,
-    var jobDescription :String ?= null,
-    var expectedSalary :String ?= null,
-    var cityPreferences :String ?= null,
-    var workingMode :String ?= null,
+    var userDesignation :String ?= null,
+    var userJobTitle :String ?= null,
+    var userBio :String ?= null,
+    var userSalary :String ?= null,
+    var userJobLocation:String ?= null,
+    var userWorkingMode :String ?= null,
     var termsConditionsAcceptance :String ?= null
 
 )

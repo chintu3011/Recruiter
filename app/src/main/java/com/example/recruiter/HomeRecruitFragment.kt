@@ -60,7 +60,7 @@ class HomeRecruitFragment : Fragment() {
 
     private fun retreivejsdata() {
         val userRef = database.child("Users")
-        val jobRef = userRef.child("JobSeeker")
+        val jobRef = userRef.child("Job Seeker")
 
         jobRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

@@ -7,12 +7,12 @@
     tools:context=".MainActivity2">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutName"
+        android:id="@+id/textLayoutFName"
         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="Name"
+        android:hint="First name"
         android:paddingTop="0dp"
         app:boxBackgroundColor="#FFFFFF"
         app:boxBackgroundMode="outline"
@@ -25,18 +25,15 @@
         app:endIconMode="clear_text"
         app:endIconTint="@color/gray"
         app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutExpertise"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textLayoutLName"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:placeholderText="John Macavn"
+        app:placeholderText="John"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:startIconTint="@color/ed_theme_color">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/userName"
+            android:id="@+id/userFName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -44,7 +41,58 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutExpertise"
+        android:id="@+id/textLayoutLName"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Last name"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutFName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textLayoutFName"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutFName"
+        app:placeholderText="Macavn"
+        app:startIconDrawable="@drawable/baseline_person_24"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/userLName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="3dp"
+        app:constraint_referenced_ids="textLayoutFName,textLayoutLName"
+        app:flow_horizontalStyle="spread_inside"
+        app:flow_wrapMode="chain"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
+        app:layout_constraintEnd_toEndOf="@+id/textLayoutTechSkills"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textLayoutTechSkills"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutTechSkills"
         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -66,9 +114,8 @@
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintBottom_toTopOf="@+id/textLayoutCurrentCompany"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutName"
+        app:layout_constraintTop_toBottomOf="@+id/flow"
         app:placeholderText="Expertise1 || Expertise2.."
         app:startIconDrawable="@drawable/ic_experties"
         app:startIconTint="@color/ed_theme_color">
@@ -102,9 +149,8 @@
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintBottom_toTopOf="@+id/textLayoutPhoneNo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutExpertise"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
         app:placeholderText="Tellva Still Texus."
         app:startIconDrawable="@drawable/ic_company"
         app:startIconTint="@color/ed_theme_color">
@@ -142,7 +188,6 @@
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintBottom_toTopOf="@+id/textLayoutEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLayoutCurrentCompany"
         app:placeholderText="+9198351*****"
@@ -153,8 +198,8 @@
             android:id="@+id/phoneNo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:maxEms="13"
             android:inputType="phone"
+            android:maxEms="13"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,7 +224,6 @@
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLayoutPhoneNo"
         app:placeholderText="xyz@gmail.com"
@@ -194,4 +238,5 @@
             android:inputType="textEmailAddress"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
