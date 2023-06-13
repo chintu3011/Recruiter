@@ -119,14 +119,10 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         val bundle = arguments
         if (bundle != null) {
             type = bundle.getString("userType")
+            binding.userType.text = type
             id = bundle.getString("userId")
-
         }
-
-//        binding.userType.text = "Job Seeker"
-//        type = binding.userType.text.toString()
-//        id = "-NXP2dCP9AxGGyG0A-ko"
-
+        Log.d("$id", "$type")
         setProfileData()
         setOnClickListener()
 //        storeUpdatedDataInServer()
@@ -138,7 +134,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
     private fun setProfileData() {
 
-        if (binding.userType.text.toString().trim() == "Job Seeker") {
+        if (type == "Job Seeker") {
             binding.groupJobSeeker.visibility = VISIBLE
             binding.groupRecruiter.visibility = GONE
             Log.d("isPermissionToShowImg", isGrantedPermission().toString())
@@ -258,7 +254,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                 }
             }
         }
-        if (binding.userType.text.toString().trim() == "Recruiter") {
+        if (type == "Recruiter") {
             binding.groupJobSeeker.visibility = GONE
             binding.groupRecruiter.visibility = VISIBLE
             lifecycle.coroutineScope.launch {
@@ -364,7 +360,6 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             }
         }
     }
-
 
     private fun setOnClickListener() {
         binding.profileBackImg.setOnClickListener(this)

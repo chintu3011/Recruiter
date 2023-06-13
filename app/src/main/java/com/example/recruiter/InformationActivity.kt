@@ -538,16 +538,16 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             finish()
         }
         if (userType == "Recruiter"){
-            val intent = Intent(this@InformationActivity, RecruiterHomeActivity::class.java)/** need **/
+            val intent = Intent(this@InformationActivity, HomeRecruiterActivity::class.java)/** need **/
             intent.putExtra("userType", userType)
             val fullName = firstName + lastName
             makeToast("Welcome $fullName", 0)
             intent.putExtra("name", fullName)
+            intent.putExtra("userId",userId)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             finish()
         }
-
     }
 
     private fun changeLayout(layoutID: Int, btnPointer: Int) {

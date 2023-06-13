@@ -1,25 +1,18 @@
 package com.example.recruiter
 
-//import android.content.Intent
-//import android.net.Uri
-//import android.os.Build
-//import android.provider.Settings
-//import androidx.appcompat.app.AlertDialog
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.View
-import android.view.Window
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -29,74 +22,52 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-//import com.karumi.dexter.Dexter
-//import com.karumi.dexter.MultiplePermissionsReport
-//import com.karumi.dexter.PermissionToken
-//import com.karumi.dexter.listener.PermissionRequest
-//import com.karumi.dexter.listener.multi.DialogOnAnyDeniedMultiplePermissionsListener
-//import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-
-
-class HomeJobActivity : AppCompatActivity() {
+class HomeRecruiterActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
-    lateinit var homeFragment: HomeFragment
-    lateinit var profileFragment: ProfileFragment
     lateinit var frame : FrameLayout
-
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-    private var isReadStorageGranted = false
-    private var isWriteStorageGranted = false
-    private var isCallPhoneGranted = false
-    private  var isReceiveSmsGranted = false
-    private var isSendSmsGranted = false
-
     private var userType:String ?= null
     private var userId:String ?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_job)
+        setContentView(R.layout.activity_recruiter_home)
 
-        val window: Window = this@HomeJobActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@HomeJobActivity,android.R.color.white)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         if (!isGrantedPermission()) {
             requestPermissions()
         }
 
+        bottomNavigationView = findViewById(R.id.bottomnavigationR)
         userType = intent.getStringExtra("userType").toString()
         userId = intent.getStringExtra("userId").toString()
         makeToast("$userId::$userType",0)
-        
-        bottomNavigationView = findViewById(R.id.bottomnavigation)
-        frame = findViewById(R.id.frameLayout)
-        replaceFragment(HomeFragment())
-//        replaceFragment((ProfileFragment()))
-        homeFragment = HomeFragment()
+        frame = findViewById(R.id.frameRLayout)
+        replaceFragment(HomeRecruitFragment())
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
-                    replaceFragment(HomeFragment())
+                R.id.homeR -> {
+                    replaceFragment(HomeRecruitFragment())
                 }
-
-                R.id.profile -> {
+                R.id.postR -> {
+                    replaceFragment(PostRecruitFragment())
+                }
+                R.id.profileR -> {
                     replaceFragment(ProfileFragment())
                 }
-                R.id.chat -> {
-                    replaceFragment(ChatFragment())
+                R.id.chatR -> {
+                    replaceFragment(ChatRecruitFragment())
                 }
             }
             true
         }
     }
     private fun replaceFragment(fragment: Fragment) {
-
         val bundle = Bundle()
         bundle.putString("userType", userType!!)
         bundle.putString("userId", userId!!)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout, fragment)
+            .replace(R.id.frameRLayout, fragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }

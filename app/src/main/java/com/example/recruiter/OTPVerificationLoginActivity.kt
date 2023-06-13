@@ -82,10 +82,9 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
                 // Remove the listener to avoid multiple callbacks
                 inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
+                val space = inputOTP.itemSpacing * 6
                 // Perform the division
-                val division = layoutWidth / 6
-
+                val division = (layoutWidth - space)/ 6
                 inputOTP.itemWidth = division
                 inputOTP.itemHeight = division
 

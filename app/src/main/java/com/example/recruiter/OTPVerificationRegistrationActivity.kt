@@ -57,8 +57,6 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
 
         setXmlIDs()
         setOnClickListener()
-
-
         setPinViewSize()
 
         firstName = intent.getStringExtra("fName").toString()
@@ -70,9 +68,6 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         termsConditions = intent.getStringExtra("termsConditions").toString()
 
         txtPhoneNo.text = phoneNo
-
-
-
     }
     private fun setPinViewSize() {
         cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -82,17 +77,15 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                 // Get the measured width of the layout
                 val layoutWidth = inputOTP.width
 
-                // If the layout width is 0, it means it hasn't been measured yet, so return
                 if (layoutWidth == 0) {
                     return
                 }
 
                 // Remove the listener to avoid multiple callbacks
                 inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
+                val space = inputOTP.itemSpacing * 6
                 // Perform the division
-                val division = layoutWidth / 6
-
+                val division = (layoutWidth - space)/ 6
                 inputOTP.itemWidth = division
                 inputOTP.itemHeight = division
 

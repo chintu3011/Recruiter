@@ -89,8 +89,6 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
 
     private fun setOnClickListener() {
         btnRegistration.setOnClickListener(this)
-//        btnConditions.setOnClickListener(this)
-//        btnTerms.setOnClickListener(this)
         FirebaseApp.initializeApp(this)
     }
 
@@ -99,20 +97,14 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
             R.id.btnRegistration -> {
                 registerUser()
             }
-//            R.id.btnTerms -> {
-//
-//            }
-//            R.id.btnConditions -> {
-//
-//            }
         }
     }
     private fun registerUser() {
 
         firstName = Fname.text.toString()
+        lastName = Lname.text.toString()
         phoneNo = "+" + cpp.fullNumber.toString()
         email = inputEmail.text.toString()
-        lastName = Lname.text.toString()
         userType = intent.getStringExtra("userType").toString()
         termsConditionsAcceptance =  if (checkBox.isChecked) {
             "Accepted"
@@ -140,15 +132,12 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
                         makeToast("onVerificationCompleted:$credential",1)
                         passInfoToNextActivity()
                     }
-
                     override fun onVerificationFailed(e: FirebaseException) {
                         progressBar.visibility = GONE
                         btnRegistration.visibility = VISIBLE
                         makeToast("Verification failed: ${e.message}",1)
                         Log.d("test", "onVerificationFailed: ${e.message}")
-
                     }
-
                     override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
                         progressBar.visibility = GONE
                         btnRegistration.visibility = VISIBLE
@@ -161,7 +150,6 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
                 })
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
-
         }
     }
 

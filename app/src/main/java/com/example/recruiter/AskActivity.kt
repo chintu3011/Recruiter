@@ -16,8 +16,6 @@ class AskActivity : AppCompatActivity() {
     lateinit var jobseek : CardView
     lateinit var recruit : CardView
     lateinit var activity : Activity
-    lateinit var decorView: View
-
     lateinit var userType: String
 
     @SuppressLint("MissingInflatedId")
@@ -61,6 +59,4 @@ class AskActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
         finish()
     }
-
-
 }
