@@ -538,7 +538,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             finish()
         }
         if (userType == "Recruiter"){
-            val intent = Intent(this@InformationActivity, HomeJobActivity::class.java)/** need **/
+            val intent = Intent(this@InformationActivity, RecruiterHomeActivity::class.java)/** need **/
             intent.putExtra("userType", userType)
             val fullName = firstName + lastName
             makeToast("Welcome $fullName", 0)

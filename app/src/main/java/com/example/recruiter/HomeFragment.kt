@@ -146,8 +146,8 @@ class HomeFragment : Fragment() {
             val cv : CardView = myview.findViewById(R.id.cardViewinfo)
             val job: Jobs = dataList[position]
             name.text = job.jobTile
-            sal.text = job.salary
-            exp.text = job.experienceDuration
+            sal.text = job.salary + " LPA"
+            exp.text = job.experienceDuration + " years"
             qual.text = job.education
             loc.text = job.jobLocation
             about.text = job.aboutPost
