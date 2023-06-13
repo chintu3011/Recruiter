@@ -42,12 +42,8 @@
         <!--            android:theme="@style/Base.Theme.AppCompat"/>-->
         <activity
             android:name=".HomeJobActivity"
-            android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="false">
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
         </activity>
 
         <activity
@@ -61,14 +57,22 @@
             android:exported="false" />
         <activity
             android:name=".OTPVerificationRegistrationActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
 
         </activity>
         <activity android:name=".HomeRecruiterActivity"
-            android:exported="false"/>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".IntroductionActivity"
             android:exported="false" />
@@ -78,12 +82,8 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".loginsignupActivity"

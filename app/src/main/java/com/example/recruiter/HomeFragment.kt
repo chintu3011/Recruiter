@@ -35,7 +35,6 @@ class HomeFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
     private lateinit var jobListAdapter: CustomAdapter
-
     private var userType:String ?= null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,6 @@ class HomeFragment : Fragment() {
         if (bundle != null) {
             userType = bundle.getString("userType")
         }
-        makeToast(userType!!,0)
         fragview = inflater.inflate(R.layout.fragment_home, container, false)
         gridView = fragview.findViewById(R.id.gv)
         searchView = fragview.findViewById(R.id.search)
@@ -156,11 +154,17 @@ class HomeFragment : Fragment() {
             Glide.with(img.context).load(job.companyLogo).into(img)
             cv.setOnClickListener {
                 val activity : AppCompatActivity = view?.context as AppCompatActivity
-                val selectedjob = dataList[position]
-                val frag = JobPostDescriptionFragment.newInstance(job)
-                activity.supportFragmentManager.beginTransaction().replace(R.id.frameLayout, frag)
-                    .addToBackStack(null)
-                    .commit()
+                val jobTitle = job.jobTile
+                val jobPostDescriptionFragment = jobTitle?.let { it1 ->
+                    JobPostDescriptionFragment.newInstance(
+                        it1
+                    )
+                }
+                if (jobPostDescriptionFragment != null) {
+                    activity.supportFragmentManager.beginTransaction().replace(R.id.frameLayout, jobPostDescriptionFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
 //            contact.setOnClickListener {
 //                val num: String = contact.text.toString()

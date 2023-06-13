@@ -1,6 +1,7 @@
 package com.example.recruiter
 
 data class Jobs(
+    var jobTile : String ?= null,
     var aboutPost : String ?=null,
     var companyName : String ?=null,
     var education : String ?=null,
@@ -10,7 +11,6 @@ data class Jobs(
     var jobApplications : Int ?=null,
     var jobLocation : String ?=null,
     var jobRoll : String ?= null,
-    var jobTile : String ?= null,
     var phone : Long ?=null,
     var postDuration : String ?=null,
     var salary : String?= null,

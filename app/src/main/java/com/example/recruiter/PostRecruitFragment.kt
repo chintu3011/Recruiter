@@ -117,8 +117,8 @@ class PostRecruitFragment : Fragment() {
         val jobapps = 20
         val jobref = databaseReference.child("Jobs")
         val key = jobref.push().key
-        val jobs = Jobs(desc,compname,edu,email,empneed,exp,jobapps,city,role,
-        title,phone,postduration,sal,softskill,techskill,workmode,downloadUrl)
+        val jobs = Jobs(title,desc,compname,edu,email,empneed,exp,jobapps,city,role,
+        phone,postduration,sal,softskill,techskill,workmode,downloadUrl)
         if (key != null) {
             jobref.child(key).setValue(jobs)
                 .addOnSuccessListener {
@@ -140,7 +140,7 @@ class PostRecruitFragment : Fragment() {
                             .setSmallIcon(R.drawable.logo)
                             .setContentTitle("Post Uploaded")
                             .setContentText("Congratulations! Your post has been uploaded")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
                         with(NotificationManagerCompat.from(requireActivity())) {
                             if (ActivityCompat.checkSelfPermission(
