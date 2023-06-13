@@ -42,6 +42,10 @@ class RecruiterHomeActivity : AppCompatActivity() {
         }
     }
     private fun replaceFragment(fragment: Fragment) {
+        val bundle = Bundle()
+        bundle.putString("userType", userType!!)
+        bundle.putString("userId", userId!!)
+        fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameRLayout, fragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
