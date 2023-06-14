@@ -88,8 +88,6 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                 inputOTP.itemWidth = division
                 inputOTP.itemHeight = division
 
-                // Use the division as needed
-                // ...
             }
         })
     }
@@ -123,12 +121,23 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     makeToast("Login successful!",0)
-                    val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
-                    intent.putExtra("phoneNo",txtPhoneNo.text.toString())
-                    intent.putExtra("userType",userType)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-                    finish()
+                    if(userType == "Job Seeker")   {
+                        val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
+                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
+                        intent.putExtra("userType",userType)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+                        finish()
+                    }
+                    else{
+                        val intent = Intent(this@OTPVerificationLoginActivity,HomeRecruiterActivity::class.java)
+                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
+                        intent.putExtra("userType",userType)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+                        finish()
+                    }
+
                 } else {
                     makeToast("Login failed: ${task.exception}",1)
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -155,7 +164,6 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                         }
                     }
                 }
-
                 if (grandParentKey != null) {
                     Log.d("Grandparent Key: ","$grandParentKey")
                     userType = grandParentKey.toString()
@@ -163,13 +171,10 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
                     makeToast("Mobile number not found.",0)
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 makeToast("error: ${error.message}",0)
             }
         })
-
-
     }
     private fun setXmlIDs() {
         txtPhoneNo = findViewById(R.id.txtPhoneNo)
