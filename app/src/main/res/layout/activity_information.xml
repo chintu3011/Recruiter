@@ -7,1028 +7,1105 @@
     android:background="@drawable/halfcircleback"
     tools:context=".InformationActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/btnSkip"
-            android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Skip"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        app:layout_constraintTop_toBottomOf="@id/topGuildLine" />
+
+    <LinearLayout
+        android:id="@+id/checkTikLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@id/topGuildLine">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/check1"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Skip"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_margin="5dp"
+            android:background="@color/check_def_color"
+            android:scaleType="centerInside"
+            android:visibility="visible"
+            app:shapeAppearanceOverlay="@style/circle" />
 
-        <LinearLayout
-            android:id="@+id/checkTikLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:gravity="start"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/btnSkip"
-            app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/check2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@color/check_def_color"
+            android:scaleType="centerInside"
+            android:visibility="visible"
+            app:shapeAppearanceOverlay="@style/circle" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/check1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@color/check_def_color"
-                android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/circle" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/check3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:scaleType="centerInside"
+            android:background="@color/check_def_color"
+            android:visibility="visible"
+            app:shapeAppearanceOverlay="@style/circle" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/check2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@color/check_def_color"
-                android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/circle"
-                 />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/check4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:scaleType="centerInside"
+            android:background="@color/check_def_color"
+            android:visibility="visible"
+            app:shapeAppearanceOverlay="@style/circle" />
+    </LinearLayout>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/check3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@color/check_def_color"
-                android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/circle"
-                />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/appName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkTikLayout"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="AmriHire"
+        android:textColor="@color/white"
+        android:textSize="55dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/phoneImg"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@+id/btnSkip"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/check4"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@color/check_def_color"
-                android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/circle"
-                />
-        </LinearLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/phoneImg"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/appName"
+        android:elevation="10dp"
+        android:src="@drawable/info"
+        app:civ_border_color="@color/white"
+        app:civ_border_overlay="true"
+        app:civ_circle_background_color="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@+id/appName" />
 
-        <TextView
-            android:id="@+id/appname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/checkTikLayout"
-            android:fontFamily="cursive"
-            android:gravity="center"
-            android:text="AmriHire"
-            android:textColor="@color/white"
-            android:textSize="55dp"
-            android:textStyle="bold" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@+id/phoneImg">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/phoneimg"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_below="@id/appname"
-            android:elevation="10dp"
-            android:src="@drawable/info"
-            app:civ_border_color="@color/white"
-            app:civ_border_overlay="true"
-            app:civ_circle_background_color="@color/black" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/phoneimg"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:padding="10dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:weightSum="4">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inputLayoutJobSeeker"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+
+                <Spinner
+                    android:id="@+id/inputDegreeTypeSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/borderret"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutBio"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
-                    <LinearLayout
-                        android:id="@+id/inputLayoutJobSeeker"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textDegree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text=" Last Graduation &amp; Degree "
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/inputDegreeTypeSpinner"
+                    app:layout_constraintEnd_toEndOf="@id/inputDegreeTypeSpinner"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/inputDegreeTypeSpinner"
+                    app:layout_constraintTop_toTopOf="@id/inputDegreeTypeSpinner" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutBio"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:hint="Biography"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="2000"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGrpFreshExp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inputDegreeTypeSpinner"
+                    app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
+                    app:startIconDrawable="@drawable/ic_biography"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/bio"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <LinearLayout
-                            android:id="@+id/jsLayout1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-                            <!--                    Last Degree & graduation-->
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <Spinner
-                                    android:id="@+id/inputDegreeTypeSpinner"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret" />
-
-                                <TextView
-                                    android:id="@+id/textDegree"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Last Graduation &amp; Degree "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-
-                            <!--                    Bio-->
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-                                <EditText
-                                    android:id="@+id/inputBioJ"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    android:layout_gravity="top"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/biofile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Type Here..."
-                                    android:inputType="textPersonName"
-                                    android:lines="10"
-                                    android:padding="7dp"
-                                    android:scrollbars="vertical"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textBio"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Add Bio "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <!--                    Fresher or experience-->
-
-                            <TextView
-                                android:id="@+id/textFreshExp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="serif"
-                                android:text="Fresher/Experienced"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioGroup
-                                    android:id="@+id/radioGrpFreshExp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnFresher"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Fresher" />
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnExperience"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Experienced" />
-                                </RadioGroup>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/jsSubLayout1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <EditText
-                                    android:id="@+id/inputPrevCompany"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/companyfile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Comapny Name"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textCompanyName"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Comapny Name "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-
-                                <EditText
-                                    android:id="@+id/inputDesignation"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/rupeefile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Designation"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textDesignation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Designation "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-                                <EditText
-                                    android:id="@+id/inputDuration"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/rupeefile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint=" Duration "
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textDuration"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Duration "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/jsLayout2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <!--                    salary-->
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-
-                                <EditText
-                                    android:id="@+id/inputSalaryJ"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/rupeefile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Salary"
-                                    android:inputType="number"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textSalary"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Expected Salary "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <!--                    city preference-->
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-                                <Spinner
-                                    android:id="@+id/inputCitySpinnerJ"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret" />
-
-                                <TextView
-                                    android:id="@+id/textCityPref"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" City Preference "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <!--                    working mode-->
-
-                            <TextView
-                                android:id="@+id/textWorkingMode"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="serif"
-                                android:text="Working Mode"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioGroup
-                                    android:id="@+id/radioGrpWorkingMode"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnOnsite"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="On-Site"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnRemote"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Remote"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnHybrid"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Hybrid"
-                                        android:textColor="@color/black" />
-                                </RadioGroup>
-                            </LinearLayout>
-
-                            <!--                    job Type-->
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
-
-                                <Spinner
-                                    android:id="@+id/inputJobTypeSpinner"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret" />
-
-                                <TextView
-                                    android:id="@+id/textJobType"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:gravity="left"
-                                    android:text=" Job Type "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/jsLayout3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-                            <!--                    upload CV-->
-                            <TextView
-                                android:id="@+id/textUploadCV"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="serif"
-                                android:text="Upload CV"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:id="@+id/btnSelectPdf"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/uploadfile" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/textUploadFile"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="15dp"
-                                        android:fontFamily="serif"
-                                        android:text="Choose File"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:id="@+id/textUploadSize"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="15dp"
-                                        android:fontFamily="serif"
-                                        android:text="Add Upto 15 MB"
-                                        android:textColor="@color/grey"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/textPdfName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="25dp"
-                                android:fontFamily="serif"
-                                android:text="No File Chosen"
-                                android:textColor="@color/black"
-                                android:textStyle="bold" />
-
-                            <ProgressBar
-                                android:id="@+id/uploadProgressBar"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:progressBackgroundTint="#971B5AB1"
-                                android:progressTint="@color/blue"
-                                android:visibility="gone" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/uploadBtn"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="50dp"
-                                android:layout_marginTop="25dp"
-                                android:layout_marginEnd="50dp"
-                                android:backgroundTint="@color/white"
-                                android:fontFamily="serif"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:padding="15dp"
-                                android:text="Upload"
-                                android:textAllCaps="false"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:visibility="visible"
-                                app:cornerRadius="20dp"
-                                app:rippleColor="@color/glass_color"
-                                app:strokeColor="@color/card_theme"
-                                app:strokeWidth="3dp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/inputLayoutRecruiter"
+                        android:inputType="textMultiLine"
+                        android:lines="5"
+                        android:maxEms="2000"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGrpFreshExp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/border_radio_grp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutBio">
+
+                    <RadioButton
+                        android:id="@+id/radioBtnFresher"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Fresher" />
 
-                        <LinearLayout
-                            android:id="@+id/recruiterLayout1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="visible">
+                    <RadioButton
+                        android:id="@+id/radioBtnExperience"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Experienced" />
+                </RadioGroup>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textFreshExp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text="Fresher/Experienced"
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/radioGrpFreshExp"
+                    app:layout_constraintEnd_toEndOf="@+id/radioGrpFreshExp"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/radioGrpFreshExp"
+                    app:layout_constraintTop_toTopOf="@id/radioGrpFreshExp" />
 
-                                <EditText
-                                    android:id="@+id/inputPrevCompanyR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/companyfile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="E.g. Amri Systems"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/jsLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="inputDegreeTypeSpinner,textDegree,textLayoutBio,radioGrpFreshExp,textFreshExp" />
 
-                                <TextView
-                                    android:id="@+id/textView19"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Company Name "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutCompanyName"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Company Name"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutDesignation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:placeholderText="Microsoft corporation"
+                    app:startIconDrawable="@drawable/ic_company"
+                    app:startIconTint="@color/ed_theme_color">
 
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/companyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textAutoComplete"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutDesignation"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Designation"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutDuration"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
+                    app:placeholderText="Software Designer"
+                    app:startIconDrawable="@drawable/ic_designation"
+                    app:startIconTint="@color/ed_theme_color">
 
-                                <EditText
-                                    android:id="@+id/inputDesignationR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/jobtypefile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:ems="10"
-                                    android:fontFamily="serif"
-                                    android:hint="Designation"
-                                    android:inputType="textPersonName"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textDesignationR"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text="Designation"
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <Spinner
-                                    android:id="@+id/inputJobTitleSpinner"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textJObTitle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text="Job Title"
-                                    android:textColor="@color/blue"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <EditText
-                                    android:id="@+id/inputJobDesR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableStart="@drawable/biofile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Job Description"
-                                    android:inputType="textPersonName"
-                                    android:lines="10"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textJobDesR"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:text=" Job Description "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15dp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/recruiterLayout2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <EditText
-                                    android:id="@+id/inputSalaryR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:drawableLeft="@drawable/rupeefile"
-                                    android:drawablePadding="10dp"
-                                    android:drawableTint="@color/blue"
-                                    android:fontFamily="serif"
-                                    android:hint="Package per Annum"
-                                    android:inputType="phone"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="15dp"
-                                    android:textColorHint="#606060"
-                                    tools:layout_editor_absoluteX="101dp"
-                                    tools:layout_editor_absoluteY="123dp" />
-
-                                <TextView
-                                    android:id="@+id/textView23"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:gravity="left"
-                                    android:text=" Salary Package "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15dp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <Spinner
-                                    android:id="@+id/JobLocationSpinnerR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/borderret"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="15dp" />
-
-                                <TextView
-                                    android:id="@+id/textView24"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25dp"
-                                    android:layout_marginRight="25dp"
-                                    android:background="@color/white"
-                                    android:fontFamily="serif"
-                                    android:gravity="left"
-                                    android:text=" Job Location "
-                                    android:textColor="@color/blue"
-                                    android:textSize="15dp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp" />
-                            <!--                    working mode-->
-                            <TextView
-                                android:id="@+id/textWorkingModeR"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="serif"
-                                android:text="Working Mode"
-                                android:textColor="@color/blue"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioGroup
-                                    android:id="@+id/radioGrpWorkingModeR"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnOnsiteR"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="On-Site"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnRemoteR"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Remote"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/radioBtnHybridR"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:buttonTint="@color/blue"
-                                        android:text="Hybrid"
-                                        android:textColor="@color/black" />
-                                </RadioGroup>
-                            </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/designation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textAutoComplete"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutDuration"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Duration"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation"
+                    app:placeholderText="3 Years"
+                    app:startIconDrawable="@drawable/ic_duration"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="time"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/jsSubLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="textLayoutCompanyName,textLayoutDesignation,textLayoutDuration" />
+
+                <Spinner
+                    android:id="@+id/inputJobTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textJobType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:gravity="left"
+                    android:text=" Job Type "
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/inputJobTypeSpinner"
+                    app:layout_constraintEnd_toEndOf="@+id/inputJobTypeSpinner"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/inputJobTypeSpinner"
+                    app:layout_constraintTop_toTopOf="@+id/inputJobTypeSpinner" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutSalary"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Expected salary"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/inputCitySpinnerJ"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inputJobTypeSpinner"
+                    app:placeholderText="place holder"
+                    app:startIconDrawable="@drawable/ic_salary"
+                    app:startIconTint="@color/ed_theme_color"
+                    app:suffixText=" LPA"
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/salary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/inputCitySpinnerJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderret"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textCityPref"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text=" City Preference "
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/inputCitySpinnerJ"
+                    app:layout_constraintEnd_toEndOf="@+id/inputCitySpinnerJ"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/inputCitySpinnerJ"
+                    app:layout_constraintTop_toTopOf="@id/inputCitySpinnerJ" />
+
+                <RadioGroup
+                    android:id="@+id/radioGrpWorkingMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_radio_grp"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inputCitySpinnerJ"
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnOnsite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="On-Site"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnRemote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Remote"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnHybrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Hybrid"
+                        android:textColor="@color/black" />
+                </RadioGroup>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textWorkingModeJ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:text="Working Mode"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/ed_theme_color"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:fontFamily="serif"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+                    app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingMode"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingMode"
+                    app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingMode" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/jsLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="inputJobTypeSpinner,textJobType,textLayoutSalary,inputCitySpinnerJ,textCityPref,radioGrpWorkingMode,textWorkingModeJ" />
 
                 <LinearLayout
-                    android:id="@+id/submitBtnLayout"
+                    android:id="@+id/layoutCV"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="top"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSubmit"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <!--                    upload CV-->
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textUploadCV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="70dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="70dp"
-                        android:layout_marginBottom="10dp"
-                        app:backgroundTint="@null"
-                        android:background="@drawable/btn_background"
-                        android:clickable="true"
-                        android:focusable="true"
+                        android:fontFamily="serif"
+                        android:text="Upload CV"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:background="#190960A2"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/btnSelectPdf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/uploadfile" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/textUploadFile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:fontFamily="serif"
+                                android:text="Choose File"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/textUploadSize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:fontFamily="serif"
+                                android:text="Add Upto 15 MB"
+                                android:textColor="@color/grey"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textPdfName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="serif"
+                        android:text="No File Chosen"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/uploadProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progressBackgroundTint="#971B5AB1"
+                        android:progressTint="@color/blue"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/uploadBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="50dp"
+                        android:backgroundTint="@color/white"
+                        android:fontFamily="serif"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:padding="15dp"
-                        android:text="Submit"
+                        android:text="Upload"
                         android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:visibility="gone"
-                        app:cornerRadius="30dp" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:progressBarStyleInverse"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:visibility="gone" />
+                        android:visibility="visible"
+                        app:cornerRadius="20dp"
+                        app:rippleColor="@color/glass_color"
+                        app:strokeColor="@color/card_theme"
+                        app:strokeWidth="3dp" />
                 </LinearLayout>
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/btnNext"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/app_name"
-            android:elevation="7dp"
-            android:visibility="visible"
-            app:shapeAppearanceOverlay="@style/circle"
-            app:srcCompat="@drawable/right_arrow" />
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/jsLayout3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="layoutCV" />
 
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/btnBack"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:contentDescription="@string/app_name"
-            android:elevation="7dp"
-            android:layout_marginBottom="10dp"
-            android:scaleType="centerInside"
-            android:visibility="gone"
-            app:shapeAppearanceOverlay="@style/circle"
-            app:srcCompat="@drawable/left_arrow" />
-    </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inputLayoutRecruiter"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutCompanyNameR"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Company Name"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutDesignationR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:placeholderText="Microsoft corporation"
+                    app:startIconDrawable="@drawable/ic_company"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputPrevCompanyR"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textAutoComplete"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutDesignationR"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Designation"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyNameR"
+                    app:placeholderText="Software Designer"
+                    app:startIconDrawable="@drawable/ic_designation"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputDesignationR"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textAutoComplete"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/inputJobTitleSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="@dimen/_13sdp"
+                    android:background="@drawable/borderret"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutJobDesR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignationR" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textJObTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text="Job Title"
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintEnd_toEndOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintTop_toTopOf="@+id/inputJobTitleSpinner" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutJobDesR"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Job description"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="2000"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@+id/inputJobTitleSpinner"
+                    app:placeholderText="I am john Mcavan. I am Recruiter of Conway company. I am Head Of HR department"
+                    app:startIconDrawable="@drawable/ic_biography"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputJobDesR"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textMultiLine"
+                        android:lines="5"
+                        android:maxEms="2000"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/recruiterLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="textLayoutCompanyNameR,textLayoutDesignationR,inputJobTitleSpinner,textJObTitle,textLayoutJobDesR" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutSalaryR"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="salary"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/JobLocationSpinnerR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:placeholderText="place holder"
+                    app:startIconDrawable="@drawable/ic_salary"
+                    app:startIconTint="@color/ed_theme_color"
+                    app:suffixText=" LPA">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputSalaryR"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/JobLocationSpinnerR"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/borderret"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingModeR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSalaryR" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text=" Job Location "
+                    android:textColor="@color/blue"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/JobLocationSpinnerR"
+                    app:layout_constraintEnd_toEndOf="@+id/JobLocationSpinnerR"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/JobLocationSpinnerR"
+                    app:layout_constraintTop_toTopOf="@+id/JobLocationSpinnerR" />
+
+                <RadioGroup
+                    android:id="@+id/radioGrpWorkingModeR"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_radio_grp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/JobLocationSpinnerR">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnOnsiteR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="On-Site"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnRemoteR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Remote"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnHybridR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Hybrid"
+                        android:textColor="@color/black" />
+                </RadioGroup>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textWorkingModeR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:text="Working Mode"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/ed_theme_color"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:fontFamily="serif"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingModeR"
+                    app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingModeR"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingModeR"
+                    app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingModeR" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/recruiterLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="JobLocationSpinnerR,textView24,textLayoutSalaryR,radioGrpWorkingModeR,textWorkingModeR" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomBtnLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintBottom_toTopOf="@+id/btnBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="@dimen/_10sdp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="70dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="70dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/btn_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="15dp"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:progressBarStyleInverse"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSubmit"
+                    app:layout_constraintEnd_toEndOf="@+id/btnSubmit"
+                    app:layout_constraintStart_toStartOf="@+id/btnSubmit"
+                    app:layout_constraintTop_toTopOf="@+id/btnSubmit" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/submitBtnLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="btnSubmit,progressBar"
+                    android:visibility="gone"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnNext"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:fabCustomSize="65dp"
+                android:src="@drawable/ic_right"
+                android:backgroundTint="@color/theme_blue"
+                app:tint="@color/white"
+                android:contentDescription="@string/app_name"
+                android:elevation="7dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/_5sdp"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnBack"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:fabCustomSize="65dp"
+                android:backgroundTint="@color/theme_blue"
+                android:background="@color/white"
+                app:tint="@color/white"
+                android:src="@drawable/ic_left"
+                android:layout_margin="@dimen/_5sdp"
+                android:elevation="7dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

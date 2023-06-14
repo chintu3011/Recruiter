@@ -270,11 +270,11 @@ class RegistrationActivity : AppCompatActivity() ,OnClickListener{
 
 
     private fun setXmlIDs() {
-        Fname = findViewById(R.id.Fname)
-        Lname = findViewById(R.id.Lname)
+        Fname = findViewById(R.id.userFName)
+        Lname = findViewById(R.id.userLName)
         cpp = findViewById(R.id.cpp)
-        inputPhoneNo = findViewById(R.id.inputPhoneNo)
-        inputEmail = findViewById(R.id.inputEmail)
+        inputPhoneNo = findViewById(R.id.phoneNo)
+        inputEmail = findViewById(R.id.email)
 //        btnTerms = findViewById(R.id.btnTerms)
 //        btnConditions = findViewById(R.id.btnConditions)
         checkBox = findViewById(R.id.checkBox)

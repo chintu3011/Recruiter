@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.view.View
 import android.view.View.*
+import android.view.ViewStructure
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -23,7 +24,10 @@ import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
@@ -34,9 +38,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
 
 
-    private lateinit var inputLayoutJobSeeker:LinearLayout
+    private lateinit var inputLayoutJobSeeker:ConstraintLayout
 
-    private lateinit var jsLayout1:LinearLayout
+    private lateinit var jsLayout1:Group
 
     private lateinit var inputDegreeTypeSpinner:Spinner
     private lateinit var inputBioJ:EditText
@@ -44,9 +48,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var radioBtnFresher:RadioButton
     private lateinit var radioBtnExperience:RadioButton
 
-    private lateinit var jsLayout2:LinearLayout
+    private lateinit var jsLayout2:Group
 
-    private lateinit var jsSubLayout1:LinearLayout
+    private lateinit var jsSubLayout1:Group
 
     private lateinit var inputPrevCompany:EditText
     private lateinit var inputDesignation:EditText
@@ -63,7 +67,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var radioBtnHybrid:RadioButton
     private lateinit var inputJobTypeSpinner:Spinner//
 
-    private lateinit var jsLayout3:LinearLayout
+    private lateinit var jsLayout3:Group
 
     private lateinit var textPdfName:TextView
     private lateinit var btnSelectPdf: ImageView
@@ -71,16 +75,16 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var uploadBtn:Button
 
 
-    private lateinit var inputLayoutRecruiter:LinearLayout
+    private lateinit var inputLayoutRecruiter:ConstraintLayout
 
-    private lateinit var recruiterLayout1:LinearLayout
+    private lateinit var recruiterLayout1:Group
 
     private lateinit var inputPrevCompanyR:EditText
     private lateinit var inputDesignationR:EditText
     private lateinit var inputJobTitleSpinner:Spinner//
     private lateinit var inputJobDesR:EditText
 
-    private lateinit var recruiterLayout2:LinearLayout
+    private lateinit var recruiterLayout2:Group
 
     private lateinit var inputSalaryR:EditText
     private lateinit var JobLocationSpinnerR:Spinner
@@ -89,11 +93,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var radioBtnRemoteR:RadioButton
     private lateinit var radioBtnHybridR:RadioButton
 
-    private lateinit var submitBtnLayout:LinearLayout
+    private lateinit var submitBtnLayout:Group
     private lateinit var btnSubmit:Button
     private lateinit var progressBar:ProgressBar
-    private lateinit var btnNext:ImageView
-    private lateinit var btnBack:ImageView
+    private lateinit var btnNext:FloatingActionButton
+    private lateinit var btnBack:FloatingActionButton
 
     private lateinit var check1:ImageView
     private lateinit var check2:ImageView
@@ -101,9 +105,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var check4:ImageView
 
     private lateinit var btnSkip : TextView
-
-    private lateinit var decorView: View
-
+    
     private lateinit var userType:String
 
     private var layoutID = -1
@@ -195,8 +197,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             layoutID = 0
             recruiterLayout1.visibility = VISIBLE
             recruiterLayout2.visibility = GONE
+            btnNext.visibility = VISIBLE
+            btnBack.visibility = GONE
             check1.visibility = VISIBLE
             check1.setBackgroundResource(R.color.check_color)
+            check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
             check2.visibility = VISIBLE
             check2.setBackgroundResource(R.color.check_def_color)
             check3.visibility = VISIBLE
@@ -211,8 +216,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             jsSubLayout1.visibility = GONE
             jsLayout2.visibility = GONE
             jsLayout3.visibility = GONE
+            btnNext.visibility = VISIBLE
+            btnBack.visibility = GONE
             check1.visibility = VISIBLE
             check1.setBackgroundResource(R.color.check_color)
+            check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
             check2.visibility = VISIBLE
             check2.setBackgroundResource(R.color.check_def_color)
             check3.visibility = VISIBLE
@@ -234,6 +242,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         uploadBtn.setOnClickListener(this)
         btnBack.setOnClickListener(this)
         btnNext.setOnClickListener(this)
+        btnSkip.setOnClickListener(this)
         btnSubmit.setOnClickListener(this)
         inputCitySpinnerJ.onItemSelectedListener = this
         inputDegreeTypeSpinner.onItemSelectedListener = this
@@ -277,6 +286,56 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 btnPointer += 1
                 changeLayout(layoutID,btnPointer)
 //                makeToast("$btnPointer",0)
+            }
+            R.id.btnSkip -> {
+
+                val  map = mutableMapOf<String,String>()
+                map["userFName"] = firstName
+                map["userLName"] = firstName
+                map["userPhoneNUmber"] = phoneNo
+                map["userEmailId"] = email
+
+                userId = FirebaseDatabase.getInstance().getReference("Users").child(userType).push().key.toString()
+                FirebaseDatabase.getInstance().getReference("Users")
+                    .child(userType)
+                    .child(userId)
+                    .setValue(map).addOnCompleteListener{ task ->
+                        if(task.isSuccessful){
+                            if(userType == " Job Seeker"){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val jobSeekerProfileInfo =
+                                        JobSeekerProfileInfo(this@InformationActivity)
+
+                                    jobSeekerProfileInfo.storeBasicProfileData(
+                                        firstName,
+                                        lastName,
+                                        phoneNo,
+                                        email,
+                                        "",
+                                        companyName
+                                    )
+                                }
+                                navigateToHomeActivity()
+                            }
+                            if(userType == "Recruiter"){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val recruiterProfileInfo =
+                                        JobSeekerProfileInfo(this@InformationActivity)
+
+                                    recruiterProfileInfo.storeBasicProfileData(
+                                        firstName,
+                                        lastName,
+                                        phoneNo,
+                                        email,
+                                        "",
+                                        companyName
+                                    )
+                                }
+                                navigateToHomeActivity()
+                            }
+
+                        }
+                    }
             }
         }
     }
@@ -560,6 +619,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 btnSubmit.visibility = GONE
 
                 check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check2.setBackgroundResource(R.color.check_def_color)
                 check3.setBackgroundResource(R.color.check_def_color)
                 check4.setBackgroundResource(R.color.check_def_color)
@@ -572,7 +632,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 btnSubmit.visibility = VISIBLE
 
                 check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check3.setBackgroundResource(R.color.check_def_color)
                 check4.setBackgroundResource(R.color.check_def_color)
             }
@@ -588,11 +650,13 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 btnSubmit.visibility = GONE
 
                 check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check2.setBackgroundResource(R.color.check_def_color)
                 check3.setBackgroundResource(R.color.check_def_color)
                 check4.setBackgroundResource(R.color.check_def_color)
             }
             else if (btnPointer == 1 ) {
+
                 experience = getSelectedRadioItem(radioGrpFreshExp)
                 if(experience == "Experienced") {
 //                    makeToast("You Selected $experience",0)
@@ -606,6 +670,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                     btnNext.visibility = VISIBLE
                     btnSubmit.visibility = GONE
                     check1.setBackgroundResource(R.color.check_color)
+                    check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                     check2.setBackgroundResource(R.color.check_def_color)
                     check3.setBackgroundResource(R.color.check_def_color)
                     check4.setBackgroundResource(R.color.check_def_color)
@@ -620,7 +685,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                     btnNext.visibility = VISIBLE
                     btnSubmit.visibility = GONE
                     check1.setBackgroundResource(R.color.check_color)
+                    check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                     check2.setBackgroundResource(R.color.check_color)
+                    check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                     check3.setBackgroundResource(R.color.check_def_color)
                     check4.setBackgroundResource(R.color.check_def_color)
                 }
@@ -637,7 +704,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 btnSubmit.visibility = GONE
 
                 check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check3.setBackgroundResource(R.color.check_def_color)
                 check4.setBackgroundResource(R.color.check_def_color)
             }
@@ -654,8 +723,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 uploadProgressBar.visibility = GONE
 
                 check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check3.setBackgroundResource(R.color.check_color)
+                check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
                 check4.setBackgroundResource(R.color.check_def_color)
             }
         }
@@ -676,23 +748,23 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
         jsLayout1 = findViewById(R.id.jsLayout1)
         inputDegreeTypeSpinner = findViewById(R.id.inputDegreeTypeSpinner)
-        inputBioJ = findViewById(R.id.inputBioJ)
+        inputBioJ = findViewById(R.id.bio)
         radioGrpFreshExp = findViewById(R.id.radioGrpFreshExp)
         radioBtnFresher = findViewById(R.id.radioBtnFresher)
         radioBtnExperience = findViewById(R.id.radioBtnExperience)
 
         jsLayout2 = findViewById(R.id.jsLayout2)
 
-        jsSubLayout1 = findViewById(R.id.jsSubLayout1)
+        jsSubLayout1 = findViewById(R.id.jsSubLayout)
 
-        inputPrevCompany = findViewById(R.id.inputPrevCompany)
-        inputDesignation = findViewById(R.id.inputDesignation)
-        inputDuration = findViewById(R.id.inputDuration)
+        inputPrevCompany = findViewById(R.id.companyName)
+        inputDesignation = findViewById(R.id.designation)
+        inputDuration = findViewById(R.id.duration)
 
 
 //        jsSubLayout2 = findViewById(R.id.jsSubLayout2)
 
-        inputSalaryJ = findViewById(R.id.inputSalaryJ)
+        inputSalaryJ = findViewById(R.id.salary)
         inputCitySpinnerJ = findViewById(R.id.inputCitySpinnerJ)
         radioGrpWorkingMode = findViewById(R.id.radioGrpWorkingMode)
         radioBtnOnsite = findViewById(R.id.radioBtnOnsite)

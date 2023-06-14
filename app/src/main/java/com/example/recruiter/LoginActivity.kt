@@ -3,8 +3,6 @@ package com.example.recruiter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -201,7 +199,7 @@ class LoginActivity : AppCompatActivity(),OnClickListener {
 
     private fun setXMLIds() {
         cpp = findViewById(R.id.cpp)
-        inputPhoneNo = findViewById(R.id.inputPhoneNo)
+        inputPhoneNo = findViewById(R.id.phoneNo)
         btnLogin = findViewById(R.id.btnLogin)
         btnRegistration = findViewById(R.id.btnRegistration)
         progressBar = findViewById(R.id.progressBar)

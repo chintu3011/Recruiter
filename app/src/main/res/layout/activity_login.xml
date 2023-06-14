@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/appname"
+            android:id="@+id/appName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="cursive"
@@ -23,10 +23,10 @@
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/phoneimg"
+            android:id="@+id/phoneImg"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_below="@id/appname"
+            android:layout_below="@id/appName"
             android:src="@drawable/phone"
             app:civ_border_color="@color/white"
             app:civ_border_overlay="true"
@@ -36,7 +36,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_below="@id/phoneimg"
+            android:layout_below="@id/phoneImg"
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="15dp"
@@ -58,7 +58,7 @@
                     android:id="@+id/tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/phoneimg"
+                    android:layout_below="@id/phoneImg"
                     android:layout_marginTop="5dp"
                     android:fontFamily="serif"
                     android:gravity="center"
@@ -71,7 +71,7 @@
                     android:id="@+id/tv1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/phoneimg"
+                    android:layout_below="@id/phoneImg"
                     android:layout_marginTop="10dp"
                     android:fontFamily="serif"
                     android:gravity="center"
@@ -113,7 +113,7 @@
                         app:ccp_textSize="20dp" />
 
                     <EditText
-                        android:id="@+id/inputPhoneNo"
+                        android:id="@+id/phoneNo"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginStart="10dp"
