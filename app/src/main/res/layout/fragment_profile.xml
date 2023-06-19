@@ -14,6 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideLine"
                 android:layout_width="wrap_content"
@@ -41,6 +43,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_end="10dp" />
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="@dimen/_5sdp"
+                app:collapseIcon="@drawable/ic_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:gravity="top"
+                    android:padding="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:menu="@menu/profile_menu" />
+            </com.google.android.material.appbar.AppBarLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileBackImg"
@@ -50,7 +74,7 @@
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBar"
                 app:srcCompat="@drawable/profile_default_back_img" />
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -915,7 +939,7 @@
                 android:id="@+id/groupRecruiter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:constraint_referenced_ids="layout2R,space5" />
 
 

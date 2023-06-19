@@ -41,6 +41,10 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
     lateinit var phoneNo: String
     private var userType:String ?= null
+
+    companion object{
+        private const val TAG = "OTPVerificationLoginActivity"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otpverification_login)
@@ -120,22 +124,31 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = task.result?.user
+                    val uid = user?.uid
+                    Log.d(TAG,"userId: $uid")
                     makeToast("Login successful!",0)
-                    if(userType == "Job Seeker")   {
-                        val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
-                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
-                        intent.putExtra("userType",userType)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-                        finish()
-                    }
-                    else{
-                        val intent = Intent(this@OTPVerificationLoginActivity,HomeRecruiterActivity::class.java)
-                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
-                        intent.putExtra("userType",userType)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-                        finish()
+                    when (userType) {
+                        "Job Seeker" -> {
+                            val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
+                            intent.putExtra("userId",uid)
+                            intent.putExtra("phoneNo",txtPhoneNo.text.toString())
+                            intent.putExtra("userType",userType)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+                            finish()
+                        }
+                        "Recruiter" -> {
+                            val intent = Intent(this@OTPVerificationLoginActivity,HomeRecruiterActivity::class.java)
+                            intent.putExtra("userId",uid)
+                            intent.putExtra("phoneNo",txtPhoneNo.text.toString())
+                            intent.putExtra("userType",userType)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
+                            finish()
+                        }
+                        else -> {
+                            makeToast("User not found.",0)
+                        }
                     }
 
                 } else {
@@ -152,24 +165,20 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                var grandParentKey: String? = null
+                var grandParentKey = String()
 
                 for (userTypeSnapshot in snapshot.children) {
                     for (userSnapshot in userTypeSnapshot.children) {
-                        val userMobileNo = userSnapshot.child("phoneNo").getValue(String::class.java)
+                        val userMobileNo = userSnapshot.child("userPhoneNUmber").getValue(String::class.java)
                         if (userMobileNo == mobileNo) {
                             grandParentKey =
-                                userTypeSnapshot.key // Key of the grandparent ("Job Seeker" or "Recruiter")
+                                userTypeSnapshot.key.toString() // Key of the grandparent ("Job Seeker" or "Recruiter")
+                            Log.d(TAG,"userPhoneNumber: $userMobileNo -> userTYpe: $grandParentKey")
                             break
                         }
                     }
                 }
-                if (grandParentKey != null) {
-                    Log.d("Grandparent Key: ","$grandParentKey")
-                    userType = grandParentKey.toString()
-                } else {
-                    makeToast("Mobile number not found.",0)
-                }
+                userType = grandParentKey
             }
             override fun onCancelled(error: DatabaseError) {
                 makeToast("error: ${error.message}",0)

@@ -1,6 +1,8 @@
 package com.example.recruiter
 
 data class UsersRecruiter(
+
+    var userId :String ?= null,
     var userFName :String ?= null,
     var userLName :String ?= null,
     var userPhoneNumber :String ?= null,

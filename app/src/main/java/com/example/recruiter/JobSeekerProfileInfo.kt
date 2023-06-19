@@ -147,6 +147,11 @@ data class JobSeekerProfileInfo(val context: Context) {
             }
         return value.firstOrNull()
     }
+    suspend fun emptyDataStore(){
+        context.datastore.edit {
+            it.clear()
+        }
+    }
     fun getUserType() = context.datastore.data.map{
         it[userType]?:""
     }

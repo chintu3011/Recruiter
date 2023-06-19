@@ -43,7 +43,7 @@
         android:layout_marginRight="5dp"
         android:background="@drawable/btntransborder"
         android:fontFamily="serif"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="25dp"

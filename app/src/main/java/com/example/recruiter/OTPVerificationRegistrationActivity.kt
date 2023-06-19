@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
@@ -20,8 +21,15 @@ import com.chaos.view.PinView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener {
+
+    companion object{
+        private const val TAG = "OTPVerificationRegistrationActivity"
+    }
 
     private lateinit var txtPhoneNo : TextView
     private lateinit var btnChange: TextView
@@ -122,9 +130,12 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = task.result?.user
+                    val uid = user?.uid
+                    Log.d(TAG,"userId:$uid")
                     makeToast("Registration successful!",1)
-                    passInfoToNextActivity()
-                    finish()
+                    makeEmptyDataStoreForNewUser()
+                    passInfoToNextActivity(uid)
+
                 } else {
                     makeToast("Registration failed: ${task.exception}",1)
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -132,6 +143,21 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                     },2000)
                 }
             }
+    }
+    private fun makeEmptyDataStoreForNewUser() {
+
+        if(userType == "Job Seeker"){
+            CoroutineScope(Dispatchers.IO).launch {
+                val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationRegistrationActivity)
+                jobSeekerProfileInfo.emptyDataStore()
+            }
+        }
+        if(userType == "Recruiter"){
+            CoroutineScope(Dispatchers.IO).launch {
+                val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationRegistrationActivity)
+                recruiterProfileInfo.emptyDataStore()
+            }
+        }
     }
     private fun setXmlIDs() {
         txtPhoneNo = findViewById(R.id.txtPhoneNo)
@@ -141,8 +167,9 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         cardView = findViewById(R.id.cardView)
     }
 
-    private fun passInfoToNextActivity() {
+    private fun passInfoToNextActivity(uid: String?) {
         val intent = Intent(this@OTPVerificationRegistrationActivity,InformationActivity::class.java)
+        intent.putExtra("uid",uid)
         intent.putExtra("fName",firstName)
         intent.putExtra("lName",lastName)
         intent.putExtra("phoneNo",phoneNo)

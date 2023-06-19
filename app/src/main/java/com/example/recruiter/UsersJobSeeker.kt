@@ -4,6 +4,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 
 data class UsersJobSeeker(
 
+    var userId :String ?= null,
+
     var userFName :String ?= null,
     var userLName :String ?= null,
     var userPhoneNumber :String ?= null,
