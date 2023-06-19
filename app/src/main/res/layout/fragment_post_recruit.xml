@@ -211,7 +211,7 @@
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Duration"
+                android:hint="Experience Required"
                 android:paddingTop="0dp"
                 app:boxBackgroundColor="#FFFFFF"
                 app:boxBackgroundMode="outline"
@@ -386,7 +386,7 @@
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Salary"
+                android:hint="Salary Package"
                 android:paddingTop="0dp"
                 app:boxBackgroundColor="#FFFFFF"
                 app:boxBackgroundMode="outline"
@@ -415,40 +415,66 @@
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutWorkingMode"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Working Mode"
-                android:paddingTop="0dp"
-                app:boxBackgroundColor="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                app:boxStrokeColor="@color/edit_text_color"
-                app:endIconCheckable="true"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
-                app:layout_constraintBottom_toTopOf="@+id/textLayoutEmployeeNeed"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
-                app:placeholderText="On-site/Remote/Hybrid"
-                app:startIconDrawable="@drawable/ic_biography"
-                app:startIconTint="@color/ed_theme_color">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/workingMode"
+                <RadioGroup
+                    android:id="@+id/textLayoutWorkingMode"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textAutoComplete"
-                    android:padding="@dimen/_10sdp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:background="@drawable/border_radio_grp"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary">
 
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnOnsite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="On-Site"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnRemote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Remote"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnHybrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Hybrid"
+                        android:textColor="@color/black" />
+                </RadioGroup>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Working Mode"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:textColor="@color/ed_theme_color"
+                android:textStyle="bold"
+                app:fontFamily="serif"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintTop_toTopOf="@+id/textLayoutWorkingMode" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutEmployeeNeed"

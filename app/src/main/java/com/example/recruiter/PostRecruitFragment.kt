@@ -155,11 +155,4 @@ class PostRecruitFragment : Fragment() {
                 }
         }
     }
-    private fun replaceFragment(fragment: Fragment) {
-        val postfrag = PostRecruitFragment()
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.framelayoutpost, postfrag)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
 }

@@ -44,7 +44,6 @@ class JobPostDescriptionFragment() : Fragment() {
         binding = FragmentJobPostDescriptionBinding.inflate(inflater, container, false)
         fragview = binding.root
         database = FirebaseDatabase.getInstance().reference
-        jobTitle = arguments?.getString(ARG_JOB_TITLE, "") ?: ""
         dataList = mutableListOf()
         retreivedescription()
         binding.btnCancel.setOnClickListener {
@@ -94,9 +93,13 @@ class JobPostDescriptionFragment() : Fragment() {
                         binding.education.text = edutv
                         Glide.with(img.context).load(jobData.child("companyLogo")).into(img)
                         binding.btnApply.setOnClickListener {
-                            val phone = jobData.child("phone").getValue(Long::class.java)
-                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                            startActivity(dialIntent)
+                            val email = jobData.child("email").getValue(String::class.java)
+                            val sub = jobData.child("companyName").getValue(String::class.java)
+                            val dialIntent = Intent(Intent.ACTION_SENDTO)
+                            dialIntent.putExtra(Intent.EXTRA_EMAIL, email)
+                            dialIntent.putExtra(Intent.EXTRA_SUBJECT, "Reg. Job Application for "+sub);
+                            dialIntent.type = "message/rfc822"
+                            startActivity(Intent.createChooser(dialIntent,"Choose an email client:"))
                         }
                     }
                 }

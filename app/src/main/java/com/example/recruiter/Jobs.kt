@@ -17,6 +17,6 @@ data class Jobs(
     var softSkills : String?= null,
     var technicalSkills : String?= null,
     var workingmode : String?= null,
-    var companyLogo : String?= null
+    var companyLogo : String?= null,
     )
 

@@ -78,59 +78,59 @@
                     android:text="We will send you a 6-digit one-time password to this number"
                     android:textColor="#656464" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@color/white"
-                    android:fontFamily="serif"
-                    android:text="Phone Number"
-                    android:textAllCaps="false"
-                    android:textColor="@color/blue"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/cpp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        app:ccpDialog_keyboardAutoPopup="false"
-                        app:ccp_autoDetectCountry="true"
-                        app:ccp_autoFormatNumber="true"
-                        app:ccp_contentColor="@color/black"
-                        app:ccp_defaultNameCode="IND"
-                        app:ccp_showArrow="false"
-                        app:ccp_showFlag="true"
-                        app:ccp_showFullName="false"
-                        app:ccp_textSize="20dp" />
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/cpp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccpDialog_keyboardAutoPopup="false"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_autoFormatNumber="true"
+                    app:ccp_contentColor="@color/black"
+                    app:ccp_defaultNameCode="IND"
+                    app:ccp_showArrow="false"
+                    app:ccp_showFlag="true"
+                    app:ccp_showFullName="false"
+                    app:ccp_textSize="20dp" />
 
-                    <EditText
-                        android:id="@+id/phoneNo"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayoutWorkingMode"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number"
+                    android:paddingTop="0dp"
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                    app:boxStrokeColor="@color/edit_text_color"
+                    app:endIconCheckable="true"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/gray"
+                    app:hintTextColor="@color/ed_theme_color"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutEmployeeNeed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
+                    app:placeholderText="98257*****"
+                    app:startIconDrawable="@drawable/baseline_phone_24"
+                    app:startIconTint="@color/ed_theme_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/workingMode"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/borderret"
-                        android:drawableLeft="@drawable/phonefile"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/blue"
-                        android:fontFamily="serif"
-                        android:hint="Type Here..."
-                        android:inputType="phone"
-                        android:padding="10dp" />
+                        android:layout_height="match_parent"
+                        android:inputType="textAutoComplete"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"

@@ -15,6 +15,7 @@ import android.widget.GridView
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -122,7 +123,7 @@ class HomeRecruitFragment : Fragment() {
             val jobrole: TextView = myview.findViewById(R.id.jobrole)
             val email: TextView = myview.findViewById(R.id.jsemail)
             val job: UsersJobSeeker = dataList[position]
-            name.text = job.userFName + job.userLName
+            name.text = job.userFName + " " + job.userLName
             skill.text = job.userQualification
             loc.text = job.userPrefJobLocation
             type.text = job.userWorkingMode
