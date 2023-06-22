@@ -34,14 +34,18 @@
                 android:layout_weight="1"
                 android:src="@drawable/baseline_keyboard_voice_24" />
         </LinearLayout>
+
         <GridView
             android:id="@+id/gvR"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/Linearr"
-            android:layout_marginBottom="10dp"
+            android:verticalSpacing="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_11sdp"
+            android:layout_marginEnd="@dimen/_11sdp"
+            android:layout_marginBottom="@dimen/_11sdp"
             android:gravity="center"
-            android:layout_margin="@dimen/_11sdp"
             android:numColumns="1"
             android:paddingBottom="5dp" />
     </RelativeLayout>

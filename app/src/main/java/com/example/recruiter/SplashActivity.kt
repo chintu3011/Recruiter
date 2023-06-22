@@ -8,17 +8,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import render.animations.Render
 
 
 class SplashActivity : AppCompatActivity() {
@@ -56,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
         }
         else{
             Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this@SplashActivity,loginsignupActivity::class.java)
+                val intent = Intent(this@SplashActivity,loginSignupActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
                 finish()

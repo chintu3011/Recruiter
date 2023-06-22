@@ -107,40 +107,40 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
     private lateinit var btnSkip : TextView
     
-    private lateinit var userType:String
+    private var userType = String()
 
     private var layoutID = -1
     private var btnPointer = 0
 
-    private lateinit var pdfUri: Uri
+    private var pdfUri:Uri ?= null
 
-    private lateinit var firstName:String
-    private lateinit var lastName:String
-    private lateinit var phoneNo:String
-    private lateinit var email:String
-    private lateinit var userId:String
-    private lateinit var qualification:String
-    private lateinit var bio:String
-    private lateinit var experience:String
-    private lateinit var companyName:String
-    private lateinit var designation:String
-    private lateinit var duration:String
-    private lateinit var salary:String
-    private lateinit var city:String
-    private lateinit var workingMode:String
-    private lateinit var jobTitle:String
-    private lateinit var jobDes:String
-    private lateinit var resume:String
-    private lateinit var termsConditionsAcceptance:String
-    private lateinit var pdfName:String
+    private var firstName = String()
+    private var lastName = String()
+    private var phoneNo = String()
+    private var email = String()
+    private var userId = String()
+    private var qualification = String()
+    private var bio = String()
+    private var experience = String()
+    private var companyName = String()
+    private var designation = String()
+    private var duration = String()
+    private var salary = String()
+    private var city = String()
+    private var workingMode = String()
+    private var jobTitle = String()
+    private var jobDes = String()
+    private var resume = String()
+    private var termsConditionsAcceptance = String()
+    private var pdfName = String()
 
     private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
     private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
     private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
 
-    private lateinit var selectedQualification:String
-    private lateinit var selectedJobLocation:String
-    private lateinit var selectedJob : String
+    private var selectedQualification = String()
+    private var selectedJobLocation = String()
+    private var selectedJob = String()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -258,10 +258,12 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 uploadProgressBar.progress = 70
                 val mStorage = FirebaseStorage.getInstance().getReference("pdfs")
                 val pdfRef = mStorage.child(pdfName)
-                pdfRef.putFile(pdfUri).addOnSuccessListener {
-                    pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                        uploadProgressBar.progress = 100
-                        resume = downloadUrl.toString()
+                pdfUri?.let {
+                    pdfRef.putFile(it).addOnSuccessListener {
+                        pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                            uploadProgressBar.progress = 100
+                            resume = downloadUrl.toString()
+                        }
                     }
                 }
                 uploadBtn.visibility = GONE
@@ -290,61 +292,68 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             }
             R.id.btnSkip -> {
 
-                val  map = mutableMapOf<String,String>()
-                map["userId"] = userId
-                map["userFName"] = firstName
-                map["userLName"] = firstName
-                map["userPhoneNUmber"] = phoneNo
-                map["userEmailId"] = email
+                if (userType == "Job Seeker"){
+                    storeInfoJ()
+                }
+                if(userType == "Recruiter"){
+                    storeInfoR()
+                }
 
-                FirebaseDatabase.getInstance().getReference("Users")
-                    .child(userType)
-                    .child(userId)
-                    .setValue(map).addOnCompleteListener{ task ->
-                        if(task.isSuccessful){
-                            if(userType == "Job Seeker"){
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    val jobSeekerProfileInfo =
-                                        JobSeekerProfileInfo(this@InformationActivity)
-
-                                    jobSeekerProfileInfo.storeBasicProfileData(
-                                        firstName,
-                                        lastName,
-                                        phoneNo,
-                                        email,
-                                        "",
-                                        ""
-                                    )
-                                    jobSeekerProfileInfo.storeUserType(
-                                        userType,
-                                        userId
-                                    )
-                                }
-                                navigateToHomeActivity()
-                            }
-                            if(userType == "Recruiter"){
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    val recruiterProfileInfo =
-                                        RecruiterProfileInfo(this@InformationActivity)
-
-                                    recruiterProfileInfo.storeBasicProfileData(
-                                        firstName,
-                                        lastName,
-                                        phoneNo,
-                                        email,
-                                        "",
-                                        ""
-                                    )
-                                    recruiterProfileInfo.storeUserType(
-                                        userType,
-                                        userId
-                                    )
-                                }
-                                navigateToHomeActivity()
-                            }
-
-                        }
-                    }
+//                val  map = mutableMapOf<String,String>()
+//                map["userId"] = userId
+//                map["userFName"] = firstName
+//                map["userLName"] = firstName
+//                map["userPhoneNUmber"] = phoneNo
+//                map["userEmailId"] = email
+//
+//                FirebaseDatabase.getInstance().getReference("Users")
+//                    .child(userType)
+//                    .child(userId)
+//                    .setValue(map).addOnCompleteListener{ task ->
+//                        if(task.isSuccessful){
+//                            if(userType == "Job Seeker"){
+//                                CoroutineScope(Dispatchers.IO).launch {
+//                                    val jobSeekerProfileInfo =
+//                                        JobSeekerProfileInfo(this@InformationActivity)
+//
+//                                    jobSeekerProfileInfo.storeBasicProfileData(
+//                                        firstName,
+//                                        lastName,
+//                                        phoneNo,
+//                                        email,
+//                                        "",
+//                                        ""
+//                                    )
+//                                    jobSeekerProfileInfo.storeUserType(
+//                                        userType,
+//                                        userId
+//                                    )
+//                                }
+//                                navigateToHomeActivity()
+//                            }
+//                            if(userType == "Recruiter"){
+//                                CoroutineScope(Dispatchers.IO).launch {
+//                                    val recruiterProfileInfo =
+//                                        RecruiterProfileInfo(this@InformationActivity)
+//
+//                                    recruiterProfileInfo.storeBasicProfileData(
+//                                        firstName,
+//                                        lastName,
+//                                        phoneNo,
+//                                        email,
+//                                        "",
+//                                        ""
+//                                    )
+//                                    recruiterProfileInfo.storeUserType(
+//                                        userType,
+//                                        userId
+//                                    )
+//                                }
+//                                navigateToHomeActivity()
+//                            }
+//
+//                        }
+//                    }
             }
         }
     }
@@ -398,6 +407,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         designation = inputDesignation.text.toString()
         duration = inputDuration.text.toString()
         salary = inputSalaryJ.text.toString()
+        if(salary.isEmpty()){
+            salary = 0.toString()
+        }
         workingMode = getSelectedRadioItem(radioGrpWorkingMode).toString()
         jobTitle = selectedJob.toString()
         city = selectedJobLocation.toString()
@@ -493,9 +505,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         }
         if (!isNumeric(expectedSalary)){
             inputSalaryJ.error = "Invalid Salary"
-            return false
         }
-
         return true
 
     }
@@ -515,6 +525,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         jobTitle = selectedJob
         jobDes = inputJobDesR.text.toString()
         salary = inputSalaryR.text.toString()
+        if(salary.isEmpty()){
+            salary = 0.toString()
+        }
         city = selectedJobLocation
         workingMode = getSelectedRadioItem(radioGrpWorkingModeR)
         val correct = inputFieldConformationR(jobDes,salary)
@@ -582,15 +595,17 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         }
     }
 
-    private fun inputFieldConformationR(jobDes: String, salary: String): Boolean {
+    private fun inputFieldConformationR(jobDes: String, expectedSalary: String): Boolean {
         if (jobDes.length > 5000){
             inputJobDesR.error = "Job Description Length Should not exited to 5000"
             return false
         }
+
         if (!isNumeric(salary)){
             inputSalaryR.error = "Invalid Salary"
             return false
         }
+
        return true
     }
 
@@ -745,8 +760,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
     private fun getSelectedRadioItem(radioGroup: RadioGroup): String {
         val selectedItemId = radioGroup.checkedRadioButtonId
-        val radioButton = findViewById<View>(selectedItemId) as RadioButton
         if (selectedItemId != -1) {
+            val radioButton = findViewById<View>(selectedItemId) as RadioButton
 //            makeToast(radioButton.text.toString(),0)
             return radioButton.text.toString()
         }

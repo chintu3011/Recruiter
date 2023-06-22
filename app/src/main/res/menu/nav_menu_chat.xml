@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btnVideoCall"
+        android:icon="@drawable/ic_v_call"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="Video Call" />
+    <item
+        android:id="@+id/btnCall"
+        android:icon="@drawable/ic_call"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="Voice Call" />
+    <item
+        android:id="@+id/btnStar"
+        android:title="Star"
+        android:icon="@drawable/ic_star"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/btnDelete"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:id="@+id/btnReportBlock"
+        android:title="Report / Block"
+        android:icon="@drawable/ic_report"
+        app:showAsAction="collapseActionView"/>
+</menu>

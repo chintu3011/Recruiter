@@ -1,12 +1,9 @@
 package com.example.recruiter
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
@@ -98,7 +95,7 @@ class IntroductionActivity : AppCompatActivity() {
     }
 
     private fun navigationToNextActivity() {
-        startActivity(Intent(this@IntroductionActivity,loginsignupActivity::class.java))
+        startActivity(Intent(this@IntroductionActivity,loginSignupActivity::class.java))
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
         finish()
     }

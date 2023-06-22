@@ -149,44 +149,57 @@ class LoginActivity : AppCompatActivity(),OnClickListener {
 
     private fun sentOtp() {
         phoneNo = "+" + cpp.fullNumber.toString()
-        val correct = checkInputData(phoneNo)
-        if (correct){
-            btnLogin.visibility = GONE
-            progressBar.visibility = VISIBLE
-            val options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(phoneNo)
-                .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(this)
-                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
-                    // OnVerificationStateChangedCallbacks
-                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                        copyCredential = credential
-                        makeToast("Verification Successful.",0)
-                        btnLogin.visibility = VISIBLE
-                        progressBar.visibility = GONE
+        getUserTypeIfNotSignIn(phoneNo) { userType ->
+
+            if (userType.isNotEmpty()) {
+                val correct = checkInputData(phoneNo)
+                if (correct){
+                    btnLogin.visibility = GONE
+                    progressBar.visibility = VISIBLE
+                    val options = PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNo)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+                            // OnVerificationStateChangedCallbacks
+                            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                                copyCredential = credential
+                                makeToast("Verification Successful.",0)
+                                btnLogin.visibility = VISIBLE
+                                progressBar.visibility = GONE
 //                        navigateToNextActivity()
-                    }
-                    override fun onVerificationFailed(e: FirebaseException) {
-                        progressBar.visibility = GONE
-                        btnLogin.visibility = VISIBLE
-                        Log.d("Task", "${e.message}")
-                        makeToast("verificationFailed : ${e.message}",1)
+                            }
+                            override fun onVerificationFailed(e: FirebaseException) {
+                                progressBar.visibility = GONE
+                                btnLogin.visibility = VISIBLE
+                                Log.d("Task", "${e.message}")
+                                makeToast("verificationFailed : ${e.message}",1)
 
-                    }
+                            }
 
-                    override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                        super.onCodeSent(verificationId, token)
-                        makeToast("code sent to $phoneNo",0)
-                        storedVerificationId = verificationId
-                        resendToken = token
-                        btnLogin.visibility = VISIBLE
-                        progressBar.visibility = GONE
-                        navigateToNextActivity()
-                    }
-                })
-                .build()
-            PhoneAuthProvider.verifyPhoneNumber(options)
+                            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                                super.onCodeSent(verificationId, token)
+                                makeToast("code sent to $phoneNo",0)
+                                storedVerificationId = verificationId
+                                resendToken = token
+                                btnLogin.visibility = VISIBLE
+                                progressBar.visibility = GONE
+                                navigateToNextActivity()
+                            }
+                        })
+                        .build()
+                    PhoneAuthProvider.verifyPhoneNumber(options)
+                }
+                else{
+                    Log.d(TAG,"Input data is incorrect")
+                    makeToast("Input data is incorrect",0)
+                }
+            }
         }
+    
+
+
+
     }
 
     private fun checkInputData(phoneNo: String): Boolean {
@@ -201,16 +214,62 @@ class LoginActivity : AppCompatActivity(),OnClickListener {
             inputPhoneNo.requestFocus()
             return false
         }
+//        if(userType.equals("")){
+//            makeToast("Login failed : user not found.",0)
+//            Log.d(TAG,"Login failed : user not found with $phoneNo")
+//            return false
+//        }
+//        return if (userType.equals("Job Seeker")) true
+//        else if (userType.equals("Recruiter")) true
+//        else {
+//            makeToast("Login failed : user not found.",0)
+//            Log.d(TAG,"Login failed : user not found with $phoneNo")
+//            false
+//        }
         return true
     }
 
     private fun navigateToNextActivity() {
+
         val intent = Intent(this@LoginActivity,OTPVerificationLoginActivity::class.java)
 //        intent.putExtra("jobType",jobType)
         intent.putExtra("phoneNo",phoneNo)
         intent.putExtra("storedVerificationId",storedVerificationId)
+        intent.putExtra("userType",userType)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+    }
+
+    private fun getUserTypeIfNotSignIn(mobileNo: String, callback: (String) -> Unit){
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.reference.child("Users")
+
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var grandParentKey = String()
+                Log.d(TAG,"Finding User for :${mobileNo}")
+                for (userTypeSnapshot in snapshot.children) {
+                    for (userSnapshot in userTypeSnapshot.children) {
+                        val userMobileNo = userSnapshot.child("userPhoneNumber").getValue(String::class.java)
+                        if (userMobileNo.equals(mobileNo)) {
+                            grandParentKey =
+                                userTypeSnapshot.key.toString() // Key of the grandparent ("Job Seeker" or "Recruiter")
+                            Log.d(TAG,"userPhoneNumber: $userMobileNo => userType: $grandParentKey")
+                            userType = grandParentKey
+                            callback(grandParentKey)
+                            break
+                        }
+                        else{
+                            Log.d(TAG,"$userMobileNo : Not match")
+                        }
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(TAG,"error: ${error.message}")
+                makeToast("error: ${error.message}",0)
+            }
+        })
     }
     private fun makeToast(msg: String, len: Int){
         if(len == 0) Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()

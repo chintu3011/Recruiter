@@ -120,14 +120,11 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         if (bundle != null) {
             type = bundle.getString("userType")
             binding.userType.text = type
-            id = bundle.getString("userId")
         }
+        id = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("$id", "$type")
         setProfileData()
         setOnClickListener()
-//        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar )
-//
-//        (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
 
         binding.toolbar.menu.clear()
 

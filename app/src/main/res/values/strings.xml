@@ -7,6 +7,12 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="search">Search</string>
+    <string name="recruiter">Recruiter</string>
+    <string name="job_seeker">Job Seeker</string>
+    <string name="friends_list">Friends List</string>
+    <string name="recruiters_list">Recruiters List</string>
+    <string name="hh_mm_ss">HH:mm:ss</string>
+    <string name="short_lorem_ipsum">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

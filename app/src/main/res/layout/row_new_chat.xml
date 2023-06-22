@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/_5sdp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_3sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImg"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"
+            app:layout_constraintEnd_toStartOf="@+id/layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/profile_default_image" />
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/profileImg"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/profileImg"
+            app:layout_constraintTop_toTopOf="@id/profileImg">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/personName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:text="Johan Macvan"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tagLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:text="Android Developer || Google Employee"
+                app:autoSizeTextType="uniform"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="#A1000000"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:flow_wrapMode="chain"
+            app:flow_horizontalGap="@dimen/_7sdp"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_verticalStyle="packed"
+            app:flow_horizontalAlign="start"
+            app:flow_verticalAlign="top"
+            app:constraint_referenced_ids="profileImg,layout"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+            app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
