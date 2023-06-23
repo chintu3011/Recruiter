@@ -39,8 +39,7 @@ class HomeRecruiterActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomnavigationR)
         userType = intent.getStringExtra("userType").toString()
-        userId = intent.getStringExtra("userId").toString()
-        makeToast("$userId::$userType",0)
+        
         frame = findViewById(R.id.frameRLayout)
         replaceFragment(HomeRecruitFragment())
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -55,7 +54,8 @@ class HomeRecruiterActivity : AppCompatActivity() {
                     replaceFragment(ProfileFragment())
                 }
                 R.id.chatR -> {
-                    replaceFragment(ChatRecruitFragment())
+                    val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
@@ -64,7 +64,6 @@ class HomeRecruiterActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         val bundle = Bundle()
         bundle.putString("userType", userType!!)
-        bundle.putString("userId", userId!!)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameRLayout, fragment)
@@ -74,15 +73,7 @@ class HomeRecruiterActivity : AppCompatActivity() {
 
     private fun requestPermissions() {
         val permissions: Collection<String> =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listOf(Manifest.permission.READ_MEDIA_IMAGES)
-            } else {
-                listOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            }
+            listOf(Manifest.permission.READ_MEDIA_IMAGES)
         Log.d("####", "requestPermissions: $permissions")
         Dexter.withContext(this).withPermissions(
             permissions
@@ -111,34 +102,16 @@ class HomeRecruiterActivity : AppCompatActivity() {
     }
 
     private fun isGrantedPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Log.d("Version*", Build.VERSION.SDK_INT.toString())
-            listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
-        } else {
-            Log.d("Version**", Build.VERSION.SDK_INT.toString())
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            val isGranted3 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED && isGranted3 == PackageManager.PERMISSION_GRANTED
-        }
+        Log.d("Version*", Build.VERSION.SDK_INT.toString())
+        listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
+        val isGranted1 =
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_IMAGES
+            )
+        val isGranted2 =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showSettingsDialog() {

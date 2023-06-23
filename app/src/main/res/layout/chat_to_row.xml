@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_2sdp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileImg"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="1dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/layout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/layout"
+        app:shapeAppearanceOverlay="@style/circle"
+        app:srcCompat="@drawable/profile_default_image" />
+
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/chat_msg_from_bg"
+        android:paddingVertical="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/profileImg"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:padding="@dimen/_10sdp"
+            android:maxWidth="@dimen/_200sdp"
+            android:text="@string/short_lorem_ipsum"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/white"
+            android:textStyle="normal"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hh_mm_ss"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="#A3FFFFFF" android:layout_marginHorizontal="@dimen/_6sdp"/>
+    </LinearLayout>
+
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="profileImg,layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

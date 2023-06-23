@@ -73,11 +73,11 @@
             android:layout_below="@id/Linearr"
             android:gravity="center"
             android:numColumns="1"
-            android:paddingBottom="5dp"
+            android:verticalSpacing="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@id/Linearr"
             app:layout_constraintStart_toEndOf="@id/startGuildLine"
             app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

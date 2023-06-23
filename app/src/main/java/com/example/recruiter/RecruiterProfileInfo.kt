@@ -16,23 +16,23 @@ data class RecruiterProfileInfo(val context: Context){
 
     companion object {
 
-        val userType = stringPreferencesKey("USER_TYPE")
-        val userId = stringPreferencesKey("USER_ID")
-        val userFName = stringPreferencesKey("USER_F_NAME")
-        val userLName = stringPreferencesKey("USER_L_NAME")
-        val userPhoneNumber = stringPreferencesKey("PHONE_NUMBER")
-        val userEmailId = stringPreferencesKey("EMAIL_ID")
-        val userProfileImg = stringPreferencesKey("PROFILE_IMG")
-        val userProfileBannerImg = stringPreferencesKey("PROFILE_BANNER_IMG")
-        val userTagLine = stringPreferencesKey("TAG_LINE")
-        val userCurrentCompany = stringPreferencesKey("USER_CURRENT_COMPANY")
+        val userType = stringPreferencesKey("userType")
+        val userId = stringPreferencesKey("userId")
+        val userFName = stringPreferencesKey("userFName")
+        val userLName = stringPreferencesKey("userLName")
+        val userPhoneNumber = stringPreferencesKey("userPhoneNumber")
+        val userEmailId = stringPreferencesKey("userEmailId")
+        val userProfileImg = stringPreferencesKey("userProfileImg")
+        val userProfileBannerImg = stringPreferencesKey("userProfileBannerImg")
+        val userTagLine = stringPreferencesKey("userTagLine")
+        val userCurrentCompany = stringPreferencesKey("userCurrentCompany")
 
-        val userJobTitle = stringPreferencesKey("JOB_TITLE")
-        val userSalary = stringPreferencesKey("SALARY")
-        val userJobLocation = stringPreferencesKey("JOB_LOCATION")
-        val userBio  = stringPreferencesKey("BIO")
-        val userDesignation = stringPreferencesKey("DESIGNATION")
-        val userWorkingMode = stringPreferencesKey("WORKING_MODE")
+        val userJobTitle = stringPreferencesKey("userJobTitle")
+        val userSalary = stringPreferencesKey("userSalary")
+        val userJobLocation = stringPreferencesKey("v")
+        val userBio  = stringPreferencesKey("userBio")
+        val userDesignation = stringPreferencesKey("userDesignation")
+        val userWorkingMode = stringPreferencesKey("userWorkingMode")
     }
 
     suspend fun storeAboutData(
@@ -94,6 +94,12 @@ data class RecruiterProfileInfo(val context: Context){
     ){
         context.datastore.edit {
             it[userProfileBannerImg] = profileBannerImg
+        }
+    }
+
+    suspend fun emptyDataStore(){
+        context.datastore.edit {
+            it.clear()
         }
     }
 

@@ -24,6 +24,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
@@ -41,6 +44,10 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
 
     lateinit var phoneNo: String
     private var userType:String ?= null
+
+    companion object{
+        private const val TAG = "OTPVerificationLoginActivity"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otpverification_login)
@@ -59,10 +66,10 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
         setOnClickListener()
 
         phoneNo = intent.getStringExtra("phoneNo").toString()
+        userType = intent.getStringExtra("userType").toString()
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
 
         txtPhoneNo.text = phoneNo
-        getUserType(phoneNo)
         setPinViewSize()
 
     }
@@ -109,73 +116,166 @@ class OTPVerificationLoginActivity : AppCompatActivity(),OnClickListener{
             }
         }
     }
-
     private fun verifyOtp() {
         val credential = PhoneAuthProvider.getCredential(storedVerificationId,inputOTP.text.toString())
         navigateToNextActivity(credential)
     }
 
     private fun navigateToNextActivity(credential: PhoneAuthCredential) {
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = task.result?.user
-                    makeToast("Login successful!",0)
-                    if(userType == "Job Seeker")   {
-                        val intent = Intent(this@OTPVerificationLoginActivity,HomeJobActivity::class.java)
-                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
-                        intent.putExtra("userType",userType)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-                        finish()
-                    }
-                    else{
-                        val intent = Intent(this@OTPVerificationLoginActivity,HomeRecruiterActivity::class.java)
-                        intent.putExtra("phoneNo",txtPhoneNo.text.toString())
-                        intent.putExtra("userType",userType)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.flip_in,R.anim.flip_out)
-                        finish()
-                    }
+        if(userType == "Job Seeker" || userType == "Recruiter") {
 
-                } else {
-                    makeToast("Login failed: ${task.exception}",1)
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        makeToast("Try again",1)
-                    },1000)
+            mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val user = task.result?.user
+                        val uid = user?.uid
+                        Log.d(TAG, "userId: $uid")
+                        updateDataStore(uid)
+                        when (userType) {
+                            "Job Seeker" -> {
+                                makeToast("Login successful!", 0)
+                                val intent = Intent(
+                                    this@OTPVerificationLoginActivity,
+                                    HomeJobActivity::class.java
+                                )
+                                intent.putExtra("phoneNo", txtPhoneNo.text.toString())
+                                intent.putExtra("userType", userType)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
+                                finish()
+                            }
+
+                            "Recruiter" -> {
+                                makeToast("Login successful!", 0)
+                                val intent = Intent(
+                                    this@OTPVerificationLoginActivity,
+                                    HomeRecruiterActivity::class.java
+                                )
+                                intent.putExtra("phoneNo", txtPhoneNo.text.toString())
+                                intent.putExtra("userType", userType)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
+                                finish()
+                            }
+                            else -> {
+                                Log.d(TAG, "navigateToNextActivity :: User not found.")
+                                makeToast("User not found.", 0)
+                            }
+                        }
+
+                    } else {
+                        Log.d(TAG, "Login failed: ${task.exception}")
+                        makeToast("Login failed: ${task.exception}", 0)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            makeToast("Try again", 0)
+                        }, 1000)
+                    }
                 }
-            }
+        }
+        else{
+            Log.d(TAG, "Login failed: User Not Found.")
+            makeToast("Login failed: User Not Found.", 0)
+            Handler(Looper.getMainLooper()).postDelayed({
+                makeToast("Try again with another phone number", 0)
+            }, 1000)
+        }
+
     }
-    private fun getUserType(mobileNo: String){
-        val database = FirebaseDatabase.getInstance()
-        val usersRef = database.reference.child("Users")
 
-        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var grandParentKey: String? = null
+    private fun updateDataStore(uid: String?) {
 
-                for (userTypeSnapshot in snapshot.children) {
-                    for (userSnapshot in userTypeSnapshot.children) {
-                        val userMobileNo = userSnapshot.child("phoneNo").getValue(String::class.java)
-                        if (userMobileNo == mobileNo) {
-                            grandParentKey =
-                                userTypeSnapshot.key // Key of the grandparent ("Job Seeker" or "Recruiter")
-                            break
+        if(userType == "Job Seeker"){
+            FirebaseDatabase.getInstance().getReference("Users").child("Job Seeker")
+                .child(uid.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val userData = snapshot.getValue(UsersJobSeeker::class.java)
+                            if (userData != null){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
+                                    jobSeekerProfileInfo.storeBasicProfileData(
+                                        userData.userFName,
+                                        userData.userLName,
+                                        userData.userPhoneNumber,
+                                        userData.userEmailId,
+                                        userData.userTagLine,
+                                        userData.userCurrentCompany
+                                    )
+                                    jobSeekerProfileInfo.storeAboutData(
+                                        userData.userBio,
+                                        userData.userQualification
+                                    )
+                                    jobSeekerProfileInfo.storeExperienceData(
+                                        userData.userExperienceState,
+                                        userData.userDesignation,
+                                        userData.userPrevCompany,
+                                        userData.userPrevJobDuration
+                                    )
+                                    jobSeekerProfileInfo.storeResumeData(
+                                        userData.userResumeFileName,
+                                        userData.userResumeUri
+                                    )
+                                    jobSeekerProfileInfo.storeJobPreferenceData(
+                                        userData.userPerfJobTitle,
+                                        userData.userExpectedSalary,
+                                        userData.userPrefJobLocation,
+                                        userData.userWorkingMode
+                                    )
+                                }
+                            }
                         }
                     }
-                }
-                if (grandParentKey != null) {
-                    Log.d("Grandparent Key: ","$grandParentKey")
-                    userType = grandParentKey.toString()
-                } else {
-                    makeToast("Mobile number not found.",0)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                makeToast("error: ${error.message}",0)
-            }
-        })
+
+                    override fun onCancelled(error: DatabaseError) {
+                        makeToast("User Not Found",0)
+                    }
+
+                })
+        }
+        if(userType == "Recruiter"){
+            FirebaseDatabase.getInstance().getReference("Users").child("Recruiter")
+                .child(uid.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val userData = snapshot.getValue(UsersRecruiter::class.java)
+                            if (userData != null){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationLoginActivity)
+                                    recruiterProfileInfo.storeBasicProfileData(
+                                        userData.userFName,
+                                        userData.userLName,
+                                        userData.userPhoneNumber,
+                                        userData.userEmailId,
+                                        userData.userTagLine,
+                                        userData.userCurrentCompany
+                                    )
+                                    recruiterProfileInfo.storeAboutData(
+                                        userData.userJobTitle,
+                                        userData.userSalary,
+                                        userData.userJobLocation,
+                                        userData.userBio,
+                                        userData.userDesignation,
+                                        userData.userWorkingMode
+                                    )
+                                    recruiterProfileInfo.storeProfileImg(
+                                        userData.userProfileImg
+                                    )
+                                    recruiterProfileInfo.storeProfileBannerImg(
+                                        userData.userProfileBannerImg
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        makeToast("User Not Found",0)
+                    }
+                })
+        }
     }
+
     private fun setXmlIDs() {
         txtPhoneNo = findViewById(R.id.txtPhoneNo)
         btnChange = findViewById(R.id.btnChange)

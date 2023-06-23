@@ -15,5 +15,6 @@
     <color name="check_def_color">#3E043A7C</color>
     <color name="royal_blue">#0787CC</color>
     <color name="card_ripple_color">#3C0073FF</color>
+    <color name="transparent">#007C7575</color>
     <color name="ed_theme_color">#FF0960A2</color>
 </resources>

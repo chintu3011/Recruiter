@@ -22,28 +22,29 @@ import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.datastore.preferences.core.Preferences
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import com.example.recruiter.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.FirebaseAuth
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -113,23 +114,52 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val context: Context = requireContext()
-
         jobSeekerProfileInfo = JobSeekerProfileInfo(context)
         recruiterProfileInfo = RecruiterProfileInfo(context)
         val bundle = arguments
         if (bundle != null) {
             type = bundle.getString("userType")
             binding.userType.text = type
-            id = bundle.getString("userId")
         }
+        id = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("$id", "$type")
         setProfileData()
         setOnClickListener()
-//        storeUpdatedDataInServer()
-//        map?.forEach {
-//            Log.d("updated entities","${it.key}:${it.value}")
-//        }
+
+        binding.toolbar.menu.clear()
+
+        binding.toolbar.inflateMenu(R.menu.profile_menu)
+
+        binding.toolbar.setOnMenuItemClickListener{
+            when(it.itemId){
+                R.id.btnSearch -> {
+
+                    val searchView = it.actionView as SearchView
+                    
+                    true
+                }
+
+                R.id.btnLogout -> {
+                      logoutUser()
+//                    makeToast("Logout",0)
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
+        }
+
+
         return binding.root
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+
+        activity?.finish()
+        activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun setProfileData() {
@@ -172,7 +202,6 @@ class ProfileFragment : Fragment(),View.OnClickListener {
                     lName = it
                 }
             }
-            binding.userName.text = fName
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -299,10 +328,12 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             }
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserLName().collect {
-                    fName = "$fName $it"
+                    val fullName = "${binding.userName.text} $it"
+                    binding.userName.text = fullName
+                    lName = it
                 }
             }
-            binding.userName.text = fName
+            
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -938,65 +969,6 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         updateDataServiceIntent.putExtra("userType",type)
         updateDataServiceIntent.putExtra("userId",id)
         activity?.startService(updateDataServiceIntent)
-
-//        makeToast("destroyed",0)
-    }
-
-    private fun storeUpdatedDataInServer() {
-        FirebaseDatabase.getInstance().getReference("Users")
-            .child(type.toString())
-            .child(id.toString())
-            .addValueEventListener(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-
-                    var keySet: Set<Preferences.Key<*>>? = null
-
-                    lifecycle.coroutineScope.launch(Dispatchers.Main.immediate) {
-                        keySet = jobSeekerProfileInfo.readAllKeys()
-                        for (variableName in keySet!!) {
-                            val childSnapshot = snapshot.child(variableName.toString())
-                            if (childSnapshot.exists()) {
-                                // Retrieve the value from Firebase
-                                val firebaseValue = childSnapshot.value
-                                // Retrieve the local value
-                                CoroutineScope(IO).launch(Dispatchers.Main.immediate) {
-                                    val localValue = jobSeekerProfileInfo.getValueByKey(variableName).toString()
-                                    if (firebaseValue == localValue) {
-                                        Log.d("Comparison","$variableName is the same")
-                                    } else {
-//                                        showUpdateDialog()
-                                        addDataToMap(variableName.toString(),localValue)
-                                        Log.d("Comparison","$variableName is updated")
-                                    }
-                                }
-                            } else {
-                                Log.d("Comparison","$variableName does not exist in Firebase")
-                            }
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    makeToast("error: ${error.message}",0)
-                }
-            })
-
-    }
-
-    private fun addDataToMap(variableName: String, localValue: String) {
-//        map[variableName] = localValue
-        Log.d("updated entities","${variableName}:${localValue}")
-        map!![variableName] = localValue
-    }
-
-    private fun showUpdateDialog() {
-        val updateDialog = AlertDialog.Builder(context,R.style.CustomAlertDialogStyle)
-            .setTitle("Attention..")
-            .setMessage("You updated your data. You need to save it.")
-            .setPositiveButton("Save"){dialog,_->
-
-                dialog.dismiss()
-
-            }
     }
 
     private fun requestPermissions(s: String) {

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <androidx.appcompat.widget.ActionMenuView
+        android:id="@+id/actionMenuView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:background="#03A9F4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_70sdp"
+        android:background="@drawable/top_card_bg"
+        android:backgroundTint="#03A9F4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionMenuView" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:shapeAppearanceOverlay="@style/circle"
+        app:srcCompat="@drawable/profile_default_image"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

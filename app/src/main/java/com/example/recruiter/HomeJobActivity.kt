@@ -1,10 +1,6 @@
 package com.example.recruiter
 
-//import android.content.Intent
-//import android.net.Uri
-//import android.os.Build
-//import android.provider.Settings
-//import androidx.appcompat.app.AlertDialog
+
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
@@ -18,7 +14,6 @@ import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -29,26 +24,12 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-//import com.karumi.dexter.Dexter
-//import com.karumi.dexter.MultiplePermissionsReport
-//import com.karumi.dexter.PermissionToken
-//import com.karumi.dexter.listener.PermissionRequest
-//import com.karumi.dexter.listener.multi.DialogOnAnyDeniedMultiplePermissionsListener
-//import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 
 class HomeJobActivity : AppCompatActivity() {
-    lateinit var bottomNavigationView: BottomNavigationView
-    lateinit var homeFragment: HomeFragment
-    lateinit var profileFragment: ProfileFragment
-    lateinit var frame : FrameLayout
-
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-    private var isReadStorageGranted = false
-    private var isWriteStorageGranted = false
-    private var isCallPhoneGranted = false
-    private  var isReceiveSmsGranted = false
-    private var isSendSmsGranted = false
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var frame : FrameLayout
 
     private var userType:String ?= null
     private var userId:String ?= null
@@ -65,13 +46,11 @@ class HomeJobActivity : AppCompatActivity() {
         }
 
         userType = intent.getStringExtra("userType").toString()
-        userId = intent.getStringExtra("userId").toString()
-        makeToast("$userId::$userType",0)
+//        makeToast("$userId::$userType",0)
         
         bottomNavigationView = findViewById(R.id.bottomnavigation)
         frame = findViewById(R.id.frameLayout)
         replaceFragment(HomeFragment())
-//        replaceFragment((ProfileFragment()))
         homeFragment = HomeFragment()
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -83,7 +62,8 @@ class HomeJobActivity : AppCompatActivity() {
                     replaceFragment(ProfileFragment())
                 }
                 R.id.chat -> {
-                    replaceFragment(ChatFragment())
+                    val intent = Intent(this@HomeJobActivity,MessengerHomeActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
@@ -93,7 +73,6 @@ class HomeJobActivity : AppCompatActivity() {
 
         val bundle = Bundle()
         bundle.putString("userType", userType!!)
-        bundle.putString("userId", userId!!)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
@@ -103,15 +82,7 @@ class HomeJobActivity : AppCompatActivity() {
 
     private fun requestPermissions() {
         val permissions: Collection<String> =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listOf(Manifest.permission.READ_MEDIA_IMAGES)
-            } else {
-                listOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            }
+            listOf(Manifest.permission.READ_MEDIA_IMAGES)
         Log.d("####", "requestPermissions: $permissions")
         Dexter.withContext(this).withPermissions(
             permissions
@@ -140,34 +111,16 @@ class HomeJobActivity : AppCompatActivity() {
     }
 
     private fun isGrantedPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Log.d("Version*", Build.VERSION.SDK_INT.toString())
-            listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
-        } else {
-            Log.d("Version**", Build.VERSION.SDK_INT.toString())
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            val isGranted3 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED && isGranted3 == PackageManager.PERMISSION_GRANTED
-        }
+        Log.d("Version*", Build.VERSION.SDK_INT.toString())
+        listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
+        val isGranted1 =
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_IMAGES
+            )
+        val isGranted2 =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showSettingsDialog() {

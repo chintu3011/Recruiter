@@ -1,21 +1,25 @@
 package com.example.recruiter
+import java.io.Serializable
 
 data class UsersRecruiter(
-    var userFName :String ?= null,
-    var userLName :String ?= null,
-    var userPhoneNumber :String ?= null,
-    var userEmailId :String ?= null,
-    var userProfileImg :String ?= null,
-    var userProfileBannerImg :String ?= null,
-    var userTagLine :String ?= null,
-    var userCurrentCompany :String ?= null,
 
-    var userDesignation :String ?= null,
-    var userJobTitle :String ?= null,
-    var userBio :String ?= null,
-    var userSalary :String ?= null,
-    var userJobLocation:String ?= null,
-    var userWorkingMode :String ?= null,
-    var termsConditionsAcceptance :String ?= null
+    var userId :String = "",
+    
+    var userFName :String = "",
+    var userLName :String = "",
+    var userPhoneNumber :String = "",
+    var userEmailId :String = "",
+    var userProfileImg :String = "",
+    var userProfileBannerImg :String = "",
+    var userTagLine :String = "",
+    var userCurrentCompany :String = "",
 
-)
+    var userDesignation :String = "",
+    var userJobTitle :String = "",
+    var userBio :String = "",
+    var userSalary :String = "",
+    var userJobLocation:String = "",
+    var userWorkingMode :String = "",
+    var termsConditionsAcceptance :String = ""
+
+) : Serializable
