@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/phoneImg"
                     android:layout_marginTop="5dp"
-                    android:fontFamily="serif"
+                    style="@style/CustomFontStyle"
                     android:gravity="center"
                     android:text="OTP Verification"
                     android:textColor="@color/black"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/phoneImg"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="serif"
+                    style="@style/CustomFontStyle"
                     android:gravity="center"
                     android:text="We will send you a 6-digit one-time password to this number"
                     android:textColor="#656464" />
@@ -98,7 +98,7 @@
                     app:ccp_textSize="20dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutWorkingMode"
+                    android:id="@+id/textLayoutPhoneNo"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                     app:startIconTint="@color/ed_theme_color">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/workingMode"
+                        android:id="@+id/phoneNo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
@@ -143,7 +143,7 @@
                     android:background="@drawable/btn_background"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="serif"
+                    style="@style/CustomFontStyle"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:padding="15dp"
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        android:fontFamily="serif"
+                        style="@style/CustomFontStyle"
                         android:gravity="center"
                         android:text="Not A Member?"
                         android:textSize="15dp"
@@ -192,7 +192,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/UsertextView5"
-                        android:fontFamily="serif"
+                        style="@style/CustomFontStyle"
                         android:gravity="center"
                         android:text="  Register Now"
                         android:textColor="@color/blue"

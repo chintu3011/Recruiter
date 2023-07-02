@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="1dp"
+            style="@style/CustomFontStyle"
             android:padding="@dimen/_10sdp"
             android:maxWidth="@dimen/_200sdp"
             android:text="@string/short_lorem_ipsum"
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/hh_mm_ss"
+            style="@style/CustomFontStyle"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:textColor="#A3FFFFFF" android:layout_marginHorizontal="@dimen/_6sdp"/>

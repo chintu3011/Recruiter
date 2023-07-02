@@ -4,23 +4,27 @@
         android:id="@+id/homeR"
         android:title="Home"
         android:icon="@drawable/baseline_home_24"
+        style="@style/CustomFontStyle"
         />
 
     <item
         android:id="@+id/postR"
         android:title="Post"
         android:icon="@drawable/baseline_add_box_24"
+        style="@style/CustomFontStyle"
         />
 
     <item
         android:id="@+id/profileR"
         android:title="Profile"
         android:icon="@drawable/baseline_person_24"
+        style="@style/CustomFontStyle"
         />
 
     <item
         android:id="@+id/chatR"
         android:title="Chat"
         android:icon="@drawable/baseline_chat_bubble_24"
+        style="@style/CustomFontStyle"
         />
 </menu>

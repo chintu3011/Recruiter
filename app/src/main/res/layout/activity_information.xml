@@ -45,6 +45,7 @@
         android:layout_marginEnd="10dp"
         android:text="Skip"
         android:textColor="@color/white"
+        style="@style/CustomFontStyle"
         android:textSize="16sp"
         android:clickable="true"
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"

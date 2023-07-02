@@ -93,6 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPersonName"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,6 +131,7 @@
                     android:id="@+id/userLName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
                     android:inputType="textPersonName"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -215,6 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="phone"
+                        android:fontFamily="@font/poppinsregular"
                         android:maxEms="10"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -256,6 +259,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="13"
+                    android:fontFamily="@font/poppinsregular"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -268,6 +272,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/poppinsregular"
                 app:layout_constraintBottom_toTopOf="@+id/btnLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -306,6 +311,7 @@
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:backgroundTint="@null"
+                    android:fontFamily="@font/poppinsregular"
                     app:cornerRadius="30dp"
                     app:rippleColor="@color/glass_color" />
 

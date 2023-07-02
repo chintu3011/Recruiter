@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.recruiter.databinding.ActivityLoginsignupBinding
 
-class loginSignupActivity : AppCompatActivity() {
+class loginsignupActivity : AppCompatActivity() {
     lateinit var binding : ActivityLoginsignupBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

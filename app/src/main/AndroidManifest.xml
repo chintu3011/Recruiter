@@ -94,7 +94,11 @@
         </activity>
         <activity android:name=".HomeRecruiterActivity"
             android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".IntroductionActivity"
@@ -113,7 +117,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".loginSignupActivity"
+            android:name=".loginsignupActivity"
             android:exported="false" />
     </application>
 

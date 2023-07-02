@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/halfcircleup"
-    tools:context=".loginSignupActivity">
+    tools:context=".loginsignupActivity">
 
     <TextView
         android:id="@+id/appName"
@@ -42,7 +42,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/btntransborder"
-        android:fontFamily="serif"
+        style="@style/CustomFontStyle"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -60,7 +60,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/btntransborder"
-        android:fontFamily="serif"
+        style="@style/CustomFontStyle"
         android:text="Register"
         android:textAllCaps="false"
         android:textColor="@color/white"

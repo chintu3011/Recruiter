@@ -53,6 +53,13 @@ class PostRecruitFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.btnCancelPost.setOnClickListener {
+            val homeFragment = HomeRecruitFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameRLayout,homeFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
         return binding.root
     }
 
@@ -108,8 +115,15 @@ class PostRecruitFragment : Fragment() {
         val softskill : String = binding.softSkills.text.toString()
         val edu : String = binding.eduadd.text.toString()
         val city : String = binding.cityadd.text.toString()
+        val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
+        lateinit var workmode : String
+        when (workmodeid)
+        {
+            R.id.radioBtnOnsitepost -> workmode = "On-site"
+            R.id.radioBtnRemotepost -> workmode = "Remote"
+            R.id.radioBtnHybridpost -> workmode = "Hybrid"
+        }
         val sal : String = binding.salary.text.toString()
-        val workmode : String = binding.workingMode.text.toString()
         val empneed : String = binding.noOfEmployeeNeed.text.toString()
         val phone : Long = 9825154730
         val email = "info@amrisystems.com"

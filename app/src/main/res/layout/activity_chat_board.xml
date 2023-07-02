@@ -61,6 +61,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:menu="@menu/nav_menu_chat"
                 app:title="Person Name"
+                style="@style/CustomFontStyle"
                 app:titleMargin="@dimen/_10sdp"
                 app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
                 app:titleTextColor="@color/white" />
@@ -118,6 +119,7 @@
             android:drawableEnd="@drawable/ic_attach"
             android:drawablePadding="@dimen/_5sdp"
             android:hint="Message"
+            style="@style/CustomFontStyle"
             android:textColor="#011132"
             android:padding="@dimen/_5sdp"
             android:background="@null"

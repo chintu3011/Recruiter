@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 class LoginActivity : AppCompatActivity(),OnClickListener {
 
     private lateinit var mAuth: FirebaseAuth
-
+    lateinit var mCallback : PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var cpp: CountryCodePicker
     private lateinit var inputPhoneNo: EditText
     private lateinit var btnLogin: Button
@@ -148,59 +148,85 @@ class LoginActivity : AppCompatActivity(),OnClickListener {
     }
 
     private fun sentOtp() {
-        phoneNo = "+" + cpp.fullNumber.toString()
+        phoneNo = "+" + cpp.fullNumber.toString().trim{it <= ' '}
         getUserTypeIfNotSignIn(phoneNo) { userType ->
 
             if (userType.isNotEmpty()) {
                 val correct = checkInputData(phoneNo)
-                if (correct){
-                    btnLogin.visibility = GONE
-                    progressBar.visibility = VISIBLE
+                if (correct) {
+//                    btnLogin.visibility = GONE
+//                    progressBar.visibility = VISIBLE
+//                    val options = PhoneAuthOptions.newBuilder(mAuth)
+//                        .setPhoneNumber(phoneNo)
+//                        .setTimeout(60L, TimeUnit.SECONDS)
+//                        .setActivity(this)
+//                        .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+//                            // OnVerificationStateChangedCallbacks
+//                            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+//                                copyCredential = credential
+//                                makeToast("Verification Successful.",0)
+//                                btnLogin.visibility = VISIBLE
+//                                progressBar.visibility = GONE
+////                        navigateToNextActivity()
+//                            }
+//                            override fun onVerificationFailed(e: FirebaseException) {
+//                                progressBar.visibility = GONE
+//                                btnLogin.visibility = VISIBLE
+//                                Log.d("Task", "${e.message}")
+//                                makeToast("verificationFailed : ${e.message}",1)
+//
+//                            }
+//
+//                            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+//                                super.onCodeSent(verificationId, token)
+//                                makeToast("code sent to $phoneNo",0)
+//                                storedVerificationId = verificationId
+//                                resendToken = token
+//                                btnLogin.visibility = VISIBLE
+//                                progressBar.visibility = GONE
+//                                navigateToNextActivity()
+//                            }
+//                        })
+//                        .build()
+//                    PhoneAuthProvider.verifyPhoneNumber(options)
+                    mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
+                        override fun onVerificationFailed(e: FirebaseException) {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                e.localizedMessage,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+
+                        override fun onCodeSent(
+                            verificationId: String,
+                            token: PhoneAuthProvider.ForceResendingToken
+                        ) {
+                            storedVerificationId = verificationId
+                            resendToken = token
+                            btnLogin.visibility = VISIBLE
+                            progressBar.visibility = GONE
+                            navigateToNextActivity()
+                        }
+                    }
                     val options = PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phoneNo)
-                        .setTimeout(60L, TimeUnit.SECONDS)
-                        .setActivity(this)
-                        .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
-                            // OnVerificationStateChangedCallbacks
-                            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                                copyCredential = credential
-                                makeToast("Verification Successful.",0)
-                                btnLogin.visibility = VISIBLE
-                                progressBar.visibility = GONE
-//                        navigateToNextActivity()
-                            }
-                            override fun onVerificationFailed(e: FirebaseException) {
-                                progressBar.visibility = GONE
-                                btnLogin.visibility = VISIBLE
-                                Log.d("Task", "${e.message}")
-                                makeToast("verificationFailed : ${e.message}",1)
-
-                            }
-
-                            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                                super.onCodeSent(verificationId, token)
-                                makeToast("code sent to $phoneNo",0)
-                                storedVerificationId = verificationId
-                                resendToken = token
-                                btnLogin.visibility = VISIBLE
-                                progressBar.visibility = GONE
-                                navigateToNextActivity()
-                            }
-                        })
+                        .setPhoneNumber(
+                            phoneNo
+                        ) // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this) // Activity (for callback binding)
+                        .setCallbacks(mCallback) // OnVerificationStateChangedCallbacks
                         .build()
                     PhoneAuthProvider.verifyPhoneNumber(options)
-                }
-                else{
-                    Log.d(TAG,"Input data is incorrect")
-                    makeToast("Input data is incorrect",0)
+                } else {
+                    Log.d(TAG, "Input data is incorrect")
+                    makeToast("Input data is incorrect", 0)
                 }
             }
+            }
         }
-    
-
-
-
-    }
 
     private fun checkInputData(phoneNo: String): Boolean {
 

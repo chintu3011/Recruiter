@@ -73,6 +73,7 @@
             android:layout_below="@id/Linearr"
             android:gravity="center"
             android:numColumns="1"
+            android:fontFamily="@font/poppinsregular"
             android:verticalSpacing="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@id/Linearr"
             app:layout_constraintStart_toEndOf="@id/startGuildLine"

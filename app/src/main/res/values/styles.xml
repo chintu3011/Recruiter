@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="CustomFontStyle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppinsregular</item>
+    </style>
+
     <style name="CustomAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!-- Customize the title style -->
         <item name="android:windowTitleStyle">@style/CustomDialogTitleStyle</item>

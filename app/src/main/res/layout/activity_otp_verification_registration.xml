@@ -7,30 +7,30 @@
     android:background="@color/white"
     tools:context=".OTPVerificationRegistrationActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/_230sdp"
             android:scaleType="centerInside"
             android:layout_gravity="center_horizontal"
             android:layout_weight="2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/LL"
             app:srcCompat="@drawable/otp_screen_icon"/>
         <LinearLayout
+            android:id="@+id/LL"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/image"
             android:gravity="center_horizontal">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Enter the Verification Code"
                 android:textAlignment="center"
-                android:fontFamily="serif"
+                style="@style/CustomFontStyle"
                 android:textAllCaps="false"
                 android:textColor="@color/blue"
                 android:textSize="27dp"
@@ -41,8 +41,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif"
-                android:text="6 - digit verification code sent to"
+                style="@style/CustomFontStyle"                android:text="6 - digit verification code sent to"
                 android:textAlignment="center"
                 android:textColor="@color/cust_text_sec"
                 android:textSize="20dp"
@@ -52,8 +51,7 @@
                 android:id="@+id/txtPhoneNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif"
-                android:text="Phone number"
+                style="@style/CustomFontStyle"                android:text="Phone number"
                 android:textAlignment="center"
                 android:textColor="@color/cust_text_sec"
                 android:textSize="20dp"
@@ -65,8 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="serif"
-                android:textAlignment="textStart"
+                style="@style/CustomFontStyle"                android:textAlignment="textStart"
                 android:text="You can change phone number"
                 android:textColor="@color/blue"
                 android:textStyle="bold"
@@ -129,8 +126,7 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    android:fontFamily="serif"
-                    app:cornerRadius="50dp"
+                    style="@style/CustomFontStyle"                    app:cornerRadius="50dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="50dp"
                     android:insetTop="0dp"
@@ -154,7 +150,7 @@
                         android:layout_weight="1"
                         android:text=" Didn't Receive code? "
                         android:textStyle="normal"
-                        android:fontFamily="serif"
+                        style="@style/CustomFontStyle"
                         android:textColor="@color/cust_text_sec"
                         android:textAlignment="textEnd"
                         android:textSize="15sp"/>
@@ -163,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Resend Code"
-                        android:fontFamily="serif"
+                        style="@style/CustomFontStyle"
                         android:textStyle="bold"
                         android:textColor="@color/blue"
                         android:textAlignment="textStart"
@@ -180,9 +176,5 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
-
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

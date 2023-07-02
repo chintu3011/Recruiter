@@ -41,6 +41,7 @@
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             android:lines="5"
+            android:fontFamily="@font/poppinsregular"
             android:maxEms="2000"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -80,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="13"
+            android:fontFamily="@font/poppinsregular"
             android:inputType="textAutoComplete"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>

@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textAutoComplete"
+            android:fontFamily="@font/poppinsregular"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="number"
+            android:fontFamily="@font/poppinsregular"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -112,6 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="none"
+            android:fontFamily="@font/poppinsregular"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -151,6 +154,7 @@
             android:inputType="textMultiLine"
             android:lines="5"
             android:maxEms="2000"
+            android:fontFamily="@font/poppinsregular"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -186,6 +190,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="none"
+            android:fontFamily="@font/poppinsregular"
             android:padding="@dimen/_10sdp" />
     </com.google.android.material.textfield.TextInputLayout>
     <RadioGroup
@@ -213,6 +218,7 @@
             android:layout_weight="1"
             android:buttonTint="@color/blue"
             android:text="On-Site"
+            android:fontFamily="@font/poppinsregular"
             android:textColor="@color/black" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
@@ -222,6 +228,7 @@
             android:layout_weight="1"
             android:buttonTint="@color/blue"
             android:text="Remote"
+            android:fontFamily="@font/poppinsregular"
             android:textColor="@color/black" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
@@ -231,6 +238,7 @@
             android:layout_weight="1"
             android:buttonTint="@color/blue"
             android:text="Hybrid"
+            android:fontFamily="@font/poppinsregular"
             android:textColor="@color/black" />
     </RadioGroup>
 
@@ -239,6 +247,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="Working Mode"
+        android:fontFamily="@font/poppinsregular"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/ed_theme_color"

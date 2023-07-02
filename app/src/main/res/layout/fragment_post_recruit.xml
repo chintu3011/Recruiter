@@ -47,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,6 +118,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:fontFamily="@font/poppinsregular"
                     android:text="File_Name.jpg"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -169,6 +172,7 @@
                     android:layout_height="match_parent"
                     android:lines="5"
                     android:inputType="textMultiLine"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,6 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -237,6 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="datetime"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -273,6 +279,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -309,6 +316,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -343,6 +351,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -377,6 +386,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="13"
+                    android:fontFamily="@font/poppinsregular"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -412,6 +422,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -419,7 +430,7 @@
                     android:id="@+id/textLayoutWorkingMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15sdp"
+                    android:layout_margin="@dimen/_10sdp"
                     android:background="@drawable/border_radio_grp"
                     android:orientation="vertical"
                     android:paddingStart="@dimen/_15sdp"
@@ -427,40 +438,43 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:paddingBottom="@dimen/_5sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioBtnOnsite"
+                        android:id="@+id/radioBtnOnsitepost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="On-Site"
+                        android:fontFamily="@font/poppinsregular"
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioBtnRemote"
+                        android:id="@+id/radioBtnRemotepost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Remote"
+                        android:fontFamily="@font/poppinsregular"
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioBtnHybrid"
+                        android:id="@+id/radioBtnHybridpost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Hybrid"
+                        android:fontFamily="@font/poppinsregular"
                         android:textColor="@color/black" />
                 </RadioGroup>
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textviewworkmode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -469,7 +483,7 @@
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                 android:textColor="@color/ed_theme_color"
                 android:textStyle="bold"
-                app:fontFamily="serif"
+                android:fontFamily="@font/poppinsregular"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintHorizontal_bias="0.09"
@@ -482,7 +496,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Number of Employees"
-                android:paddingTop="0dp"
+                android:paddingTop="@dimen/_10sdp"
                 app:boxBackgroundColor="#FFFFFF"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -507,6 +521,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
+                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -518,8 +533,8 @@
                 android:background="@drawable/btn_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:fontFamily="serif"
                 android:text="Post Job"
+                android:fontFamily="@font/poppinsregular"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textStyle="bold"
@@ -540,8 +555,7 @@
                 android:background="@drawable/btn_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:fontFamily="serif"
-                android:text="Cancel Post"
+                android:fontFamily="@font/poppinsregular"                android:text="Cancel Post"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textStyle="bold"
@@ -557,7 +571,7 @@
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:id="@+id/flow9"
-                android:layout_width="378dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="btnpostjob,btnCancelPost"
                 app:flow_horizontalAlign="center"
@@ -570,6 +584,8 @@
                 tools:layout_editor_absoluteY="1035dp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@id/textLayoutEmployeeNeed"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
