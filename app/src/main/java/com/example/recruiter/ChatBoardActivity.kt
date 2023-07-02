@@ -146,6 +146,7 @@ class ChatBoardActivity : AppCompatActivity() ,OnClickListener{
                     if (messageData != null ){
                         messageList.add(messageData)
                         Log.d("messageData", messageData.message.toString())
+                        completion()
                     }
                 }
 
@@ -165,15 +166,9 @@ class ChatBoardActivity : AppCompatActivity() ,OnClickListener{
 
                 }
             })
-        completion()
 
     }
 
-    private fun setDummyData() {
-        val adapter = ChatAdapter(messageList)
-
-        binding.recyclerView.adapter = adapter
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.nav_menu_chat,menu)
@@ -249,6 +244,19 @@ class ChatBoardActivity : AppCompatActivity() ,OnClickListener{
                 makeToast("There is Something wrong in our System.",0)
                 Log.d(TAG,"Couldn't saved Send Msg To database:${toReference.key}")
             }
+
+
+        val latestMessageFromRef = FirebaseDatabase.getInstance().getReference("Messenger")
+            .child("LatestMessage")
+            .child(fromId)
+            .child(toId)
+            .setValue(messageData)
+
+        val latestMessageToRef = FirebaseDatabase.getInstance().getReference("Messenger")
+            .child("LatestMessage")
+            .child(toId)
+            .child(fromId)
+            .setValue(messageData)
     }
 
     private fun makeToast(msg: String, len: Int) {

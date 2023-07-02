@@ -77,8 +77,6 @@ class NewUsersMessageActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
     override fun onStart() {
