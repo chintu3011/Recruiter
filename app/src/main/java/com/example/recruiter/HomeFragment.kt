@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
     private lateinit var jobListAdapter: CustomAdapter
-    private var userType:String ?= null
+    private var userType: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -133,15 +133,15 @@ class HomeFragment : Fragment() {
                 myview = layoutInflater.inflate(R.layout.row_post_design, null)
             }
             val name: MaterialTextView = myview!!.findViewById(R.id.jobTitle)
-            val sal : MaterialTextView = myview.findViewById(R.id.salary)
-            val exp : MaterialTextView = myview.findViewById(R.id.experiencedDuration)
-            val qual : MaterialTextView = myview.findViewById(R.id.qualification)
+            val sal: MaterialTextView = myview.findViewById(R.id.salary)
+            val exp: MaterialTextView = myview.findViewById(R.id.experiencedDuration)
+            val qual: MaterialTextView = myview.findViewById(R.id.qualification)
             val loc: TextView = myview.findViewById(R.id.city)
-            val img : ImageView = myview.findViewById(R.id.profileImg)
-            val about : MaterialTextView = myview.findViewById(R.id.aboutPost)
+            val img: ImageView = myview.findViewById(R.id.profileImg)
+            val about: MaterialTextView = myview.findViewById(R.id.aboutPost)
             val compname: MaterialTextView = myview.findViewById(R.id.companyName)
-            val employess : MaterialTextView = myview.findViewById(R.id.employees)
-            val cv : CardView = myview.findViewById(R.id.cardViewinfo)
+            val employess: MaterialTextView = myview.findViewById(R.id.employees)
+            val cv: CardView = myview.findViewById(R.id.cardViewinfo)
             val job: Jobs = dataList[position]
             name.text = job.jobTile
             sal.text = job.salary + " LPA"
@@ -153,40 +153,25 @@ class HomeFragment : Fragment() {
             employess.text = job.employeeNeed + " Employees"
             Glide.with(img.context).load(job.companyLogo).into(img)
             cv.setOnClickListener {
-                val activity : AppCompatActivity = view?.context as AppCompatActivity
-                val jobTitle = job.jobTile
-                val jobPostDescriptionFragment = jobTitle?.let { it1 ->
-                    JobPostDescriptionFragment.newInstance(
-                        it1
-                    )
-                }
-                if (jobPostDescriptionFragment != null) {
-                    activity.supportFragmentManager.beginTransaction().replace(R.id.frameLayout, jobPostDescriptionFragment)
-                        .addToBackStack(null)
-                        .commit()
-                }
+                val activity: AppCompatActivity = view?.context as AppCompatActivity
+                val jobTitle = dataList[position]
+                val jobPostDescriptionFragment = JobPostDescriptionFragment.newInstance(jobTitle)
+                activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.frameLayout, jobPostDescriptionFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
-//            contact.setOnClickListener {
-//                val num: String = contact.text.toString()
-//                makePhoneCall(num)
-//            }
-//            email.setOnClickListener {
-//                val emailsend = email.text.toString()
-//                val intent = Intent(Intent.ACTION_SEND)
-//                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
-//                intent.type = "message/rfc822"
-//                startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
-//            }
-            return myview
-        }
+        return myview
     }
+}
 
-    private fun makePhoneCall(num: String) {
-        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
-        startActivity(dialIntent)
-    }
-    private fun makeToast(msg: String, len: Int) {
-        if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-    }
+private fun makePhoneCall(num: String) {
+    val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
+    startActivity(dialIntent)
+}
+
+private fun makeToast(msg: String, len: Int) {
+    if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+}
 }
