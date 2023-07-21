@@ -1,8 +1,6 @@
 package com.example.recruiter
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -14,7 +12,6 @@ import android.widget.GridView
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -34,6 +31,7 @@ class HomeFragment : Fragment() {
     lateinit var fragview: View
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
+    private lateinit var filteredDataList: MutableList<Jobs>
     private lateinit var jobListAdapter: CustomAdapter
     private var userType: String? = null
     override fun onCreateView(
@@ -42,11 +40,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-
-
-//        if(companyName.isEmpty()){
-//            recyclerView.setVisibility(View.INVISIBLE);
-//        }
         val bundle = arguments
         if (bundle != null) {
             userType = bundle.getString("userType")
@@ -56,13 +49,14 @@ class HomeFragment : Fragment() {
         searchView = fragview.findViewById(R.id.search)
         voice = fragview.findViewById(R.id.voicesearch)
         database = FirebaseDatabase.getInstance().reference
+        filteredDataList = mutableListOf()
         dataList = mutableListOf()
         jobListAdapter = CustomAdapter()
         gridView.adapter = jobListAdapter
         retrieveJobData()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String): Boolean {
-                filterJobList(p0)
+            override fun onQueryTextSubmit(query: String): Boolean {
+
                 return false
             }
 
@@ -77,14 +71,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun filterJobList(query: String) {
-        val filteredlist = mutableListOf<Jobs>()
-        for (job in dataList) {
-            if (TextUtils.isEmpty(query) || job.jobTile?.lowercase(Locale.ROOT)
-                    ?.contains(query.lowercase(Locale.ROOT)) == true
-            ) {
-                dataList.add(job)
+        dataList.clear()
+        if (!TextUtils.isEmpty(query)){
+            for (user in filteredDataList) {
+                if (user.jobTile!!.lowercase(Locale.ROOT)
+                        .contains(query.lowercase(Locale.ROOT))
+                ) {
+                    dataList.add(user)
+                }
             }
         }
+        else{
+            dataList.addAll(filteredDataList)
+        }
+
+
         jobListAdapter.notifyDataSetChanged()
     }
 
@@ -93,14 +94,15 @@ class HomeFragment : Fragment() {
 
         jobRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                filteredDataList.clear()
                 dataList.clear()
-
                 for (snapshot in dataSnapshot.children) {
                     val job: Jobs? = snapshot.getValue(Jobs::class.java)
                     job?.let {
-                        dataList.add(job)
+                        filteredDataList.add(job)
                     }
                 }
+                dataList.addAll(filteredDataList)
 
                 // Notify the adapter that the data has changed
                 jobListAdapter.notifyDataSetChanged()
@@ -126,7 +128,7 @@ class HomeFragment : Fragment() {
             return position.toLong()
         }
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint("SetTextI18n", "InflateParams")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview = convertView
             if (myview == null) {
@@ -161,17 +163,7 @@ class HomeFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
-        return myview
+            return myview
+        }
     }
-}
-
-private fun makePhoneCall(num: String) {
-    val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
-    startActivity(dialIntent)
-}
-
-private fun makeToast(msg: String, len: Int) {
-    if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-    if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-}
 }

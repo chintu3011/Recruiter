@@ -1,8 +1,6 @@
 package com.example.recruiter
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +10,8 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.recruiter.databinding.FragmentJobPostDescriptionBinding
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class JobPostDescriptionFragment() : Fragment() {
     private lateinit var database: DatabaseReference
@@ -81,86 +76,14 @@ class JobPostDescriptionFragment() : Fragment() {
         binding.btnApply.setOnClickListener {
             val email = selectedPost.email
             val sub = selectedPost.companyName
-            val dialIntent = Intent(Intent.ACTION_SENDTO)
-            dialIntent.putExtra(Intent.EXTRA_EMAIL, email)
-            dialIntent.putExtra(
-                Intent.EXTRA_SUBJECT,
-                "Reg. Job Application for " + sub
-            );
+            val dialIntent = Intent(Intent.ACTION_SEND)
+            dialIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            dialIntent.putExtra(Intent.EXTRA_SUBJECT, "Reg. Job Application for " + sub)
             dialIntent.type = "message/rfc822"
             startActivity(
-                Intent.createChooser(
-                    dialIntent,
-                    "Choose an email client:"
-                )
+                Intent.createChooser(dialIntent, "Choose an email client:")
             )
         }
     }
-
-//    private fun retreivedescription() {
-//        val jobRef = database.child("Jobs")
-//        jobRef.orderByChild("jobTile").equalTo(jobTitle)
-//            .addListenerForSingleValueEvent(object : ValueEventListener
-//            {
-//                @SuppressLint("SetTextI18n")
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    if (snapshot.exists()) {
-//                        for (data in snapshot.children) {
-//                            val jobData = data.getValue(Jobs::class.java)
-//                            if (jobData != null) {
-//                                val jobtitletv = jobData.jobTile
-//                                val companynametv = jobData.companyName
-//                                val loctv = jobData.jobLocation
-//                                val durtv = jobData.postDuration
-//                                val appstv = jobData.jobApplications
-//                                val workmodetv = jobData.workingmode
-//                                val jobroletv = jobData.jobRoll
-//                                val jobdesctv = jobData.aboutPost
-//                                val techskilltv = jobData.technicalSkills
-//                                val softskilltv = jobData.softSkills
-//                                val exptv = jobData.experienceDuration
-//                                val edutv = jobData.education
-//                                val img: ShapeableImageView = fragview.findViewById(R.id.companyLogo)
-//                                binding.jobTitle.text = jobtitletv
-//                                binding.companyName.text = companynametv
-//                                binding.jobLocation.text = loctv
-//                                binding.jobPostDuration.text = durtv
-//                                binding.applications.text = appstv.toString() + " Applications"
-//                                binding.workingMode.text = workmodetv
-//                                binding.jobRoll.text = jobroletv
-//                                binding.jobDes.setText(jobdesctv)
-//                                binding.technicalSkills.text = techskilltv
-//                                binding.softSkills.text = softskilltv
-//                                binding.experience.text = exptv
-//                                binding.education.text = edutv
-//                                Glide.with(img.context).load(jobData.companyLogo).into(img)
-//                                binding.btnApply.setOnClickListener {
-//                                    val email = jobData.email
-//                                    val sub = jobData.companyName
-//                                    val dialIntent = Intent(Intent.ACTION_SENDTO)
-//                                    dialIntent.putExtra(Intent.EXTRA_EMAIL, email)
-//                                    dialIntent.putExtra(
-//                                        Intent.EXTRA_SUBJECT,
-//                                        "Reg. Job Application for " + sub
-//                                    );
-//                                    dialIntent.type = "message/rfc822"
-//                                    startActivity(
-//                                        Intent.createChooser(
-//                                            dialIntent,
-//                                            "Choose an email client:"
-//                                        )
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                override fun onCancelled(error: DatabaseError) {
-//                    TODO("Not yet implemented")
-//                }
-//
-//            })
-//    }
-
 }
 
