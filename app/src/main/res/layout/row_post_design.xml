@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/_5sdp"
+    android:id="@+id/cardViewinfo"
+    app:rippleColor="@color/card_ripple_color"
+    android:clickable="true"
+    android:layout_margin="@dimen/_10sdp"
+    android:focusable="true"
+    tools:context=".profile.MainActivity2">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuildLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/jobTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Android App Developer"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintEnd_toStartOf="@+id/salary"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/salary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Rs 10-13 LPA"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="@color/theme_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintBottom_toBottomOf="@+id/jobTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/jobTitle"
+            app:layout_constraintTop_toTopOf="@+id/jobTitle"
+            app:layout_constraintWidth_default="wrap" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="jobTitle,salary"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/topGuildLine" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/experiencedDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/post_subtitle_tv"
+            android:text="2-5 Years"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="#878484"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintEnd_toStartOf="@+id/qualification"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/salary"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/qualification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/post_subtitle_tv"
+            android:text="Graduation/Diploma"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="#878484"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintBottom_toBottomOf="@+id/experiencedDuration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/experiencedDuration"
+            app:layout_constraintTop_toTopOf="@+id/experiencedDuration"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_default="wrap" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:constraint_referenced_ids="experiencedDuration,qualification"
+            app:flow_horizontalGap="@dimen/_10sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="@dimen/_10sdp"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/salary" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/companyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="Atyantik Technologies Pvt. Ltd "
+            android:textAlignment="textStart"
+            android:fontFamily="@font/poppinsregular"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/dotDivider1"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintTop_toTopOf="@+id/dotDivider1"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dotDivider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/employees"
+            app:layout_constraintStart_toEndOf="@+id/companyName"
+            app:layout_constraintTop_toTopOf="@+id/employees"
+            app:srcCompat="@drawable/ic_dot" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/employees"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="20-99 Employees"
+            android:fontFamily="@font/poppinsregular"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/companyName"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dotDivider1"
+            app:layout_constraintTop_toBottomOf="@+id/dotDivider1" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:constraint_referenced_ids="companyName,dotDivider1,employees"
+            app:flow_horizontalGap="@dimen/_6sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="@dimen/_6sdp"
+            app:flow_verticalStyle="spread_inside"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/flow2" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImg"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/recruiterName"
+            app:layout_constraintEnd_toStartOf="@+id/recruiterName"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recruiterName"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/profile_default_image"
+            android:elevation="@dimen/_1sdp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recruiterName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="John Macvan"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppinsregular"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            app:layout_constraintBottom_toBottomOf="@+id/dotDivider2"
+            app:layout_constraintEnd_toStartOf="@+id/dotDivider2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/profileImg"
+            app:layout_constraintTop_toTopOf="@+id/dotDivider2"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dotDivider2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/designatio"
+            app:layout_constraintEnd_toStartOf="@+id/designatio"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/recruiterName"
+            app:layout_constraintTop_toTopOf="@+id/designatio"
+            app:srcCompat="@drawable/ic_dot" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/designatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HR"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintBottom_toBottomOf="@id/dotDivider2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dotDivider2"
+            app:layout_constraintTop_toTopOf="@id/dotDivider2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="profileImg,recruiterName,
+            dotDivider2,designatio"
+            app:flow_horizontalGap="@dimen/_6sdp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="@dimen/_6sdp"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toStartOf="@+id/city"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow3"
+            app:layout_constraintWidth_default="wrap" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ahmedabad"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="#777575"
+            android:textStyle="normal"
+            app:autoSizeTextType="uniform"
+            android:lines="1"
+            android:fontFamily="@font/poppinsregular"
+            app:layout_constraintBottom_toBottomOf="@+id/flow4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/flow4"
+            app:layout_constraintTop_toTopOf="@+id/flow4" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="flow4,city"
+            app:flow_wrapMode="chain"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_verticalStyle="packed"
+            app:flow_verticalGap="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+            app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+            app:layout_constraintTop_toBottomOf="@+id/flow3" />
+
+        <View
+            android:id="@+id/lineDivider1"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="#46C8C8C8"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintTop_toBottomOf="@id/flow5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aboutPost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu"
+            android:textStyle="normal"
+            android:textColor="#777575"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:fontFamily="@font/poppinsregular"
+            android:scrollHorizontally="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/lineDivider1"
+            app:layout_constraintStart_toEndOf="@id/startGuildLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+            app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

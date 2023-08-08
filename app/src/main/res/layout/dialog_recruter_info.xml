@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.MainActivity2">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutJobTitle"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Job Title"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:placeholderText="Android Developer"
+        app:startIconDrawable="@drawable/ic_job_title"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/jobTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textAutoComplete"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutSalary"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="salary"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
+        app:placeholderText="place holder"
+        app:startIconDrawable="@drawable/ic_salary"
+        app:startIconTint="@color/ed_theme_color"
+        app:suffixText=" LPA">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/salary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutJobLocation"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Job Location"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutJobDesR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
+        app:placeholderText="New York"
+        app:startIconDrawable="@drawable/ic_job_location"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/jobLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutJobDesR"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Job description"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:counterEnabled="true"
+        app:counterMaxLength="2000"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintBottom_toTopOf="@+id/textLayoutDesignation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLocation"
+        app:placeholderText="I am john Mcavan. I am Recruiter of Conway company. I am Head Of HR department"
+        app:startIconDrawable="@drawable/ic_biography"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/jobDes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxEms="2000"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textLayoutDesignation"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Designation"
+        android:paddingTop="0dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+        app:boxCornerRadiusTopStart="@dimen/_5sdp"
+        app:boxStrokeColor="@color/edit_text_color"
+        app:endIconCheckable="true"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="@color/ed_theme_color"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutJobDesR"
+        app:placeholderText="Back-Hand Developer"
+        app:startIconDrawable="@drawable/ic_job_location"
+        app:startIconTint="@color/ed_theme_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/designation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="@dimen/_10sdp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <RadioGroup
+        android:id="@+id/radioGrpWorkingMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/border_radio_grp"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioBtnOnsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/blue"
+            android:text="On-Site"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioBtnRemote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/blue"
+            android:text="Remote"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioBtnHybrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/blue"
+            android:text="Hybrid"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/black" />
+    </RadioGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="Working Mode"
+        android:fontFamily="@font/poppinsregular"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="@color/ed_theme_color"
+        android:textStyle="bold"
+        app:fontFamily="serif"
+        app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingMode"
+        app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingMode" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

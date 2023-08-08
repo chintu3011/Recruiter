@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".messenger.ChatBoardActivity"
+    android:background="#140960A2">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuildLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_85sdp"
+                android:layout_margin="0dp"
+                android:background="@color/theme_blue"
+                android:elevation="@dimen/_5sdp"
+                android:gravity="top"
+                android:padding="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/nav_menu_chat"
+                app:title="Person Name"
+                style="@style/CustomFontStyle"
+                app:titleMargin="@dimen/_10sdp"
+                app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+                app:titleTextColor="@color/white" />
+            
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImg"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center"
+                android:elevation="@dimen/_5sdp"
+                android:padding="@dimen/_6sdp"
+                app:strokeWidth="@dimen/_3sdp"
+                app:strokeColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                app:layout_constraintEnd_toEndOf="@+id/toolbar"
+                app:layout_constraintStart_toStartOf="@+id/toolbar"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:shapeAppearanceOverlay="@style/circle"
+                app:srcCompat="@drawable/profile_default_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+       android:layout_marginVertical="@dimen/_10sdp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/messageLayout"
+        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+        app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+    <RelativeLayout
+        android:id="@+id/messageLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/ed_message_bg"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintEnd_toStartOf="@id/btnVoiceMsg">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/btnCamara"
+            android:drawableStart="@drawable/ic_add_reaction"
+            android:drawableTint="@color/theme_blue"
+            android:drawableEnd="@drawable/ic_attach"
+            android:drawablePadding="@dimen/_5sdp"
+            android:hint="Message"
+            style="@style/CustomFontStyle"
+            android:textColor="#011132"
+            android:padding="@dimen/_5sdp"
+            android:background="@null"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnCamara"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/inputMessage"
+            android:layout_alignBottom="@id/inputMessage"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:srcCompat="@drawable/ic_camara"/>
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnVoiceMsg"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/ic_voice"
+        app:fabCustomSize="@dimen/_40sdp"
+        android:backgroundTint="@color/theme_blue"
+        app:tint="@color/white"
+        app:layout_constraintStart_toEndOf="@id/messageLayout"
+        app:layout_constraintTop_toTopOf="@id/messageLayout"
+        app:layout_constraintBottom_toBottomOf="@id/messageLayout"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        android:visibility="visible"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnSend"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/ic_send"
+        app:fabCustomSize="@dimen/_40sdp"
+        android:backgroundTint="@color/theme_blue"
+        android:backgroundTintMode="screen"
+        app:tint="@color/white"
+        app:layout_constraintStart_toEndOf="@id/messageLayout"
+        app:layout_constraintTop_toTopOf="@id/messageLayout"
+        app:layout_constraintBottom_toBottomOf="@id/messageLayout"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        android:visibility="gone"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    <!--            <com.google.android.material.card.MaterialCardView-->
+    <!--                android:id="@+id/toolbarCard"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:cardBackgroundColor="@color/theme_blue"-->
+    <!--                app:shapeAppearanceOverlay="@style/SpecificCornerCut"-->
+    <!--                >-->
+    <!--                <androidx.appcompat.widget.Toolbar-->
+    <!--                    android:id="@+id/toolbar"-->
+    <!--                    style="@style/SpecificCornerCut"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="@dimen/_85sdp"-->
+    <!--                    android:elevation="@dimen/_5sdp"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:layout_margin="0dp"-->
+    <!--                    android:padding="0dp"-->
+    <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                    app:layout_constraintStart_toStartOf="parent"-->
+    <!--                    app:layout_constraintTop_toTopOf="parent"-->
+    <!--                    app:menu="@menu/nav_menu_chat"-->
+    <!--                    app:title="Person Name"-->
+    <!--                    app:titleMargin="@dimen/_10sdp"-->
+    <!--                    app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"-->
+    <!--                    app:titleTextColor="@color/white" />-->
+
+    <!--            </com.google.android.material.card.MaterialCardView>-->

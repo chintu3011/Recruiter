@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".appIntroduction.SplashActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
+        android:id="@+id/imagelogo"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/tree"
+        android:layout_width="match_parent"
+        android:layout_height="402dp"
+        android:layout_below="@id/imagelogo"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="65dp"
+        android:foregroundGravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/splash" />
+    <TextView
+        android:id="@+id/textname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AmriHire"
+        android:layout_below="@id/tree"
+        android:textSize="55dp"
+        android:gravity="center"
+        android:fontFamily="cursive"
+        android:textStyle="bold"
+        android:textColor="@color/blue"/>
+
+</RelativeLayout>

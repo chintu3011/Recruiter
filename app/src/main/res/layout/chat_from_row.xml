@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_2sdp"
+    >
+    <LinearLayout
+        android:id="@+id/msgLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/chat_msg_to_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="@dimen/_3sdp"
+
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:maxWidth="@dimen/_200sdp"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/short_lorem_ipsum"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/white"
+            android:textStyle="normal" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hh_mm_ss"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textColor="#A3FFFFFF" android:layout_marginHorizontal="@dimen/_6sdp"/>
+    </LinearLayout>
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="msgLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

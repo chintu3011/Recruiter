@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#00377B</color>
+    <color name="grey">#939598</color>
+    <color name="dark_grey">#939598</color>
+    <color name="theme_blue">#00377B</color>
+    <color name="cust_backgroung">#FFFFFF</color>
+    <color name="cust_text_pri">#060906</color>
+    <color name="cust_text_sec">#464747</color>
+    <color name="card_theme">#1B5AB1</color>
+    <color name="glass_color">#0072BC</color>
+    <color name="check_color">#02397C</color>
+    <color name="check_def_color">#3E043A7C</color>
+    <color name="royal_blue">#0787CC</color>
+    <color name="card_ripple_color">#3C0073FF</color>
+    <color name="transparent">#007C7575</color>
+    <color name="ed_theme_color">#FF0960A2</color>
+</resources>

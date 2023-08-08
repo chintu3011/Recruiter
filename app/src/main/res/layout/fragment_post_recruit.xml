@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/framelayoutpost"
+    tools:context=".recruiterSide.PostRecruitFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutJobTitle"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Job Title"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/companynameadd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:placeholderText="Android Developer"
+                app:startIconDrawable="@drawable/ic_job_title"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/jobTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/companynameadd"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Company Name"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
+                app:placeholderText="Tellva Still Texus."
+                app:startIconDrawable="@drawable/ic_company"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/currentCompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_marginEnd="@dimen/_13sdp"
+                android:background="@drawable/border_radio_grp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/uploadProgress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/companynameadd">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnUpload"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_upload"
+                    app:fabCustomSize="@dimen/_30sdp"
+                    app:rippleColor="@color/glass_color"
+                    app:shapeAppearanceOverlay="@style/cornerCut"
+                    app:tint="@color/theme_blue" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:fontFamily="@font/poppinsregular"
+                    android:text="File_Name.jpg"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/black"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/uploadProgress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_marginEnd="@dimen/_13sdp"
+                android:progress="0"
+                android:progressTint="@color/theme_blue"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutdesc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutdesc"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutJobRole"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uploadProgress"
+                app:placeholderText="Job Description Here"
+                app:startIconDrawable="@drawable/ic_biography"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:lines="5"
+                    android:inputType="textMultiLine"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutJobRole"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Job Role"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textLayoutExpDuration"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutdesc"
+                app:placeholderText="Senior Software Developer"
+                app:startIconDrawable="@drawable/ic_job_title"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/jobroleadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutExpDuration"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Experience Required"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
+                app:placeholderText="2 Years"
+                app:startIconDrawable="@drawable/ic_duration"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/experiencedDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="datetime"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutTechSkills"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Required Technical Skills"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:helperText="Include || after each Skill"
+                app:helperTextTextColor="@color/blue"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutSoftSkills"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutExpDuration"
+                app:placeholderText="Skill1 || Skill2.."
+                app:startIconDrawable="@drawable/ic_skills"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/technicalSkills"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutSoftSkills"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Required Soft Skills"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:helperText="Include || after each Skill"
+                app:helperTextTextColor="@color/blue"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutedu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
+                app:placeholderText="Skill1 || Skill2.."
+                app:startIconDrawable="@drawable/ic_skills"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/softSkills"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutedu"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Education"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutCity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutSoftSkills"
+                app:placeholderText="Education Requirements"
+                app:startIconDrawable="@drawable/ic_experties"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eduadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutCity"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutedu"
+                app:placeholderText="Ahmedabad"
+                app:startIconDrawable="@drawable/cityfile"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cityadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="13"
+                    android:fontFamily="@font/poppinsregular"
+                    android:inputType="textEmailAddress"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutSalary"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Salary Package"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutCity"
+                app:placeholderText="12 LPA"
+                app:startIconDrawable="@drawable/ic_salary"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/salary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+                <RadioGroup
+                    android:id="@+id/textLayoutWorkingMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/border_radio_grp"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnOnsitepost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="On-Site"
+                        android:fontFamily="@font/poppinsregular"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnRemotepost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Remote"
+                        android:fontFamily="@font/poppinsregular"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioBtnHybridpost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/blue"
+                        android:text="Hybrid"
+                        android:fontFamily="@font/poppinsregular"
+                        android:textColor="@color/black" />
+                </RadioGroup>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textviewworkmode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Working Mode"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:textColor="@color/ed_theme_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppinsregular"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="@+id/textLayoutWorkingMode"
+                app:layout_constraintTop_toTopOf="@+id/textLayoutWorkingMode" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutEmployeeNeed"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Number of Employees"
+                android:paddingTop="@dimen/_10sdp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/flow9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutWorkingMode"
+                app:placeholderText="Need of Employees"
+                app:startIconDrawable="@drawable/ic_no_of_employees"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/noOfEmployeeNeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnpostjob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/btn_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Post Job"
+                android:fontFamily="@font/poppinsregular"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:backgroundTint="@null"
+                app:cornerRadius="30dp"
+                app:layout_constraintEnd_toStartOf="@+id/btnCancelPost"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:rippleColor="@color/glass_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelPost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/btn_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppinsregular"                android:text="Cancel Post"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:backgroundTint="@null"
+                app:cornerRadius="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/btnpostjob"
+                app:layout_constraintEnd_toStartOf="@+id/textLayoutJobTitle"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnpostjob"
+                app:layout_constraintTop_toTopOf="@+id/btnpostjob"
+                app:rippleColor="@color/glass_color" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btnpostjob,btnCancelPost"
+                app:flow_horizontalAlign="center"
+                app:flow_horizontalGap="@dimen/_10sdp"
+                app:flow_horizontalStyle="spread_inside"
+                app:flow_verticalAlign="center"
+                app:flow_verticalStyle="packed"
+                app:flow_wrapMode="chain"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="1035dp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/textLayoutEmployeeNeed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+</FrameLayout>
