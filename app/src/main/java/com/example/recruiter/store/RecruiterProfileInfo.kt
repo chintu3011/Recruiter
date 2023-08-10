@@ -1,4 +1,4 @@
-package com.example.recruiter
+package com.example.recruiter.store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -7,9 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
-
 private val Context.datastore : DataStore<Preferences> by preferencesDataStore("RECRUITER_PROFILE_INFO")
-
 data class RecruiterProfileInfo(val context: Context){
 
 
@@ -33,8 +31,26 @@ data class RecruiterProfileInfo(val context: Context){
         val userBio  = stringPreferencesKey("userBio")
         val userDesignation = stringPreferencesKey("userDesignation")
         val userWorkingMode = stringPreferencesKey("userWorkingMode")
+
     }
 
+    suspend fun storeDeviceData(
+        jobTitle:String,
+        salary:String,
+        jobLocation:String,
+        bio:String,
+        designation:String,
+        workingMode:String
+    ){
+        context.datastore.edit {
+            it[userJobTitle] = jobTitle
+            it[userSalary] = salary
+            it[userJobLocation] = jobLocation
+            it[userBio] = bio
+            it[userDesignation] = designation
+            it[userWorkingMode] = workingMode
+        }
+    }
     suspend fun storeAboutData(
         jobTitle:String,
         salary:String,
@@ -52,6 +68,7 @@ data class RecruiterProfileInfo(val context: Context){
             it[userWorkingMode] = workingMode
         }
     }
+
 
     suspend fun storeUserType(
         type:String,

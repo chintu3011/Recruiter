@@ -8,6 +8,7 @@ import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -22,22 +23,21 @@ import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.SearchView.OnQueryTextListener
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import com.example.recruiter.databinding.FragmentProfileBinding
+import com.example.recruiter.store.JobSeekerProfileInfo
+import com.example.recruiter.store.RecruiterProfileInfo
+import com.example.recruiter.util.IS_LOGIN
+import com.example.recruiter.util.PrefManager
+import com.example.recruiter.util.PrefManager.set
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.karumi.dexter.Dexter
@@ -52,7 +52,7 @@ import java.io.ByteArrayOutputStream
 
 class ProfileFragment : Fragment(),View.OnClickListener {
 
-
+    private lateinit var prefmanger: SharedPreferences
     private lateinit var alertDialogBasicInfo: AlertDialog;
     private lateinit var alertDialogAboutInfo: AlertDialog
     private lateinit var alertDialogExperience: AlertDialog;
@@ -121,6 +121,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
             type = bundle.getString("userType")
             binding.userType.text = type
         }
+        prefmanger = PrefManager.prefManager(requireContext())
         id = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("$id", "$type")
         setProfileData()
@@ -158,6 +159,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     private fun logoutUser() {
         FirebaseAuth.getInstance().signOut()
 
+        prefmanger[IS_LOGIN] = false
         activity?.finish()
         activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }

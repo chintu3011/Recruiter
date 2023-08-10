@@ -13,9 +13,11 @@ class loginsignupActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.btnloginmain.setOnClickListener {
             startActivity(Intent(this,LoginActivity::class.java))
+
         }
         binding.btnregmain.setOnClickListener {
             startActivity(Intent(this,AskActivity::class.java))
+
         }
     }
 }

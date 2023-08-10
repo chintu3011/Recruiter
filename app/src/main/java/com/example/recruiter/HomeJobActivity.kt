@@ -31,7 +31,7 @@ class HomeJobActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var frame : FrameLayout
 
-    private var userType:String ?= null
+    private var userType:Int ?= null
     private var userId:String ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class HomeJobActivity : AppCompatActivity() {
             requestPermissions()
         }
 
-        userType = intent.getStringExtra("userType").toString()
+        userType = intent.getIntExtra("role",0)
 //        makeToast("$userId::$userType",0)
         
         bottomNavigationView = findViewById(R.id.bottomnavigation)
@@ -72,7 +72,7 @@ class HomeJobActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
 
         val bundle = Bundle()
-        bundle.putString("userType", userType!!)
+        bundle.putInt("userType", userType!!)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)

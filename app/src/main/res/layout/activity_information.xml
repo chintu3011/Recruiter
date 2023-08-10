@@ -410,12 +410,40 @@
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Spinner
+                    android:id="@+id/JobLocationSpinnerJ"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/borderret"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutDuration" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="serif"
+                    android:text=" Job Location "
+                    android:textColor="@color/blue"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/JobLocationSpinnerJ"
+                    app:layout_constraintEnd_toEndOf="@+id/JobLocationSpinnerJ"
+                    app:layout_constraintHorizontal_bias="0.10"
+                    app:layout_constraintStart_toStartOf="@+id/JobLocationSpinnerJ"
+                    app:layout_constraintTop_toTopOf="@+id/JobLocationSpinnerJ" />
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/jsSubLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="textLayoutCompanyName,textLayoutDesignation,textLayoutDuration" />
+                    app:constraint_referenced_ids="textLayoutCompanyName,textLayoutDesignation,textLayoutDuration,JobLocationSpinnerJ,textView25" />
 
                 <Spinner
                     android:id="@+id/inputJobTypeSpinner"
@@ -777,7 +805,7 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
                     app:hintTextColor="@color/ed_theme_color"
-                    app:layout_constraintBottom_toTopOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintBottom_toTopOf="@+id/inputDegreeRSpinner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -795,14 +823,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
-                    android:id="@+id/inputJobTitleSpinner"
+                    android:id="@+id/inputDegreeRSpinner"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:layout_marginVertical="@dimen/_13sdp"
                     android:background="@drawable/borderret"
                     android:paddingStart="10dp"
                     android:paddingEnd="15dp"
-                    app:layout_constraintBottom_toTopOf="@+id/textLayoutJobDesR"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutBioR"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -814,24 +842,24 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:fontFamily="serif"
-                    android:text="Job Title"
+                    android:text="Last Graduation &amp; Degree"
                     android:textColor="@color/blue"
                     android:textSize="10sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/inputJobTitleSpinner"
-                    app:layout_constraintEnd_toEndOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintBottom_toTopOf="@+id/inputDegreeRSpinner"
+                    app:layout_constraintEnd_toEndOf="@+id/inputDegreeRSpinner"
                     app:layout_constraintHorizontal_bias="0.10"
-                    app:layout_constraintStart_toStartOf="@+id/inputJobTitleSpinner"
-                    app:layout_constraintTop_toTopOf="@+id/inputJobTitleSpinner" />
+                    app:layout_constraintStart_toStartOf="@+id/inputDegreeRSpinner"
+                    app:layout_constraintTop_toTopOf="@+id/inputDegreeRSpinner" />
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutJobDesR"
+                    android:id="@+id/textLayoutBioR"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:hint="Job description"
+                    android:hint="Bio"
                     android:paddingStart="0dp"
                     android:paddingTop="0dp"
                     android:paddingEnd="0dp"
@@ -853,7 +881,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
 
-                    app:layout_constraintTop_toBottomOf="@+id/inputJobTitleSpinner"
+                    app:layout_constraintTop_toBottomOf="@+id/inputDegreeRSpinner"
                     app:placeholderText="I am john Mcavan. I am Recruiter of Conway company. I am Head Of HR department"
                     app:startIconDrawable="@drawable/ic_biography"
                     app:startIconTint="@color/ed_theme_color">
@@ -873,7 +901,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="textLayoutCompanyNameR,textLayoutDesignationR,inputJobTitleSpinner,textJObTitle,textLayoutJobDesR" />
+                    app:constraint_referenced_ids="textLayoutCompanyNameR,textLayoutDesignationR,inputDegreeRSpinner,textJObTitle,textLayoutBioR" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutSalaryR"

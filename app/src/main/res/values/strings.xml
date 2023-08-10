@@ -13,6 +13,23 @@
     <string name="recruiters_list">Recruiters List</string>
     <string name="hh_mm_ss">HH:mm:ss</string>
     <string name="short_lorem_ipsum">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
+    <string name="msg_log_out">Are you sure logout\n\n</string>
+    <string name="m_log_out">Logout\n</string>
+    <string name="loading">Loading</string>
+    <string name="channel_name">Recruitment App</string>
     <!-- Strings used for fragments for navigation -->
-
+    <!-- Permission -->
+    <string name="permission_title">Need Permissions</string>
+    <string name="permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="permission_go_to_settings">GOTO SETTINGS</string>
+    <string name="cancel">cancel\n</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="plz_enable_gps">Please enable GPS</string>
+    <string name="job_role_amp_responsibility"><![CDATA[Job Role & Responsibility]]></string>
+    <string name="job_level">Job level</string>
+    <string name="retry">Retry</string>
+    <string name="msg_no_job_found">Umm… We searched fat and wide and couldn\'t find data matching your search. Let\'s check with another one.</string>
+    <string name="msg_server_maintenance">The server is under maintenance. We really appreciate your patience and support. Please wait and try after some time.</string>
+    <string name="msg_no_internet">Check your internet connection or\nclick to Retry</string>
+    <string name="msg_enable_internet">Please enable internet connection</string>
 </resources>

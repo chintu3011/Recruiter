@@ -5,7 +5,8 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.coroutineScope
+import com.example.recruiter.store.JobSeekerProfileInfo
+import com.example.recruiter.store.RecruiterProfileInfo
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

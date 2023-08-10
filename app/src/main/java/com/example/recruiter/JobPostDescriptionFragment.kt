@@ -59,23 +59,23 @@ class JobPostDescriptionFragment() : Fragment() {
     }
 
     private fun retreivedescription() {
-        binding.jobTitle.text = selectedPost.jobTile
-        binding.companyName.text = selectedPost.companyName
-        binding.jobLocation.text = selectedPost.jobLocation
-        binding.jobPostDuration.text = selectedPost.postDuration
-        binding.applications.text = selectedPost.jobApplications.toString() + " Applications"
-        binding.workingMode.text = selectedPost.workingmode
-        binding.jobRoll.text = selectedPost.jobRoll
-        binding.jobDes.setText(selectedPost.aboutPost)
-        binding.technicalSkills.text = selectedPost.technicalSkills
-        binding.softSkills.text = selectedPost.softSkills
-        binding.experience.text = selectedPost.experienceDuration.toString() + " Years"
-        binding.education.text = selectedPost.education
+        binding.jobTitle.text = selectedPost.vJobTitle
+        binding.companyName.text = selectedPost.vCompanyName
+        binding.jobLocation.text = selectedPost.vAddress
+        binding.jobPostDuration.text = selectedPost.tCreatedAt
+        binding.applications.text = selectedPost.iNumberOfApplied.toString() + " Applications"
+        binding.workingMode.text = selectedPost.vWrokingMode
+        binding.jobRoll.text = selectedPost.vJobRoleResponsbility
+        binding.jobDes.setText(selectedPost.tDes)
+        binding.technicalSkills.text = selectedPost.tTechnicalSkill
+        binding.softSkills.text = selectedPost.tSoftSkill
+        binding.experience.text = selectedPost.vExperience.toString() + " Years"
+        binding.education.text = selectedPost.vEducation
         val img: ShapeableImageView = fragview.findViewById(R.id.companyLogo)
-        Glide.with(img.context).load(selectedPost.companyLogo).into(img)
+        Glide.with(img.context).load(selectedPost.tCompanyLogoUrl).into(img)
         binding.btnApply.setOnClickListener {
-            val email = selectedPost.email
-            val sub = selectedPost.companyName
+            val email = "test"
+            val sub = selectedPost.vCompanyName
             val dialIntent = Intent(Intent.ACTION_SEND)
             dialIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             dialIntent.putExtra(Intent.EXTRA_SUBJECT, "Reg. Job Application for " + sub)

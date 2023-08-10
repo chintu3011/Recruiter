@@ -18,6 +18,8 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.chaos.view.PinView
+import com.example.recruiter.store.JobSeekerProfileInfo
+import com.example.recruiter.store.RecruiterProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -46,6 +48,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
     private lateinit var lastName: String
     private lateinit var phoneNo: String
     private lateinit var email: String
+    private lateinit var city: String
     private lateinit var userType: String
     private lateinit var termsConditions:String
 
@@ -70,6 +73,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         firstName = intent.getStringExtra("fName").toString()
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
+        city = intent.getStringExtra("city").toString()
         lastName = intent.getStringExtra("lName").toString()
         userType = intent.getStringExtra("userType").toString()
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
@@ -132,7 +136,6 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
                     val user = task.result?.user
                     val uid = user?.uid
                     Log.d(TAG,"userId:$uid")
-                    makeToast("Registration successful!",1)
                     makeEmptyDataStoreForNewUser()
                     passInfoToNextActivity(uid)
 
@@ -174,6 +177,7 @@ class OTPVerificationRegistrationActivity : AppCompatActivity(),OnClickListener 
         intent.putExtra("lName",lastName)
         intent.putExtra("phoneNo",phoneNo)
         intent.putExtra("email",email)
+        intent.putExtra("city",city)
         intent.putExtra("userType",userType)
         intent.putExtra("termsConditions",termsConditions)
         startActivity(intent)

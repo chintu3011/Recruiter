@@ -2,10 +2,12 @@ package com.example.recruiter
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.*
@@ -23,19 +25,36 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.example.recruiter.basedata.BaseActivity
+import com.example.recruiter.model.RegisterUserModel
+import com.example.recruiter.networking.NetworkUtils
+import com.example.recruiter.util.AUTH_TOKEN
+import com.example.recruiter.util.DEVICE_ID
+import com.example.recruiter.util.DEVICE_NAME
+import com.example.recruiter.util.DEVICE_TYPE
+import com.example.recruiter.util.FCM_TOKEN
+import com.example.recruiter.util.IS_LOGIN
+import com.example.recruiter.util.LATITUDE
+import com.example.recruiter.util.LONGITUDE
+import com.example.recruiter.util.MOB_NO
+import com.example.recruiter.util.OS_VERSION
+import com.example.recruiter.util.PrefManager.get
+import com.example.recruiter.util.PrefManager.prefManager
+import com.example.recruiter.util.PrefManager.set
+import com.example.recruiter.util.ROLE
+import com.example.recruiter.util.Utils.convertUriToPdfFile
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.io.File
 
 
-class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
+class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
 
 
 
@@ -75,7 +94,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private lateinit var uploadProgressBar: ProgressBar
     private lateinit var uploadBtn:Button
 
-
+    private lateinit var prefManager: SharedPreferences
     private lateinit var inputLayoutRecruiter:ConstraintLayout
 
     private lateinit var recruiterLayout1:Group
@@ -89,6 +108,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 
     private lateinit var inputSalaryR:EditText
     private lateinit var JobLocationSpinnerR:Spinner
+    private lateinit var JobLocationSpinnerJ:Spinner
     private lateinit var radioGrpWorkingModeR:RadioGroup
     private lateinit var radioBtnOnsiteR:RadioButton
     private lateinit var radioBtnRemoteR:RadioButton
@@ -118,15 +138,17 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private var lastName = String()
     private var phoneNo = String()
     private var email = String()
+    private var city = String()
     private var userId = String()
     private var qualification = String()
     private var bio = String()
     private var experience = String()
     private var companyName = String()
     private var designation = String()
+    private var jobLocation = String()
     private var duration = String()
     private var salary = String()
-    private var city = String()
+    private var pCity = String()
     private var workingMode = String()
     private var jobTitle = String()
     private var jobDes = String()
@@ -134,18 +156,22 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private var termsConditionsAcceptance = String()
     private var pdfName = String()
 
+    private val prefLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
     private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
     private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
     private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
 
     private var selectedQualification = String()
     private var selectedJobLocation = String()
+    private var selectedPreJobLocation = String()
     private var selectedJob = String()
+
+    private lateinit var resumePdf: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
-
+        prefManager = prefManager(this@InformationActivity)
         val window: Window = this@InformationActivity.window
         val background = ContextCompat.getDrawable(this@InformationActivity, R.drawable.status_bar_color)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -160,6 +186,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         setLayout(userType)
         setAdapters()
 
+
     }
 
     private fun setAdapters() {
@@ -167,8 +194,11 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobLocations)
         jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         JobLocationSpinnerR.adapter = jobLocationAdapter
-        inputCitySpinnerJ.adapter = jobLocationAdapter
+        JobLocationSpinnerJ.adapter = jobLocationAdapter
 
+        val prefJobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,prefLocations)
+        prefJobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputCitySpinnerJ.adapter = prefJobLocationAdapter
 
         val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
         qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -182,8 +212,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         selectedJobLocation = jobLocations[position]
-        selectedQualification = qualifications[position]
-        selectedJob = jobs[position]
+
+
+        Log.d("###", "onItemSelected: $selectedJobLocation $selectedPreJobLocation $position")
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -234,6 +265,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         lastName = intent.getStringExtra("lName").toString()
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
+        city = intent.getStringExtra("city").toString()
         termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString()
 
     }
@@ -245,16 +277,86 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         btnNext.setOnClickListener(this)
         btnSkip.setOnClickListener(this)
         btnSubmit.setOnClickListener(this)
-        inputCitySpinnerJ.onItemSelectedListener = this
-        inputDegreeTypeSpinner.onItemSelectedListener = this
-        inputJobTypeSpinner.onItemSelectedListener = this
-        inputJobTitleSpinner.onItemSelectedListener = this
+        JobLocationSpinnerR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJobLocation = jobLocations[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        JobLocationSpinnerJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJobLocation = jobLocations[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputCitySpinnerJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedPreJobLocation = prefLocations[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputDegreeTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedQualification = qualifications[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputJobTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJob = jobs[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputJobTitleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJob = jobs[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.uploadBtn -> {
-                uploadProgressBar.visibility = VISIBLE
+                /*uploadProgressBar.visibility = VISIBLE
                 uploadProgressBar.progress = 70
                 val mStorage = FirebaseStorage.getInstance().getReference("pdfs")
                 val pdfRef = mStorage.child(pdfName)
@@ -265,7 +367,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                             resume = downloadUrl.toString()
                         }
                     }
-                }
+                }*/
                 uploadBtn.visibility = GONE
                 btnSubmit.visibility = VISIBLE
             }
@@ -279,8 +381,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
 //                makeToast("$btnPointer",0)
             }
             R.id.btnSubmit -> {
-                btnSubmit.visibility = GONE
-                btnBack.visibility = GONE
+
                 if(userType == "Recruiter") storeInfoR()
                 if (userType == "Job Seeker") storeInfoJ()
 
@@ -293,6 +394,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             R.id.btnSkip -> {
 
                 if (userType == "Job Seeker"){
+
                     storeInfoJ()
                 }
                 if(userType == "Recruiter"){
@@ -373,6 +475,9 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                     pdfUri = data?.data!!
                     val uri: Uri = data.data!!
                     val uriString: String = uri.toString()
+                    resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
+
+
                     pdfName = null.toString()
                     if (uriString.startsWith("content://")) {
                         var myCursor: Cursor? = null
@@ -400,11 +505,13 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     }
 
     private fun storeInfoJ() {
+
         qualification = selectedQualification.toString()
         bio = inputBioJ.text.toString()
         experience = getSelectedRadioItem(radioGrpFreshExp).toString()
         companyName = inputPrevCompany.text.toString()
         designation = inputDesignation.text.toString()
+        jobLocation = selectedJobLocation.toString()
         duration = inputDuration.text.toString()
         salary = inputSalaryJ.text.toString()
         if(salary.isEmpty()){
@@ -412,12 +519,12 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         }
         workingMode = getSelectedRadioItem(radioGrpWorkingMode).toString()
         jobTitle = selectedJob.toString()
-        city = selectedJobLocation.toString()
+        pCity = selectedPreJobLocation.toString()
 
         val correct = inputFieldConformationJ(bio,salary)
         if (!correct) return
         else{
-            progressBar.visibility = VISIBLE
+           /* progressBar.visibility = VISIBLE
             val user = UsersJobSeeker(
                 userId,
                 firstName,
@@ -490,7 +597,68 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                     }
                     check4.setBackgroundResource(R.color.check_color)
                     progressBar.visibility = GONE
-                }
+                }*/
+            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+            AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addQueryParameter("iRole","0")
+                .addQueryParameter(MOB_NO,phoneNo)
+                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                .addQueryParameter(DEVICE_TYPE,"0")
+                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                .addQueryParameter("vFirstName",firstName)
+                .addQueryParameter("vLastName",lastName)
+                .addQueryParameter("vEmail",lastName)
+                .addQueryParameter("tBio",bio)
+                .addQueryParameter("vcity",city)
+                .addQueryParameter("vCurrentCompany",companyName)
+                .addQueryParameter("vDesignation",designation)
+                .addQueryParameter("vJobLocation",jobLocation)
+                .addQueryParameter("vDuration",duration)
+                .addQueryParameter("vPreferCity",pCity)
+                .addQueryParameter("vQualification",qualification)
+                .addQueryParameter("vWorkingMode",workingMode)
+                .addQueryParameter("tTagLine","")
+                .addQueryParameter("fbid","")
+                .addQueryParameter("googleid","")
+                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                .addQueryParameter("tAppVersion",versionCodeAndName)
+                .addMultipartFile("resume",resumePdf)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    RegisterUserModel::class.java,
+                    object : ParsedRequestListener<RegisterUserModel> {
+                        override fun onResponse(response: RegisterUserModel?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+
+                                    btnSubmit.visibility = GONE
+                                    btnBack.visibility = GONE
+                                    prefManager[IS_LOGIN] = true
+                                    prefManager[ROLE] = 0
+                                    prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                    navigateToHomeActivity()
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            hideProgressDialog()
+                            anError?.let {
+                                Log.e(
+                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+
+
+                            }
+                        }
+                    })
         }
     }
 
@@ -522,18 +690,18 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
     private fun storeInfoR() {
         companyName = inputPrevCompanyR.text.toString()
         designation = inputDesignationR.text.toString()
-        jobTitle = selectedJob
+        jobTitle = selectedQualification
         jobDes = inputJobDesR.text.toString()
         salary = inputSalaryR.text.toString()
         if(salary.isEmpty()){
             salary = 0.toString()
         }
-        city = selectedJobLocation
+        jobLocation = selectedJobLocation
         workingMode = getSelectedRadioItem(radioGrpWorkingModeR)
         val correct = inputFieldConformationR(jobDes,salary)
         if (!correct) return
         else{
-            progressBar.visibility = VISIBLE
+           /* progressBar.visibility = VISIBLE
             val user = UsersRecruiter(
                 userId,
                 firstName,
@@ -558,7 +726,8 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                 .child(userId)
                 .setValue(user).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-
+                        btnSubmit.visibility = GONE
+                        btnBack.visibility = GONE
                         CoroutineScope(Dispatchers.IO).launch {
                             val recruiterProfileInfo =
                                 RecruiterProfileInfo(this@InformationActivity)
@@ -591,7 +760,65 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
                     }
                     check3.setBackgroundResource(R.color.check_color)
                     progressBar.visibility = GONE
-                }
+                }*/
+            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+            AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addQueryParameter("iRole","1")
+                .addQueryParameter(MOB_NO,phoneNo)
+                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                .addQueryParameter(DEVICE_TYPE,"0")
+                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                .addQueryParameter("vFirstName",firstName)
+                .addQueryParameter("vLastName",lastName)
+                .addQueryParameter("vEmail",lastName)
+                .addQueryParameter("tBio",jobDes)
+                .addQueryParameter("vPreferCity","")
+                .addQueryParameter("vcity",city)
+                .addQueryParameter("vCurrentCompany",companyName)
+                .addQueryParameter("vDesignation",designation)
+                .addQueryParameter("vQualification",jobTitle)
+                .addQueryParameter("vJobLocation",jobLocation)
+                .addQueryParameter("vWorkingMode",workingMode)
+                .addQueryParameter("tTagLine","")
+                .addQueryParameter("fbid","")
+                .addQueryParameter("googleid","")
+                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                .addQueryParameter("tAppVersion",versionCodeAndName)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    RegisterUserModel::class.java,
+                    object : ParsedRequestListener<RegisterUserModel> {
+                        override fun onResponse(response: RegisterUserModel?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+
+                                    btnSubmit.visibility = GONE
+                                    btnBack.visibility = GONE
+                                    prefManager[IS_LOGIN] = true
+                                    prefManager[ROLE] = 1
+                                    navigateToHomeActivity()
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            hideProgressDialog()
+                            anError?.let {
+                                Log.e(
+                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+
+
+                            }
+                        }
+                    })
         }
     }
 
@@ -617,6 +844,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             makeToast("Welcome $fullName", 0)
             intent.putExtra("name", fullName)
             intent.putExtra("userId",userId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             finish()
@@ -628,6 +856,7 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
             makeToast("Welcome $fullName", 0)
             intent.putExtra("name", fullName)
             intent.putExtra("userId",userId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             finish()
@@ -809,12 +1038,13 @@ class InformationActivity : AppCompatActivity() ,OnClickListener, AdapterView.On
         recruiterLayout1 = findViewById(R.id.recruiterLayout1)
         inputPrevCompanyR = findViewById(R.id.inputPrevCompanyR)
         inputDesignationR = findViewById(R.id.inputDesignationR)
-        inputJobTitleSpinner = findViewById(R.id.inputJobTitleSpinner)
+        inputJobTitleSpinner = findViewById(R.id.inputDegreeRSpinner)
         inputJobDesR = findViewById(R.id.inputJobDesR)
 
         recruiterLayout2 = findViewById(R.id.recruiterLayout2)
         inputSalaryR = findViewById(R.id.inputSalaryR)
         JobLocationSpinnerR = findViewById(R.id.JobLocationSpinnerR)
+        JobLocationSpinnerJ = findViewById(R.id.JobLocationSpinnerJ)
         radioGrpWorkingModeR = findViewById(R.id.radioGrpWorkingModeR)
         radioBtnOnsiteR = findViewById(R.id.radioBtnOnsiteR)
         radioBtnRemoteR = findViewById(R.id.radioBtnRemoteR)

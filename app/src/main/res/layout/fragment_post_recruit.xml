@@ -181,7 +181,7 @@
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Job Role"
+                android:hint="@string/job_role_amp_responsibility"
                 android:paddingTop="0dp"
                 app:boxBackgroundColor="#FFFFFF"
                 app:boxBackgroundMode="outline"
@@ -199,18 +199,53 @@
                 app:layout_constraintStart_toStartOf="@+id/textLayoutExpDuration"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutdesc"
                 app:placeholderText="Senior Software Developer"
-                app:startIconDrawable="@drawable/ic_job_title"
+                app:startIconDrawable="@drawable/baseline_playlist_add_check_circle_24"
                 app:startIconTint="@color/ed_theme_color">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/jobroleadd"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textAutoComplete"
+                    android:lines="5"
+                    android:inputType="textMultiLine"
                     android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutJobLevel"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/job_level"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutExpDuration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
+                app:placeholderText="2 Years"
+                app:startIconDrawable="@drawable/ic_duration"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/jobLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="datetime"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutExpDuration"
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -232,9 +267,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLevel"
                 app:placeholderText="2 Years"
-                app:startIconDrawable="@drawable/ic_duration"
+                app:startIconDrawable="@drawable/ic_star"
                 app:startIconTint="@color/ed_theme_color">
 
                 <com.google.android.material.textfield.TextInputEditText

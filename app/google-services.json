@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:648992542950:android:b40292b9ac7a4843c1eb27",
+        "android_client_info": {
+          "package_name": "com.example.otpverification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648992542950-bre03bhkgbue1trk4hh3kgd7kk97fgm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.otpverification",
+            "certificate_hash": "9726a7cd51bd86c74c7b56c345127987c39c9a18"
+          }
+        },
+        {
+          "client_id": "648992542950-0i48kljhe4ukrfqtpb9d93no7s88kpof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6d8FbqU-UlMkQmP3kUiH5sGWF6Yx98vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648992542950-0i48kljhe4ukrfqtpb9d93no7s88kpof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:648992542950:android:4e10405fee8b5fa2c1eb27",
         "android_client_info": {
           "package_name": "com.example.recruiter"
@@ -15,11 +52,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "648992542950-erf48ispubkvd5iq2q5m3j9lo6p97dvd.apps.googleusercontent.com",
+          "client_id": "648992542950-b2t2qg9n5nl9snur5qjq3op0b9pef8a7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recruiter",
+            "certificate_hash": "9726a7cd51bd86c74c7b56c345127987c39c9a18"
+          }
+        },
+        {
+          "client_id": "648992542950-gj7kvfvvdlsl6dc351d84g7ucr7vqs7a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.recruiter",
             "certificate_hash": "2c5fa998fb2f48d8349e3bc2f1ece56a4e76f4f2"
+          }
+        },
+        {
+          "client_id": "648992542950-k0tb30lv9m2q1rqn85hds5a0a6t2hc9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recruiter",
+            "certificate_hash": "110566dafe690f263c4b1bd2100c71d1f41927a7"
           }
         },
         {

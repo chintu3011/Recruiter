@@ -131,8 +131,7 @@ class PostRecruitFragment : Fragment() {
         val jobapps = 20
         val jobref = databaseReference.child("Jobs")
         val key = jobref.push().key
-        val jobs = Jobs(title,desc,compname,edu,email,empneed,exp,jobapps,city,role,
-        phone,postduration,sal,softskill,techskill,workmode,downloadUrl)
+        val jobs = Jobs()
         if (key != null) {
             jobref.child(key).setValue(jobs)
                 .addOnSuccessListener {

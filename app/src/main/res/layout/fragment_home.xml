@@ -1,84 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="jobsAdapter"
+            type="com.example.recruiter.HomeFragment.JobsAdapter" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/startGuildLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/_5sdp" />
+        android:layout_height="match_parent"
+        tools:context=".HomeFragment">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/endGuildLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/_5sdp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topGuildLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/_10sdp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_5sdp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottomGuildLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="@dimen/_10sdp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_5sdp" />
 
-        <LinearLayout
-            android:id="@+id/Linearr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/searchbg"
-            app:layout_constraintTop_toBottomOf="@id/topGuildLine"
-            app:layout_constraintStart_toEndOf="@id/startGuildLine"
-            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-            android:elevation="@dimen/_5sdp">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/_10sdp" />
 
-            <SearchView
-                android:id="@+id/search"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottomGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+            <LinearLayout
+                android:id="@+id/Linearr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/searchbg"
+                app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                android:elevation="@dimen/_5sdp">
+
+                <SearchView
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search"
+                    android:queryBackground="@null" />
+
+                <ImageView
+                    android:id="@+id/voicesearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="6"
+                    android:src="@drawable/baseline_keyboard_voice_24" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/jobRvList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/Linearr"
+                android:gravity="center"
+                android:fontFamily="@font/poppinsregular"
+                android:verticalSpacing="@dimen/_5sdp"
+                tools:listitem="@layout/row_post_design"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:adapter="@{jobsAdapter}"
+                app:layout_constraintTop_toBottomOf="@id/Linearr"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintBottom_toTopOf="@id/layProgressPagination" />
+            <include
+                android:id="@+id/layProgressPagination"
+                layout="@layout/layout_progress_pagination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:iconifiedByDefault="false"
-                android:queryHint="Search"
-                android:queryBackground="@null"/>
-
-            <ImageView
-                android:id="@+id/voicesearch"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine" />
+            <include
+                android:id="@+id/layEmptyView"
+                layout="@layout/layout_empty_view"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:layout_weight="6"
-                android:src="@drawable/baseline_keyboard_voice_24" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <GridView
-            android:id="@+id/gv"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_below="@id/Linearr"
-            android:gravity="center"
-            android:numColumns="1"
-            android:fontFamily="@font/poppinsregular"
-            android:verticalSpacing="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@id/Linearr"
-            app:layout_constraintStart_toEndOf="@id/startGuildLine"
-            app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-            app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>
