@@ -5,12 +5,14 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +21,29 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.example.recruiter.basedata.BaseFragment
 import com.example.recruiter.databinding.FragmentPostRecruitBinding
+import com.example.recruiter.model.RegisterUserModel
+import com.example.recruiter.networking.NetworkUtils
+import com.example.recruiter.util.AUTH_TOKEN
+import com.example.recruiter.util.DEVICE_ID
+import com.example.recruiter.util.DEVICE_NAME
+import com.example.recruiter.util.DEVICE_TYPE
+import com.example.recruiter.util.FCM_TOKEN
+import com.example.recruiter.util.IS_LOGIN
+import com.example.recruiter.util.LATITUDE
+import com.example.recruiter.util.LONGITUDE
+import com.example.recruiter.util.MOB_NO
+import com.example.recruiter.util.OS_VERSION
+import com.example.recruiter.util.PrefManager.get
+import com.example.recruiter.util.PrefManager.prefManager
+import com.example.recruiter.util.PrefManager.set
+import com.example.recruiter.util.ROLE
+import com.example.recruiter.util.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -28,18 +52,21 @@ import com.google.firebase.storage.StorageReference
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-class PostRecruitFragment : Fragment() {
+class PostRecruitFragment : BaseFragment() {
     lateinit var binding : FragmentPostRecruitBinding
     lateinit var databaseReference: DatabaseReference
     lateinit var storage: StorageReference
     private val PICK_IMAGE_REQUEST = 1
     lateinit var downloadUrl : String
+    private  lateinit var prefManager: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentPostRecruitBinding.inflate(layoutInflater, container, false)
+        prefManager = prefManager(requireActivity())
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
         binding.linearLayout2.setOnClickListener {
@@ -47,11 +74,7 @@ class PostRecruitFragment : Fragment() {
         }
         binding.btnpostjob.setOnClickListener {
             adddata()
-            val homeFragment = HomeRecruitFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.frameRLayout,homeFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+
         }
         binding.btnCancelPost.setOnClickListener {
             val homeFragment = HomeRecruitFragment()
@@ -106,9 +129,11 @@ class PostRecruitFragment : Fragment() {
             }
     }
     private fun adddata() {
+
         val title : String = binding.jobTitle.text.toString()
         val compname : String = binding.currentCompany.text.toString()
         val desc : String = binding.descadd.text.toString()
+        val jobLevel : String = binding.jobLevel.text.toString()
         val role : String = binding.jobroleadd.text.toString()
         val exp : String = binding.experiencedDuration.text.toString()
         val techskill : String = binding.technicalSkills.text.toString()
@@ -129,7 +154,62 @@ class PostRecruitFragment : Fragment() {
         val email = "info@amrisystems.com"
         val postduration = "02/04/2023"
         val jobapps = 20
-        val jobref = databaseReference.child("Jobs")
+
+        if (Utils.isNetworkAvailable(requireContext())){
+            AndroidNetworking.post(NetworkUtils.INSERT_POST)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("vJobTitle ",title)
+                .addQueryParameter("vCompanyName",compname)
+                .addQueryParameter("tDes  ",desc)
+                .addQueryParameter("vJobLevel",jobLevel)
+                .addQueryParameter("vExperience",exp)
+                .addQueryParameter("tTechnicalSkill",techskill)
+                .addQueryParameter("softskill",softskill)
+                .addQueryParameter("vEducation",edu)
+                .addQueryParameter("vAddress",city)
+                .addQueryParameter("vSalaryPackage",sal)
+                .addQueryParameter("iNumberOfVacancy ",empneed)
+                .addQueryParameter("vWrokingMode ",workmode)
+                .addQueryParameter("vJobRoleResponsbility",role)
+
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    RegisterUserModel::class.java,
+                    object : ParsedRequestListener<RegisterUserModel> {
+                        override fun onResponse(response: RegisterUserModel?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+
+                                    val homeFragment = HomeRecruitFragment()
+                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                    transaction.replace(R.id.frameRLayout,homeFragment)
+                                    transaction.addToBackStack(null)
+                                    transaction.commit()
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            hideProgressDialog()
+                            anError?.let {
+                                Log.e(
+                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+
+
+                            }
+                        }
+                    })
+        }else{
+
+            Utils.showNoInternetBottomSheet(requireContext(),requireActivity())
+        }
+
+
+        /*val jobref = databaseReference.child("Jobs")
         val key = jobref.push().key
         val jobs = Jobs()
         if (key != null) {
@@ -166,6 +246,6 @@ class PostRecruitFragment : Fragment() {
                         }
                     }
                 }
-        }
+        }*/
     }
 }

@@ -8,16 +8,18 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -25,14 +27,16 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 
-
 class HomeJobActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var homeFragment: HomeFragment
     private lateinit var frame : FrameLayout
-
+    private var doubleBackToExitPressedOnce = false
     private var userType:Int ?= null
     private var userId:String ?= null
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_job)
@@ -68,16 +72,55 @@ class HomeJobActivity : AppCompatActivity() {
             }
             true
         }
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                    if (!homeFragment.isVisible) {
+
+                        replaceFragment(homeFragment)
+
+                    } else {
+
+                        if (doubleBackToExitPressedOnce) {
+
+                            finishAffinity()
+                            return
+                        }
+
+                        doubleBackToExitPressedOnce = true
+                        Toast.makeText(this@HomeJobActivity, "Please click back again to exit", Toast.LENGTH_SHORT)
+                            .show()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            doubleBackToExitPressedOnce = false
+                        }, 2000)
+                    }
+
+                }
+            }
+        )
     }
     private fun replaceFragment(fragment: Fragment) {
 
-        val bundle = Bundle()
-        bundle.putInt("userType", userType!!)
-        fragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout, fragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+
+        supportFragmentManager.beginTransaction().apply {
+            if (fragment.isAdded) {
+
+                show(fragment)
+
+            } else {
+                add(R.id.frameLayout, fragment)
+            }
+
+            supportFragmentManager.fragments.forEach {
+                if (it != fragment && it.isAdded) {
+                    hide(it)
+                }
+            }
+
+        }.commit()
     }
 
     private fun requestPermissions() {
@@ -140,6 +183,12 @@ class HomeJobActivity : AppCompatActivity() {
         builder.show()
     }
 
+   /* override fun onBackPressed() {
+
+        super.onBackPressed()
+        Log.d("back", "onBackPressed: ")
+
+    }*/
     private fun makeToast(msg: String, len: Int) {
         if (len == 0) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         if (len == 1) Toast.makeText(this, msg, Toast.LENGTH_LONG).show()

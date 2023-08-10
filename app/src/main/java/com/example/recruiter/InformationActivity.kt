@@ -49,7 +49,9 @@ import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.prefManager
 import com.example.recruiter.util.PrefManager.set
 import com.example.recruiter.util.ROLE
+import com.example.recruiter.util.Utils
 import com.example.recruiter.util.Utils.convertUriToPdfFile
+import com.example.recruiter.util.Utils.showNoInternetBottomSheet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 
@@ -598,67 +600,72 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     check4.setBackgroundResource(R.color.check_color)
                     progressBar.visibility = GONE
                 }*/
-            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-            AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
-                .setOkHttpClient(NetworkUtils.okHttpClient)
-                .addQueryParameter("iRole","0")
-                .addQueryParameter(MOB_NO,phoneNo)
-                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
-                .addQueryParameter(DEVICE_TYPE,"0")
-                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
-                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
-                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
-                .addQueryParameter("vFirstName",firstName)
-                .addQueryParameter("vLastName",lastName)
-                .addQueryParameter("vEmail",lastName)
-                .addQueryParameter("tBio",bio)
-                .addQueryParameter("vcity",city)
-                .addQueryParameter("vCurrentCompany",companyName)
-                .addQueryParameter("vDesignation",designation)
-                .addQueryParameter("vJobLocation",jobLocation)
-                .addQueryParameter("vDuration",duration)
-                .addQueryParameter("vPreferCity",pCity)
-                .addQueryParameter("vQualification",qualification)
-                .addQueryParameter("vWorkingMode",workingMode)
-                .addQueryParameter("tTagLine","")
-                .addQueryParameter("fbid","")
-                .addQueryParameter("googleid","")
-                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
-                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
-                .addQueryParameter("tAppVersion",versionCodeAndName)
-                .addMultipartFile("resume",resumePdf)
-                .setPriority(Priority.MEDIUM).build().getAsObject(
-                    RegisterUserModel::class.java,
-                    object : ParsedRequestListener<RegisterUserModel> {
-                        override fun onResponse(response: RegisterUserModel?) {
-                            try {
-                                response?.let {
-                                    hideProgressDialog()
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","0")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",lastName)
+                    .addQueryParameter("tBio",bio)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("vCurrentCompany",companyName)
+                    .addQueryParameter("vDesignation",designation)
+                    .addQueryParameter("vJobLocation",jobLocation)
+                    .addQueryParameter("vDuration",duration)
+                    .addQueryParameter("vPreferCity",pCity)
+                    .addQueryParameter("vQualification",qualification)
+                    .addQueryParameter("vWorkingMode",workingMode)
+                    .addQueryParameter("tTagLine","")
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .addMultipartFile("resume",resumePdf)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
 
-                                    btnSubmit.visibility = GONE
-                                    btnBack.visibility = GONE
-                                    prefManager[IS_LOGIN] = true
-                                    prefManager[ROLE] = 0
-                                    prefManager[AUTH_TOKEN] = response.data.tAuthToken
-                                    navigateToHomeActivity()
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 0
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
 
                                 }
-                            } catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
                             }
-                        }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
 
-                        override fun onError(anError: ANError?) {
-                            hideProgressDialog()
-                            anError?.let {
-                                Log.e(
-                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-
-
-                            }
-                        }
-                    })
         }
     }
 
@@ -761,64 +768,69 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     check3.setBackgroundResource(R.color.check_color)
                     progressBar.visibility = GONE
                 }*/
-            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-            AndroidNetworking.post(NetworkUtils.REGISTER_USER)
-                .setOkHttpClient(NetworkUtils.okHttpClient)
-                .addQueryParameter("iRole","1")
-                .addQueryParameter(MOB_NO,phoneNo)
-                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
-                .addQueryParameter(DEVICE_TYPE,"0")
-                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
-                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
-                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
-                .addQueryParameter("vFirstName",firstName)
-                .addQueryParameter("vLastName",lastName)
-                .addQueryParameter("vEmail",lastName)
-                .addQueryParameter("tBio",jobDes)
-                .addQueryParameter("vPreferCity","")
-                .addQueryParameter("vcity",city)
-                .addQueryParameter("vCurrentCompany",companyName)
-                .addQueryParameter("vDesignation",designation)
-                .addQueryParameter("vQualification",jobTitle)
-                .addQueryParameter("vJobLocation",jobLocation)
-                .addQueryParameter("vWorkingMode",workingMode)
-                .addQueryParameter("tTagLine","")
-                .addQueryParameter("fbid","")
-                .addQueryParameter("googleid","")
-                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
-                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
-                .addQueryParameter("tAppVersion",versionCodeAndName)
-                .setPriority(Priority.MEDIUM).build().getAsObject(
-                    RegisterUserModel::class.java,
-                    object : ParsedRequestListener<RegisterUserModel> {
-                        override fun onResponse(response: RegisterUserModel?) {
-                            try {
-                                response?.let {
-                                    hideProgressDialog()
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","1")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",lastName)
+                    .addQueryParameter("tBio",jobDes)
+                    .addQueryParameter("vPreferCity","")
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("vCurrentCompany",companyName)
+                    .addQueryParameter("vDesignation",designation)
+                    .addQueryParameter("vQualification",jobTitle)
+                    .addQueryParameter("vJobLocation",jobLocation)
+                    .addQueryParameter("vWorkingMode",workingMode)
+                    .addQueryParameter("tTagLine","")
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
 
-                                    btnSubmit.visibility = GONE
-                                    btnBack.visibility = GONE
-                                    prefManager[IS_LOGIN] = true
-                                    prefManager[ROLE] = 1
-                                    navigateToHomeActivity()
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 1
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
 
                                 }
-                            } catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
                             }
-                        }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
 
-                        override fun onError(anError: ANError?) {
-                            hideProgressDialog()
-                            anError?.let {
-                                Log.e(
-                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-
-
-                            }
-                        }
-                    })
         }
     }
 

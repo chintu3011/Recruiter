@@ -23,6 +23,8 @@ import com.example.recruiter.basedata.BaseActivity
 import com.example.recruiter.databinding.ActivityLoginBinding
 import com.example.recruiter.model.UserExistOrNotModel
 import com.example.recruiter.networking.NetworkUtils
+import com.example.recruiter.util.Utils
+import com.example.recruiter.util.Utils.showNoInternetBottomSheet
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -245,51 +247,56 @@ class LoginActivity : BaseActivity(),OnClickListener {
 
     private fun getUserTypeIfNotSignIn(mobileNo: String, callback: (String) -> Unit){
 
-        showProgressDialog("Please wait....")
-        AndroidNetworking.get(NetworkUtils.CHECK_USER_EXISTING)
-            .addQueryParameter("mobile", mobileNo)
-            .setPriority(Priority.MEDIUM).build()
-            .getAsObject(UserExistOrNotModel::class.java,
-                object : ParsedRequestListener<UserExistOrNotModel> {
-                    override fun onResponse(response: UserExistOrNotModel?) {
-                        try {
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.CHECK_USER_EXISTING)
+                .addQueryParameter("mobile", mobileNo)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(UserExistOrNotModel::class.java,
+                    object : ParsedRequestListener<UserExistOrNotModel> {
+                        override fun onResponse(response: UserExistOrNotModel?) {
+                            try {
 
-                            callback(response!!.message)
+                                callback(response!!.message)
 
-                        } catch (e: Exception) {
-                            Log.e("#####", "onResponse Exception: ${e.message}")
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
 
+                            }
                         }
-                    }
 
-                    override fun onError(anError: ANError?) {
-                        anError?.let {
-                            Log.e(
-                                "#####",
-                                "onError: code: ${it.errorCode} & message: ${it.message}"
-                            )
-                            val snackbar = Snackbar
-                                .make(
-                                    binding.layout,
-                                    "Sorry! you are not register, Please register first.",
-                                    Snackbar.LENGTH_LONG
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
                                 )
-                                .setAction(
-                                    "REGISTER"
-                                )  // If the Undo button
+                                val snackbar = Snackbar
+                                    .make(
+                                        binding.layout,
+                                        "Sorry! you are not register, Please register first.",
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                    .setAction(
+                                        "REGISTER"
+                                    )  // If the Undo button
 // is pressed, show
 // the message using Toast
-                                {
-                                    startActivity(Intent(this@LoginActivity,AskActivity::class.java))
-                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
-                                }
+                                    {
+                                        startActivity(Intent(this@LoginActivity,AskActivity::class.java))
+                                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                                    }
 
-                            snackbar.show()
+                                snackbar.show()
+                            }
+                            hideProgressDialog()
+
                         }
-                        hideProgressDialog()
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+        }
 
-                    }
-                })
         /* val database = FirebaseDatabase.getInstance()
          val usersRef = database.reference.child("Users")
 

@@ -3,6 +3,7 @@ package com.example.recruiter.networking
 import okhttp3.OkHttpClient
 
 object NetworkUtils {
+
     private const val BASE_URL = "http://192.168.1.3:5000/api"
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
@@ -10,8 +11,9 @@ object NetworkUtils {
     const val LOGIN = "$BASE_URL/signin/login"
     const val SIGN_OUT = "$BASE_URL/signin/signout"
     const val GET_ALL_JOB = "$BASE_URL/job/jobs"
-
-
+    const val INSERT_POST = "$BASE_URL/job/insert_jobs"
+    const val GET_USER_BY_ID = "$BASE_URL/user/"
+    const val LOGOUT= "$BASE_URL/signin/signout"
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 
     fun getOkHttpClientWithHeader(token: String): OkHttpClient {

@@ -75,22 +75,32 @@
                     android:src="@drawable/baseline_keyboard_voice_24" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/jobRvList"
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/Linearr"
-                android:gravity="center"
-                android:fontFamily="@font/poppinsregular"
-                android:verticalSpacing="@dimen/_5sdp"
-                tools:listitem="@layout/row_post_design"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:adapter="@{jobsAdapter}"
                 app:layout_constraintTop_toBottomOf="@id/Linearr"
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
                 app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-                app:layout_constraintBottom_toTopOf="@id/layProgressPagination" />
+                app:layout_constraintBottom_toTopOf="@id/layProgressPagination">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/jobRvList"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/Linearr"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinsregular"
+                    android:verticalSpacing="@dimen/_5sdp"
+                    tools:listitem="@layout/row_post_design"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:adapter="@{jobsAdapter}"
+                    />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
             <include
                 android:id="@+id/layProgressPagination"
                 layout="@layout/layout_progress_pagination"
@@ -106,6 +116,16 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/swipeRefreshLayout"
+                app:layout_constraintBottom_toBottomOf="@id/swipeRefreshLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:indeterminateTint="@color/colorPrimary"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

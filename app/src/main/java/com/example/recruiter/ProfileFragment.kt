@@ -32,12 +32,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
+import com.airbnb.lottie.LottieAnimationView
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.example.recruiter.basedata.BaseFragment
 import com.example.recruiter.databinding.FragmentProfileBinding
+import com.example.recruiter.model.LogoutMain
+import com.example.recruiter.networking.NetworkUtils
 import com.example.recruiter.store.JobSeekerProfileInfo
 import com.example.recruiter.store.RecruiterProfileInfo
+import com.example.recruiter.util.AUTH_TOKEN
 import com.example.recruiter.util.IS_LOGIN
 import com.example.recruiter.util.PrefManager
+import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.set
+import com.example.recruiter.util.ROLE
+import com.example.recruiter.util.Utils
+import com.example.recruiter.util.Utils.showNoInternetBottomSheet
+import com.example.recruiter.util.Utils.toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.karumi.dexter.Dexter
@@ -50,7 +65,7 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 
-class ProfileFragment : Fragment(),View.OnClickListener {
+class ProfileFragment : BaseFragment(),View.OnClickListener {
 
     private lateinit var prefmanger: SharedPreferences
     private lateinit var alertDialogBasicInfo: AlertDialog;
@@ -64,7 +79,6 @@ class ProfileFragment : Fragment(),View.OnClickListener {
 
     private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
     private lateinit var recruiterProfileInfo: RecruiterProfileInfo
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private var type: String? = null
@@ -116,11 +130,7 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         val context: Context = requireContext()
         jobSeekerProfileInfo = JobSeekerProfileInfo(context)
         recruiterProfileInfo = RecruiterProfileInfo(context)
-        val bundle = arguments
-        if (bundle != null) {
-            type = bundle.getString("userType")
-            binding.userType.text = type
-        }
+
         prefmanger = PrefManager.prefManager(requireContext())
         id = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("$id", "$type")
@@ -157,16 +167,13 @@ class ProfileFragment : Fragment(),View.OnClickListener {
     }
 
     private fun logoutUser() {
-        FirebaseAuth.getInstance().signOut()
+        showLogoutBottomSheet()
 
-        prefmanger[IS_LOGIN] = false
-        activity?.finish()
-        activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun setProfileData() {
 
-        if (type == "Job Seeker") {
+        if (prefmanger.getInt(ROLE,0) == 0) {
             binding.groupJobSeeker.visibility = VISIBLE
             binding.groupRecruiter.visibility = GONE
             Log.d("isPermissionToShowImg", isGrantedPermission().toString())
@@ -1059,5 +1066,101 @@ class ProfileFragment : Fragment(),View.OnClickListener {
         }
         builder.show()
     }
-    
+    fun showLogoutBottomSheet() {
+
+        val dialog = BottomSheetDialog(requireContext())
+        val view: View = (this).layoutInflater.inflate(
+            R.layout.logout_bottomsheet,
+            null
+        )
+
+
+        val btnyes = view.findViewById<Button>(R.id.btn_yes)
+        val btnNo = view.findViewById<Button>(R.id.btn_no)
+        val tv_des = view.findViewById<TextView>(R.id.tv_des1)
+        val animation = view.findViewById<LottieAnimationView>(R.id.animationView)
+        tv_des.text = "Are you sure you want to log out?"
+
+        animation.setAnimation(R.raw.logout)
+
+
+
+
+        btnyes.setOnClickListener {
+            logoutAPI(prefmanger.get(AUTH_TOKEN,""))
+            dialog.dismiss()
+
+
+
+        }
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        dialog.setCancelable(true)
+
+        dialog.setContentView(view)
+
+        dialog.show()
+
+    }
+    fun logoutAPI(
+        auth: String?,
+
+        ) {
+        try {
+
+
+            if (Utils.isNetworkAvailable(requireContext())) {
+                AndroidNetworking.post(NetworkUtils.LOGOUT)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer $auth")
+                    .setPriority(Priority.MEDIUM).build()
+                    .getAsObject(
+                        LogoutMain::class.java,
+                        object : ParsedRequestListener<LogoutMain> {
+                            override fun onResponse(response: LogoutMain?) {
+
+                                if (response!= null){
+                                    hideProgressDialog()
+                                    Toast.makeText(requireContext(), response.data.msg,Toast.LENGTH_LONG).show()
+                                    prefmanger.set(IS_LOGIN,false)
+                                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                                    requireContext().startActivity(intent)
+                                    activity!!.finish()
+                                    activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                                }else{
+                                    Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+                                }
+
+
+
+
+
+
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                anError?.let {
+                                    Log.e("#####", "onError: code: ${it.errorCode} & body: ${it.errorBody}")
+                                    Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+                                    hideProgressDialog()
+
+                                }
+
+                            }
+                        })
+            }else{
+               showNoInternetBottomSheet(requireContext(),requireActivity())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("#message", "onResponse: "+e.message)
+            hideProgressDialog()
+            Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.recruiter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
@@ -73,7 +74,6 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         prefManager = PrefManager.prefManager(requireContext())
 
-        database = FirebaseDatabase.getInstance().reference
         filteredDataList = mutableListOf()
         dataList = mutableListOf()
         binding.jobRvList.setHasFixedSize(true)
@@ -82,11 +82,9 @@ class HomeFragment : BaseFragment() {
         binding.jobsAdapter =
             JobsAdapter(requireActivity(), dataList, object : JobsAdapter.OnCategoryClick {
                 override fun onCategoryClicked(view: View, templateModel: Jobs) {
-                    val jobPostDescriptionFragment = JobPostDescriptionFragment.newInstance(templateModel)
-                    activity!!.supportFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, jobPostDescriptionFragment)
-                        .addToBackStack(null)
-                        .commit()
+                    val intent  = Intent(requireContext(),JobPostActivity::class.java)
+                    intent.putExtra("ARG_JOB_TITLE",templateModel)
+                    startActivity(intent)
                 }
 
             })
@@ -109,6 +107,7 @@ class HomeFragment : BaseFragment() {
                 if (isScrolling && (totalItems == currentItems + firstVisibleItemPosition)) {
                     isScrolling = false
                     currentPage++
+                    Log.d("###", "onScrolled: $currentPage")
                     retrieveJobData()
                 }
             }
@@ -126,6 +125,21 @@ class HomeFragment : BaseFragment() {
             }
 
         })
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = true
+            val query = binding.search.query?.trim()
+            if (query!!.isEmpty()) {
+//                callGetAllTemplateCategoriesAPI(state_name = stateName)
+            } else {
+                Utils.hideKeyboard(requireActivity())
+//                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
+            }
+            dataList.clear()
+            currentPage = 1
+            retrieveJobData()
+
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
         return binding.root
 
     }
@@ -181,7 +195,7 @@ class HomeFragment : BaseFragment() {
             }
             if (currentPage != 1) binding.layProgressPagination.root.visibility = View.VISIBLE
 
-            if (currentPage == 1) showProgressDialog(resources.getString(R.string.please_wait))
+            if (currentPage == 1) binding.progressCircular.visibility = View.VISIBLE
 
             AndroidNetworking.get(NetworkUtils.GET_ALL_JOB)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
@@ -216,7 +230,7 @@ class HomeFragment : BaseFragment() {
                             anError?.let {
                                 Log.e(
                                     "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 if (it.errorCode >= 500) {
                                     binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
@@ -236,6 +250,7 @@ class HomeFragment : BaseFragment() {
         binding.jobRvList.visibility = if (isShow) View.VISIBLE else View.GONE
         binding.layEmptyView.root.visibility = if (isShow) View.GONE else View.VISIBLE
         binding.layProgressPagination.root.visibility = View.GONE
+        binding.progressCircular.visibility = View.GONE
         if (isInternetAvailable) {
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_job_found)
             binding.layEmptyView.btnRetry.visibility = View.GONE

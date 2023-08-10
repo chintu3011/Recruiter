@@ -24,13 +24,13 @@ class JobPostDescriptionFragment() : Fragment() {
     private lateinit var selectedPost : Jobs
     companion object {
         private const val ARG_JOB_TITLE = "ARG_JOB_TITLE"
-        fun newInstance(jobPost: Jobs): JobPostDescriptionFragment {
+      /*  fun newInstance(jobPost: Jobs): JobPostDescriptionFragment {
             val args = Bundle()
             args.putParcelable(ARG_JOB_TITLE, jobPost)
             val fragment = JobPostDescriptionFragment()
             fragment.arguments = args
             return fragment
-        }
+        }*/
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

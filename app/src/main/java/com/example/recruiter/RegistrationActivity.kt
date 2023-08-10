@@ -36,7 +36,9 @@ import com.example.recruiter.util.LONGITUDE
 import com.example.recruiter.util.PrefManager
 import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.set
+import com.example.recruiter.util.Utils
 import com.example.recruiter.util.Utils.isGPSEnabled
+import com.example.recruiter.util.Utils.showNoInternetBottomSheet
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -541,56 +543,61 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     }
     private fun getUserTypeIfNotSignIn(mobileNo: String, callback: (String) -> Unit){
 
-        showProgressDialog("Please wait....")
-        AndroidNetworking.get(NetworkUtils.CHECK_USER_EXISTING)
-            .addQueryParameter("mobile", mobileNo)
-            .setPriority(Priority.MEDIUM).build()
-            .getAsObject(
-                UserExistOrNotModel::class.java,
-                object : ParsedRequestListener<UserExistOrNotModel> {
-                    override fun onResponse(response: UserExistOrNotModel?) {
-                        try {
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.CHECK_USER_EXISTING)
+                .addQueryParameter("mobile", mobileNo)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    UserExistOrNotModel::class.java,
+                    object : ParsedRequestListener<UserExistOrNotModel> {
+                        override fun onResponse(response: UserExistOrNotModel?) {
+                            try {
 
-                            val snackbar = Snackbar
-                                .make(
-                                    mainLayout,
-                                    "Sorry! you are Already register, Please login.",
-                                    Snackbar.LENGTH_LONG
-                                )
-                                .setAction(
-                                    "LOGIN"
-                                )  // If the Undo button
+                                val snackbar = Snackbar
+                                    .make(
+                                        mainLayout,
+                                        "Sorry! you are Already register, Please login.",
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                    .setAction(
+                                        "LOGIN"
+                                    )  // If the Undo button
 // is pressed, show
 // the message using Toast
-                                {
-                                    startActivity(Intent(this@RegistrationActivity,LoginActivity::class.java))
-                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                                    {
+                                        startActivity(Intent(this@RegistrationActivity,LoginActivity::class.java))
+                                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                                    }
+
+                                snackbar.show()
+
+                                hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+                                if (it.errorCode == 404){
+                                    callback(it!!.errorBody!!)
                                 }
 
-                            snackbar.show()
-
-                            hideProgressDialog()
-                        } catch (e: Exception) {
-                            Log.e("#####", "onResponse Exception: ${e.message}")
-
-                        }
-                    }
-
-                    override fun onError(anError: ANError?) {
-                        anError?.let {
-                            Log.e(
-                                "#####",
-                                "onError: code: ${it.errorCode} & message: ${it.message}"
-                            )
-                            if (it.errorCode == 404){
-                                callback(it!!.errorBody!!)
                             }
 
+
                         }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+        }
 
-
-                    }
-                })
         /* val database = FirebaseDatabase.getInstance()
          val usersRef = database.reference.child("Users")
 

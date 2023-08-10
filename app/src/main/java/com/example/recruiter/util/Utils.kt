@@ -23,17 +23,24 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.recruiter.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -790,5 +797,37 @@ object Utils {
             }
         }
         return outputFile
+    }
+
+    /*    public static void showOkDialog(Context context, String title, String message) {
+        AlertDialog adb = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom)).setTitle(message).setCancelable(false)
+                .setMessage(Html.fromHtml(message))
+                .setPositiveButton(context.getText(R.string.ok), (dialog, which) -> dialog.dismiss()).create();
+        adb.show();
+
+        if (!((BaseActivity) context).isFinishing() && !adb.isShowing()) {
+
+            Log.d("#Test", "isInternetConnected:4 ");
+        }
+    }*/
+    fun showNoInternetBottomSheet(context: Context, activity: Activity?) {
+        val bottomSheetDialog = BottomSheetDialog(context)
+        val bottomSheetView: View = LayoutInflater.from(context)
+            .inflate(
+                R.layout.internet_bottom_sheet_layout,
+                null
+            )
+        val tv_des = bottomSheetView.findViewById<TextView>(R.id.tv_des)
+        val ok_btn = bottomSheetView.findViewById<Button>(R.id.btn_ok)
+        val animationView = bottomSheetView.findViewById<LottieAnimationView>(R.id.animationView)
+        tv_des.text = context.getText(R.string.default_internet_message)
+        animationView.setAnimation(R.raw.no_internet)
+        ok_btn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            ActivityCompat.finishAffinity(activity!!)
+        }
+        bottomSheetDialog.setCancelable(true)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.show()
     }
 }

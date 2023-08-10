@@ -37,6 +37,7 @@ import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.prefManager
 import com.example.recruiter.util.PrefManager.set
 import com.example.recruiter.util.ROLE
+import com.example.recruiter.util.Utils
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -198,24 +199,26 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
     private fun callUSerLogin() {
 
-        val jsonObject = JSONObject()
-        jsonObject.put(MOB_NO, phoneNo)
-        //jsonObject.put(FCM_TOKEN, prefManager[FCM_TOKEN, ""])
+        if (Utils.isNetworkAvailable(this)){
+            val jsonObject = JSONObject()
+            jsonObject.put(MOB_NO, phoneNo)
+            //jsonObject.put(FCM_TOKEN, prefManager[FCM_TOKEN, ""])
 
-        jsonObject.put(DEVICE_ID, prefManager.get(DEVICE_ID,""))
-        jsonObject.put(OS_VERSION, prefManager.get(OS_VERSION,""))
-        jsonObject.put(FCM_TOKEN, prefManager.get(FCM_TOKEN,""))
-        jsonObject.put(DEVICE_NAME, prefManager.get(DEVICE_NAME,""))
+            jsonObject.put(DEVICE_ID, prefManager.get(DEVICE_ID,""))
+            jsonObject.put(OS_VERSION, prefManager.get(OS_VERSION,""))
+            jsonObject.put(FCM_TOKEN, prefManager.get(FCM_TOKEN,""))
+            jsonObject.put(DEVICE_NAME, prefManager.get(DEVICE_NAME,""))
 
-        AndroidNetworking.post(NetworkUtils.LOGIN)
-            .setOkHttpClient(NetworkUtils.okHttpClient).addJSONObjectBody(jsonObject)
-            .setPriority(Priority.MEDIUM).build().getAsObject(
-                SignInCheckModel::class.java,
-                object : ParsedRequestListener<SignInCheckModel> {
-                    override fun onResponse(response: SignInCheckModel?) {
-                        try {
-                            response?.let {
-                                //hideProgressDialog()
+
+            AndroidNetworking.post(NetworkUtils.LOGIN)
+                .setOkHttpClient(NetworkUtils.okHttpClient).addJSONObjectBody(jsonObject)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    SignInCheckModel::class.java,
+                    object : ParsedRequestListener<SignInCheckModel> {
+                        override fun onResponse(response: SignInCheckModel?) {
+                            try {
+                                response?.let {
+                                    //hideProgressDialog()
 
 
 
@@ -275,8 +278,8 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                             )
                                             recruiterProfileInfo.storeAboutData(
                                                 response.data.user.vDesignation,
-                                               "",
-                                               "",
+                                                "",
+                                                "",
                                                 response.data.user.tBio,
                                                 response.data.user.vDesignation,
                                                 response.data.user.vWorkingMode
@@ -304,33 +307,37 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
                                     }
 
-                                hideProgressDialog()
-                                makeToast("Login successful!", 0)
+                                    hideProgressDialog()
+                                    makeToast("Login successful!", 0)
 
-                            }
-                            //hideProgressDialog()
-                        } catch (e: Exception) {
-                            Log.e("#####", "onResponse Exception: ${e.message}")
-                            hideProgressDialog()
-                        }
-                    }
-
-                    override fun onError(anError: ANError?) {
-                        try {
-
-                            anError?.let {
-                                Log.e(
-                                    "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-                                /** errorCode == 404 means User number is not registered or New user */
+                                }
+                                //hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
                                 hideProgressDialog()
                             }
-                        } catch (e: Exception) {
-                            Log.e("#####", "onError: ${e.message}")
                         }
-                    }
-                })
+
+                        override fun onError(anError: ANError?) {
+                            try {
+
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                    /** errorCode == 404 means User number is not registered or New user */
+                                    hideProgressDialog()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onError: ${e.message}")
+                            }
+                        }
+                    })
+        }else{
+            Utils.showNoInternetBottomSheet(this,this)
+        }
+
 
     }
     /*private fun updateDataStore(uid: String?) {
