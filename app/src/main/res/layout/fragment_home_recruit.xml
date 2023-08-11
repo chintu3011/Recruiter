@@ -1,54 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeRecruitFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <data>
+        <variable
+            name="jobSeekerAdapter"
+            type="com.example.recruiter.HomeRecruitFragment.JobSeekerAdapter" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".HomeRecruitFragment">
 
-        <LinearLayout
-            android:id="@+id/Linearr"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="match_parent">
 
-            <SearchView
-                android:id="@+id/searchR"
-                android:layout_width="236dp"
+            <LinearLayout
+                android:id="@+id/Linearr"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="2"
-                android:background="@drawable/searchbg"
-                android:iconifiedByDefault="false"
-                android:queryHint="Search" />
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-            <ImageView
-                android:id="@+id/voicesearchR"
-                android:layout_width="11dp"
-                android:layout_height="51dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_keyboard_voice_24" />
-        </LinearLayout>
+                <SearchView
+                    android:id="@+id/searchR"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/searchbg"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search" />
 
-        <GridView
-            android:id="@+id/gvR"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/Linearr"
-            android:fontFamily="@font/poppinsregular"
-            android:verticalSpacing="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_11sdp"
-            android:layout_marginTop="@dimen/_11sdp"
-            android:layout_marginEnd="@dimen/_11sdp"
-            android:layout_marginBottom="@dimen/_11sdp"
-            android:gravity="center"
-            android:numColumns="1"
-            android:paddingBottom="5dp" />
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/voicesearchR"
+                    android:layout_width="11dp"
+                    android:layout_height="51dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_keyboard_voice_24" />
+            </LinearLayout>
 
-</FrameLayout>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/Linearr"
+                android:layout_above="@+id/layProgressPagination"
+                app:layout_constraintBottom_toTopOf="@id/layProgressPagination">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/jobSeekerListRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
+                    android:verticalSpacing="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:adapter="@{jobSeekerAdapter}"
+                    tools:itemCount="5"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/_5sdp"
+                    tools:listitem="@layout/singlerowjs"/>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <include
+                android:id="@+id/layProgressPagination"
+                layout="@layout/layout_progress_pagination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                 />
+            <include
+                android:id="@+id/layEmptyView"
+                layout="@layout/layout_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminateTint="@color/colorPrimary"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+</layout>

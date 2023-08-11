@@ -20,6 +20,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -54,8 +55,9 @@ class HomeJobActivity : AppCompatActivity() {
         
         bottomNavigationView = findViewById(R.id.bottomnavigation)
         frame = findViewById(R.id.frameLayout)
-        replaceFragment(HomeFragment())
+
         homeFragment = HomeFragment()
+        replaceFragment(homeFragment)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
@@ -77,8 +79,10 @@ class HomeJobActivity : AppCompatActivity() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
-                    if (!homeFragment.isVisible) {
+                    Log.d("handleOnBackPressed", "handleOnBackPressed:${homeFragment.isVisible} ")
 
+                    if (!homeFragment.isVisible) {
+                        Log.d("handleOnBackPressed", "handleOnBackPressed:1 isVisible")
                         replaceFragment(homeFragment)
 
                     } else {
@@ -109,7 +113,7 @@ class HomeJobActivity : AppCompatActivity() {
             if (fragment.isAdded) {
 
                 show(fragment)
-
+                setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
             } else {
                 add(R.id.frameLayout, fragment)
             }

@@ -48,3 +48,5 @@ var IS_CHALLENGE_COMMENT_LIKE = false*/
 
 /** For Change App Language */
 const val LANGUAGE = "language"
+
+const val IS_HOME_FRAGMENT = false

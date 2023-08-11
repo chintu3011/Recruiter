@@ -1,54 +1,34 @@
 package com.example.recruiter
 
-import android.Manifest
 import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
+import com.bumptech.glide.Glide
 import com.example.recruiter.basedata.BaseFragment
 import com.example.recruiter.databinding.FragmentPostRecruitBinding
 import com.example.recruiter.model.RegisterUserModel
 import com.example.recruiter.networking.NetworkUtils
 import com.example.recruiter.util.AUTH_TOKEN
-import com.example.recruiter.util.DEVICE_ID
-import com.example.recruiter.util.DEVICE_NAME
-import com.example.recruiter.util.DEVICE_TYPE
-import com.example.recruiter.util.FCM_TOKEN
-import com.example.recruiter.util.IS_LOGIN
-import com.example.recruiter.util.LATITUDE
-import com.example.recruiter.util.LONGITUDE
-import com.example.recruiter.util.MOB_NO
-import com.example.recruiter.util.OS_VERSION
 import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.prefManager
-import com.example.recruiter.util.PrefManager.set
-import com.example.recruiter.util.ROLE
 import com.example.recruiter.util.Utils
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.recruiter.util.Utils.toast
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -59,6 +39,7 @@ class PostRecruitFragment : BaseFragment() {
     private val PICK_IMAGE_REQUEST = 1
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
+    lateinit var profilePicFile: File
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +78,12 @@ class PostRecruitFragment : BaseFragment() {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
                 // Upload image and store URL
-                uploadImageAndStoreUrl(imageUri)
+                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val fileName = "image_$timestamp.jpg"
+                binding.fileName.text = fileName
+                profilePicFile = File(Utils.getRealPathFromURI(requireContext(), imageUri).toString())
+                Glide.with(requireContext()).load(imageUri).into(binding.companyLogoIv)
+//                uploadImageAndStoreUrl(imageUri)
             }
         }
     }
@@ -156,21 +142,22 @@ class PostRecruitFragment : BaseFragment() {
         val jobapps = 20
 
         if (Utils.isNetworkAvailable(requireContext())){
-            AndroidNetworking.post(NetworkUtils.INSERT_POST)
+            AndroidNetworking.upload(NetworkUtils.INSERT_POST)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
-                .addQueryParameter("vJobTitle ",title)
+                .addQueryParameter("vJobTitle",title)
                 .addQueryParameter("vCompanyName",compname)
-                .addQueryParameter("tDes  ",desc)
+                .addQueryParameter("tDes",desc)
                 .addQueryParameter("vJobLevel",jobLevel)
                 .addQueryParameter("vExperience",exp)
                 .addQueryParameter("tTechnicalSkill",techskill)
-                .addQueryParameter("softskill",softskill)
+                .addQueryParameter("tSoftSkill",softskill)
                 .addQueryParameter("vEducation",edu)
                 .addQueryParameter("vAddress",city)
                 .addQueryParameter("vSalaryPackage",sal)
-                .addQueryParameter("iNumberOfVacancy ",empneed)
-                .addQueryParameter("vWrokingMode ",workmode)
+                .addQueryParameter("iNumberOfVacancy",empneed)
+                .addQueryParameter("vWrokingMode",workmode)
                 .addQueryParameter("vJobRoleResponsbility",role)
+                .addMultipartFile("tCompanyPic",profilePicFile)
 
                 .setPriority(Priority.MEDIUM).build().getAsObject(
                     RegisterUserModel::class.java,
@@ -180,11 +167,22 @@ class PostRecruitFragment : BaseFragment() {
                                 response?.let {
                                     hideProgressDialog()
 
-                                    val homeFragment = HomeRecruitFragment()
-                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                                    transaction.replace(R.id.frameRLayout,homeFragment)
-                                    transaction.addToBackStack(null)
-                                    transaction.commit()
+                                    binding.jobTitle.text!!.clear()
+                                    binding.currentCompany.text!!.clear()
+                                    binding.descadd.text!!.clear()
+                                    binding.jobLevel.text!!.clear()
+                                    binding.jobroleadd.text!!.clear()
+                                    binding.experiencedDuration.text!!.clear()
+                                    binding.technicalSkills.text!!.clear()
+                                    binding.softSkills.text!!.clear()
+                                    binding.eduadd.text!!.clear()
+                                    binding.cityadd.text!!.clear()
+                                    binding.textLayoutWorkingMode.clearCheck()
+                                    binding.salary.text!!.clear()
+                                    binding.noOfEmployeeNeed.text!!.clear()
+                                    binding.fileName.text = "File_Name.jpg"
+                                    binding.companyLogoIv.setImageResource(R.drawable.ic_upload)
+                                    toast("Post Uploaded Successfully")
 
                                 }
                             } catch (e: Exception) {

@@ -9,10 +9,13 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -25,6 +28,9 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 class HomeRecruiterActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var frame : FrameLayout
+    private lateinit var homeRecruitFragment: HomeRecruitFragment
+    private var doubleBackToExitPressedOnce = false
+
     private var userType:String ?= null
     private var userId:String ?= null
 
@@ -39,9 +45,9 @@ class HomeRecruiterActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomnavigationR)
         userType = intent.getStringExtra("userType").toString()
-        
+        homeRecruitFragment = HomeRecruitFragment()
         frame = findViewById(R.id.frameRLayout)
-        replaceFragment(HomeRecruitFragment())
+        replaceFragment(homeRecruitFragment)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeR -> {
@@ -60,15 +66,53 @@ class HomeRecruiterActivity : AppCompatActivity() {
             }
             true
         }
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                    if (!homeRecruitFragment.isVisible) {
+
+                        replaceFragment(homeRecruitFragment)
+
+                    } else {
+
+                        if (doubleBackToExitPressedOnce) {
+
+                            finishAffinity()
+                            return
+                        }
+
+                        doubleBackToExitPressedOnce = true
+                        Toast.makeText(this@HomeRecruiterActivity, "Please click back again to exit", Toast.LENGTH_SHORT)
+                            .show()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            doubleBackToExitPressedOnce = false
+                        }, 2000)
+                    }
+
+                }
+            }
+        )
     }
     private fun replaceFragment(fragment: Fragment) {
-        val bundle = Bundle()
-        bundle.putString("userType", userType!!)
-        fragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frameRLayout, fragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+        supportFragmentManager.beginTransaction().apply {
+            if (fragment.isAdded) {
+
+                show(fragment)
+
+            } else {
+                add(R.id.frameRLayout, fragment)
+            }
+
+            supportFragmentManager.fragments.forEach {
+                if (it != fragment && it.isAdded) {
+                    hide(it)
+                }
+            }
+
+        }.commit()
     }
 
     private fun requestPermissions() {

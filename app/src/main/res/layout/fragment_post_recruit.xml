@@ -100,17 +100,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/companynameadd">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btnUpload"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/companyLogoIv"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_upload"
-                    app:fabCustomSize="@dimen/_30sdp"
-                    app:rippleColor="@color/glass_color"
-                    app:shapeAppearanceOverlay="@style/cornerCut"
-                    app:tint="@color/theme_blue" />
+                    android:src="@drawable/ic_upload" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/fileName"
@@ -242,7 +237,7 @@
                     android:id="@+id/jobLevel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="datetime"
+                    android:inputType="text"
                     android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>

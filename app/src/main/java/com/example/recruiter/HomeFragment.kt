@@ -1,25 +1,17 @@
 package com.example.recruiter
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.BaseAdapter
-import android.widget.GridView
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
@@ -36,13 +28,7 @@ import com.example.recruiter.util.AUTH_TOKEN
 import com.example.recruiter.util.PrefManager
 import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.Utils
-import com.google.android.material.textview.MaterialTextView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.util.ArrayList
 import java.util.Locale
 
 class HomeFragment : BaseFragment() {
@@ -73,7 +59,6 @@ class HomeFragment : BaseFragment() {
         }
         binding = FragmentHomeBinding.inflate(layoutInflater)
         prefManager = PrefManager.prefManager(requireContext())
-
         filteredDataList = mutableListOf()
         dataList = mutableListOf()
         binding.jobRvList.setHasFixedSize(true)

@@ -22,6 +22,7 @@ data class User(
     val tBio: String,
     val tTagLine: String,
     val vCity: String,
+    val vPreferCity: String,
     val isLogin: String,
     val isBlock: String,
     val tCreatedAt: String,

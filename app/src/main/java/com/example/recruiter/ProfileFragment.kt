@@ -291,8 +291,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     binding.workingModeJ.text = it
                 }
             }
-        }
-        if (type == "Recruiter") {
+        }else{
             binding.groupJobSeeker.visibility = GONE
             binding.groupRecruiter.visibility = VISIBLE
             lifecycle.coroutineScope.launch {
@@ -342,7 +341,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     lName = it
                 }
             }
-            
+
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserPhoneNumber().collect {
                     phoneNumber = it
@@ -399,6 +398,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 }
             }
         }
+
     }
 
     private fun setOnClickListener() {

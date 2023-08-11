@@ -35,6 +35,8 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.example.recruiter.basedata.BaseActivity
 import com.example.recruiter.model.RegisterUserModel
 import com.example.recruiter.networking.NetworkUtils
+import com.example.recruiter.store.JobSeekerProfileInfo
+import com.example.recruiter.store.RecruiterProfileInfo
 import com.example.recruiter.util.AUTH_TOKEN
 import com.example.recruiter.util.DEVICE_ID
 import com.example.recruiter.util.DEVICE_NAME
@@ -53,6 +55,9 @@ import com.example.recruiter.util.Utils
 import com.example.recruiter.util.Utils.convertUriToPdfFile
 import com.example.recruiter.util.Utils.showNoInternetBottomSheet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -168,6 +173,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private var selectedPreJobLocation = String()
     private var selectedJob = String()
 
+    private var isSkip: Boolean = false
     private lateinit var resumePdf: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -397,10 +403,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
                 if (userType == "Job Seeker"){
 
-                    storeInfoJ()
+                    storeInfoJBySkip()
                 }
                 if(userType == "Recruiter"){
-                    storeInfoR()
+                    storeInfoRSkip()
                 }
 
 //                val  map = mutableMapOf<String,String>()
@@ -613,7 +619,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
                     .addQueryParameter("vFirstName",firstName)
                     .addQueryParameter("vLastName",lastName)
-                    .addQueryParameter("vEmail",lastName)
+                    .addQueryParameter("vEmail",email)
                     .addQueryParameter("tBio",bio)
                     .addQueryParameter("vcity",city)
                     .addQueryParameter("vCurrentCompany",companyName)
@@ -637,7 +643,40 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                 try {
                                     response?.let {
                                         hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
 
+                                            val jobSeekerProfileInfo =
+                                                JobSeekerProfileInfo(this@InformationActivity)
+                                            jobSeekerProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                response.data.user.tTagLine,
+                                                response.data.user.vCurrentCompany
+                                            )
+                                            jobSeekerProfileInfo.storeAboutData(
+                                                response.data.user.tBio,
+                                                response.data.user.vQualification
+                                            )
+                                            jobSeekerProfileInfo.storeExperienceData(
+                                                "",
+                                                response.data.user.vDesignation,
+                                                "",
+                                                ""
+                                            )
+                                            jobSeekerProfileInfo.storeResumeData(
+                                                "",
+                                                response.data.user.tResumeUrl,
+                                            )
+                                            jobSeekerProfileInfo.storeJobPreferenceData(
+                                                "",
+                                                "",
+                                                response.data.user.vCity,
+                                                ""
+                                            )
+
+                                        }
                                         btnSubmit.visibility = GONE
                                         btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -668,7 +707,80 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
         }
     }
+    private fun storeInfoJBySkip() {
 
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","0")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
+
+                                            val jobSeekerProfileInfo =
+                                                JobSeekerProfileInfo(this@InformationActivity)
+                                            jobSeekerProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                "",
+                                                ""
+                                            )
+
+
+                                        }
+
+
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 0
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+
+    }
     private fun inputFieldConformationJ(
         bio: String,
         expectedSalary: String
@@ -781,7 +893,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
                     .addQueryParameter("vFirstName",firstName)
                     .addQueryParameter("vLastName",lastName)
-                    .addQueryParameter("vEmail",lastName)
+                    .addQueryParameter("vEmail",email)
                     .addQueryParameter("tBio",jobDes)
                     .addQueryParameter("vPreferCity","")
                     .addQueryParameter("vcity",city)
@@ -804,6 +916,32 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                     response?.let {
                                         hideProgressDialog()
 
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val recruiterProfileInfo = RecruiterProfileInfo(this@InformationActivity)
+                                            recruiterProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                response.data.user.tTagLine,
+                                                response.data.user.vCurrentCompany
+                                            )
+                                            recruiterProfileInfo.storeAboutData(
+                                                response.data.user.vDesignation,
+                                                "",
+                                                "",
+                                                response.data.user.tBio,
+                                                response.data.user.vDesignation,
+                                                response.data.user.vWorkingMode
+                                            )
+                                            recruiterProfileInfo.storeProfileImg(
+                                                response.data.user.tProfileUrl
+                                            )
+                                            recruiterProfileInfo.storeProfileBannerImg(
+                                                ""
+                                            )
+
+                                        }
                                         btnSubmit.visibility = GONE
                                         btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -833,7 +971,79 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
         }
     }
+    private fun storeInfoRSkip() {
 
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","1")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("tBio",jobDes)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val recruiterProfileInfo = RecruiterProfileInfo(this@InformationActivity)
+                                            recruiterProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                "",
+                                               ""
+                                            )
+
+
+                                        }
+
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 1
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+
+    }
     private fun inputFieldConformationR(jobDes: String, expectedSalary: String): Boolean {
         if (jobDes.length > 5000){
             inputJobDesR.error = "Job Description Length Should not exited to 5000"

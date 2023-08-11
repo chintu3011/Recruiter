@@ -298,11 +298,11 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail"
-                    app:placeholderText="xyz@gmail.com"
+                    app:placeholderText="Ahmedabad"
                     app:startIconDrawable="@drawable/baseline_location_city_24"
                     app:startIconTint="@color/ed_theme_color">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/city"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
