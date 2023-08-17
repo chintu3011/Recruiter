@@ -385,41 +385,20 @@
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutCity"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            <Spinner
+                android:id="@+id/inputJobRSpinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="City"
-                android:paddingTop="0dp"
-                app:boxBackgroundColor="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                app:boxStrokeColor="@color/edit_text_color"
-                app:endIconCheckable="true"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/spinner_bg"
+                android:padding="@dimen/_10sdp"
+                android:layout_margin="@dimen/_15sdp"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutedu"
-                app:placeholderText="Ahmedabad"
-                app:startIconDrawable="@drawable/cityfile"
-                app:startIconTint="@color/ed_theme_color">
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutedu" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cityadd"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="13"
-                    android:fontFamily="@font/poppinsregular"
-                    android:inputType="textEmailAddress"
-                    android:padding="@dimen/_10sdp" />
-            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutSalary"

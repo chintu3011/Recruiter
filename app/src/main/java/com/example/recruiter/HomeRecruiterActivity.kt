@@ -56,8 +56,8 @@ class HomeRecruiterActivity : AppCompatActivity() {
                 R.id.postR -> {
                     replaceFragment(PostRecruitFragment())
                 }
-                R.id.profileR -> {
-                    replaceFragment(ProfileFragment())
+                R.id.setting -> {
+                    replaceFragment(SettingFragment())
                 }
                 R.id.chatR -> {
                     val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
@@ -96,7 +96,7 @@ class HomeRecruiterActivity : AppCompatActivity() {
             }
         )
     }
-    private fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             if (fragment.isAdded) {
 

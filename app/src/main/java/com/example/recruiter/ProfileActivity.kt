@@ -2,8 +2,6 @@ package com.example.recruiter
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
@@ -15,6 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,22 +21,27 @@ import android.provider.OpenableColumns
 import android.provider.Settings
 import android.util.Base64
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.*
+import android.view.View.OnClickListener
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.SearchView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import com.airbnb.lottie.LottieAnimationView
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.example.recruiter.basedata.BaseFragment
+import com.example.recruiter.basedata.BaseActivity
+import com.example.recruiter.databinding.ActivityProfileBinding
 import com.example.recruiter.databinding.FragmentProfileBinding
 import com.example.recruiter.model.LogoutMain
 import com.example.recruiter.networking.NetworkUtils
@@ -50,8 +54,6 @@ import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.set
 import com.example.recruiter.util.ROLE
 import com.example.recruiter.util.Utils
-import com.example.recruiter.util.Utils.showNoInternetBottomSheet
-import com.example.recruiter.util.Utils.toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
@@ -60,13 +62,11 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-
-class ProfileFragment : BaseFragment(),View.OnClickListener {
-
+class ProfileActivity : BaseActivity(),OnClickListener {
     private lateinit var prefmanger: SharedPreferences
     private lateinit var alertDialogBasicInfo: AlertDialog;
     private lateinit var alertDialogAboutInfo: AlertDialog
@@ -79,7 +79,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
 
     private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
     private lateinit var recruiterProfileInfo: RecruiterProfileInfo
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: ActivityProfileBinding? = null
     private val binding get() = _binding!!
     private var type: String? = null
     private var id: String? = null
@@ -120,18 +120,14 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
     private var workingModeR: String? = null
 
     private var map:MutableMap<String,String> ? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(_binding!!.root)
+        jobSeekerProfileInfo = JobSeekerProfileInfo(this)
+        recruiterProfileInfo = RecruiterProfileInfo(this)
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val context: Context = requireContext()
-        jobSeekerProfileInfo = JobSeekerProfileInfo(context)
-        recruiterProfileInfo = RecruiterProfileInfo(context)
-
-        prefmanger = PrefManager.prefManager(requireContext())
+        prefmanger = PrefManager.prefManager(this)
         id = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("$id", "$type")
         setProfileData()
@@ -146,12 +142,12 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 R.id.btnSearch -> {
 
                     val searchView = it.actionView as SearchView
-                    
+
                     true
                 }
 
                 R.id.btnLogout -> {
-                      logoutUser()
+                    logoutUser()
 //                    makeToast("Logout",0)
                     true
                 }
@@ -161,11 +157,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 }
             }
         }
-
-
-        return binding.root
     }
-
     private fun logoutUser() {
         showLogoutBottomSheet()
 
@@ -174,8 +166,8 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
     private fun setProfileData() {
 
         if (prefmanger.getInt(ROLE,0) == 0) {
-            binding.groupJobSeeker.visibility = VISIBLE
-            binding.groupRecruiter.visibility = GONE
+            binding.groupJobSeeker.visibility = View.VISIBLE
+            binding.groupRecruiter.visibility = View.GONE
             Log.d("isPermissionToShowImg", isGrantedPermission().toString())
             lifecycle.coroutineScope.launch {
                 jobSeekerProfileInfo.getUserProfileBannerImg().collect {
@@ -292,8 +284,8 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 }
             }
         }else{
-            binding.groupJobSeeker.visibility = GONE
-            binding.groupRecruiter.visibility = VISIBLE
+            binding.groupJobSeeker.visibility = View.GONE
+            binding.groupRecruiter.visibility = View.VISIBLE
             lifecycle.coroutineScope.launch {
                 recruiterProfileInfo.getUserProfileBannerImg().collect {
 //                        val imageUri: Uri? = if (it.isNotEmpty()) Uri.parse(it) else null
@@ -469,7 +461,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         val radioGrpWorkingMode =
             recruiterInfoDialogView.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
 
-        alertDialogRecruiterInfo = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogRecruiterInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(recruiterInfoDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
@@ -481,7 +473,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
 
                 workingModeR = getSelectedRadioItem(radioGrpWorkingMode, recruiterInfoDialogView)
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     recruiterProfileInfo.storeAboutData(
                         jobTitleR!!,
                         salaryR!!,
@@ -511,7 +503,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
             jobPrefDialogView.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
 
 
-        alertDialogPrefInfo = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogPrefInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(jobPrefDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
@@ -525,7 +517,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
 
 
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     jobSeekerProfileInfo.storeJobPreferenceData(
                         prefJobTitle!!,
                         expectedSalary!!,
@@ -558,14 +550,14 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         }
 
         uploadProgressBar = resumeDialogView.findViewById<ProgressBar>(R.id.uploadProgressBar)
-        uploadProgressBar.visibility = GONE
+        uploadProgressBar.visibility = View.GONE
 
-        alertDialogResumeInfo = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogResumeInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(resumeDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     jobSeekerProfileInfo.storeResumeData(
                         resumeFileName!!,
                         resumeUri!!
@@ -626,7 +618,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
 
 
 
-        alertDialogProfileBanner = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogProfileBanner = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setTitle("Change Banner Image")
             .setView(profileBannerDialogView)
             .setPositiveButton("Done") { dialog, _ ->
@@ -636,7 +628,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
                 profileBannerImg = encodedImage
                 Log.d("Img Encoded String..", profileBannerImg!!)
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     if(userType == "Job Seeker"){
                         jobSeekerProfileInfo.storeProfileBannerImg(
                             profileBannerImg!!
@@ -699,7 +691,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
             }
         }
 
-        alertDialogProfileImg = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogProfileImg = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setTitle("Change Banner Image")
             .setView(profileImgDialogView)
             .setPositiveButton("Done") { dialog, _ ->
@@ -710,7 +702,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 profileImg = encodedImage
                 Log.d("Img Encoded String..", profileImg!!)
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     if(userType == "Job Seeker"){
                         jobSeekerProfileInfo.storeProfileImg(
                             profileImg!!
@@ -741,7 +733,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         val edCompanyName = expDialogView.findViewById<EditText>(R.id.companyName)
         val edDuration = expDialogView.findViewById<EditText>(R.id.duration)
 
-        alertDialogExperience = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogExperience = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(expDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
@@ -751,7 +743,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 prevCompany = edCompanyName.text.toString().trim()
                 prevJobDuration = edDuration.text.toString().trim()
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     jobSeekerProfileInfo.storeExperienceData(
                         experienceState!!,
                         designation!!,
@@ -775,14 +767,14 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         val edBio = aboutDialogView.findViewById<EditText>(R.id.bio)
         val edQualification = aboutDialogView.findViewById<EditText>(R.id.qualification)
 
-        alertDialogAboutInfo = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogAboutInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(aboutDialogView)
             .setTitle("Change Basics")
             .setPositiveButton("Done") { dialog, _ ->
                 bio = edBio.text.toString().trim()
                 qualification = edQualification.text.toString().trim()
 
-                CoroutineScope(IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     jobSeekerProfileInfo.storeAboutData(
                         bio!!,
                         qualification!!
@@ -808,7 +800,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         val edCurrentCompany = basicDialogView.findViewById<EditText>(R.id.currentCompany)
         val edPhoneNo = basicDialogView.findViewById<EditText>(R.id.phoneNo)
         val edEmail = basicDialogView.findViewById<EditText>(R.id.email)
-        alertDialogBasicInfo = AlertDialog.Builder(context, R.style.CustomAlertDialogStyle)
+        alertDialogBasicInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(basicDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
@@ -821,7 +813,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 emailId = edEmail.text.toString().trim()
 
                 if (binding.userType.text.toString().trim() == "Job Seeker") {
-                    CoroutineScope(IO).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         jobSeekerProfileInfo.storeBasicProfileData(
                             fName!!,
                             lName!!,
@@ -833,7 +825,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     }
                 }
                 if (binding.userType.text.toString().trim() == "Recruiter") {
-                    CoroutineScope(IO).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         recruiterProfileInfo.storeBasicProfileData(
                             fName!!,
                             lName!!,
@@ -883,7 +875,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 12 -> if (resultCode == RESULT_OK) {
-                    uploadProgressBar.visibility = VISIBLE
+                    uploadProgressBar.visibility = View.VISIBLE
                     uploadProgressBar.progress = 10
                     pdfUri = data?.data!!
                     val uri: Uri = data.data!!
@@ -892,7 +884,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     if (uriString.startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
-                            myCursor = context?.contentResolver?.query(
+                            myCursor = contentResolver?.query(
                                 uri,
                                 null,
                                 null,
@@ -913,7 +905,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                         uploadProgressBar.progress = 95
                         Handler(Looper.getMainLooper()).postDelayed({
                             uploadProgressBar.progress = 100
-                            uploadProgressBar.visibility = GONE
+                            uploadProgressBar.visibility = View.GONE
                         }, 100)
                     }, 1000)
 
@@ -923,8 +915,8 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     val photoUri = data?.data!!
                     if (photoUri != null) {
 
-                        val context = requireContext()
-                        val contentResolver:ContentResolver = context.contentResolver
+
+                        val contentResolver: ContentResolver = contentResolver
                         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
                         photoBitmap = Bitmap.createScaledBitmap(bitmap, profileBackImg.width, profileBackImg.height, false)
                         profileBackImg.setImageBitmap(photoBitmap)
@@ -936,8 +928,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                     val photoUri = data?.data!!
                     if (photoUri != null) {
 
-                        val context = requireContext()
-                        val contentResolver:ContentResolver = context.contentResolver
+                        val contentResolver: ContentResolver = contentResolver
                         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
                         photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
                         profileImgDia.setImageBitmap(photoBitmap)
@@ -968,17 +959,19 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
     }
 
     private fun makeToast(msg: String, len: Int) {
-        if (len == 0) Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        if (len == 1) Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+        if (len == 0) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        if (len == 1) Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
-        val updateDataServiceIntent = Intent(activity,UpdateProfileDataService::class.java)
+        val updateDataServiceIntent = Intent(this,UpdateProfileDataService::class.java)
         updateDataServiceIntent.putExtra("userType",type)
         updateDataServiceIntent.putExtra("userId",id)
-        activity?.startService(updateDataServiceIntent)
+        startService(updateDataServiceIntent)
     }
+
 
     private fun requestPermissions(s: String) {
         val permissions: Collection<String> =
@@ -992,7 +985,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                 )
             }
         Log.d("####", "requestPermissions: $permissions")
-        Dexter.withContext(requireContext()).withPermissions(
+        Dexter.withContext(this).withPermissions(
             permissions
         ).withListener(object : MultiplePermissionsListener {
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
@@ -1025,39 +1018,39 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
             listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
             val isGranted1 =
                 ContextCompat.checkSelfPermission(
-                    requireContext(),
+                    this,
                     Manifest.permission.READ_MEDIA_IMAGES
                 )
             val isGranted2 =
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
         } else {
             Log.d("Version**", Build.VERSION.SDK_INT.toString())
             val isGranted1 =
                 ContextCompat.checkSelfPermission(
-                    requireContext(),
+                    this,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 )
             val isGranted2 =
                 ContextCompat.checkSelfPermission(
-                    requireContext(),
+                    this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
             val isGranted3 =
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
 
             return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED && isGranted3 == PackageManager.PERMISSION_GRANTED
         }
     }
 
     private fun showSettingsDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Need Permissions")
         builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.")
         builder.setPositiveButton("GOTO SETTINGS") { dialog, which ->
             dialog.cancel()
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
+            val uri: Uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
             startActivity(intent)
         }
@@ -1068,7 +1061,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
     }
     fun showLogoutBottomSheet() {
 
-        val dialog = BottomSheetDialog(requireContext())
+        val dialog = BottomSheetDialog(this)
         val view: View = (this).layoutInflater.inflate(
             R.layout.logout_bottomsheet,
             null
@@ -1112,7 +1105,7 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
         try {
 
 
-            if (Utils.isNetworkAvailable(requireContext())) {
+            if (Utils.isNetworkAvailable(this)) {
                 AndroidNetworking.post(NetworkUtils.LOGOUT)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
                     .addHeaders("Authorization", "Bearer $auth")
@@ -1124,14 +1117,15 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
 
                                 if (response!= null){
                                     hideProgressDialog()
-                                    Toast.makeText(requireContext(), response.data.msg,Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@ProfileActivity, response.data.msg, Toast.LENGTH_LONG).show()
                                     prefmanger.set(IS_LOGIN,false)
-                                    val intent = Intent(requireContext(), LoginActivity::class.java)
-                                    requireContext().startActivity(intent)
-                                    activity!!.finish()
-                                    activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                                    val intent = Intent(this@ProfileActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                                 }else{
-                                    Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@ProfileActivity,getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT).show()
                                 }
 
 
@@ -1144,7 +1138,8 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                             override fun onError(anError: ANError?) {
                                 anError?.let {
                                     Log.e("#####", "onError: code: ${it.errorCode} & body: ${it.errorDetail}")
-                                    Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@ProfileActivity,getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT).show()
                                     hideProgressDialog()
 
                                 }
@@ -1152,13 +1147,13 @@ class ProfileFragment : BaseFragment(),View.OnClickListener {
                             }
                         })
             }else{
-               showNoInternetBottomSheet(requireContext(),requireActivity())
+                Utils.showNoInternetBottomSheet(this@ProfileActivity, this)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("#message", "onResponse: "+e.message)
             hideProgressDialog()
-            Toast.makeText(requireContext(),getString(R.string.something_error),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ProfileActivity,getString(R.string.something_error), Toast.LENGTH_SHORT).show()
         }
 
     }

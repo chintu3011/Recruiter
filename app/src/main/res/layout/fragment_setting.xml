@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".SettingFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:scaleType="center"
+                android:id="@+id/ivBack"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting"
+                android:textColor="@color/blue"
+                android:fontFamily="@font/poppinsbold"
+                android:textSize="@dimen/_15sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:scaleType="center"
+                android:id="@+id/ivLogout"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_logout" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rlProfile"
+            android:background="@drawable/spinner_bg"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/profileIv"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:src="@drawable/profile_default_image" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chintan Patel"
+                android:id="@+id/userName"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_15sdp"
+                android:layout_toEndOf="@+id/profileIv" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amri system"
+                android:id="@+id/tvCompany"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/profileIv"
+                android:layout_below="@+id/userName" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_2sdp"
+            android:background="@color/gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rl_ApplyList"
+            android:background="@drawable/spinner_bg"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivApply"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/baseline_person_outline_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_applylist"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivApply"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_bg"
+            android:id="@+id/rlJobPreference"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivPreference"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/baseline_person_outline_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/job_preference"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivPreference"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_bg"
+            android:id="@+id/rlSaveJob"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivSaveJob"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/baseline_person_outline_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_job"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivSaveJob"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_bg"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:id="@+id/rlContactUs"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivContactUs"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/baseline_person_outline_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_us"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivContactUs"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_bg"
+            android:id="@+id/rlPolicy"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivPrivacy"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingBottom="@dimen/_1sdp"
+                android:src="@drawable/baseline_policy_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"
+                android:textColor="@color/blue"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivPrivacy"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

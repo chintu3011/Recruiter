@@ -15,26 +15,24 @@ import android.view.View
 import android.view.View.*
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.example.recruiter.basedata.BaseActivity
+import com.example.recruiter.databinding.ActivityRegistrationBinding
+import com.example.recruiter.model.GetAllCity
 import com.example.recruiter.model.UserExistOrNotModel
 import com.example.recruiter.networking.NetworkUtils
 import com.example.recruiter.util.LATITUDE
 import com.example.recruiter.util.LONGITUDE
 import com.example.recruiter.util.PrefManager
-import com.example.recruiter.util.PrefManager.get
 import com.example.recruiter.util.PrefManager.set
 import com.example.recruiter.util.Utils
 import com.example.recruiter.util.Utils.isGPSEnabled
@@ -64,30 +62,22 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
-import com.hbb20.CountryCodePicker
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.util.Collections
 import java.util.concurrent.TimeUnit
 
 
 class RegistrationActivity : BaseActivity() ,OnClickListener{
 
-    private lateinit var Fname:EditText
-    private lateinit var Lname:EditText
-    private lateinit var cpp: CountryCodePicker
-    private lateinit var inputPhoneNo: EditText
-    private lateinit var inputEmail: EditText
-    private lateinit var inputCity: EditText
-    private lateinit var mainLayout: ConstraintLayout
+
     lateinit var mCallback : PhoneAuthProvider.OnVerificationStateChangedCallbacks
     //    lateinit var btnTerms:TextView
 //    lateinit var btnConditions:TextView
-    private lateinit var checkBox:CheckBox
-    private lateinit var btnRegistration: Button
-    private lateinit var progressBar:ProgressBar
+
     private lateinit var prefmanger: SharedPreferences
 
 
@@ -104,13 +94,16 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     private lateinit var userType: String
     private lateinit var termsConditionsAcceptance:String
 
+    var cityList: ArrayList<String> = ArrayList()
 
     private lateinit var decorView: View
     private lateinit var copyCredential : PhoneAuthCredential
+    lateinit var binding: ActivityRegistrationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        binding = ActivityRegistrationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val window: Window = this@RegistrationActivity.window
         val background =ContextCompat.getDrawable(this@RegistrationActivity, R.drawable.status_bar_color)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -119,7 +112,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         window.navigationBarColor = ContextCompat.getColor(this@RegistrationActivity,android.R.color.white)
         window.setBackgroundDrawable(background)
         prefmanger = PrefManager.prefManager(this)
-        setXmlIDs()
         setOnClickListener()
         mAuth = FirebaseAuth.getInstance()
         Firebase.initialize(context = this)
@@ -127,11 +119,16 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         firebaseAppCheck.installAppCheckProviderFactory(
             PlayIntegrityAppCheckProviderFactory.getInstance(),
         )
-        cpp.registerCarrierNumberEditText(inputPhoneNo)
+        binding.cpp.registerCarrierNumberEditText(binding.phoneNo)
+        getAllCity()
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
+        binding.city.setAdapter(adapter)
+
     }
 
     private fun setOnClickListener() {
-        btnRegistration.setOnClickListener(this)
+        binding.btnRegistration.setOnClickListener(this)
         FirebaseApp.initializeApp(this)
     }
 
@@ -144,13 +141,13 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     }
     private fun registerUser() {
 
-        firstName = Fname.text.toString()
-        lastName = Lname.text.toString()
-        phoneNo = "+" + cpp.fullNumber.toString()
-        email = inputEmail.text.toString()
-        city = inputEmail.text.toString()
+        firstName = binding.userFName.text.toString()
+        lastName = binding.userLName.text.toString()
+        phoneNo = "+" + binding.cpp.fullNumber.toString()
+        email = binding.email.text.toString()
+        city = binding.city.text.toString()
         userType = intent.getStringExtra("userType").toString()
-        termsConditionsAcceptance =  if (checkBox.isChecked) {
+        termsConditionsAcceptance =  if (binding.checkBox.isChecked) {
             "Accepted"
         }
         else{
@@ -201,15 +198,17 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 if (userType.isNotEmpty()) {
                     mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                            progressBar.visibility = GONE
-                            btnRegistration.visibility = VISIBLE
+                            binding.progressBar.visibility = GONE
+                            binding.btnRegistration.visibility = VISIBLE
                             copyCredential = credential
+                            hideProgressDialog()
                             makeToast("onVerificationCompleted:$credential",1)
                             passInfoToNextActivity()
                         }
                         override fun onVerificationFailed(e: FirebaseException) {
-                            progressBar.visibility = GONE
-                            btnRegistration.visibility = VISIBLE
+                            binding.progressBar.visibility = GONE
+                            binding.btnRegistration.visibility = VISIBLE
+                            hideProgressDialog()
                             makeToast("Verification failed: ${e.message}",1)
                             Log.d("test", "onVerificationFailed: ${e.message}")
                         }
@@ -245,11 +244,11 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         }
 
     private fun passInfoToNextActivity() {
-        firstName = Fname.text.toString()
-        phoneNo = "+" + cpp.fullNumber.toString()
-        email = inputEmail.text.toString()
-        lastName = Lname.text.toString()
-        city = inputCity.text.toString()
+        firstName = binding.userFName.text.toString()
+        lastName = binding.userLName.text.toString()
+        phoneNo = "+" + binding.cpp.fullNumber.toString()
+        email = binding.email.text.toString()
+        city = binding.city.text.toString()
         isPhNoRegBefore(phoneNo,exist)
         val correct = inputFieldConformation(
             userType,
@@ -293,48 +292,48 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             return false
         }
         if (firstName.isEmpty()) {
-            Fname.error = "Please provide a first-name"
-            Fname.requestFocus()
+            binding.userFName.error = "Please provide a first-name"
+            binding.userFName.requestFocus()
             return false
         }
         if (lastName.isEmpty()) {
-            Lname.error = "Please provide a last-name"
-            Lname.requestFocus()
+            binding.userLName.error = "Please provide a last-name"
+            binding.userLName.requestFocus()
             return false
         }
-        if (inputPhoneNo.text.toString().isEmpty()) {
-            inputPhoneNo.error = "Please provide a mobile no."
-            inputPhoneNo.requestFocus()
+        if (binding.phoneNo.text.toString().isEmpty()) {
+            binding.phoneNo.error = "Please provide a mobile no."
+            binding.phoneNo.requestFocus()
             return false
         }
-        if (inputPhoneNo.text.toString().length in 11 downTo 9 && !Patterns.PHONE.matcher(phoneNo).matches()) {
-            inputPhoneNo.error = "Please provide valid 10 digit mobile no"
-            inputPhoneNo.requestFocus()
+        if (binding.phoneNo.text.toString().length in 11 downTo 9 && !Patterns.PHONE.matcher(phoneNo).matches()) {
+            binding.phoneNo.error = "Please provide valid 10 digit mobile no"
+            binding.phoneNo.requestFocus()
             return false
         }
 //        makeToast(exist.toString(),0)
         if(exist){
-            inputPhoneNo.error = "This phone number is already exist"
-            inputPhoneNo.requestFocus()
+            binding.phoneNo.error = "This phone number is already exist"
+            binding.phoneNo.requestFocus()
             return false
         }
         if (email.isEmpty()) {
-            inputEmail.error = "Please provide a email address"
-            inputEmail.requestFocus()
+            binding.email.error = "Please provide a email address"
+            binding.email.requestFocus()
             return  false
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            inputEmail.error = "Please provide valid email address"
-            inputEmail.requestFocus()
+            binding.email.error = "Please provide valid email address"
+            binding.email.requestFocus()
             return false
         }
         if (city.isEmpty()) {
-            inputCity.error = "Please provide a email address"
-            inputCity.requestFocus()
+            binding.city.error = "Please provide valid city"
+            binding.city.requestFocus()
             return  false
         }
         if (termsConditionsAcceptance != "Accepted"){
-            checkBox.error = "Accept terms & conditions"
+            binding.checkBox.error = "Accept terms & conditions"
             return false
         }
         return true
@@ -364,20 +363,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     }
 
 
-    private fun setXmlIDs() {
-        Fname = findViewById(R.id.userFName)
-        Lname = findViewById(R.id.userLName)
-        cpp = findViewById(R.id.cpp)
-        inputPhoneNo = findViewById(R.id.phoneNo)
-        inputEmail = findViewById(R.id.email)
-        inputCity = findViewById(R.id.city)
-//        btnTerms = findViewById(R.id.btnTerms)
-//        btnConditions = findViewById(R.id.btnConditions)
-        checkBox = findViewById(R.id.checkBox)
-        btnRegistration = findViewById(R.id.btnRegistration)
-        progressBar = findViewById(R.id.progressBar)
-        mainLayout = findViewById(R.id.mainLayout)
-    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -556,7 +542,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
 
                                 val snackbar = Snackbar
                                     .make(
-                                        mainLayout,
+                                        binding.mainLayout,
                                         "Sorry! you are Already register, Please login.",
                                         Snackbar.LENGTH_LONG
                                     )
@@ -643,5 +629,45 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 makeToast(resources.getString(R.string.plz_enable_gps),0)
             }
         }
+    }
+
+    fun getAllCity(){
+
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.GET_CITIES)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllCity::class.java,
+                    object : ParsedRequestListener<GetAllCity> {
+                        override fun onResponse(response: GetAllCity?) {
+                            try {
+
+                                cityList.addAll(response!!.data)
+
+                                hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+                                hideProgressDialog()
+
+                            }
+
+
+                        }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+        }
+
     }
 }

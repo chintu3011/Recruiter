@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://192.168.1.5:5000/api"
+    private const val BASE_URL = "http://192.168.1.3:5000/api"
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
     const val CHECK_USER_EXISTING = "$BASE_URL/signin/check_user_existing"
@@ -15,6 +15,8 @@ object NetworkUtils {
     const val GET_USER_BY_ID = "$BASE_URL/user/"
     const val GET_ALL_JOBSEEKER = "$BASE_URL/jobSeeker/get_jobSeeker"
     const val LOGOUT= "$BASE_URL/signin/signout"
+    const val GET_CITIES= "$BASE_URL/city/cities"
+    const val APPLY= "$BASE_URL/job/apply"
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 
     fun getOkHttpClientWithHeader(token: String): OkHttpClient {

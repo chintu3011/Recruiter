@@ -292,6 +292,8 @@
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@id/checkBox"
                     app:hintTextColor="@color/ed_theme_color"
                     app:layout_constraintBottom_toTopOf="@+id/checkBox"
                     app:layout_constraintEnd_toEndOf="parent"

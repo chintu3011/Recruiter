@@ -64,8 +64,8 @@ class HomeJobActivity : AppCompatActivity() {
                     replaceFragment(HomeFragment())
                 }
 
-                R.id.profile -> {
-                    replaceFragment(ProfileFragment())
+                R.id.setting -> {
+                    replaceFragment(SettingFragment())
                 }
                 R.id.chat -> {
                     val intent = Intent(this@HomeJobActivity,MessengerHomeActivity::class.java)
@@ -106,7 +106,7 @@ class HomeJobActivity : AppCompatActivity() {
             }
         )
     }
-    private fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: Fragment) {
 
 
         supportFragmentManager.beginTransaction().apply {

@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -17,6 +19,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.example.recruiter.basedata.BaseFragment
 import com.example.recruiter.databinding.FragmentPostRecruitBinding
+import com.example.recruiter.model.GetAllCity
 import com.example.recruiter.model.RegisterUserModel
 import com.example.recruiter.networking.NetworkUtils
 import com.example.recruiter.util.AUTH_TOKEN
@@ -40,7 +43,9 @@ class PostRecruitFragment : BaseFragment() {
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
     lateinit var profilePicFile: File
-
+    var cityList: ArrayList<String> = ArrayList()
+    var selectedJobLocation = String()
+    lateinit var  jobLocationAdapter: ArrayAdapter<String>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +53,9 @@ class PostRecruitFragment : BaseFragment() {
         // Inflate the layout for this fragment
         binding = FragmentPostRecruitBinding.inflate(layoutInflater, container, false)
         prefManager = prefManager(requireActivity())
+        cityList.add("Last Graduation &amp; Degree")
+        getAllCity()
+        setAdapters()
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
         binding.linearLayout2.setOnClickListener {
@@ -64,9 +72,32 @@ class PostRecruitFragment : BaseFragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.inputJobRSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Log.d("###", "onItemSelected: ")
+                selectedJobLocation = cityList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
         return binding.root
     }
+    private fun setAdapters() {
 
+        jobLocationAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,cityList)
+        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.inputJobRSpinner.adapter = jobLocationAdapter
+
+
+
+    }
     private fun uploadImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_REQUEST)
@@ -125,7 +156,7 @@ class PostRecruitFragment : BaseFragment() {
         val techskill : String = binding.technicalSkills.text.toString()
         val softskill : String = binding.softSkills.text.toString()
         val edu : String = binding.eduadd.text.toString()
-        val city : String = binding.cityadd.text.toString()
+        val city : String = selectedJobLocation
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
         when (workmodeid)
@@ -176,7 +207,7 @@ class PostRecruitFragment : BaseFragment() {
                                     binding.technicalSkills.text!!.clear()
                                     binding.softSkills.text!!.clear()
                                     binding.eduadd.text!!.clear()
-                                    binding.cityadd.text!!.clear()
+                                    binding.inputJobRSpinner.setSelection(0)
                                     binding.textLayoutWorkingMode.clearCheck()
                                     binding.salary.text!!.clear()
                                     binding.noOfEmployeeNeed.text!!.clear()
@@ -245,5 +276,45 @@ class PostRecruitFragment : BaseFragment() {
                     }
                 }
         }*/
+    }
+    private fun getAllCity(){
+
+        if (Utils.isNetworkAvailable(requireContext())){
+
+            AndroidNetworking.get(NetworkUtils.GET_CITIES)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllCity::class.java,
+                    object : ParsedRequestListener<GetAllCity> {
+                        override fun onResponse(response: GetAllCity?) {
+                            try {
+
+                                cityList.addAll(response!!.data)
+
+
+
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+
+
+                            }
+
+
+                        }
+                    })
+        }else{
+            Utils.showNoInternetBottomSheet(requireContext(), requireActivity())
+        }
+
     }
 }

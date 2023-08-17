@@ -36,5 +36,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="default_internet_message">There is problem with internet connection. Please check network.</string>
+    <string name="thank_you_dear_candidate_please_wait_hr_are_contact_soon">Thank you dear Candidate. Please wait %1$s HR are contact soon</string>
+    <string name="view_applylist">View ApplyList</string>
+    <string name="job_preference">Job Preference</string>
+    <string name="save_job">Save Job</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="profile">Profile</string>
 
 </resources>

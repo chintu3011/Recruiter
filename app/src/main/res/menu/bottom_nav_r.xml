@@ -14,12 +14,6 @@
         style="@style/CustomFontStyle"
         />
 
-    <item
-        android:id="@+id/profileR"
-        android:title="Profile"
-        android:icon="@drawable/baseline_person_24"
-        style="@style/CustomFontStyle"
-        />
 
     <item
         android:id="@+id/chatR"
@@ -27,4 +21,11 @@
         android:icon="@drawable/baseline_chat_bubble_24"
         style="@style/CustomFontStyle"
         />
+    <item
+        android:id="@+id/setting"
+        android:title="Setting"
+        android:icon="@drawable/baseline_settings_24"
+        style="@style/CustomFontStyle"
+        />
+
 </menu>

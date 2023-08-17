@@ -33,6 +33,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.example.recruiter.basedata.BaseActivity
+import com.example.recruiter.model.GetAllCity
 import com.example.recruiter.model.RegisterUserModel
 import com.example.recruiter.networking.NetworkUtils
 import com.example.recruiter.store.JobSeekerProfileInfo
@@ -108,7 +109,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private lateinit var inputPrevCompanyR:EditText
     private lateinit var inputDesignationR:EditText
-    private lateinit var inputJobTitleSpinner:Spinner//
+    private lateinit var inputDegreeSpinnerR:Spinner//
     private lateinit var inputJobDesR:EditText
 
     private lateinit var recruiterLayout2:Group
@@ -163,10 +164,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private var termsConditionsAcceptance = String()
     private var pdfName = String()
 
-    private val prefLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
-    private val jobLocations = arrayOf("City","Ahmedabad(India)","US","Germany","UK")
+
+
     private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
     private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
+    var cityList: ArrayList<String> = ArrayList()
+    var prefLocations: ArrayList<String> = ArrayList()
 
     private var selectedQualification = String()
     private var selectedJobLocation = String()
@@ -192,6 +195,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         setOnClickListener()
         userType = intent.getStringExtra("userType").toString()
         setLayout(userType)
+
+        getAllCity()
+        cityList.add("City")
+        prefLocations.add("City")
         setAdapters()
 
 
@@ -199,7 +206,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private fun setAdapters() {
 
-        val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobLocations)
+        val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,cityList)
         jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         JobLocationSpinnerR.adapter = jobLocationAdapter
         JobLocationSpinnerJ.adapter = jobLocationAdapter
@@ -211,15 +218,15 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
         qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         inputDegreeTypeSpinner.adapter = qualificationsAdapter
-
+        inputDegreeSpinnerR.adapter = qualificationsAdapter
 
         val jobsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobs)
         jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        inputJobTitleSpinner.adapter = jobsAdapter
+
         inputJobTypeSpinner.adapter = jobsAdapter
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        selectedJobLocation = jobLocations[position]
+        selectedJobLocation = cityList[position]
 
 
         Log.d("###", "onItemSelected: $selectedJobLocation $selectedPreJobLocation $position")
@@ -292,7 +299,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 position: Int,
                 id: Long
             ) {
-                selectedJobLocation = jobLocations[position]
+                selectedJobLocation = cityList[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -304,10 +311,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 position: Int,
                 id: Long
             ) {
-                selectedJobLocation = jobLocations[position]
+                Log.d("###", "onItemSelected: ")
+                selectedJobLocation = cityList[position]
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
         inputCitySpinnerJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -345,14 +355,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        inputJobTitleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        inputDegreeSpinnerR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View,
                 position: Int,
                 id: Long
             ) {
-                selectedJob = jobs[position]
+                selectedJob = qualifications[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -1260,7 +1270,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         recruiterLayout1 = findViewById(R.id.recruiterLayout1)
         inputPrevCompanyR = findViewById(R.id.inputPrevCompanyR)
         inputDesignationR = findViewById(R.id.inputDesignationR)
-        inputJobTitleSpinner = findViewById(R.id.inputDegreeRSpinner)
+        inputDegreeSpinnerR = findViewById(R.id.inputDegreeRSpinner)
         inputJobDesR = findViewById(R.id.inputJobDesR)
 
         recruiterLayout2 = findViewById(R.id.recruiterLayout2)
@@ -1318,6 +1328,45 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         }
         return super.onKeyDown(keyCode, event)
     }
+    private fun getAllCity(){
 
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.GET_CITIES)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllCity::class.java,
+                    object : ParsedRequestListener<GetAllCity> {
+                        override fun onResponse(response: GetAllCity?) {
+                            try {
+
+                                cityList.addAll(response!!.data)
+                                prefLocations.addAll(response.data)
+
+                                hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+                                hideProgressDialog()
+
+                            }
+
+
+                        }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+        }
+
+    }
 
 }
