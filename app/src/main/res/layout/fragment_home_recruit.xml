@@ -6,7 +6,7 @@
     <data>
         <variable
             name="jobSeekerAdapter"
-            type="com.example.recruiter.HomeRecruitFragment.JobSeekerAdapter" />
+            type="com.amri.emploihunt.HomeRecruitFragment.JobSeekerAdapter" />
     </data>
 
     <FrameLayout

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="cursive"
             android:gravity="center"
-            android:text="AmriHire"
+            android:text="Emploi Hunt"
             android:textColor="@color/white"
             android:textSize="55dp"
             android:textStyle="bold"

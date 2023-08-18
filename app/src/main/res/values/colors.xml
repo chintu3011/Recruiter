@@ -6,6 +6,7 @@
     <color name="grey">#939598</color>
     <color name="dark_grey">#939598</color>
     <color name="theme_blue">#00377B</color>
+    <color name="theme_blue_disable">#4E6480</color>
     <color name="cust_backgroung">#FFFFFF</color>
     <color name="cust_text_pri">#060906</color>
     <color name="cust_text_sec">#464747</color>

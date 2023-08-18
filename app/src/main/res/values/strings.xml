@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AmriHire</string>
+    <string name="app_name">Emploi Hunt</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_job_register1">JobRegisterActivity1</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -43,5 +43,17 @@
     <string name="contact_us">Contact Us</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="profile">Profile</string>
-
+    <!-- Time Duration -->
+    <string name="today">Today, </string>
+    <string name="yesterday_with_dash">Yesterday, </string>
+    <string name="yesterday">Yesterday</string>
+    <string name="just_now">Just now</string>
+    <string name="a_minute_ago">a minute ago</string>
+    <string name="minutes_ago">&#160;minutes ago</string>
+    <string name="an_hour_ago">an hour ago</string>
+    <string name="hours_ago">&#160;hours ago</string>
+    <string name="days_ago">&#160;days ago</string>
+    <string name="apply">Apply</string>
+    <string name="already_applied">Already Applied</string>
+    <string name="role_amp_responsibility"><![CDATA[Role & Responsibility]]></string>
 </resources>

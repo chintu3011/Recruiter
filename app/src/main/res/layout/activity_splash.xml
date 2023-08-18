@@ -28,7 +28,7 @@
         android:id="@+id/textname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="AmriHire"
+        android:text="Emploi Hunt"
         android:layout_below="@id/tree"
         android:textSize="55dp"
         android:gravity="center"

@@ -24,6 +24,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:scaleType="center"
                 android:id="@+id/ivBack"
+                android:visibility="gone"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/ic_back" />
@@ -116,14 +117,14 @@
                 android:id="@+id/ivApply"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_person_outline_24" />
+                android:src="@drawable/baseline_person_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/view_applylist"
                 android:textColor="@color/blue"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivApply"
@@ -156,14 +157,14 @@
                 android:id="@+id/ivPreference"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_person_outline_24" />
+                android:src="@drawable/baseline_app_settings_alt_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/job_preference"
                 android:textColor="@color/blue"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivPreference"
@@ -196,14 +197,14 @@
                 android:id="@+id/ivSaveJob"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_person_outline_24" />
+                android:src="@drawable/baseline_save_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save_job"
                 android:textColor="@color/blue"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivSaveJob"
@@ -236,14 +237,14 @@
                 android:id="@+id/ivContactUs"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_person_outline_24" />
+                android:src="@drawable/baseline_call_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_us"
                 android:textColor="@color/blue"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivContactUs"
@@ -278,14 +279,14 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:paddingTop="@dimen/_1sdp"
                 android:paddingBottom="@dimen/_1sdp"
-                android:src="@drawable/baseline_policy_24" />
+                android:src="@drawable/baseline_admin_panel_settings_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/privacy_policy"
                 android:textColor="@color/blue"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivPrivacy"

@@ -1,0 +1,1372 @@
+package com.amri.emploihunt
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.SharedPreferences
+import android.database.Cursor
+import android.net.Uri
+import android.os.Bundle
+import android.provider.OpenableColumns
+import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.view.View.*
+import android.view.Window
+import android.view.WindowManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
+import androidx.core.content.ContextCompat
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.amri.emploihunt.basedata.BaseActivity
+import com.amri.emploihunt.model.GetAllCity
+import com.amri.emploihunt.model.RegisterUserModel
+import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.store.JobSeekerProfileInfo
+import com.amri.emploihunt.store.RecruiterProfileInfo
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.DEVICE_ID
+import com.amri.emploihunt.util.DEVICE_NAME
+import com.amri.emploihunt.util.DEVICE_TYPE
+import com.amri.emploihunt.util.FCM_TOKEN
+import com.amri.emploihunt.util.IS_LOGIN
+import com.amri.emploihunt.util.LATITUDE
+import com.amri.emploihunt.util.LONGITUDE
+import com.amri.emploihunt.util.MOB_NO
+import com.amri.emploihunt.util.OS_VERSION
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.convertUriToPdfFile
+import com.amri.emploihunt.util.Utils.showNoInternetBottomSheet
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+
+
+class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
+
+
+
+    private lateinit var inputLayoutJobSeeker:ConstraintLayout
+
+    private lateinit var jsLayout1:Group
+
+    private lateinit var inputDegreeTypeSpinner:Spinner
+    private lateinit var inputBioJ:EditText
+    private lateinit var radioGrpFreshExp:RadioGroup
+    private lateinit var radioBtnFresher:RadioButton
+    private lateinit var radioBtnExperience:RadioButton
+
+    private lateinit var jsLayout2:Group
+
+    private lateinit var jsSubLayout1:Group
+
+    private lateinit var inputPrevCompany:EditText
+    private lateinit var inputDesignation:EditText
+    private lateinit var inputDuration:EditText
+
+
+//    lateinit var jsSubLayout2:LinearLayout
+
+    private lateinit var inputSalaryJ:EditText
+    private lateinit var inputCitySpinnerJ:Spinner //
+    private lateinit var radioGrpWorkingMode:RadioGroup
+    private lateinit var radioBtnOnsite:RadioButton
+    private lateinit var radioBtnRemote:RadioButton
+    private lateinit var radioBtnHybrid:RadioButton
+    private lateinit var inputJobTypeSpinner:Spinner//
+
+    private lateinit var jsLayout3:Group
+
+    private lateinit var textPdfName:TextView
+    private lateinit var btnSelectPdf: ImageView
+    private lateinit var uploadProgressBar: ProgressBar
+    private lateinit var uploadBtn:Button
+
+    private lateinit var prefManager: SharedPreferences
+    private lateinit var inputLayoutRecruiter:ConstraintLayout
+
+    private lateinit var recruiterLayout1:Group
+
+    private lateinit var inputPrevCompanyR:EditText
+    private lateinit var inputDesignationR:EditText
+    private lateinit var inputDegreeSpinnerR:Spinner//
+    private lateinit var inputJobDesR:EditText
+
+    private lateinit var recruiterLayout2:Group
+
+    private lateinit var inputSalaryR:EditText
+    private lateinit var JobLocationSpinnerR:Spinner
+    private lateinit var JobLocationSpinnerJ:Spinner
+    private lateinit var radioGrpWorkingModeR:RadioGroup
+    private lateinit var radioBtnOnsiteR:RadioButton
+    private lateinit var radioBtnRemoteR:RadioButton
+    private lateinit var radioBtnHybridR:RadioButton
+
+    private lateinit var submitBtnLayout:Group
+    private lateinit var btnSubmit:Button
+    private lateinit var progressBar:ProgressBar
+    private lateinit var btnNext:FloatingActionButton
+    private lateinit var btnBack:FloatingActionButton
+
+    private lateinit var check1:ImageView
+    private lateinit var check2:ImageView
+    private lateinit var check3:ImageView
+    private lateinit var check4:ImageView
+
+    private lateinit var btnSkip : TextView
+    
+    private var userType = String()
+
+    private var layoutID = -1
+    private var btnPointer = 0
+
+    private var pdfUri:Uri ?= null
+
+    private var firstName = String()
+    private var lastName = String()
+    private var phoneNo = String()
+    private var email = String()
+    private var city = String()
+    private var userId = String()
+    private var qualification = String()
+    private var bio = String()
+    private var experience = String()
+    private var companyName = String()
+    private var designation = String()
+    private var jobLocation = String()
+    private var duration = String()
+    private var salary = String()
+    private var pCity = String()
+    private var workingMode = String()
+    private var jobTitle = String()
+    private var jobDes = String()
+    private var resume = String()
+    private var termsConditionsAcceptance = String()
+    private var pdfName = String()
+
+
+
+    private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
+    private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
+    var cityList: ArrayList<String> = ArrayList()
+    var prefLocations: ArrayList<String> = ArrayList()
+
+    private var selectedQualification = String()
+    private var selectedJobLocation = String()
+    private var selectedPreJobLocation = String()
+    private var selectedJob = String()
+
+    private var isSkip: Boolean = false
+    private lateinit var resumePdf: File
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_information)
+        prefManager = prefManager(this@InformationActivity)
+        val window: Window = this@InformationActivity.window
+        val background = ContextCompat.getDrawable(this@InformationActivity, R.drawable.status_bar_color)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.transparent)
+        window.navigationBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.white)
+        window.setBackgroundDrawable(background)
+
+        setXMlIds()
+        setOnClickListener()
+        userType = intent.getStringExtra("userType").toString()
+        setLayout(userType)
+
+        getAllCity()
+        cityList.add("City")
+        prefLocations.add("City")
+        setAdapters()
+
+
+    }
+
+    private fun setAdapters() {
+
+        val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,cityList)
+        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        JobLocationSpinnerR.adapter = jobLocationAdapter
+        JobLocationSpinnerJ.adapter = jobLocationAdapter
+
+        val prefJobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,prefLocations)
+        prefJobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputCitySpinnerJ.adapter = prefJobLocationAdapter
+
+        val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
+        qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputDegreeTypeSpinner.adapter = qualificationsAdapter
+        inputDegreeSpinnerR.adapter = qualificationsAdapter
+
+        val jobsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobs)
+        jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        inputJobTypeSpinner.adapter = jobsAdapter
+    }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        selectedJobLocation = cityList[position]
+
+
+        Log.d("###", "onItemSelected: $selectedJobLocation $selectedPreJobLocation $position")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    private fun setLayout(userType: String) {
+
+        if (userType == "Recruiter") {
+            inputLayoutRecruiter.visibility = VISIBLE
+            layoutID = 0
+            recruiterLayout1.visibility = VISIBLE
+            recruiterLayout2.visibility = GONE
+            btnNext.visibility = VISIBLE
+            btnBack.visibility = GONE
+            check1.visibility = VISIBLE
+            check1.setBackgroundResource(R.color.check_color)
+            check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+            check2.visibility = VISIBLE
+            check2.setBackgroundResource(R.color.check_def_color)
+            check3.visibility = VISIBLE
+            check3.setBackgroundResource(R.color.check_def_color)
+            check4.visibility = GONE
+            check4.setBackgroundResource(R.color.check_def_color)
+        }
+        if(userType == "Job Seeker"){
+            inputLayoutJobSeeker.visibility = VISIBLE
+            layoutID = 1
+            jsLayout1.visibility = VISIBLE
+            jsSubLayout1.visibility = GONE
+            jsLayout2.visibility = GONE
+            jsLayout3.visibility = GONE
+            btnNext.visibility = VISIBLE
+            btnBack.visibility = GONE
+            check1.visibility = VISIBLE
+            check1.setBackgroundResource(R.color.check_color)
+            check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+            check2.visibility = VISIBLE
+            check2.setBackgroundResource(R.color.check_def_color)
+            check3.visibility = VISIBLE
+            check3.setBackgroundResource(R.color.check_def_color)
+            check4.visibility = VISIBLE
+            check4.setBackgroundResource(R.color.check_def_color)
+        }
+        btnPointer = 0
+        userId = intent.getStringExtra("uid").toString()
+        firstName = intent.getStringExtra("fName").toString()
+        lastName = intent.getStringExtra("lName").toString()
+        phoneNo = intent.getStringExtra("phoneNo").toString()
+        email = intent.getStringExtra("email").toString()
+        city = intent.getStringExtra("city").toString()
+        termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString()
+
+    }
+
+    private fun setOnClickListener() {
+        btnSelectPdf.setOnClickListener(this)
+        uploadBtn.setOnClickListener(this)
+        btnBack.setOnClickListener(this)
+        btnNext.setOnClickListener(this)
+        btnSkip.setOnClickListener(this)
+        btnSubmit.setOnClickListener(this)
+        JobLocationSpinnerR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJobLocation = cityList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        JobLocationSpinnerJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Log.d("###", "onItemSelected: ")
+                selectedJobLocation = cityList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+        inputCitySpinnerJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedPreJobLocation = prefLocations[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputDegreeTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedQualification = qualifications[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputJobTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJob = jobs[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        inputDegreeSpinnerR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                selectedJob = qualifications[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.uploadBtn -> {
+                /*uploadProgressBar.visibility = VISIBLE
+                uploadProgressBar.progress = 70
+                val mStorage = FirebaseStorage.getInstance().getReference("pdfs")
+                val pdfRef = mStorage.child(pdfName)
+                pdfUri?.let {
+                    pdfRef.putFile(it).addOnSuccessListener {
+                        pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                            uploadProgressBar.progress = 100
+                            resume = downloadUrl.toString()
+                        }
+                    }
+                }*/
+                uploadBtn.visibility = GONE
+                btnSubmit.visibility = VISIBLE
+            }
+            R.id.btnSelectPdf -> {
+                  selectpdf()
+            }
+
+            R.id.btnBack -> {
+                btnPointer -= 1
+                changeLayout(layoutID,btnPointer)
+//                makeToast("$btnPointer",0)
+            }
+            R.id.btnSubmit -> {
+
+                if(userType == "Recruiter") storeInfoR()
+                if (userType == "Job Seeker") storeInfoJ()
+
+            }
+            R.id.btnNext -> {
+                btnPointer += 1
+                changeLayout(layoutID,btnPointer)
+//                makeToast("$btnPointer",0)
+            }
+            R.id.btnSkip -> {
+
+                if (userType == "Job Seeker"){
+
+                    storeInfoJBySkip()
+                }
+                if(userType == "Recruiter"){
+                    storeInfoRSkip()
+                }
+
+//                val  map = mutableMapOf<String,String>()
+//                map["userId"] = userId
+//                map["userFName"] = firstName
+//                map["userLName"] = firstName
+//                map["userPhoneNUmber"] = phoneNo
+//                map["userEmailId"] = email
+//
+//                FirebaseDatabase.getInstance().getReference("Users")
+//                    .child(userType)
+//                    .child(userId)
+//                    .setValue(map).addOnCompleteListener{ task ->
+//                        if(task.isSuccessful){
+//                            if(userType == "Job Seeker"){
+//                                CoroutineScope(Dispatchers.IO).launch {
+//                                    val jobSeekerProfileInfo =
+//                                        JobSeekerProfileInfo(this@InformationActivity)
+//
+//                                    jobSeekerProfileInfo.storeBasicProfileData(
+//                                        firstName,
+//                                        lastName,
+//                                        phoneNo,
+//                                        email,
+//                                        "",
+//                                        ""
+//                                    )
+//                                    jobSeekerProfileInfo.storeUserType(
+//                                        userType,
+//                                        userId
+//                                    )
+//                                }
+//                                navigateToHomeActivity()
+//                            }
+//                            if(userType == "Recruiter"){
+//                                CoroutineScope(Dispatchers.IO).launch {
+//                                    val recruiterProfileInfo =
+//                                        RecruiterProfileInfo(this@InformationActivity)
+//
+//                                    recruiterProfileInfo.storeBasicProfileData(
+//                                        firstName,
+//                                        lastName,
+//                                        phoneNo,
+//                                        email,
+//                                        "",
+//                                        ""
+//                                    )
+//                                    recruiterProfileInfo.storeUserType(
+//                                        userType,
+//                                        userId
+//                                    )
+//                                }
+//                                navigateToHomeActivity()
+//                            }
+//
+//                        }
+//                    }
+            }
+        }
+    }
+    private fun selectpdf() {
+        val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+        pdfIntent.type = "application/pdf"
+        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(pdfIntent, 12)
+    }
+
+    @SuppressLint("Range")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_CANCELED) {
+            when (requestCode) {
+                12 -> if (resultCode == RESULT_OK) {
+                    pdfUri = data?.data!!
+                    val uri: Uri = data.data!!
+                    val uriString: String = uri.toString()
+                    resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
+
+
+                    pdfName = null.toString()
+                    if (uriString.startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this.contentResolver.query(
+                                uri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                pdfName =
+                                    myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                textPdfName.text = pdfName
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun storeInfoJ() {
+
+        qualification = selectedQualification.toString()
+        bio = inputBioJ.text.toString()
+        experience = getSelectedRadioItem(radioGrpFreshExp).toString()
+        companyName = inputPrevCompany.text.toString()
+        designation = inputDesignation.text.toString()
+        jobLocation = selectedJobLocation.toString()
+        duration = inputDuration.text.toString()
+        salary = inputSalaryJ.text.toString()
+        if(salary.isEmpty()){
+            salary = 0.toString()
+        }
+        workingMode = getSelectedRadioItem(radioGrpWorkingMode).toString()
+        jobTitle = selectedJob.toString()
+        pCity = selectedPreJobLocation.toString()
+
+        val correct = inputFieldConformationJ(bio,salary)
+        if (!correct) return
+        else{
+           /* progressBar.visibility = VISIBLE
+            val user = UsersJobSeeker(
+                userId,
+                firstName,
+                lastName,
+                phoneNo,
+                email,
+                "",
+                "",
+                "",
+                companyName,
+                bio,
+                qualification,
+                experience,
+                designation,
+                companyName,
+                duration,
+                resume,
+                pdfName,
+                jobTitle,
+                salary,
+                city,
+                workingMode,
+            )
+
+            FirebaseDatabase.getInstance().getReference("Users")
+                .child(userType)
+                .child(userId)
+                .setValue(user).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val jobSeekerProfileInfo = JobSeekerProfileInfo(this@InformationActivity)
+
+                            jobSeekerProfileInfo.storeBasicProfileData(
+                                firstName,
+                                lastName,
+                                phoneNo,
+                                email,
+                                "",
+                                companyName
+                            )
+                            jobSeekerProfileInfo.storeAboutData(
+                                bio,
+                                qualification
+                            )
+                            jobSeekerProfileInfo.storeExperienceData(
+                                experience,
+                                designation,
+                                companyName,
+                                duration
+                            )
+                            jobSeekerProfileInfo.storeResumeData(
+                                pdfName,
+                                pdfUri.toString()
+                            )
+                            jobSeekerProfileInfo.storeJobPreferenceData(
+                                jobTitle,
+                                salary,
+                                city,
+                                workingMode
+                            )
+                            jobSeekerProfileInfo.storeUserType(
+                                userType,
+                                userId
+                            )
+                        }
+                        makeToast("Data stored successfully",1)
+                        navigateToHomeActivity()
+                    } else {
+                        makeToast("Try again",1)
+                    }
+                    check4.setBackgroundResource(R.color.check_color)
+                    progressBar.visibility = GONE
+                }*/
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","0")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("tBio",bio)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("vCurrentCompany",companyName)
+                    .addQueryParameter("vDesignation",designation)
+                    .addQueryParameter("vJobLocation",jobLocation)
+                    .addQueryParameter("vDuration",duration)
+                    .addQueryParameter("vPreferCity",pCity)
+                    .addQueryParameter("vQualification",qualification)
+                    .addQueryParameter("vWorkingMode",workingMode)
+                    .addQueryParameter("tTagLine","")
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .addMultipartFile("resume",resumePdf)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
+
+                                            val jobSeekerProfileInfo =
+                                                JobSeekerProfileInfo(this@InformationActivity)
+                                            jobSeekerProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                response.data.user.tTagLine,
+                                                response.data.user.vCurrentCompany
+                                            )
+                                            jobSeekerProfileInfo.storeAboutData(
+                                                response.data.user.tBio,
+                                                response.data.user.vQualification
+                                            )
+                                            jobSeekerProfileInfo.storeExperienceData(
+                                                "",
+                                                response.data.user.vDesignation,
+                                                "",
+                                                ""
+                                            )
+                                            jobSeekerProfileInfo.storeResumeData(
+                                                "",
+                                                response.data.user.tResumeUrl,
+                                            )
+                                            jobSeekerProfileInfo.storeJobPreferenceData(
+                                                "",
+                                                "",
+                                                response.data.user.vCity,
+                                                ""
+                                            )
+
+                                        }
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 0
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+        }
+    }
+    private fun storeInfoJBySkip() {
+
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","0")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
+
+                                            val jobSeekerProfileInfo =
+                                                JobSeekerProfileInfo(this@InformationActivity)
+                                            jobSeekerProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                "",
+                                                ""
+                                            )
+
+
+                                        }
+
+
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 0
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+
+    }
+    private fun inputFieldConformationJ(
+        bio: String,
+        expectedSalary: String
+    ): Boolean {
+
+        if (bio.length > 5000 ) {
+            inputBioJ.error = "bio length should not be exited to 5000"
+            return false
+        }
+        if (!isNumeric(expectedSalary)){
+            inputSalaryJ.error = "Invalid Salary"
+        }
+        return true
+
+    }
+
+    private fun isNumeric(input: String): Boolean {
+        return try {
+            input.toInt()
+            true
+        } catch (e: NumberFormatException) {
+            false
+        }
+    }
+
+    private fun storeInfoR() {
+        companyName = inputPrevCompanyR.text.toString()
+        designation = inputDesignationR.text.toString()
+        jobTitle = selectedQualification
+        jobDes = inputJobDesR.text.toString()
+        salary = inputSalaryR.text.toString()
+        if(salary.isEmpty()){
+            salary = 0.toString()
+        }
+        jobLocation = selectedJobLocation
+        workingMode = getSelectedRadioItem(radioGrpWorkingModeR)
+        val correct = inputFieldConformationR(jobDes,salary)
+        if (!correct) return
+        else{
+           /* progressBar.visibility = VISIBLE
+            val user = UsersRecruiter(
+                userId,
+                firstName,
+                lastName,
+                phoneNo,
+                email,
+                "",
+                "",
+                "",
+                companyName,
+                designation,
+                jobTitle,
+                jobDes,
+                salary,
+                city,
+                workingMode,
+                termsConditionsAcceptance
+            )
+
+            FirebaseDatabase.getInstance().getReference("Users")
+                .child(userType)
+                .child(userId)
+                .setValue(user).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        btnSubmit.visibility = GONE
+                        btnBack.visibility = GONE
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val recruiterProfileInfo =
+                                RecruiterProfileInfo(this@InformationActivity)
+
+                            recruiterProfileInfo.storeBasicProfileData(
+                                firstName,
+                                lastName,
+                                phoneNo,
+                                email,
+                                "",
+                                companyName
+                            )
+                            recruiterProfileInfo.storeAboutData(
+                                jobTitle,
+                                salary,
+                                city,
+                                jobDes,
+                                designation,
+                                workingMode
+                            )
+                            recruiterProfileInfo.storeUserType(
+                                userType,
+                                userId
+                            )
+                        }
+                        makeToast("Data stored successfully",1)
+                        navigateToHomeActivity()
+                    } else {
+                        makeToast("Try again",1)
+                    }
+                    check3.setBackgroundResource(R.color.check_color)
+                    progressBar.visibility = GONE
+                }*/
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","1")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("tBio",jobDes)
+                    .addQueryParameter("vPreferCity","")
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("vCurrentCompany",companyName)
+                    .addQueryParameter("vDesignation",designation)
+                    .addQueryParameter("vQualification",jobTitle)
+                    .addQueryParameter("vJobLocation",jobLocation)
+                    .addQueryParameter("vWorkingMode",workingMode)
+                    .addQueryParameter("tTagLine","")
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val recruiterProfileInfo = RecruiterProfileInfo(this@InformationActivity)
+                                            recruiterProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                response.data.user.tTagLine,
+                                                response.data.user.vCurrentCompany
+                                            )
+                                            recruiterProfileInfo.storeAboutData(
+                                                response.data.user.vDesignation,
+                                                "",
+                                                "",
+                                                response.data.user.tBio,
+                                                response.data.user.vDesignation,
+                                                response.data.user.vWorkingMode
+                                            )
+                                            recruiterProfileInfo.storeProfileImg(
+                                                response.data.user.tProfileUrl
+                                            )
+                                            recruiterProfileInfo.storeProfileBannerImg(
+                                                ""
+                                            )
+
+                                        }
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 1
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+        }
+    }
+    private fun storeInfoRSkip() {
+
+            if (Utils.isNetworkAvailable(this)){
+                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addQueryParameter("iRole","1")
+                    .addQueryParameter(MOB_NO,phoneNo)
+                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                    .addQueryParameter(DEVICE_TYPE,"0")
+                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                    .addQueryParameter("vFirstName",firstName)
+                    .addQueryParameter("vLastName",lastName)
+                    .addQueryParameter("vEmail",email)
+                    .addQueryParameter("tBio",jobDes)
+                    .addQueryParameter("vcity",city)
+                    .addQueryParameter("fbid","")
+                    .addQueryParameter("googleid","")
+                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        RegisterUserModel::class.java,
+                        object : ParsedRequestListener<RegisterUserModel> {
+                            override fun onResponse(response: RegisterUserModel?) {
+                                try {
+                                    response?.let {
+                                        hideProgressDialog()
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val recruiterProfileInfo = RecruiterProfileInfo(this@InformationActivity)
+                                            recruiterProfileInfo.storeBasicProfileData(
+                                                response.data.user.vFirstName,
+                                                response.data.user.vLastName,
+                                                response.data.user.vMobile,
+                                                response.data.user.vEmail,
+                                                "",
+                                               ""
+                                            )
+
+
+                                        }
+
+                                        btnSubmit.visibility = GONE
+                                        btnBack.visibility = GONE
+                                        prefManager[IS_LOGIN] = true
+                                        prefManager[ROLE] = 1
+                                        navigateToHomeActivity()
+
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+
+
+                                }
+                            }
+                        })
+            }else{
+                showNoInternetBottomSheet(this,this)
+            }
+
+
+    }
+    private fun inputFieldConformationR(jobDes: String, expectedSalary: String): Boolean {
+        if (jobDes.length > 5000){
+            inputJobDesR.error = "Job Description Length Should not exited to 5000"
+            return false
+        }
+
+        if (!isNumeric(salary)){
+            inputSalaryR.error = "Invalid Salary"
+            return false
+        }
+
+       return true
+    }
+
+    private fun navigateToHomeActivity() {
+        if (userType == "Job Seeker") {
+            val intent = Intent(this@InformationActivity, HomeJobActivity::class.java)
+            intent.putExtra("userType", userType)
+            val fullName = firstName + lastName
+            makeToast("Welcome $fullName", 0)
+            intent.putExtra("name", fullName)
+            intent.putExtra("userId",userId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+        if (userType == "Recruiter"){
+            val intent = Intent(this@InformationActivity, HomeRecruiterActivity::class.java)/** need **/
+            intent.putExtra("userType", userType)
+            val fullName = firstName + lastName
+            makeToast("Welcome $fullName", 0)
+            intent.putExtra("name", fullName)
+            intent.putExtra("userId",userId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+    }
+
+    private fun changeLayout(layoutID: Int, btnPointer: Int) {
+        if (layoutID == 0){
+            if(btnPointer == 0){
+                recruiterLayout1.visibility = VISIBLE
+                recruiterLayout2.visibility = GONE
+                btnNext.visibility = VISIBLE
+                btnBack.visibility = GONE
+                btnSubmit.visibility = GONE
+
+                check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check2.setBackgroundResource(R.color.check_def_color)
+                check3.setBackgroundResource(R.color.check_def_color)
+                check4.setBackgroundResource(R.color.check_def_color)
+            }
+            if (btnPointer == 1){
+                recruiterLayout2.visibility = VISIBLE
+                recruiterLayout1.visibility = GONE
+                btnNext.visibility = GONE
+                btnBack.visibility = VISIBLE
+                btnSubmit.visibility = VISIBLE
+
+                check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check3.setBackgroundResource(R.color.check_def_color)
+                check4.setBackgroundResource(R.color.check_def_color)
+            }
+        }
+        if (layoutID == 1){
+            if (btnPointer == 0){
+                jsLayout1.visibility = VISIBLE
+                jsLayout2.visibility = GONE
+                jsLayout3.visibility = GONE
+                jsSubLayout1.visibility = GONE
+                btnBack.visibility = GONE
+                btnNext.visibility = VISIBLE
+                btnSubmit.visibility = GONE
+
+                check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check2.setBackgroundResource(R.color.check_def_color)
+                check3.setBackgroundResource(R.color.check_def_color)
+                check4.setBackgroundResource(R.color.check_def_color)
+            }
+            else if (btnPointer == 1 ) {
+
+                experience = getSelectedRadioItem(radioGrpFreshExp)
+                if(experience == "Experienced") {
+//                    makeToast("You Selected $experience",0)
+//                    makeToast("press next for further step",0)
+                    jsLayout1.visibility = GONE
+                    jsLayout2.visibility = GONE
+                    jsSubLayout1.visibility = VISIBLE
+                    //                    jsSubLayout2.visibility = GONE
+                    jsLayout3.visibility = GONE
+                    btnBack.visibility = VISIBLE
+                    btnNext.visibility = VISIBLE
+                    btnSubmit.visibility = GONE
+                    check1.setBackgroundResource(R.color.check_color)
+                    check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                    check2.setBackgroundResource(R.color.check_def_color)
+                    check3.setBackgroundResource(R.color.check_def_color)
+                    check4.setBackgroundResource(R.color.check_def_color)
+                }
+                if (experience == "Fresher"){
+                    jsLayout1.visibility = GONE
+                    jsSubLayout1.visibility = GONE
+//                    jsSubLayout2.visibility = GONE
+                    jsLayout2.visibility = VISIBLE
+                    jsLayout3.visibility = GONE
+                    btnBack.visibility = VISIBLE
+                    btnNext.visibility = VISIBLE
+                    btnSubmit.visibility = GONE
+                    check1.setBackgroundResource(R.color.check_color)
+                    check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                    check2.setBackgroundResource(R.color.check_color)
+                    check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                    check3.setBackgroundResource(R.color.check_def_color)
+                    check4.setBackgroundResource(R.color.check_def_color)
+                }
+            }
+
+            else if (btnPointer == 2){
+                jsLayout1.visibility = GONE
+                jsSubLayout1.visibility = GONE
+//                    jsSubLayout2.visibility = GONE
+                jsLayout2.visibility = VISIBLE
+                jsLayout3.visibility = GONE
+                btnBack.visibility = VISIBLE
+                btnNext.visibility = VISIBLE
+                btnSubmit.visibility = GONE
+
+                check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check3.setBackgroundResource(R.color.check_def_color)
+                check4.setBackgroundResource(R.color.check_def_color)
+            }
+            else if (btnPointer == 3){
+                jsLayout1.visibility = GONE
+                jsSubLayout1.visibility = GONE
+//                    jsSubLayout2.visibility = GONE
+                jsLayout2.visibility = GONE
+                jsLayout3.visibility = VISIBLE
+                btnBack.visibility = VISIBLE
+                btnNext.visibility = GONE
+                btnSubmit.visibility = GONE
+                uploadBtn.visibility = VISIBLE
+                uploadProgressBar.visibility = GONE
+
+                check1.setBackgroundResource(R.color.check_color)
+                check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check2.setBackgroundResource(R.color.check_color)
+                check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check3.setBackgroundResource(R.color.check_color)
+                check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                check4.setBackgroundResource(R.color.check_def_color)
+            }
+        }
+    }
+
+    private fun getSelectedRadioItem(radioGroup: RadioGroup): String {
+        val selectedItemId = radioGroup.checkedRadioButtonId
+        if (selectedItemId != -1) {
+            val radioButton = findViewById<View>(selectedItemId) as RadioButton
+//            makeToast(radioButton.text.toString(),0)
+            return radioButton.text.toString()
+        }
+        return "not Selected"
+    }
+
+    private fun setXMlIds() {
+        inputLayoutJobSeeker = findViewById(R.id.inputLayoutJobSeeker)
+
+        jsLayout1 = findViewById(R.id.jsLayout1)
+        inputDegreeTypeSpinner = findViewById(R.id.inputDegreeTypeSpinner)
+        inputBioJ = findViewById(R.id.bio)
+        radioGrpFreshExp = findViewById(R.id.radioGrpFreshExp)
+        radioBtnFresher = findViewById(R.id.radioBtnFresher)
+        radioBtnExperience = findViewById(R.id.radioBtnExperience)
+
+        jsLayout2 = findViewById(R.id.jsLayout2)
+
+        jsSubLayout1 = findViewById(R.id.jsSubLayout)
+
+        inputPrevCompany = findViewById(R.id.companyName)
+        inputDesignation = findViewById(R.id.designation)
+        inputDuration = findViewById(R.id.duration)
+
+
+//        jsSubLayout2 = findViewById(R.id.jsSubLayout2)
+
+        inputSalaryJ = findViewById(R.id.salary)
+        inputCitySpinnerJ = findViewById(R.id.inputCitySpinnerJ)
+        radioGrpWorkingMode = findViewById(R.id.radioGrpWorkingMode)
+        radioBtnOnsite = findViewById(R.id.radioBtnOnsite)
+        radioBtnRemote = findViewById(R.id.radioBtnRemote)
+        radioBtnHybrid = findViewById(R.id.radioBtnHybrid)
+        inputJobTypeSpinner = findViewById(R.id.inputJobTypeSpinner)
+
+        jsLayout3 = findViewById(R.id.jsLayout3)
+        textPdfName = findViewById(R.id.textPdfName)
+        btnSelectPdf = findViewById(R.id.btnSelectPdf)
+        uploadProgressBar = findViewById(R.id.uploadProgressBar)
+        uploadBtn = findViewById(R.id.uploadBtn)
+
+
+        inputLayoutRecruiter = findViewById(R.id.inputLayoutRecruiter)
+
+        recruiterLayout1 = findViewById(R.id.recruiterLayout1)
+        inputPrevCompanyR = findViewById(R.id.inputPrevCompanyR)
+        inputDesignationR = findViewById(R.id.inputDesignationR)
+        inputDegreeSpinnerR = findViewById(R.id.inputDegreeRSpinner)
+        inputJobDesR = findViewById(R.id.inputJobDesR)
+
+        recruiterLayout2 = findViewById(R.id.recruiterLayout2)
+        inputSalaryR = findViewById(R.id.inputSalaryR)
+        JobLocationSpinnerR = findViewById(R.id.JobLocationSpinnerR)
+        JobLocationSpinnerJ = findViewById(R.id.JobLocationSpinnerJ)
+        radioGrpWorkingModeR = findViewById(R.id.radioGrpWorkingModeR)
+        radioBtnOnsiteR = findViewById(R.id.radioBtnOnsiteR)
+        radioBtnRemoteR = findViewById(R.id.radioBtnRemoteR)
+        radioBtnHybridR = findViewById(R.id.radioBtnHybridR)
+
+        submitBtnLayout = findViewById(R.id.submitBtnLayout)
+        btnSubmit = findViewById(R.id.btnSubmit)
+        progressBar = findViewById(R.id.progressBar)
+        btnNext = findViewById(R.id.btnNext)
+        btnBack = findViewById(R.id.btnBack)
+
+        check1 = findViewById(R.id.check1)
+        check2 = findViewById(R.id.check2)
+        check3 = findViewById(R.id.check3)
+        check4 = findViewById(R.id.check4)
+
+        btnSkip = findViewById(R.id.btnSkip)
+
+    }
+
+    private fun makeToast(msg: String, len: Int) {
+        if (len == 0) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        if (len == 1) Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            makeToast("backPressed",0)
+
+            val alterDialog  = AlertDialog.Builder(this@InformationActivity)
+                .setTitle("Alert!!!")
+                .setIcon(R.drawable.ic_alert)
+                .setMessage("Your Phone Number is Registered.But your data will save..")
+                .setPositiveButton("Continue"){ dialog, _ ->
+                    startActivity(Intent(this@InformationActivity,RegistrationActivity::class.java))
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
+                    finish()
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Back"){dialog,_ ->
+                    dialog.dismiss()
+                }
+                .create()
+            alterDialog.show()
+
+            //moveTaskToBack(false);
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+    private fun getAllCity(){
+
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.GET_CITIES)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllCity::class.java,
+                    object : ParsedRequestListener<GetAllCity> {
+                        override fun onResponse(response: GetAllCity?) {
+                            try {
+
+                                cityList.addAll(response!!.data)
+                                prefLocations.addAll(response.data)
+
+                                hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+                                hideProgressDialog()
+
+                            }
+
+
+                        }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+        }
+
+    }
+
+}

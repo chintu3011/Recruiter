@@ -7,14 +7,19 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".JobPostDescriptionFragment">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnApply"
+
             android:id="@+id/frame">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_end="392dp" />
+                    app:layout_constraintGuide_begin="19dp" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/endGuildLine"
@@ -197,12 +202,13 @@
                     app:drawableTint="#CB302F2F"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/flow1"
-                    app:layout_constraintWidth_default="wrap" />
+                     />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/dashDivider1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/workingMode"
                     app:layout_constraintEnd_toStartOf="@+id/experience"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -212,12 +218,12 @@
                     app:srcCompat="@drawable/ic_dash" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/jobRoll"
+                    android:id="@+id/tvSalary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/poppinsregular"
-                    android:text="Junior Developer"
+                    android:visibility="visible"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textStyle="bold"
@@ -229,7 +235,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    app:constraint_referenced_ids="workingMode,dashDivider1,jobRoll"
+                    app:constraint_referenced_ids="workingMode,dashDivider1,tvSalary"
                     app:flow_horizontalGap="@dimen/_5sdp"
                     app:flow_horizontalStyle="packed"
                     app:flow_wrapMode="chain"
@@ -297,6 +303,56 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/jobDes" />
 
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtRolDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_biography"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:text="@string/role_amp_responsibility"
+                    android:fontFamily="@font/poppinsregular"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintBottom_toTopOf="@id/rolDes"
+                    app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                    app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                    app:layout_constraintTop_toBottomOf="@id/lineDivider1" />
+
+                <ru.embersoft.expandabletextview.ExpandableTextView
+                    android:id="@+id/rolDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:etv_animationTime="10"
+                    app:etv_expandLines="3"
+                    app:etv_showLine="false"
+                    app:etv_textExpand="Show more"
+                    app:etv_textShrink="Show less"
+                    app:etv_textContentSize="15sp"
+                    app:etv_textContentColor="@color/black"
+                    app:etv_textStateColor="#9F000000"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu sit amet, sodales dignissim mauris. Maecenas consequat tortor vel nunc auctor tempus vitae quis enim. Nunc arcu ipsum, lobortis porta fermentum in, pulvinar et velit. Nullam eu magna a lacus sagittis gravida ut sed sem. Suspendisse ullamcorper neque augue, ornare consectetur diam cursus porta. Suspendisse lacinia dignissim lectus a ullamcorper. Cras imperdiet sodales metus at tincidunt. In condimentum fermentum augue sit amet fermentum. Sed in mattis est. Aenean faucibus enim velit, ornare sagittis tortor tristique eu. Integer posuere laoreet lacus a bibendum."
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                    app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                    app:layout_constraintTop_toBottomOf="@+id/txtRolDes" />
+
+                <View
+                    android:id="@+id/lineDivider12"
+                    android:layout_width="0dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/divider_design"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rolDes" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtSkills"
                     android:layout_width="0dp"
@@ -312,7 +368,7 @@
                     android:fontFamily="@font/poppinsregular"
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                    app:layout_constraintTop_toBottomOf="@id/lineDivider1" />
+                    app:layout_constraintTop_toBottomOf="@id/lineDivider12" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtTechSkills"
@@ -521,7 +577,6 @@
                     android:id="@+id/lineDivider3"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
-                    app:layout_constraintWidth_percent=".5"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/divider_design"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -546,7 +601,6 @@
                     app:cornerRadius="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btnApply"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@+id/lineDivider3"
@@ -554,35 +608,37 @@
                     android:focusable="true"
                     app:rippleColor="@color/glass_color" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnApply"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/theme_blue"
-                    android:insetLeft="@dimen/_5sdp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="Apply"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:textAllCaps="false"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/poppinsregular"
-                    app:cornerRadius="@dimen/_5sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
-                    app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-                    app:layout_constraintStart_toEndOf="@id/btnCancel"
-                    app:layout_constraintTop_toTopOf="@+id/btnCancel"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="@color/glass_color" />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </ScrollView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/apply_enable"
+            android:insetLeft="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/apply"
+            android:enabled="false"
+            android:textAllCaps="false"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppinsregular"
+            app:cornerRadius="@dimen/_5sdp"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -357,6 +357,24 @@
                 app:layout_constraintTop_toBottomOf="@id/lineDivider1"
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
                 app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintBottom_toTopOf="@id/createTimeTV" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/createTimeTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textStyle="normal"
+                android:textColor="#777575"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="@font/poppinsregular"
+                android:scrollHorizontally="true"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintTop_toBottomOf="@id/aboutPost"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                 app:layout_constraintBottom_toTopOf="@id/bottomGuildLine" />
 
 
