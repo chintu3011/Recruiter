@@ -29,6 +29,7 @@
     <string name="job_level">Job level</string>
     <string name="retry">Retry</string>
     <string name="msg_no_job_found">Umm… We searched fat and wide and couldn\'t find data matching your search. Let\'s check with another one.</string>
+    <string name="msg_no_job_found_save_job">Umm… We finding your save job and couldn\'t find data matching your saved job.</string>
     <string name="msg_server_maintenance">The server is under maintenance. We really appreciate your patience and support. Please wait and try after some time.</string>
     <string name="msg_no_internet">Check your internet connection or\nclick to Retry</string>
     <string name="msg_enable_internet">Please enable internet connection</string>
@@ -56,4 +57,25 @@
     <string name="apply">Apply</string>
     <string name="already_applied">Already Applied</string>
     <string name="role_amp_responsibility"><![CDATA[Role & Responsibility]]></string>
+    <string name="your_applied_job">Your Applied job</string>
+    <string name="what_type_of_job_are_you_looking">what type of job are you looking</string>
+    <string name="_2_5">2/5</string>
+    <string name="add_job_preference">+ Add Job Preference</string>
+    <string name="job_title">Job Title</string>
+    <string name="expected_salary">Expected Salary</string>
+    <string name="picked_team">Picked Team</string>
+    <string name="location">Location</string>
+    <string name="update">Update</string>
+    <string name="opps_job_preference_full">Opps! Job Preference Full</string>
+    <string name="saved_job">Saved Job</string>
+    <string name="your_job_posts">Manages Jobs</string>
+    <string name="cancel_update">Cancel Update</string>
+    <string name="on_site">On-Site</string>
+    <string name="remote">Remote</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="job_location">Job Location</string>
+    <string name="applied_candidate_list">Applied Candidate List</string>
+    <string name="no_applied_candidate_s_found">No Applied Candidate\'s found.</string>
+    <string name="bio">Bio</string>
+    <string name="resume">Resume</string>
 </resources>

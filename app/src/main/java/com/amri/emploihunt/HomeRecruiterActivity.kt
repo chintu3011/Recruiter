@@ -55,7 +55,7 @@ class HomeRecruiterActivity : AppCompatActivity() {
                     replaceFragment(PostRecruitFragment())
                 }
                 R.id.setting -> {
-                    replaceFragment(SettingFragment())
+                    replaceFragment(SettingRecruiterFragment())
                 }
                 R.id.chatR -> {
                     val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
@@ -70,7 +70,7 @@ class HomeRecruiterActivity : AppCompatActivity() {
                 override fun handleOnBackPressed() {
 
                     if (!homeRecruitFragment.isVisible) {
-
+                        bottomNavigationView.selectedItemId = R.id.homeR
                         replaceFragment(homeRecruitFragment)
 
                     } else {

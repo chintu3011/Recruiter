@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/framelayoutpost"
     tools:context=".PostRecruitFragment">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutJobTitle"
@@ -368,7 +370,7 @@
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
                 app:hintTextColor="@color/ed_theme_color"
-                app:layout_constraintBottom_toTopOf="@+id/textLayoutCity"
+                app:layout_constraintBottom_toTopOf="@+id/inputJobRSpinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutSoftSkills"
@@ -421,7 +423,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutCity"
+                app:layout_constraintTop_toBottomOf="@+id/inputJobRSpinner"
                 app:placeholderText="12 LPA"
                 app:startIconDrawable="@drawable/ic_salary"
                 app:startIconTint="@color/ed_theme_color">

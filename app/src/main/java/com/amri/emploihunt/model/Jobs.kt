@@ -12,6 +12,7 @@ data class Jobs(
     var vEducation : String ?=null,
     var iNumberOfVacancy : Int ?=null,
     var iIsApplied : Int ?=null,
+    var iIsSaved : Int ?=null,
     var iNumberOfApplied : Int ?=null,
     var vExperience: String ?=null,
     var vAddress : String ?=null,

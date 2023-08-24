@@ -79,10 +79,10 @@ class HomeJobActivity : AppCompatActivity() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
-                    Log.d("handleOnBackPressed", "handleOnBackPressed:${homeFragment.isVisible} ")
+
 
                     if (!homeFragment.isVisible) {
-                        Log.d("handleOnBackPressed", "handleOnBackPressed:1 isVisible")
+                        bottomNavigationView.selectedItemId = R.id.home
                         replaceFragment(homeFragment)
 
                     } else {

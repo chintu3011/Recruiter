@@ -102,7 +102,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rl_ApplyList"
+            android:id="@+id/rl_PostList"
             android:background="@drawable/spinner_bg"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
@@ -116,12 +116,13 @@
                 android:id="@+id/ivApply"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_person_24" />
+                android:tint="@color/black"
+                android:src="@drawable/ic_job_title" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/view_applylist"
+                android:text="@string/your_job_posts"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"
@@ -139,51 +140,13 @@
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
-            android:id="@+id/rlJobPreference"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:id="@+id/ivPreference"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_app_settings_alt_24" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/job_preference"
-                android:textColor="@color/black"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
-                android:textSize="@dimen/_12sdp"
-                android:layout_toEndOf="@+id/ivPreference"
-                android:layout_centerVertical="true" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:padding="@dimen/_5sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:src="@drawable/baseline_arrow_forward_ios_24" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/spinner_bg"
-            android:id="@+id/rlSaveJob"
+            android:id="@+id/rlInterestedCandidate"
+            android:visibility="visible"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
@@ -196,12 +159,12 @@
                 android:id="@+id/ivSaveJob"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:src="@drawable/baseline_save_24" />
+                android:src="@drawable/baseline_person_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/save_job"
+                android:text="@string/applied_candidate_list"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppinsmedium"

@@ -275,13 +275,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             check4.setBackgroundResource(R.color.check_def_color)
         }
         btnPointer = 0
-        userId = intent.getStringExtra("uid").toString()
-        firstName = intent.getStringExtra("fName").toString()
-        lastName = intent.getStringExtra("lName").toString()
-        phoneNo = intent.getStringExtra("phoneNo").toString()
-        email = intent.getStringExtra("email").toString()
-        city = intent.getStringExtra("city").toString()
-        termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString()
+        userId = intent.getStringExtra("uid").toString().trim()
+        firstName = intent.getStringExtra("fName").toString().trim()
+        lastName = intent.getStringExtra("lName").toString().trim()
+        phoneNo = intent.getStringExtra("phoneNo").toString().trim()
+        email = intent.getStringExtra("email").toString().trim()
+        city = intent.getStringExtra("city").toString().trim()
+        termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString().trim()
 
     }
 
@@ -524,20 +524,20 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private fun storeInfoJ() {
 
-        qualification = selectedQualification.toString()
-        bio = inputBioJ.text.toString()
+        qualification = selectedQualification.toString().trim()
+        bio = inputBioJ.text.toString().trim()
         experience = getSelectedRadioItem(radioGrpFreshExp).toString()
-        companyName = inputPrevCompany.text.toString()
-        designation = inputDesignation.text.toString()
-        jobLocation = selectedJobLocation.toString()
-        duration = inputDuration.text.toString()
-        salary = inputSalaryJ.text.toString()
+        companyName = inputPrevCompany.text.toString().trim()
+        designation = inputDesignation.text.toString().trim()
+        jobLocation = selectedJobLocation.toString().trim()
+        duration = inputDuration.text.toString().trim()
+        salary = inputSalaryJ.text.toString().trim()
         if(salary.isEmpty()){
             salary = 0.toString()
         }
         workingMode = getSelectedRadioItem(radioGrpWorkingMode).toString()
-        jobTitle = selectedJob.toString()
-        pCity = selectedPreJobLocation.toString()
+        jobTitle = selectedJob.toString().trim()
+        pCity = selectedPreJobLocation.toString().trim()
 
         val correct = inputFieldConformationJ(bio,salary)
         if (!correct) return
@@ -817,15 +817,15 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     }
 
     private fun storeInfoR() {
-        companyName = inputPrevCompanyR.text.toString()
-        designation = inputDesignationR.text.toString()
-        jobTitle = selectedQualification
-        jobDes = inputJobDesR.text.toString()
-        salary = inputSalaryR.text.toString()
+        companyName = inputPrevCompanyR.text.toString().trim()
+        designation = inputDesignationR.text.toString().trim()
+        jobTitle = selectedQualification.trim()
+        jobDes = inputJobDesR.text.toString().trim()
+        salary = inputSalaryR.text.toString().trim()
         if(salary.isEmpty()){
             salary = 0.toString()
         }
-        jobLocation = selectedJobLocation
+        jobLocation = selectedJobLocation.trim()
         workingMode = getSelectedRadioItem(radioGrpWorkingModeR)
         val correct = inputFieldConformationR(jobDes,salary)
         if (!correct) return
@@ -1224,7 +1224,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         if (selectedItemId != -1) {
             val radioButton = findViewById<View>(selectedItemId) as RadioButton
 //            makeToast(radioButton.text.toString(),0)
-            return radioButton.text.toString()
+            return radioButton.text.toString().trim()
         }
         return "not Selected"
     }

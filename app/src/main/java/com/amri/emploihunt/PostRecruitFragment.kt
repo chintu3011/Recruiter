@@ -53,7 +53,7 @@ class PostRecruitFragment : BaseFragment() {
         // Inflate the layout for this fragment
         binding = FragmentPostRecruitBinding.inflate(layoutInflater, container, false)
         prefManager = prefManager(requireActivity())
-        cityList.add("Last Graduation &amp; Degree")
+        cityList.add("Select Job Location")
         getAllCity()
         setAdapters()
         databaseReference = FirebaseDatabase.getInstance().reference
@@ -62,7 +62,11 @@ class PostRecruitFragment : BaseFragment() {
             uploadImage()
         }
         binding.btnpostjob.setOnClickListener {
-            adddata()
+
+            if (checkValidation()){
+                adddata()
+            }
+
 
         }
         binding.btnCancelPost.setOnClickListener {
@@ -89,6 +93,9 @@ class PostRecruitFragment : BaseFragment() {
         }
         return binding.root
     }
+
+
+
     private fun setAdapters() {
 
         jobLocationAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,cityList)
@@ -145,28 +152,97 @@ class PostRecruitFragment : BaseFragment() {
                 }
             }
     }
+    private fun checkValidation(): Boolean {
+        if (binding.jobTitle.text.toString().isBlank()){
+            binding.jobTitle.requestFocus()
+            binding.jobTitle.error = "Please enter job title"
+            return  false
+
+        }else if (binding.currentCompany.text.toString().isBlank()){
+            binding.currentCompany.requestFocus()
+            binding.currentCompany.error = "Please enter current company"
+            return  false
+
+        }else if (binding.fileName.text.toString().isBlank()){
+            binding.fileName.requestFocus()
+            binding.fileName.error = "Please upload your company logo"
+            return  false
+
+        }else if (binding.descadd.text.toString().isBlank()){
+            binding.descadd.requestFocus()
+            binding.descadd.error = "Please enter job description"
+            return  false
+
+        }else if (binding.jobroleadd.text.toString().isBlank()){
+            binding.jobroleadd.requestFocus()
+            binding.jobroleadd.error = "Please enter job role"
+            return  false
+
+        }else if (binding.jobLevel.text.toString().isBlank()){
+            binding.jobLevel.requestFocus()
+            binding.jobLevel.error = "Please enter job level"
+            return  false
+
+        }else if (binding.technicalSkills.text.toString().isBlank()){
+            binding.technicalSkills.requestFocus()
+            binding.technicalSkills.error = "Please enter technical skill"
+            return  false
+
+        }else if (binding.softSkills.text.toString().isBlank()){
+            binding.softSkills.requestFocus()
+            binding.softSkills.error = "Please enter soft skill"
+            return  false
+
+        }else if (binding.eduadd.text.toString().isBlank()){
+            binding.eduadd.requestFocus()
+            binding.eduadd.error = "Please enter education"
+            return  false
+
+        }else if (selectedJobLocation.isNullOrBlank()){
+            binding.inputJobRSpinner.requestFocus()
+            toast("Please select job location")
+            return  false
+        }else if (binding.salary.text.toString().isBlank()){
+            binding.salary.requestFocus()
+            binding.salary.error = "Please enter salary package"
+            return  false
+
+        }else if (binding.textLayoutWorkingMode.checkedRadioButtonId == -1){
+            binding.textLayoutWorkingMode.requestFocus()
+            toast("please choose working mode")
+            return  false
+
+        }else if (binding.noOfEmployeeNeed.text.toString().isBlank()){
+            binding.noOfEmployeeNeed.requestFocus()
+            binding.noOfEmployeeNeed.error = "Please enter a vacancy"
+            return  false
+        }else{
+            return true
+        }
+
+    }
     private fun adddata() {
 
-        val title : String = binding.jobTitle.text.toString()
-        val compname : String = binding.currentCompany.text.toString()
-        val desc : String = binding.descadd.text.toString()
-        val jobLevel : String = binding.jobLevel.text.toString()
-        val role : String = binding.jobroleadd.text.toString()
-        val exp : String = binding.experiencedDuration.text.toString()
-        val techskill : String = binding.technicalSkills.text.toString()
-        val softskill : String = binding.softSkills.text.toString()
-        val edu : String = binding.eduadd.text.toString()
-        val city : String = selectedJobLocation
+        val title : String = binding.jobTitle.text.toString().trim()
+        val compname : String = binding.currentCompany.text.toString().trim()
+        val desc : String = binding.descadd.text.toString().trim()
+        val jobLevel : String = binding.jobLevel.text.toString().trim()
+        val role : String = binding.jobroleadd.text.toString().trim()
+        val exp : String = binding.experiencedDuration.text.toString().trim()
+        val techskill : String = binding.technicalSkills.text.toString().trim()
+        val softskill : String = binding.softSkills.text.toString().trim()
+        val edu : String = binding.eduadd.text.toString().trim()
+        val city : String = selectedJobLocation.trim()
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
         when (workmodeid)
         {
-            R.id.radioBtnOnsitepost -> workmode = "On-site"
-            R.id.radioBtnRemotepost -> workmode = "Remote"
-            R.id.radioBtnHybridpost -> workmode = "Hybrid"
+            R.id.radioBtnOnsitepost -> workmode = requireContext().resources.getString(R.string.on_site)
+            R.id.radioBtnRemotepost -> workmode = requireContext().resources.getString(R.string.remote)
+            R.id.radioBtnHybridpost -> workmode = requireContext().resources.getString(R.string.hybrid)
         }
-        val sal : String = binding.salary.text.toString()
-        val empneed : String = binding.noOfEmployeeNeed.text.toString()
+        val sal : String = binding.salary.text.toString().trim()
+        val empneed : String = binding.noOfEmployeeNeed.text.toString().trim()
         val phone : Long = 9825154730
         val email = "info@amrisystems.com"
         val postduration = "02/04/2023"

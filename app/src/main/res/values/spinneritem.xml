@@ -10,4 +10,35 @@
         <item>HSC</item>
         <item>SSC</item>
     </string-array>
+
+
+
+    <string-array name="expected_salary">
+        <item>1 LPA +</item>
+        <item>2 LPA +</item>
+        <item>3 LPA +</item>
+        <item>4 LPA +</item>
+        <item>5 LPA +</item>
+        <item>6 LPA +</item>
+        <item>7 LPA +</item>
+        <item>8 LPA +</item>
+        <item>9 LPA +</item>
+        <item>10 LPA +</item>
+        <item>11 LPA +</item>
+        <item>12 LPA +</item>
+        <item>13 LPA +</item>
+        <item>14 LPA +</item>
+        <item>15 LPA +</item>
+        <item>16 LPA +</item>
+        <item>17 LPA +</item>
+        <item>18 LPA +</item>
+        <item>19 LPA +</item>
+        <item>20 LPA +</item>
+        <item>21 LPA +</item>
+        <item>22 LPA +</item>
+        <item>23 LPA +</item>
+        <item>24 LPA +</item>
+        <item>25 LPA +</item>
+
+    </string-array>
 </resources>

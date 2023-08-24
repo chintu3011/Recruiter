@@ -122,4 +122,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.8'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
+    //picker
+    implementation "com.paulrybitskyi.valuepicker:valuepicker:1.0.3"
+
+    //pdf viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
 }

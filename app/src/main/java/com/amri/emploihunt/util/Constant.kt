@@ -50,3 +50,4 @@ var IS_CHALLENGE_COMMENT_LIKE = false*/
 const val LANGUAGE = "language"
 
 const val IS_HOME_FRAGMENT = false
+var IS_ADDED_JOB_PREFERENCE = false

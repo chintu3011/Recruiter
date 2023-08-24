@@ -33,6 +33,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".JobSeekerDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InterestedCandidateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdatePostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YourJosPostListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JobSaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddJobPreferenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JobPreferenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ApplyListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity

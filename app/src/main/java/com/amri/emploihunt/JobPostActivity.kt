@@ -1,9 +1,14 @@
 package com.amri.emploihunt
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 import com.androidnetworking.AndroidNetworking
@@ -16,6 +21,7 @@ import com.amri.emploihunt.databinding.ActivityJobPostBinding
 import com.amri.emploihunt.databinding.InternetBottomSheetLayoutBinding
 import com.amri.emploihunt.model.ApplyModel
 import com.amri.emploihunt.model.Jobs
+import com.amri.emploihunt.model.SaveModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.PrefManager
@@ -26,7 +32,7 @@ import com.amri.emploihunt.util.Utils.serializable
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
-class JobPostActivity : BaseActivity() {
+class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListener{
 
     private lateinit var binding: ActivityJobPostBinding
     private lateinit var dataList: MutableList<Jobs>
@@ -39,10 +45,122 @@ class JobPostActivity : BaseActivity() {
         dataList = mutableListOf()
         prefManager = PrefManager.prefManager(this)
         selectedPost = intent.extras?.serializable("ARG_JOB_TITLE")!!
+        if (intent.extras?.getInt("applyList",0) == 1){
+            selectedPost.iIsApplied = 1
+        }
+
+
+        binding.frame.viewTreeObserver.addOnScrollChangedListener(this)
         retreivedescription()
     }
+
+    private fun callSaveJob() {
+        if (Utils.isNetworkAvailable(this)){
+
+            AndroidNetworking.post(NetworkUtils.SAVE)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("jobId", selectedPost.id.toString().trim())
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    SaveModel::class.java,
+                    object : ParsedRequestListener<SaveModel> {
+                        override fun onResponse(response: SaveModel?) {
+                            try {
+                                response?.let {
+                                    //hideProgressDialog()
+
+
+                                    binding.imgSave.setImageDrawable(resources.getDrawable(R.drawable.filled_heart))
+                                    selectedPost.iIsSaved = 1
+                                    val intent = Intent()
+                                    setResult(RESULT_OK, intent)
+                                    hideProgressDialog()
+
+
+                                }
+                                //hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                                hideProgressDialog()
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            try {
+
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                    /** errorCode == 404 means User number is not registered or New user */
+                                    hideProgressDialog()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onError: ${e.message}")
+                            }
+                        }
+                    })
+        }else{
+            Utils.showNoInternetBottomSheet(this,this)
+        }
+    }
+
+    private fun callUnSaveJob() {
+        if (Utils.isNetworkAvailable(this)){
+
+            AndroidNetworking.post(NetworkUtils.UN_SAVE)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("jobId", selectedPost.id.toString().trim())
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    SaveModel::class.java,
+                    object : ParsedRequestListener<SaveModel> {
+                        override fun onResponse(response: SaveModel?) {
+                            try {
+                                response?.let {
+                                    //hideProgressDialog()
+
+
+                                    binding.imgSave.setImageDrawable(resources.getDrawable(R.drawable.unfilled_heart))
+                                    selectedPost.iIsSaved = 0
+                                    val intent = Intent()
+                                    setResult(RESULT_OK, intent)
+
+
+
+                                }
+                                //hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            try {
+
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                    /** errorCode == 404 means User number is not registered or New user */
+                                    hideProgressDialog()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onError: ${e.message}")
+                            }
+                        }
+                    })
+        }else{
+            Utils.showNoInternetBottomSheet(this,this)
+        }
+    }
+
     private fun retreivedescription() {
         binding.jobTitle.text = selectedPost.vJobTitle
+        binding.jobTitleToolbar.text = selectedPost.vJobTitle
         binding.companyName.text = selectedPost.vCompanyName
         binding.jobLocation.text = selectedPost.vAddress
         binding.jobPostDuration.text = getTimeAgo(this, selectedPost.tCreatedAt!!.toLong())
@@ -66,11 +184,24 @@ class JobPostActivity : BaseActivity() {
             binding.btnApply.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.theme_blue))
 
         }
+        if (selectedPost.iIsSaved == 1){
+            binding.imgSave.setImageDrawable(resources.getDrawable(R.drawable.filled_heart))
+        }else{
+            binding.imgSave.setImageDrawable(resources.getDrawable(R.drawable.unfilled_heart))
+        }
         binding.btnApply.setOnClickListener {
             callApplyJob()
         }
         binding.imgBack.setOnClickListener {
             finish()
+        }
+        binding.imgSave.setOnClickListener {
+            if (binding.imgSave.drawable.constantState == ContextCompat.getDrawable(this,R.drawable.unfilled_heart)!!.constantState){
+                callSaveJob()
+            }else{
+                callUnSaveJob()
+            }
+
         }
     }
     private fun callApplyJob() {
@@ -91,7 +222,12 @@ class JobPostActivity : BaseActivity() {
 
 
                                     selectedPost.vCompanyName?.let { it1 -> showApplyBottomSheet(it1) }
-
+                                    binding.btnApply.isEnabled = false
+                                    binding.btnApply.text = getString(R.string.already_applied)
+                                    binding.btnApply.setBackgroundColor( resources.getColor(R.color.check_def_color))
+                                    selectedPost.iIsApplied = 1
+                                    val intent = Intent()
+                                    setResult(RESULT_OK, intent)
                                     hideProgressDialog()
 
 
@@ -127,16 +263,28 @@ class JobPostActivity : BaseActivity() {
     }
     fun showApplyBottomSheet(company:String) {
         val bottomSheetDialog = BottomSheetDialog(this)
-        val binding = InternetBottomSheetLayoutBinding.inflate(layoutInflater)
-        binding.tvDes.text =
+        val binding_ = InternetBottomSheetLayoutBinding.inflate(layoutInflater)
+        binding_.tvDes.text =
             getString(R.string.thank_you_dear_candidate_please_wait_hr_are_contact_soon, company)
-        binding.animationView.setAnimation(R.raw.apply_success)
-        binding.btnOk.setOnClickListener {
+        binding_.animationView.setAnimation(R.raw.apply_success)
+        binding_.btnOk.setOnClickListener {
             bottomSheetDialog.dismiss()
 
         }
         bottomSheetDialog.setCancelable(true)
-        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.setContentView(binding_.root)
         bottomSheetDialog.show()
+    }
+
+    override fun onScrollChanged() {
+        val view = binding.frame.getChildAt(binding.frame.childCount - 1)
+        val topDetector = binding.frame.scrollY
+        val bottomDetector: Int = view.bottom - (binding.frame.height + binding.frame.scrollY)
+        if (bottomDetector > 0) {
+            binding.jobTitleToolbar.visibility = View.VISIBLE
+        }
+        if (topDetector <= 0) {
+            binding.jobTitleToolbar.visibility = View.GONE
+        }
     }
 }

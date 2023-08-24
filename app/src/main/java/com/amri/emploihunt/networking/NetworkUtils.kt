@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://192.168.1.2:5000/api"
+    private const val BASE_URL = "http://192.168.1.4:5000/api"
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
     const val CHECK_USER_EXISTING = "$BASE_URL/signin/check_user_existing"
@@ -17,6 +17,21 @@ object NetworkUtils {
     const val LOGOUT= "$BASE_URL/signin/signout"
     const val GET_CITIES= "$BASE_URL/city/cities"
     const val APPLY= "$BASE_URL/job/apply"
+    const val APPLY_LIST= "$BASE_URL/job/applyList"
+    const val GET_POST_JOB_BY_HR_ID = "$BASE_URL/job/jobs_by_hrId"
+    const val GET_POST_JOB_BY_HR_ID_WITHOUT_PAGINATION = "$BASE_URL/job/jobs_by_hrId_withoutpagination"
+    const val GET_APPLIED_CANDIDATE_LIST = "$BASE_URL/jobSeeker/get_applied_jobSeeker"
+
+    const val JOB_PREFERENCE= "$BASE_URL/jobPreference/insert_preference"
+    const val JOB_PREFERENCE_UPDATE= "$BASE_URL/jobPreference/update_preference"
+    const val JOB_PREFERENCE_LIST= "$BASE_URL/jobPreference/jobPreference"
+    const val SAVE= "$BASE_URL/job/save"
+    const val UN_SAVE= "$BASE_URL/job/unSave"
+    const val SAVE_LIST= "$BASE_URL/job/saveList"
+    const val UPDATE_POST = "$BASE_URL/job/update_jobs"
+
+
+
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 
     fun getOkHttpClientWithHeader(token: String): OkHttpClient {

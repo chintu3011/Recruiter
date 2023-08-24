@@ -1,8 +1,11 @@
 package com.amri.emploihunt
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,25 +13,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SearchView
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amri.emploihunt.basedata.BaseFragment
+import com.amri.emploihunt.databinding.FragmentHomeBinding
+import com.amri.emploihunt.databinding.RowPostDesignBinding
+import com.amri.emploihunt.model.DataJobPreference
+import com.amri.emploihunt.model.DataJobPreferenceList
+import com.amri.emploihunt.model.GetAllJob
+import com.amri.emploihunt.model.GetJobPreferenceList
+import com.amri.emploihunt.model.Jobs
+import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.IS_ADDED_JOB_PREFERENCE
+import com.amri.emploihunt.util.PrefManager
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.getTimeAgo
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
-import com.amri.emploihunt.basedata.BaseFragment
-import com.amri.emploihunt.databinding.FragmentHomeBinding
-import com.amri.emploihunt.databinding.RowPostDesignBinding
-import com.amri.emploihunt.model.GetAllJob
-import com.amri.emploihunt.model.Jobs
-import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.util.AUTH_TOKEN
-import com.amri.emploihunt.util.PrefManager
-import com.amri.emploihunt.util.PrefManager.get
-import com.amri.emploihunt.util.Utils
-import com.amri.emploihunt.util.Utils.getTimeAgo
 import com.google.firebase.database.DatabaseReference
 import java.util.Locale
 
@@ -40,6 +51,8 @@ class HomeFragment : BaseFragment() {
     private  lateinit var prefManager: SharedPreferences
     private var userType: Int? = null
     private lateinit var layoutManager: LinearLayoutManager
+    var jobPreferenceList: ArrayList<DataJobPreferenceList> = ArrayList()
+    private var adapter: SpinAdapter? = null
 
     private  lateinit var binding: FragmentHomeBinding
     private var firstVisibleItemPosition = 0
@@ -60,6 +73,28 @@ class HomeFragment : BaseFragment() {
         }
         binding = FragmentHomeBinding.inflate(layoutInflater)
         prefManager = PrefManager.prefManager(requireContext())
+        jobPreferenceList.add(DataJobPreferenceList(0,0,"Select job preference","0","0",
+            "0","0","0"))
+
+        getJobPreference()
+
+        binding.jobPreferenceSp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?, view: View?,
+                position: Int, id: Long
+            ) {
+                // Here you get the current item (a User object) that is selected by its position
+                val pref: DataJobPreferenceList = adapter!!.getItem(position)
+                // Here you can do the action you want to...
+                dataList.clear()
+                currentPage = 1
+                retrieveJobData(pref.id)
+            }
+
+            override fun onNothingSelected(adapter: AdapterView<*>?) {
+
+            }
+        }
         filteredDataList = mutableListOf()
         dataList = mutableListOf()
         binding.jobRvList.setHasFixedSize(true)
@@ -70,11 +105,12 @@ class HomeFragment : BaseFragment() {
                 override fun onCategoryClicked(view: View, templateModel: Jobs) {
                     val intent  = Intent(requireContext(),JobPostActivity::class.java)
                     intent.putExtra("ARG_JOB_TITLE",templateModel)
-                    startActivity(intent)
+                    changePostLauncher.launch(intent)
+
                 }
 
             })
-        retrieveJobData()
+        retrieveJobData(0)
         binding.jobRvList.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -94,7 +130,7 @@ class HomeFragment : BaseFragment() {
                     isScrolling = false
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
-                    retrieveJobData()
+                    retrieveJobData(0)
                 }
             }
         })
@@ -120,9 +156,15 @@ class HomeFragment : BaseFragment() {
                 Utils.hideKeyboard(requireActivity())
 //                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
             }
-            dataList.clear()
-            currentPage = 1
-            retrieveJobData()
+
+            if (binding.jobPreferenceSp.visibility == View.VISIBLE){
+                binding.jobPreferenceSp.setSelection(0)
+            }else{
+                dataList.clear()
+                currentPage = 1
+                retrieveJobData(0)
+            }
+
 
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -149,7 +191,7 @@ class HomeFragment : BaseFragment() {
         binding.jobsAdapter!!.notifyDataSetChanged()
     }
 
-    private fun retrieveJobData() {
+    private fun retrieveJobData(jobpreferenceId: Int) {
         Log.d("###", "retrieveJobData: ")
         /*val jobRef = database.child("Jobs")
 
@@ -185,6 +227,7 @@ class HomeFragment : BaseFragment() {
 
             AndroidNetworking.get(NetworkUtils.GET_ALL_JOB)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("iJobPreferenceId",jobpreferenceId.toString())
                 .addQueryParameter("current_page",currentPage.toString())
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(GetAllJob::class.java,
@@ -244,7 +287,7 @@ class HomeFragment : BaseFragment() {
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
-                retrieveJobData()
+                retrieveJobData(0)
             }
         }
     }
@@ -301,6 +344,14 @@ class HomeFragment : BaseFragment() {
             return myview
         }
     }*/
+    var changePostLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                dataList.clear()
+                currentPage = 1
+                retrieveJobData(0)
+            }
+        }
     class JobsAdapter(
         private var mActivity: Activity,
         private var dataList: MutableList<Jobs>,
@@ -346,6 +397,115 @@ class HomeFragment : BaseFragment() {
 
         interface OnCategoryClick {
             fun onCategoryClicked(view: View, templateModel: Jobs)
+        }
+    }
+    private  fun getJobPreference(){
+        jobPreferenceList.clear()
+        if (Utils.isNetworkAvailable(requireContext())) {
+            AndroidNetworking.get(NetworkUtils.JOB_PREFERENCE_LIST)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetJobPreferenceList::class.java,
+                    object : ParsedRequestListener<GetJobPreferenceList> {
+                        override fun onResponse(response: GetJobPreferenceList?) {
+                            try {
+                                response?.let {
+
+                                    Log.d("###", "onResponse: ${it.data}")
+                                    jobPreferenceList.add(DataJobPreferenceList(0,0,"For you","0","","","",
+                                        ""))
+                                    jobPreferenceList.addAll(it.data)
+
+                                    adapter = SpinAdapter(
+                                        requireContext(),
+                                        android.R.layout.simple_spinner_item,
+                                        jobPreferenceList
+                                    )
+                                    adapter!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                    binding.jobPreferenceSp.adapter = adapter
+                                    if (response.total_records >= 1){
+                                        binding.jobPreferenceSp.visibility = View.VISIBLE
+                                    }
+
+
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse: catch: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                )
+
+                            }
+
+                        }
+                    })
+        } else {
+            Utils.showNoInternetBottomSheet(requireContext(),requireActivity())
+        }
+    }
+    class SpinAdapter(
+        context: Context, textViewResourceId: Int,
+        values: ArrayList<DataJobPreferenceList>
+    ) : ArrayAdapter<DataJobPreferenceList>(context, textViewResourceId, values) {
+        // Your sent context
+        private val context: Context
+
+        // Your custom values for the spinner (User)
+        private val values: ArrayList<DataJobPreferenceList>
+
+        init {
+            this.context = context
+            this.values = values
+        }
+
+        override fun getCount(): Int {
+            return values.size
+        }
+
+        override fun getItem(position: Int): DataJobPreferenceList {
+            return values[position]
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+            val label = super.getView(position, convertView, parent) as TextView
+            label.setTextColor(Color.BLACK)
+            // Then you can get the current item using the values array (Users array) and the current position
+            // You can NOW reference each method you has created in your bean object (User class)
+            label.text = "${values[position].vJobTitle}"
+
+            // And finally return your dynamic (or custom) view for each spinner item
+            return label
+        }
+
+        // And here is when the "chooser" is popped up
+        // Normally is the same view, but you can customize it if you want
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View? {
+            val label = super.getDropDownView(position, convertView, parent) as TextView
+            label.setTextColor(Color.BLACK)
+            label.text = "${values[position].vJobTitle}"
+            return label
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        if (IS_ADDED_JOB_PREFERENCE){
+            getJobPreference()
+            IS_ADDED_JOB_PREFERENCE = false
         }
     }
 }

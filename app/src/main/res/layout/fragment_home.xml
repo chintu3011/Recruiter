@@ -75,12 +75,25 @@
                     android:src="@drawable/baseline_keyboard_voice_24" />
             </LinearLayout>
 
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:id="@+id/jobPreferenceSp"
+                android:background="@drawable/spinner_bg"
+                android:layout_margin="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/Linearr"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                />
+
+
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/Linearr"
+                app:layout_constraintTop_toBottomOf="@id/jobPreferenceSp"
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
                 app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                 app:layout_constraintBottom_toTopOf="@id/layProgressPagination">
@@ -88,9 +101,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/jobRvList"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Linearr"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/_35sdp"
                     android:fontFamily="@font/poppinsregular"
                     android:verticalSpacing="@dimen/_5sdp"
                     tools:listitem="@layout/row_post_design"

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_2sdp"
+        android:id="@+id/cardViewinfo"
+        app:rippleColor="@color/card_ripple_color"
+        android:clickable="true"
+        android:layout_margin="@dimen/_5sdp"
+        android:focusable="true"
+        tools:context=".MainActivity2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/_10sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottomGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/_10sdp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/jobTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppinsregular"
+                app:layout_constraintEnd_toStartOf="@+id/salary"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+                app:layout_constraintWidth_default="wrap" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/salary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:textColor="@color/theme_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppinsregular"
+                app:layout_constraintBottom_toBottomOf="@+id/jobTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/jobTitle"
+                app:layout_constraintTop_toTopOf="@+id/jobTitle"
+                app:layout_constraintWidth_default="wrap" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="jobTitle,salary"
+                app:flow_horizontalStyle="spread_inside"
+                app:flow_verticalStyle="packed"
+                app:flow_wrapMode="chain"
+                app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+                app:layout_constraintTop_toBottomOf="@id/topGuildLine" />
+
+
+
+
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textAlignment="textStart"
+                android:fontFamily="@font/poppinsregular"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/dotDivider1"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintTop_toTopOf="@+id/dotDivider1"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintWidth_default="wrap" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/dotDivider1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/ivArrow"
+                app:layout_constraintStart_toEndOf="@+id/tvLocation"
+                app:layout_constraintTop_toTopOf="@+id/ivArrow"
+                app:srcCompat="@drawable/ic_dot" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/ic_right"
+                app:layout_constraintTop_toBottomOf="@+id/flow1"
+                app:layout_constraintEnd_toEndOf="@id/endGuildLine"
+                />
+
+
+
+
+            <View
+                android:id="@+id/lineDivider1"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="#46C8C8C8"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintTop_toBottomOf="@id/ivArrow" />
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
