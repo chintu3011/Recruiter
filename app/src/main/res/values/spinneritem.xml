@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="degree_array">
-        <item>Select Degree</item>
-        <item>B.Tech CE</item>
-        <item>B.Tech CSE</item>
-        <item>B.Tech IT</item>
-        <item>B.Com</item>
-        <item>BBA</item>
-        <item>HSC</item>
-        <item>SSC</item>
-    </string-array>
 
 
 
@@ -40,5 +30,212 @@
         <item>24 LPA +</item>
         <item>25 LPA +</item>
 
+    </string-array>
+    <string-array name="degree_array">
+        <item>Select DegreeSelect Degree</item>
+        <item>10th</item>
+        <item>12th</item>
+        <item>Diploma</item>
+        <item>Bachelor of Arts (BA)</item>
+        <item>Bachelor of Science (BSc)</item>
+        <item>Bachelor of Commerce (BCom)</item>
+        <item>Bachelor of Engineering (BE)</item>
+        <item>Bachelor of Technology (B.Tech)</item>
+        <item>Bachelor of Business Administration (BBA)</item>
+        <item>Bachelor of Computer Applications (BCA)</item>
+        <item>Bachelor of Architecture (B.Arch)</item>
+        <item>Bachelor of Pharmacy (B.Pharm)</item>
+        <item>Bachelor of Fine Arts (BFA)</item>
+        <item>Bachelor of Hotel Management (BHM)</item>
+        <item>Bachelor of Science in Nursing (BSc Nursing)</item>
+        <item>Bachelor of Design (B.Des)</item>
+        <item>Bachelor of Commerce (Honours) (BCom Hons)</item>
+        <item>Bachelor of Economics (B.Econ)</item>
+        <item>Bachelor of Business Studies (BBS)</item>
+        <item>Bachelor of Science in Agriculture (BSc Agriculture)</item>
+        <item>Bachelor of Physiotherapy (BPT)</item>
+        <item>Bachelor of Education (B.Ed)</item>
+        <item>Bachelor of Social Work (BSW)</item>
+        <item>Master of Arts (MA)</item>
+        <item>Master of Science (MSc)</item>
+        <item>Master of Commerce (MCom)</item>
+        <item>Master of Business Administration (MBA)</item>
+        <item>Master of Engineering (ME)</item>
+        <item>Master of Technology (M.Tech)</item>
+        <item>Master of Computer Applications (MCA)</item>
+        <item>Master of Architecture (M.Arch)</item>
+        <item>Master of Pharmacy (M.Pharm)</item>
+        <item>Master of Fine Arts (MFA)</item>
+        <item>Master of Social Work (MSW)</item>
+        <item>Master of Laws (LLM)</item>
+        <item>Master of Education (M.Ed)</item>
+        <item>Master of Design (M.Des)</item>
+        <item>Master of Public Administration (MPA)</item>
+        <item>Master of Science in Nursing (MSc Nursing)</item>
+        <item>Master of Economics (M.Econ)</item>
+        <item>Master of Physiotherapy (MPT)</item>
+        <item>Master of Journalism and Mass Communication (MJMC)</item>
+        <item>Master of Library and Information Science (MLIS)</item>
+    </string-array>
+    <string-array name="indian_streams">
+        <item>Arts</item>
+        <item>Science</item>
+        <item>Commerce</item>
+        <item>Engineering</item>
+        <item>Technology</item>
+        <item>Business Administration</item>
+        <item>Computer Applications</item>
+        <item>Architecture</item>
+        <item>Fine Arts</item>
+        <item>Design</item>
+        <item>Hotel Management</item>
+        <item>Nursing</item>
+        <item>Pharmacy</item>
+        <item>Physiotherapy</item>
+        <item>Education</item>
+        <item>Social Work</item>
+        <item>Economics</item>
+        <item>Agriculture</item>
+    </string-array>
+    <string-array name="indian_designations">
+        <item>Manager</item>
+        <item>Director</item>
+        <item>CEO (Chief Executive Officer)</item>
+        <item>CFO (Chief Financial Officer)</item>
+        <item>CTO (Chief Technology Officer)</item>
+        <item>COO (Chief Operating Officer)</item>
+        <item>President</item>
+        <item>Vice President</item>
+        <item>General Manager</item>
+        <item>Assistant Manager</item>
+        <item>Associate</item>
+        <item>Consultant</item>
+        <item>Engineer</item>
+        <item>Architect</item>
+        <item>Analyst</item>
+        <item>Designer</item>
+        <item>Developer</item>
+        <item>Coordinator</item>
+        <item>Supervisor</item>
+        <item>Executive</item>
+        <item>Project Manager</item>
+        <item>HR Manager</item>
+        <item>Marketing Manager</item>
+        <item>Sales Manager</item>
+        <item>Researcher</item>
+        <item>Content Writer</item>
+        <item>Editor</item>
+        <item>Lawyer</item>
+        <item>Doctor</item>
+        <item>Professor</item>
+        <item>Principal</item>
+        <item>Artist</item>
+        <item>Musician</item>
+        <item>Photographer</item>
+        <item>Chef</item>
+        <item>Fashion Designer</item>
+        <item>Public Relations Manager</item>
+        <item>Financial Analyst</item>
+        <item>IT Specialist</item>
+        <item>Business Analyst</item>
+        <item>Operations Manager</item>
+        <item>Data Scientist</item>
+        <item>Product Manager</item>
+        <item>Quality Assurance Manager</item>
+        <item>Chief Marketing Officer (CMO)</item>
+        <item>Chief Human Resources Officer (CHRO)</item>
+        <item>Chief Operations Officer (COO)</item>
+        <item>Chief Strategy Officer (CSO)</item>
+        <item>Chief Information Officer (CIO)</item>
+        <item>Chief Data Officer (CDO)</item>
+        <item>Chief Creative Officer (CCO)</item>
+        <item>Chief Security Officer (CSO)</item>
+        <item>Chief Legal Officer (CLO)</item>
+        <item>Chief Communications Officer (CCO)</item>
+        <item>Chief Diversity Officer (CDO)</item>
+        <item>Chief Innovation Officer (CIO)</item>
+        <item>Recruitment Manager</item>
+        <item>Training and Development Manager</item>
+        <item>Compensation and Benefits Manager</item>
+        <item>Employee Relations Manager</item>
+        <item>HR Business Partner</item>
+        <item>Organizational Development Manager</item>
+        <item>Workforce Planning Manager</item>
+        <item>Digital Marketing Manager</item>
+        <item>Product Marketing Manager</item>
+        <item>Brand Management Manager</item>
+        <item>Market Research Manager</item>
+        <item>Public Relations Manager</item>
+        <item>Advertising Manager</item>
+        <item>Software Engineer</item>
+        <item>Hardware Engineer</item>
+        <item>Network Engineer</item>
+        <item>Mechanical Engineer</item>
+        <item>Electrical Engineer</item>
+        <item>Civil Engineer</item>
+        <item>Biomedical Engineer</item>
+        <item>Environmental Engineer</item>
+        <item>Interior Architect</item>
+        <item>Landscape Architect</item>
+        <item>Urban Designer</item>
+        <item>Building Architect</item>
+        <item>Industrial Designer</item>
+        <item>Green Architect</item>
+        <item>Renovation Architect</item>
+        <item>Business Analyst</item>
+        <item>Financial Analyst</item>
+        <item>Data Analyst</item>
+        <item>Market Analyst</item>
+        <item>Research Analyst</item>
+        <item>Systems Analyst</item>
+        <item>Policy Analyst</item>
+        <item>Quantitative Analyst</item>
+        <item>Management Consultant</item>
+        <item>IT Consultant</item>
+        <item>Financial Consultant</item>
+        <item>HR Consultant</item>
+        <item>Strategy Consultant</item>
+        <item>Healthcare Consultant</item>
+        <item>Marketing Consultant</item>
+        <item>Legal Consultant</item>
+        <item>Software Developer</item>
+        <item>Web Developer</item>
+        <item>Front-End Developer</item>
+        <item>Back-End Developer</item>
+        <item>Full Stack Developer</item>
+        <item>Mobile App Developer</item>
+        <item>iOS Developer</item>
+        <item>Android Developer</item>
+        <item>Game Developer</item>
+        <item>UI/UX Developer</item>
+        <item>Embedded Systems Developer</item>
+        <item>DevOps Engineer</item>
+        <item>Database Developer</item>
+        <item>Cloud Developer</item>
+        <item>Blockchain Developer</item>
+        <item>Machine Learning Engineer</item>
+        <item>Artificial Intelligence Developer</item>
+        <item>Robotics Developer</item>
+        <item>Augmented Reality Developer</item>
+        <item>Virtual Reality Developer</item>
+        <item>Firmware Developer</item>
+        <item>Automation Developer</item>
+        <item>Scripting Developer</item>
+        <item>API Developer</item>
+        <item>Integration Developer</item>
+        <item>Quantum Developer</item>
+        <item>Security Developer</item>
+        <item>Network Developer</item>
+        <item>Mobile Game Developer</item>
+        <item>Software Architect</item>
+        <item>Computer Vision Developer</item>
+        <item>Data Engineer</item>
+        <item>Natural Language Processing Developer</item>
+        <item>3D Graphics Programmer</item>
+        <item>Wireless Communication Developer</item>
+        <item>Embedded Software Engineer</item>
+        <item>Real-time Systems Developer</item>
+        <item>Automation Test Developer</item>
+        <item>GIS Developer (Geographic Information Systems)</item>
     </string-array>
 </resources>
