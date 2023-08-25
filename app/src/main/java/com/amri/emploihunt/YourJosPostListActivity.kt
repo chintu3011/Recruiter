@@ -2,23 +2,22 @@ package com.amri.emploihunt
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.basedata.BaseActivity
-import com.amri.emploihunt.databinding.ActivityApplyListBinding
 import com.amri.emploihunt.databinding.ActivityYourJosPostListBinding
-import com.amri.emploihunt.databinding.RowPostDesignBinding
 import com.amri.emploihunt.databinding.RowPostRecruiterBinding
-import com.amri.emploihunt.model.ApplyList
-import com.amri.emploihunt.model.DataApplyList
+import com.amri.emploihunt.model.DeletePostModel
 import com.amri.emploihunt.model.GetAllJob
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.networking.NetworkUtils
@@ -26,12 +25,12 @@ import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.bumptech.glide.Glide
-import kotlinx.coroutines.Job
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class YourJosPostListActivity : BaseActivity() {
     lateinit var binding: ActivityYourJosPostListBinding
@@ -65,7 +64,16 @@ class YourJosPostListActivity : BaseActivity() {
 
                     }
 
-                    override fun onDelete(view: View, id: Int) {
+                    override fun onDelete(view: View, templateModel: Jobs) {
+                        showCommonDialog(false, "Are you want to sure delete job post?",
+                            resources.getString(R.string.yes), resources.getString(R.string.no),
+                            {
+                                callDeleteJob(templateModel)
+
+                            },
+                            {
+                                it.dismiss()
+                            })
 
                     }
 
@@ -100,6 +108,51 @@ class YourJosPostListActivity : BaseActivity() {
             finish()
         }
     }
+
+    private fun callDeleteJob(templateModel: Jobs) {
+        if (Utils.isNetworkAvailable(this)) {
+            showProgressDialog("")
+            AndroidNetworking.post(NetworkUtils.DELETE_POST)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("jobId",templateModel.id.toString())
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    DeletePostModel::class.java,
+                    object : ParsedRequestListener<DeletePostModel> {
+                        override fun onResponse(response: DeletePostModel?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+                                    Log.d("###", "onResponse: ${it.data}")
+                                    toast("Delete Job post Successfully")
+
+                                    showDeleteBottomSheet(templateModel)
+
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse: catch: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                )
+                                if (it.errorCode >= 500) {
+                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                }
+                            }
+                            hideProgressDialog()
+                        }
+                    })
+        } else {
+            Utils.showNoInternetBottomSheet(this,this)
+        }
+    }
+
     private fun retrieveJobData() {
 
 
@@ -184,6 +237,45 @@ class YourJosPostListActivity : BaseActivity() {
             }
         }
     }
+    fun showDeleteBottomSheet(templateModel: Jobs) {
+
+        val dialog = BottomSheetDialog(this)
+        val view: View = (this).layoutInflater.inflate(
+            R.layout.logout_bottomsheet,
+            null
+        )
+
+
+        val btnyes = view.findViewById<Button>(R.id.btn_yes)
+        val btnNo = view.findViewById<Button>(R.id.btn_no)
+        val tv_des = view.findViewById<TextView>(R.id.tv_des1)
+        val animation = view.findViewById<LottieAnimationView>(R.id.animationView)
+        tv_des.text = getString(R.string.your_job_post_deleted_successfully)
+        btnNo.visibility = View.GONE
+        btnyes.text = resources.getString(R.string.ok)
+        animation.setAnimation(R.raw.delete)
+
+
+        btnyes.setOnClickListener {
+            postList.remove(templateModel)
+            binding.postAdapter!!.notifyDataSetChanged()
+            dialog.dismiss()
+
+
+
+        }
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        dialog.setCancelable(true)
+
+        dialog.setContentView(view)
+
+        dialog.show()
+
+    }
     class PostListAdapter(
         private var dataList: MutableList<Jobs>,
         private val onCategoryClick: OnCategoryClick
@@ -218,7 +310,7 @@ class YourJosPostListActivity : BaseActivity() {
                 onCategoryClick.onCategoryClicked(it, job)
             }
             holder.binding.deleteButton.setOnClickListener {
-                onCategoryClick.onDelete(it, job.id!!)
+                onCategoryClick.onDelete(it, job)
             }
         }
 
@@ -232,7 +324,7 @@ class YourJosPostListActivity : BaseActivity() {
 
         interface OnCategoryClick {
             fun onCategoryClicked(view: View, templateModel: Jobs)
-            fun onDelete(view: View, id: Int)
+            fun onDelete(view: View, templateModel: Jobs)
         }
     }
 }

@@ -29,6 +29,7 @@ object NetworkUtils {
     const val UN_SAVE= "$BASE_URL/job/unSave"
     const val SAVE_LIST= "$BASE_URL/job/saveList"
     const val UPDATE_POST = "$BASE_URL/job/update_jobs"
+    const val DELETE_POST = "$BASE_URL/job/delete"
 
 
 

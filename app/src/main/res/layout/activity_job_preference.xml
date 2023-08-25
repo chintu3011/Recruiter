@@ -84,7 +84,6 @@
                 <androidx.appcompat.widget.AppCompatCheckedTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_2_5"
                     android:id="@+id/tvCountPreference"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16sdp"

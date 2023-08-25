@@ -78,4 +78,6 @@
     <string name="no_applied_candidate_s_found">No Applied Candidate\'s found.</string>
     <string name="bio">Bio</string>
     <string name="resume">Resume</string>
+    <string name="your_job_post_deleted_successfully">"Your job post deleted Successfully "</string>
+    <string name="ok">Ok</string>
 </resources>

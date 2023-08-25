@@ -19,6 +19,7 @@
             android:layout_height="@dimen/_40sdp"
             android:scaleType="center"
             android:id="@+id/ivBack"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

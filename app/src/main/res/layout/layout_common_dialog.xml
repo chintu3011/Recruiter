@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="@dimen/_10sdp">
 
             <LinearLayout
@@ -33,8 +32,9 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-
-                    android:tint="@color/white" />
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/blue"
+                    android:tint="@color/black" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDialogTitle"
@@ -44,7 +44,7 @@
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/msg_log_out"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +73,7 @@
                             android:gravity="center"
                             android:paddingTop="@dimen/_4sdp"
                             android:text="@android:string/cancel"
-                            android:textColor="@color/white"
+                            android:textColor="@color/blue"
                             android:textSize="@dimen/_15sdp" />
                     </LinearLayout>
 
@@ -85,7 +85,6 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
-
                         android:gravity="center"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +100,7 @@
                             android:gravity="center"
                             android:paddingTop="@dimen/_4sdp"
                             android:text="@string/m_log_out"
-                            android:textColor="@color/white"
+                            android:textColor="@color/blue"
                             android:textSize="@dimen/_15sdp" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

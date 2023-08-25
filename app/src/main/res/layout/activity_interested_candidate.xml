@@ -28,6 +28,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:scaleType="center"
                 android:id="@+id/ivBack"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:visibility="visible"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
