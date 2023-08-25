@@ -11,6 +11,7 @@ const val AUTH_TOKEN = "tAuthToken"
 //const val FB_ID = "fbid"
 const val IS_SKIP = "is_skip"
 const val IS_LOGIN = "is_login" // manage IS_SKIP function with Login... if LOGIN then SKIPPED == false else SKIPPED == true
+const val FIREBASE_ID = "vFirebaseId"
 const val DEVICE_NAME = "tDeviceName"
 const val LATITUDE = "latitude"
 const val LONGITUDE = "longitude"

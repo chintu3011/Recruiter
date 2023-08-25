@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_filter_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFilterTag"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:text="@string/tag"
+        app:backgroundTint="@color/white"
+        style="@style/CustomFontStyle"
+        android:textSize="@dimen/_10sdp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingHorizontal="@dimen/_7sdp"
+        app:cornerRadius="15dp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/glass_color"
+        app:strokeColor="@color/theme_blue"
+        app:strokeWidth="@dimen/_1sdp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

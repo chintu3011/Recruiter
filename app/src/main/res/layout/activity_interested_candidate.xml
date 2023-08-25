@@ -6,13 +6,13 @@
     <data>
         <variable
             name="candidateAdapter"
-            type="com.amri.emploihunt.InterestedCandidateActivity.CandidateAdapter" />
+            type="com.amri.emploihunt.settings.InterestedCandidateActivity.CandidateAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ApplyListActivity">
+        tools:context=".settings.ApplyListActivity">
 
         <RelativeLayout
             android:id="@+id/rlToolbar"

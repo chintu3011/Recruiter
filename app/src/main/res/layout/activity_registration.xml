@@ -12,7 +12,7 @@
         android:id="@+id/mainLayout"
         android:layout_height="match_parent"
         android:background="@drawable/halfcircleback"
-        tools:context=".RegistrationActivity">
+        tools:context=".authentication.RegistrationActivity">
 
         <TextView
             android:id="@+id/appName"

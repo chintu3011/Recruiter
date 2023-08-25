@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/framelayoutpost"
-    tools:context=".PostRecruitFragment">
+    tools:context=".recruiterSide.PostRecruitFragment">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.amri.emploihunt.databinding.LayoutCommonDialogBinding
@@ -74,5 +75,10 @@ open class BaseFragment : Fragment() {
             // dialog.dismiss() // don't dismiss here, sometimes it needs to be open
             negativeClick(dialog)
         }
+    }
+
+    fun makeToast(msg: String, len: Int) {
+        if (len == 0) Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
+        if (len == 1) Toast.makeText(requireActivity(), msg, Toast.LENGTH_LONG).show()
     }
 }

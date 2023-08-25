@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewUsersMessageActivity">
+    tools:context=".messenger.NewUsersMessageActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuildLine"
@@ -34,71 +34,65 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="@dimen/_10sdp" />
 
-    <LinearLayout
-        android:id="@+id/layout"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/searchbg"
-        app:layout_constraintTop_toBottomOf="@id/topGuildLine"
-        app:layout_constraintStart_toEndOf="@id/startGuildLine"
-        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
-        android:elevation="@dimen/_5sdp">
-
-        <SearchView
-            android:id="@+id/searchView"
+        android:background="@color/white"
+        android:elevation="@dimen/_5sdp"
+        app:collapseIcon="@drawable/ic_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search"
-            android:queryBackground="@null"/>
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:gravity="top"
+            android:padding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/messenger_menu" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/voicesearch"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="center"
-            android:layout_weight="6"
-            android:src="@drawable/ic_voice" />
-    </LinearLayout>
+<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
+<!--        android:id="@+id/toggleGrp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:singleSelection="true"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/appBar"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/startGuildLine"-->
+<!--        android:layout_marginTop="@dimen/_10sdp"-->
+<!--        android:layout_marginBottom="@dimen/_10sdp">-->
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleGrp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:layout_constraintTop_toBottomOf="@id/layout"
-        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
-        app:layout_constraintStart_toStartOf="@+id/startGuildLine"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp">
+<!--        <Button-->
+<!--            android:id="@+id/btnShowJobSeekers"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:insetTop="0dp"-->
+<!--            android:insetBottom="0sp"-->
+<!--            android:text="@string/job_seeker"-->
+<!--            app:rippleColor="#370960A2"-->
+<!--            android:fontFamily="@font/poppinsregular"-->
+<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--            android:textAllCaps="false"/>-->
 
-        <Button
-            android:id="@+id/btnShowJobSeekers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:insetTop="0dp"
-            android:insetBottom="0sp"
-            android:text="@string/job_seeker"
-            app:rippleColor="#370960A2"
-            android:fontFamily="@font/poppinsregular"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:textAllCaps="false"/>
+<!--        <Button-->
+<!--            android:id="@+id/btnShowRecruiters"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:insetTop="0dp"-->
+<!--            android:insetBottom="0sp"-->
+<!--            android:text="@string/recruiter"-->
+<!--            android:fontFamily="@font/poppinsregular"-->
+<!--            app:rippleColor="#370960A2"-->
+<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--            android:textAllCaps="false"/>-->
 
-        <Button
-            android:id="@+id/btnShowRecruiters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:insetTop="0dp"
-            android:insetBottom="0sp"
-            android:text="@string/recruiter"
-            android:fontFamily="@font/poppinsregular"
-            app:rippleColor="#370960A2"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:textAllCaps="false"/>
-
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
     <Space
         android:id="@+id/space"
@@ -106,7 +100,7 @@
         android:layout_height="@dimen/_20sdp"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleGrp" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <ProgressBar
         android:layout_width="@dimen/_50sdp"
@@ -116,13 +110,14 @@
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
-    <GridView
-        android:id="@+id/gridView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
         android:numColumns="1"
         android:verticalSpacing="@dimen/_5sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.0"

@@ -23,6 +23,7 @@ data class DataAppliedCandidate(
 
 data class UserJobPref(
     val id: Int,
+    val vFirebaseId:String,
     val iRole: Int,
     val vFirstName: String,
     val vLastName: String,

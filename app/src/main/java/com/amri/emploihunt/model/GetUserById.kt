@@ -10,6 +10,7 @@ data class GetUserById(
 
 data class User(
     val id: Int,
+    val vFirebaseId:String,
     val iRole: Int,
     val vFirstName: String,
     val vLastName: String,

@@ -33,40 +33,45 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".JobSeekerDetailsActivity"
+            android:name=".jobSeekerSide.JobSeekerDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".InterestedCandidateActivity"
+            android:name=".settings.InterestedCandidateActivity"
             android:exported="false" />
         <activity
-            android:name=".UpdatePostActivity"
+            android:name=".settings.UpdatePostActivity"
             android:exported="false" />
         <activity
-            android:name=".YourJosPostListActivity"
+            android:name=".settings.YourJosPostListActivity"
             android:exported="false" />
         <activity
-            android:name=".JobSaveActivity"
+            android:name=".settings.JobSaveActivity"
             android:exported="false" />
         <activity
-            android:name=".AddJobPreferenceActivity"
+            android:name=".settings.AddJobPreferenceActivity"
             android:exported="false" />
         <activity
-            android:name=".JobPreferenceActivity"
+            android:name=".settings.JobPreferenceActivity"
             android:exported="false" />
         <activity
-            android:name=".ApplyListActivity"
+            android:name=".settings.ApplyListActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".settings.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".JobPostActivity"
+            android:name=".recruiterSide.JobPostActivity"
             android:exported="false" />
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
         <activity
-            android:name=".UploadJobPostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
+            android:name=".jobSeekerSide.HomeJobActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
@@ -77,7 +82,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".HomeJobActivity"
+            android:name=".messenger.MessengerHomeActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
@@ -88,7 +93,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".MessengerHomeActivity"
+            android:name=".messenger.NewUsersMessageActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
@@ -99,7 +104,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".NewUsersMessageActivity"
+            android:name=".messenger.ChatBoardActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
@@ -110,33 +115,22 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".ChatBoardActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".OTPVerificationLoginActivity"
+            android:name=".authentication.OTPVerificationLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".authentication.RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name=".InformationActivity"
+            android:name=".settings.InformationActivity"
             android:exported="false" />
         <activity
-            android:name=".OTPVerificationRegistrationActivity"
+            android:name=".authentication.OTPVerificationRegistrationActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".authentication.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".HomeRecruiterActivity"
+            android:name=".recruiterSide.HomeRecruiterActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
@@ -147,13 +141,13 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".IntroductionActivity"
+            android:name=".appIntroduction.IntroductionActivity"
             android:exported="false" />
         <activity
-            android:name=".AskActivity"
+            android:name=".authentication.AskActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".appIntroduction.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -162,7 +156,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".loginsignupActivity"
+            android:name=".authentication.LoginsignupActivity"
             android:exported="false" />
 
         <service

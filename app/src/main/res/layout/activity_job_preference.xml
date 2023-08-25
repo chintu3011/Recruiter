@@ -7,13 +7,13 @@
 
         <variable
             name="jobPrefAdapter"
-            type="com.amri.emploihunt.JobPreferenceActivity.JobPreferenceListAdapter" />
+            type="com.amri.emploihunt.settings.JobPreferenceActivity.JobPreferenceListAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".JobPreferenceActivity">
+        tools:context=".settings.JobPreferenceActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"

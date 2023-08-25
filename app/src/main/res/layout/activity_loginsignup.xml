@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/halfcircleup"
-    tools:context=".loginsignupActivity">
+    tools:context=".authentication.loginsignupActivity">
 
     <TextView
         android:id="@+id/appName"

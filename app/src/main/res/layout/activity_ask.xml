@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/ask_background"
     android:fitsSystemWindows="true"
-    tools:context=".AskActivity">
+    tools:context=".authentication.AskActivity">
     <ImageView
         android:id="@+id/textView4"
         android:layout_width="139dp"

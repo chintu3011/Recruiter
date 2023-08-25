@@ -80,4 +80,8 @@
     <string name="resume">Resume</string>
     <string name="your_job_post_deleted_successfully">"Your job post deleted Successfully "</string>
     <string name="ok">Ok</string>
+    <string name="voice_search">Voice search</string>
+    <string name="delete">Delete</string>
+    <string name="filter">Filter</string>
+    <string name="tag">tag</string>
 </resources>

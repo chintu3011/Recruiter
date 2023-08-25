@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -136,5 +137,10 @@ open class BaseActivity : AppCompatActivity() {
             // dialog.dismiss() // don't dismiss here, sometimes it needs to be open
             negativeClick(dialog)
         }
+    }
+
+    fun makeToast(msg: String, len: Int) {
+        if (len == 0) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        if (len == 1) Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 }

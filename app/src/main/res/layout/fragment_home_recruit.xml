@@ -6,13 +6,13 @@
     <data>
         <variable
             name="jobSeekerAdapter"
-            type="com.amri.emploihunt.HomeRecruitFragment.JobSeekerAdapter" />
+            type="com.amri.emploihunt.recruiterSide.HomeRecruitFragment.JobSeekerAdapter" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".HomeRecruitFragment">
+        tools:context=".recruiterSide.HomeRecruitFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/framelayoutpost"
         android:orientation="vertical"
-        tools:context=".PostRecruitFragment">
+        tools:context=".recruiterSide.PostRecruitFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/_30sdp"
