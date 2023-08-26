@@ -1,5 +1,6 @@
 package com.amri.emploihunt.recruiterSide
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
@@ -22,6 +22,9 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
 import com.amri.emploihunt.databinding.SinglerowjsBinding
+import com.amri.emploihunt.filterFeature.FilterDataActivity
+import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
 import com.amri.emploihunt.model.GetAllJobSeeker
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.model.User
@@ -34,29 +37,52 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
 
-class HomeRecruitFragment : BaseFragment() {
+class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
+    FilterParameterTransferClass.FilterApplicationListener {
+
     private lateinit var binding:FragmentHomeRecruitBinding
+
     lateinit var fragview: View
     private lateinit var database: DatabaseReference
+
     private lateinit var dataList: MutableList<User>
     private lateinit var filteredDataList: MutableList<User>
+    private var userType: Int? = null
 
     private lateinit var layoutManager: LinearLayoutManager
+
     private var firstVisibleItemPosition = 0
     private var isScrolling = false
     private var currentItems = 0
     private var currentPage = 1
     private var totalItems = 0
     private var totalPages = 1
+
     lateinit var prefManager: SharedPreferences
+
+    companion object {
+        private const val TAG = "HomeRecruitFragment"
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val bundle = arguments
+        if (bundle != null) {
+            userType = bundle.getInt("userType")
+        }
+        Log.d(HomeJobSeekerFragment.TAG,"User type : $userType")
+
         // Inflate the layout for this fragment
         binding = FragmentHomeRecruitBinding.inflate(layoutInflater)
+
+        FilterParameterTransferClass.instance!!.setApplicationListener(this)
+
         prefManager = prefManager(requireContext())
         database = FirebaseDatabase.getInstance().reference
+        
         dataList = mutableListOf()
         filteredDataList = mutableListOf()
         binding.jobSeekerListRv.setHasFixedSize(true)
@@ -65,7 +91,7 @@ class HomeRecruitFragment : BaseFragment() {
         binding.jobSeekerAdapter =
             JobSeekerAdapter(
                 requireActivity(),
-                dataList,
+                filteredDataList,
                 object : JobSeekerAdapter.OnCategoryClick {
                     override fun onCategoryClicked(view: View, templateModel: Jobs) {
                         val intent = Intent(requireContext(), JobPostActivity::class.java)
@@ -74,7 +100,7 @@ class HomeRecruitFragment : BaseFragment() {
                     }
 
                 })
-        retreivejsdata()
+        retrieveJsData()
 
         binding.jobSeekerListRv.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -95,11 +121,11 @@ class HomeRecruitFragment : BaseFragment() {
                     isScrolling = false
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
-                    retreivejsdata()
+                    retrieveJsData()
                 }
             }
         })
-        binding.searchR.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        /*binding.searchR.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String): Boolean {
                 filterJobList(p0)
                 return false
@@ -110,26 +136,41 @@ class HomeRecruitFragment : BaseFragment() {
                 return false
             }
 
-        })
+        })*/
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
-            val query = binding.searchR.query?.trim()
+            /*val query = binding.searchR.query?.trim()
             if (query!!.isEmpty()) {
 //                callGetAllTemplateCategoriesAPI(state_name = stateName)
             } else {
                 Utils.hideKeyboard(requireActivity())
 //                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
-            }
+            }*/
             dataList.clear()
             currentPage = 1
-            retreivejsdata()
-
+            retrieveJsData()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+
+        binding.btnFilter.setOnClickListener {
+
+            if(userType == 0 || userType == 1){
+                val intent = Intent(requireContext(), FilterDataActivity::class.java)
+                intent.putExtra("userType", userType!!)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
+                Log.e(TAG,"Incorrect user type : $userType")
+            }
+        }
+
         return binding.root
     }
 
-    private fun retreivejsdata() {
+    private fun retrieveJsData() {
        /* val userRef = database.child("Users")
         val jobRef = userRef.child("Job Seeker")
 
@@ -183,8 +224,6 @@ class HomeRecruitFragment : BaseFragment() {
                                     } else {
                                         hideShowEmptyView(false)
                                     }
-
-
                                 }
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse: catch: ${e.message}")
@@ -223,11 +262,33 @@ class HomeRecruitFragment : BaseFragment() {
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
-                retreivejsdata()
+                retrieveJsData()
             }
         }
     }
-    private fun filterJobList(query: String) {
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun updateApplicationList(query: String) {
+        // Update your job list based on the search query
+        // You can use this method to filter the jobs based on the query
+        // For example, filter the jobs based on job title or description
+        filteredDataList.clear()
+        if (!TextUtils.isEmpty(query)) {
+            for (application in dataList) {
+                if (application.vDesignation.lowercase(Locale.ROOT)
+                        .contains(query.lowercase(Locale.ROOT))
+                ) {
+                    filteredDataList.add(application)
+                }
+            }
+        } else {
+            filteredDataList.addAll(dataList)
+        }
+
+        binding.jobSeekerAdapter!!.notifyDataSetChanged()
+    }
+
+    /*private fun filterJobList(query: String) {
         dataList.clear()
         if (!TextUtils.isEmpty(query)){
             for (user in filteredDataList) {
@@ -244,7 +305,98 @@ class HomeRecruitFragment : BaseFragment() {
 
 
         binding.jobSeekerAdapter!!.notifyDataSetChanged()
+    }*/
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDataReceivedFilterApplicationList(
+        domainList: MutableList<String>,
+        locationList: MutableList<String>,
+        workingModeList: MutableList<String>,
+        packageList: MutableList<String>
+    ) {
+        Log.d(
+            TAG,
+            "${domainList.size}, ${locationList.size},${workingModeList.size} ,${packageList.size}"
+        )
+
+        filteredDataList.clear()
+        if (domainList.size > 0 || locationList.size > 0 || workingModeList.size > 0 || packageList.size > 0) {
+
+            for (application in dataList) {
+
+                val domainMatches = if (domainList.isNotEmpty()) {
+
+                    domainList.any { domain ->
+                        val domainWords = domain.split(" ")
+                        domainWords.any { word ->
+                            if (application.vDesignation.isNotEmpty()) {
+                                application.vDesignation.contains(word, ignoreCase = true)
+                            } else {
+                                false
+                            }
+                        }
+                    }
+                } else {
+                    true
+                }
+                val locationMatches = if (locationList.isNotEmpty()) {
+
+                    locationList.any { location ->
+                        val locationWords = location.split(" ")
+                        locationWords.any { word ->
+                            if (application.vPreferCity.isNotEmpty()) {
+                                application.vPreferCity.contains(word, ignoreCase = true)
+                            } else {
+                                false
+                            }
+                        }
+                    }
+                } else {
+                    true
+                }
+                val workingModeMatches = if (workingModeList.isNotEmpty()) {
+
+                    workingModeList.any { workingMode ->
+                        val workingModeWords = workingMode.split(" ")
+                        workingModeWords.any { word ->
+                            if (application.vWorkingMode.isNotEmpty()) {
+                                application.vWorkingMode.contains(word, ignoreCase = true)
+                            } else {
+                                false
+                            }
+                        }
+                    }
+                } else {
+                    true
+                }
+                val packageMatches = if (packageList.isNotEmpty()) {
+
+                    packageList.any { packageRange ->
+                        val packageRangeWords = packageRange.split(" ")
+                        packageRangeWords.any { word ->
+                            if (application.vExpectedSalary.isNotEmpty()) {
+                                application.vExpectedSalary.contains(word, ignoreCase = true)
+                            } else {
+                                false
+                            }
+                        }
+                    }
+
+                } else {
+                    true
+                }
+                // If all criteria match, add the job to the filteredJobs list
+                if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
+                    filteredDataList.add(application)
+                }
+            }
+        } else {
+            filteredDataList.addAll(dataList)
+        }
+        Log.d(TAG, "FilteredList: $filteredDataList")
+        binding.jobSeekerAdapter!!.notifyDataSetChanged()
     }
+
 
 /*    private inner class CustomAdapter : BaseAdapter() {
         override fun getCount(): Int {
@@ -300,9 +452,9 @@ class HomeRecruitFragment : BaseFragment() {
         }
     }*/
     class JobSeekerAdapter(
-        private var mActivity: Activity,
-        private var dataList: MutableList<User>,
-        private val onCategoryClick: OnCategoryClick
+    private var mActivity: Activity,
+    private var applicationList: MutableList<User>,
+    private val onCategoryClick: OnCategoryClick
     ) : RecyclerView.Adapter<JobSeekerAdapter.CategoriesHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesHolder {
             return CategoriesHolder(
@@ -314,7 +466,7 @@ class HomeRecruitFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
 
-            val job: User = dataList[position]
+            val job: User = applicationList[position]
            holder.binding.jsname.text = job.vFirstName + " " + job.vLastName
             holder.binding.qualificationjs.text = job.vQualification
             holder.binding.citypref.text = job. vPreferCity
@@ -335,13 +487,13 @@ class HomeRecruitFragment : BaseFragment() {
             }
 
         }
-        fun makePhoneCall(num: String) {
+        private fun makePhoneCall(num: String) {
             val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
             mActivity.startActivity(dialIntent)
         }
         override fun getItemCount(): Int {
-            Log.d("###", "getItemCount: ${dataList.size}")
-            return dataList.size
+            Log.d("###", "getItemCount: ${applicationList.size}")
+            return applicationList.size
         }
 
         inner class CategoriesHolder(val binding: SinglerowjsBinding) :

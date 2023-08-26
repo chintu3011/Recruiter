@@ -17,7 +17,7 @@ import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginActivity
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentSettingRecruiterBinding
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruitFragment
@@ -45,6 +45,7 @@ class SettingRecruiterFragment : BaseFragment() {
 
 
     private lateinit var prefmanger: SharedPreferences
+
     private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.profile_default_image
     lateinit var binding: FragmentSettingRecruiterBinding
     private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
@@ -68,7 +69,7 @@ class SettingRecruiterFragment : BaseFragment() {
         binding.ivBack.setOnClickListener {
             if (prefmanger.getInt(ROLE,0) == 0) {
 
-                (activity as HomeJobActivity).bottomNavigationView[0]
+                (activity as HomeJobSeekerActivity).binding.bottomNavigationView[0]
             }else{
                 val  fragment = HomeRecruitFragment()
                 (activity as HomeRecruiterActivity).bottomNavigationView[0]
@@ -95,7 +96,6 @@ class SettingRecruiterFragment : BaseFragment() {
     }
     private fun logoutUser() {
         showLogoutBottomSheet()
-
     }
     private fun setUserData() {
 

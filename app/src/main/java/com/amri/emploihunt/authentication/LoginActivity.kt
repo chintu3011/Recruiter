@@ -17,7 +17,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityLoginBinding
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.UserExistOrNotModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
@@ -86,7 +86,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
 
         Log.d(TAG,"usertype: $userType")
         if(userType == "Job Seeker"){
-            val intent = Intent(this@LoginActivity, HomeJobActivity::class.java)
+            val intent = Intent(this@LoginActivity, HomeJobSeekerActivity::class.java)
             intent.putExtra("userType",userType)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)

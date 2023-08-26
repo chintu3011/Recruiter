@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_pagr_fragment_nav"
+    android:id="@+id/home_page_fragment_nav"
     app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.amri.emploihunt.jobSeekerSide.HomeJobFragment"
+        android:name="com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home_job_seeker" >
         <action
             android:id="@+id/action_homeFragment_to_postFragment"
             app:destination="@id/postFragment" />
@@ -27,14 +27,5 @@
         android:id="@+id/profileFragment"
         android:name="com.amri.emploihunt.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.amri.emploihunt.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_profile" />
 </navigation>

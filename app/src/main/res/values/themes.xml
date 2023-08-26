@@ -23,4 +23,14 @@
         <item name="tint" > @color/white</item>
     </style>
 
+    <style name="FloatingActionButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/FabCustomStyle</item>
+    </style>
+
+    <style name="FabCustomStyle" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">20%</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="elevation">0dp</item>
+    </style>
+
 </resources>

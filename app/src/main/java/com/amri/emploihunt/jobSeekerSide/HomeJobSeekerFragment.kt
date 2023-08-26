@@ -1,5 +1,6 @@
 package com.amri.emploihunt.jobSeekerSide
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Context
@@ -23,8 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.recruiterSide.JobPostActivity
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
-import com.amri.emploihunt.databinding.FragmentHomeBinding
+import com.amri.emploihunt.databinding.FragmentHomeJobSeekerBinding
 import com.amri.emploihunt.databinding.RowPostDesignBinding
+import com.amri.emploihunt.filterFeature.FilterDataActivity
+import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.model.DataJobPreferenceList
 import com.amri.emploihunt.model.GetAllJob
 import com.amri.emploihunt.model.GetJobPreferenceList
@@ -44,7 +47,8 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import java.util.Locale
 
-class HomeJobFragment : BaseFragment() {
+class HomeJobSeekerFragment : BaseFragment(),JobListUpdateListener,
+FilterParameterTransferClass.FilterJobListListener {
 
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
@@ -55,13 +59,17 @@ class HomeJobFragment : BaseFragment() {
     var jobPreferenceList: ArrayList<DataJobPreferenceList> = ArrayList()
     private var adapter: SpinAdapter? = null
 
-    private  lateinit var binding: FragmentHomeBinding
+    private  lateinit var binding: FragmentHomeJobSeekerBinding
     private var firstVisibleItemPosition = 0
     private var isScrolling = false
     private var currentItems = 0
     private var currentPage = 1
     private var totalItems = 0
     private var totalPages = 1
+
+    companion object{
+        const val TAG = "HomeJobSeekerFragment"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,8 +80,13 @@ class HomeJobFragment : BaseFragment() {
         if (bundle != null) {
             userType = bundle.getInt("userType")
         }
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        Log.d(TAG,"User type : $userType")
+        binding = FragmentHomeJobSeekerBinding.inflate(layoutInflater)
+
+        FilterParameterTransferClass.instance!!.setJobListener(this)
+
         prefManager = PrefManager.prefManager(requireContext())
+
         jobPreferenceList.add(DataJobPreferenceList(0,0,"Select job preference","0","0",
             "0","0","0"))
 
@@ -102,18 +115,19 @@ class HomeJobFragment : BaseFragment() {
         layoutManager = LinearLayoutManager(requireContext(),  RecyclerView.VERTICAL, false)
         binding.jobRvList.layoutManager = layoutManager
         binding.jobsAdapter =
-            JobsAdapter(requireActivity(), dataList, object : JobsAdapter.OnCategoryClick {
+            JobsAdapter(requireActivity(), filteredDataList, object : JobsAdapter.OnCategoryClick {
                 override fun onCategoryClicked(view: View, templateModel: Jobs) {
                     val intent  = Intent(requireContext(), JobPostActivity::class.java)
                     intent.putExtra("ARG_JOB_TITLE",templateModel)
                     changePostLauncher.launch(intent)
-
                 }
-
             })
+
         retrieveJobData(0)
+
         binding.jobRvList.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
@@ -136,7 +150,7 @@ class HomeJobFragment : BaseFragment() {
             }
         })
 
-        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        /*binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
 
                 return false
@@ -147,16 +161,16 @@ class HomeJobFragment : BaseFragment() {
                 return false
             }
 
-        })
+        })*/
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
-            val query = binding.search.query?.trim()
+            /*val query = binding.search.query?.trim()
             if (query!!.isEmpty()) {
 //                callGetAllTemplateCategoriesAPI(state_name = stateName)
             } else {
                 Utils.hideKeyboard(requireActivity())
 //                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
-            }
+            }*/
 
             if (binding.jobPreferenceSp.visibility == View.VISIBLE){
                 binding.jobPreferenceSp.setSelection(0)
@@ -165,14 +179,28 @@ class HomeJobFragment : BaseFragment() {
                 currentPage = 1
                 retrieveJobData(0)
             }
-
-
             binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        binding.btnFilter.setOnClickListener {
+
+            if(userType == 0 || userType == 1){
+                val intent = Intent(requireContext(), FilterDataActivity::class.java)
+                intent.putExtra("userType", userType!!)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
+                Log.e(TAG,"Incorrect user type : $userType")
+            }
+
         }
         return binding.root
 
     }
 
+    /*@SuppressLint("NotifyDataSetChanged")
     private fun filterJobList(query: String) {
         dataList.clear()
         if (!TextUtils.isEmpty(query)){
@@ -187,10 +215,8 @@ class HomeJobFragment : BaseFragment() {
         else{
             dataList.addAll(filteredDataList)
         }
-
-
         binding.jobsAdapter!!.notifyDataSetChanged()
-    }
+    }*/
 
     private fun retrieveJobData(jobpreferenceId: Int) {
         Log.d("###", "retrieveJobData: ")
@@ -233,6 +259,7 @@ class HomeJobFragment : BaseFragment() {
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(GetAllJob::class.java,
                     object : ParsedRequestListener<GetAllJob> {
+                        @SuppressLint("NotifyDataSetChanged")
                         override fun onResponse(response: GetAllJob?) {
                             try {
                                 response?.let {
@@ -247,8 +274,6 @@ class HomeJobFragment : BaseFragment() {
                                     } else {
                                         hideShowEmptyView(false)
                                     }
-
-
                                 }
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse: catch: ${e.message}")
@@ -366,6 +391,7 @@ class HomeJobFragment : BaseFragment() {
             )
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
             val jobModel = dataList[position]
 
@@ -379,7 +405,10 @@ class HomeJobFragment : BaseFragment() {
             holder.binding.employees.text =  "${jobModel.iNumberOfVacancy} Vacancy"
             holder.binding.createTimeTV.text = getTimeAgo(holder.itemView.context ,
                 jobModel.tCreatedAt!!.toLong())
-            Glide.with(holder.itemView.context).load(jobModel.tCompanyLogoUrl).into(holder.binding.profileImg)
+            Glide.with(holder.itemView.context)
+                .load(jobModel.tCompanyLogoUrl)
+                .placeholder(R.drawable.default_company_logo)
+                .into(holder.binding.profileImg)
 //            onCategoryClick.onCategoryClicked(it, templateModel)
             holder.binding.executePendingBindings()
             holder.itemView.setOnClickListener {
@@ -428,9 +457,6 @@ class HomeJobFragment : BaseFragment() {
                                     if (response.total_records >= 1){
                                         binding.jobPreferenceSp.visibility = View.VISIBLE
                                     }
-
-
-
                                 }
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse: catch: ${e.message}")
@@ -444,9 +470,7 @@ class HomeJobFragment : BaseFragment() {
                                     "#####",
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
-
                             }
-
                         }
                     })
         } else {
@@ -487,7 +511,7 @@ class HomeJobFragment : BaseFragment() {
             label.setTextColor(Color.BLACK)
             // Then you can get the current item using the values array (Users array) and the current position
             // You can NOW reference each method you has created in your bean object (User class)
-            label.text = "${values[position].vJobTitle}"
+            label.text = values[position].vJobTitle
 
             // And finally return your dynamic (or custom) view for each spinner item
             return label
@@ -498,7 +522,7 @@ class HomeJobFragment : BaseFragment() {
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View? {
             val label = super.getDropDownView(position, convertView, parent) as TextView
             label.setTextColor(Color.BLACK)
-            label.text = "${values[position].vJobTitle}"
+            label.text = values[position].vJobTitle
             return label
         }
     }
@@ -508,5 +532,98 @@ class HomeJobFragment : BaseFragment() {
             getJobPreference()
             IS_ADDED_JOB_PREFERENCE = false
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDataReceivedFilterJobList(
+        domainList: MutableList<String>,
+        locationList: MutableList<String>,
+        workingModeList: MutableList<String>,
+        packageList: MutableList<String>
+    ) {
+        Log.d(TAG,"${domainList.size}, ${locationList.size},${workingModeList.size} ,${packageList.size}")
+
+        filteredDataList.clear()
+        if(domainList.size > 0 || locationList.size > 0 || workingModeList.size > 0 || packageList.size > 0 ){
+
+            for(job in dataList){
+
+                val domainMatches = if (domainList.isNotEmpty()){
+
+                    domainList.any { domain ->
+                        val domainWords = domain.split(" ")
+                        domainWords.any { word ->
+                            job.vJobTitle?.contains(word, ignoreCase = true) == true
+                        }
+                    }
+                }
+                else{
+                    true
+                }
+                val locationMatches = if (locationList.isNotEmpty()){
+
+                    locationList.any { location ->
+                        val locationWords = location.split(" ")
+                        locationWords.any { word ->
+                            job.vAddress?.contains(word, ignoreCase = true) == true
+                        }
+                    }
+                }
+                else{
+                    true
+                }
+                val workingModeMatches = if (workingModeList.isNotEmpty()){
+
+                    workingModeList.any { workingMode ->
+                        val workingModeWords = workingMode.split(" ")
+                        workingModeWords.any { word ->
+                            job.vWrokingMode?.contains(word, ignoreCase = true) == true
+                        }
+                    }
+                }
+                else{
+                    true
+                }
+                val packageMatches = if(packageList.isNotEmpty()){
+
+                    packageList.any { packageRange ->
+                        val packageRangeWords = packageRange.split(" ")
+                        packageRangeWords.any { word ->
+                            job.vSalaryPackage?.contains(word, ignoreCase = true) == true
+                        }
+                    }
+                }
+                else{
+                    true
+                }
+                // If all criteria match, add the job to the filteredJobs list
+                if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
+                    filteredDataList.add(job)
+                }
+            }
+        }
+        else{
+            filteredDataList.addAll(dataList)
+        }
+        Log.d(TAG,"FilteredList: $filteredDataList")
+        binding.jobsAdapter!!.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun updateJobList(query: String) {
+        filteredDataList.clear()
+        if (!TextUtils.isEmpty(query)){
+            for (user in dataList) {
+                if (user.vJobTitle!!.lowercase(Locale.ROOT)
+                        .contains(query.lowercase(Locale.ROOT))
+                ) {
+                    filteredDataList.add(user)
+                }
+            }
+        }
+        else{
+            filteredDataList.addAll(dataList)
+        }
+        binding.jobsAdapter!!.notifyDataSetChanged()
     }
 }

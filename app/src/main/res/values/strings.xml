@@ -84,4 +84,11 @@
     <string name="delete">Delete</string>
     <string name="filter">Filter</string>
     <string name="tag">tag</string>
+    <string name="filter_jobs">Filter jobs</string>
+    <string name="messenger">Messenger</string>
+    <string name="home">Home</string>
+    <string name="chat">Chat</string>
+    <string name="setting">Setting</string>
+    <string name="post">Post</string>
+    <string name="filter_applications_here">Filter applications here</string>
 </resources>

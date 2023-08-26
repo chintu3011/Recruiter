@@ -71,7 +71,18 @@
             <!-- </intent-filter> -->
 
         <activity
-            android:name=".jobSeekerSide.HomeJobActivity"
+            android:name=".jobSeekerSide.HomeJobSeekerActivity"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".filterFeature.FilterDataActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->

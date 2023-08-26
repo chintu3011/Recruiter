@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
-import androidx.fragment.app.Fragment
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
 import com.bumptech.glide.Glide
@@ -52,7 +51,7 @@ class JobPostDescriptionFragment() : BaseFragment() {
         dataList = mutableListOf()
         retreivedescription()
         binding.btnCancel.setOnClickListener {
-            val homeFragment = HomeJobFragment()
+            val homeFragment = HomeJobSeekerFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameLayout,homeFragment)
             transaction.addToBackStack(null)

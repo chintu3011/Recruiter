@@ -111,7 +111,7 @@
                     android:id="@+id/addJobPreference"
                     android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginEnd="@dimen/_25sdp"
-                    android:background="@drawable/spinner_bg"
+                    android:background="@drawable/spinner_border_bg"
                     android:text="@string/add_job_preference"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

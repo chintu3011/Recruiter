@@ -73,7 +73,7 @@ class PostRecruitFragment : BaseFragment() {
         binding.btnCancelPost.setOnClickListener {
             val homeFragment = HomeRecruitFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.frameRLayout,homeFragment)
+            transaction.replace(R.id.frameLayout,homeFragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }

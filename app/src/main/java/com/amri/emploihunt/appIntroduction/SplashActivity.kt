@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginsignupActivity
 
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
@@ -87,7 +87,7 @@ class SplashActivity : AppCompatActivity() {
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                         finish()
                     }else{
-                        val intent = Intent(this@SplashActivity, HomeJobActivity::class.java)
+                        val intent = Intent(this@SplashActivity, HomeJobSeekerActivity::class.java)
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                         finish()

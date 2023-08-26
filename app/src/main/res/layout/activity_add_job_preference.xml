@@ -171,7 +171,7 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:hint="@string/expected_salary"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/spinner_bg"
+                    android:background="@drawable/spinner_border_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radioGrpWorkingMode"

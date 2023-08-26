@@ -14,47 +14,80 @@
         android:layout_height="match_parent"
         tools:context=".recruiterSide.HomeRecruitFragment">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/Linearr"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_5sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_5sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuildLine"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                app:layout_constraintGuide_begin="@dimen/_10sdp" />
 
-                <SearchView
-                    android:id="@+id/searchR"
-                    android:layout_width="236dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/searchbg"
-                    android:iconifiedByDefault="false"
-                    android:queryHint="Search" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottomGuildLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/_10sdp" />
 
-                <ImageView
-                    android:id="@+id/voicesearchR"
-                    android:layout_width="11dp"
-                    android:layout_height="51dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/baseline_keyboard_voice_24" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textMsg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@string/filter_applications_here"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAlignment="textStart"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/topGuildLine"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/btnFilter"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnFilter"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:backgroundTint="@color/white"
+                app:borderWidth="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/ic_filter_list"
+                app:fabCustomSize="@dimen/_35sdp"
+                style="@style/FloatingActionButtonStyle"
+                app:layout_constraintTop_toTopOf="@+id/textMsg"
+                app:layout_constraintBottom_toBottomOf="@+id/textMsg"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintStart_toEndOf="@id/textMsg" />
+
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/Linearr"
-                android:layout_above="@+id/layProgressPagination"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/textMsg"
+                app:layout_constraintStart_toEndOf="@id/startGuildLine"
+                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                 app:layout_constraintBottom_toTopOf="@id/layProgressPagination">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/jobSeekerListRv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/poppinsregular"
                     android:verticalSpacing="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -72,18 +105,14 @@
                 layout="@layout/layout_progress_pagination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
                 android:visibility="gone"
-                 />
+                app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine" />
             <include
                 android:id="@+id/layEmptyView"
                 layout="@layout/layout_empty_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,10 +120,12 @@
                 android:id="@+id/progress_circular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
+                app:layout_constraintTop_toTopOf="@id/swipeRefreshLayout"
+                app:layout_constraintBottom_toBottomOf="@id/swipeRefreshLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:indeterminateTint="@color/colorPrimary"/>
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 </layout>

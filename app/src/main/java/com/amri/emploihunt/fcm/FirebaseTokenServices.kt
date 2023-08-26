@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.R
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.PrefManager
@@ -65,13 +65,13 @@ class FirebaseTokenServices : FirebaseMessagingService() {
 
         val intent = when (notiType) {
             "1" -> {
-                Intent(applicationContext, HomeJobActivity::class.java).apply {
+                Intent(applicationContext, HomeJobSeekerActivity::class.java).apply {
 
                 }
             }
 
             else -> {
-                Intent(applicationContext, HomeJobActivity::class.java)
+                Intent(applicationContext, HomeJobSeekerActivity::class.java)
             }
         }
 

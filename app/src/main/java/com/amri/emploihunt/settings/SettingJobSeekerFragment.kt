@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentSettingBinding
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruitFragment
@@ -41,7 +41,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
 
-class SettingFragment : BaseFragment() {
+class SettingJobSeekerFragment : BaseFragment() {
 
 
     private lateinit var prefmanger: SharedPreferences
@@ -52,7 +52,7 @@ class SettingFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentSettingBinding.inflate(layoutInflater)
         prefmanger = PrefManager.prefManager(requireContext())
@@ -68,7 +68,7 @@ class SettingFragment : BaseFragment() {
         binding.ivBack.setOnClickListener {
             if (prefmanger.getInt(ROLE,0) == 0) {
 
-                (activity as HomeJobActivity).bottomNavigationView[0]
+                (activity as HomeJobSeekerActivity).binding.bottomNavigationView[0]
             }else{
                 val  fragment = HomeRecruitFragment()
                 (activity as HomeRecruiterActivity).bottomNavigationView[0]
@@ -98,7 +98,6 @@ class SettingFragment : BaseFragment() {
     }
     private fun logoutUser() {
         showLogoutBottomSheet()
-
     }
     private fun setUserData() {
 
@@ -207,25 +206,15 @@ class SettingFragment : BaseFragment() {
 
         animation.setAnimation(R.raw.logout)
 
-
-
-
         btnyes.setOnClickListener {
             logoutAPI(prefmanger.get(AUTH_TOKEN,""))
             dialog.dismiss()
-
-
-
         }
         btnNo.setOnClickListener {
             dialog.dismiss()
         }
-
-
         dialog.setCancelable(true)
-
         dialog.setContentView(view)
-
         dialog.show()
 
     }
@@ -234,8 +223,6 @@ class SettingFragment : BaseFragment() {
 
         ) {
         try {
-
-
             if (Utils.isNetworkAvailable(requireContext())) {
                 AndroidNetworking.post(NetworkUtils.LOGOUT)
                     .setOkHttpClient(NetworkUtils.okHttpClient)

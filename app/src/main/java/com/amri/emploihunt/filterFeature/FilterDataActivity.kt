@@ -34,6 +34,10 @@ class FilterDataActivity : BaseActivity(),
         const val JOB = 1
         const val APPLICATION = 2
     }
+    object UserType{
+        const val JOB_SEEKERS = 0
+        const val RECRUITER = 1
+    }
 
     object SearchViewIdentifier {
         const val DOMAIN_SEARCH = 1
@@ -75,7 +79,7 @@ class FilterDataActivity : BaseActivity(),
 
     private lateinit var myPagerAdapter: MyPagerAdapter
 
-    private lateinit var userType:String
+    private var userType:Int ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,9 +90,9 @@ class FilterDataActivity : BaseActivity(),
         window.statusBarColor = ContextCompat.getColor(this@FilterDataActivity,android.R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        userType = intent.getStringExtra("userType").toString()
+        userType = intent.getIntExtra("userType",-1)
 
-        Log.d(TAG,userType)
+        Log.d(TAG,userType.toString())
 
         domainList = mutableListOf("Android Development", "Web Development", "Ar Vr Development", "Rect Js", "PHP", ".Net")
         locationList = mutableListOf("Ahmedabad","Surat","Mumbai","Delhi","Pune","Kolkata","Vadodara")
@@ -144,7 +148,7 @@ class FilterDataActivity : BaseActivity(),
         /*myPagerAdapter =  MyPagerAdapter(adapterList,this@FilterDataActivity,this, FilterCategories.JOB)*/
 
         when (userType) {
-            "Job Seeker" -> {
+            UserType.JOB_SEEKERS -> {
                 val adapterList: MutableList<FilterTagAdapter> = mutableListOf(
                     domainTagAdapter,
                     locationTagAdapter,
@@ -154,7 +158,7 @@ class FilterDataActivity : BaseActivity(),
                 myPagerAdapter =  MyPagerAdapter(adapterList,this@FilterDataActivity,this, FilterCategories.JOB)
 
             }
-            "Recruiter" -> {
+            UserType.RECRUITER -> {
                 val adapterList: MutableList<FilterTagAdapter> = mutableListOf(
                     domainTagAdapter,
                     locationTagAdapter,
@@ -207,11 +211,11 @@ class FilterDataActivity : BaseActivity(),
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         when (userType) {
-            "Job Seeker" -> {
+            UserType.JOB_SEEKERS -> {
                 supportActionBar?.title = "Filter job Preference"
             }
 
-            "Recruiter" -> {
+            UserType.RECRUITER -> {
                 supportActionBar?.title = "Filter Applications"
             }
             else -> {
@@ -227,7 +231,7 @@ class FilterDataActivity : BaseActivity(),
                 R.id.btnFilter -> {
 
                     when(userType){
-                        "Job Seeker" -> {
+                        UserType.JOB_SEEKERS -> {
                             Log.d(TAG,selectedDomainList.toString())
                             Log.d(TAG,selectedLocationList.toString())
                             Log.d(TAG,selectedWorkingModeList.toString())
@@ -243,7 +247,7 @@ class FilterDataActivity : BaseActivity(),
 
                             finish()
                         }
-                        "Recruiter" -> {
+                        UserType.RECRUITER -> {
                             Log.d(TAG,selectedDomainList.toString())
                             Log.d(TAG,selectedLocationList.toString())
                             Log.d(TAG,selectedWorkingModeList.toString())

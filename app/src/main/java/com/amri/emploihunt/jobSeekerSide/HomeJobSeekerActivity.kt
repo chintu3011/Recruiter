@@ -1,4 +1,5 @@
-package com.amri.emploihunt.recruiterSide
+package com.amri.emploihunt.jobSeekerSide
+
 
 import android.Manifest
 import android.app.Activity
@@ -16,73 +17,74 @@ import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.Window
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
-import com.amri.emploihunt.databinding.ActivityHomeRecruiterBinding
+import com.amri.emploihunt.databinding.ActivityHomeJobSeekerBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
-import com.amri.emploihunt.jobSeekerSide.JobListUpdateListener
 import com.amri.emploihunt.messenger.MessengerHomeActivity
+import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.settings.SettingJobSeekerFragment
-import com.amri.emploihunt.settings.SettingRecruiterFragment
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.FilterApplicationListener {
 
-    private lateinit var binding:ActivityHomeRecruiterBinding
+class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.FilterJobListListener {
 
-    private lateinit var homeRecruitFragment: HomeRecruitFragment
+    lateinit var binding : ActivityHomeJobSeekerBinding
+    private lateinit var homeFragment: HomeJobSeekerFragment
     private var doubleBackToExitPressedOnce = false
 
     private var userType:Int ?= null
     private var userId:String ?= null
 
-    private var currentFragment:Fragment ?= null
+    private var currentFragment: Fragment ?= null
+
     companion object{
-        private const val TAG = "HomeRecruiterActivity"
+        private const val TAG = "HomeJobSeekerActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeRecruiterBinding.inflate(layoutInflater)
+        binding = ActivityHomeJobSeekerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val window: Window = this@HomeJobSeekerActivity.window
+        window.statusBarColor = ContextCompat.getColor(this@HomeJobSeekerActivity,android.R.color.white)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         if (!isGrantedPermission()) {
             requestPermissions()
         }
 
-        userType = intent.getIntExtra("role",1)
+        userType = intent.getIntExtra("role",0)
         userId = intent.getStringExtra("userId")
         Log.d(TAG,"$userId::$userType")
 
-        FilterParameterTransferClass.instance!!.setApplicationListener(this)
+        FilterParameterTransferClass.instance!!.setJobListener(this)
 
-        homeRecruitFragment = HomeRecruitFragment()
-
-        replaceFragment(homeRecruitFragment)
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
+        homeFragment = HomeJobSeekerFragment()
+        replaceFragment(homeFragment)
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(HomeRecruitFragment())
-                }
-                R.id.post -> {
-                    replaceFragment(PostRecruitFragment())
+                    replaceFragment(HomeJobSeekerFragment())
                 }
                 R.id.setting -> {
-                    replaceFragment(SettingRecruiterFragment())
+                    replaceFragment(SettingJobSeekerFragment())
                 }
-                /*R.id.chatR -> {
-                    val intent = Intent(this@HomeRecruiterActivity, MessengerHomeActivity::class.java)
+                /*R.id.chat -> {
+                    val intent = Intent(this@HomeJobSeekerActivity, MessengerHomeActivity::class.java)
                     startActivity(intent)
                 }*/
             }
@@ -92,20 +94,20 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
-                    if (!homeRecruitFragment.isVisible) {
-                        binding.bottomNavigation.selectedItemId = R.id.home
-                        replaceFragment(homeRecruitFragment)
+                    if (!homeFragment.isVisible) {
+                        binding.bottomNavigationView.selectedItemId = R.id.home
+                        replaceFragment(homeFragment)
 
                     } else {
 
                         if (doubleBackToExitPressedOnce) {
+
                             finishAffinity()
                             return
                         }
 
                         doubleBackToExitPressedOnce = true
-                        Toast.makeText(this@HomeRecruiterActivity, "Please click back again to exit", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@HomeJobSeekerActivity, "Please click back again to exit", Toast.LENGTH_SHORT)
                             .show()
 
                         Handler(Looper.getMainLooper()).postDelayed({
@@ -116,23 +118,23 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 }
             }
         )
-
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         /*supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         // showing the back button in action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
 
+
         supportFragmentManager.addOnBackStackChangedListener {
             invalidateOptionsMenu() // This triggers onPrepareOptionsMenu()
         }
 
         setMenuItemListener()
-    }
 
+    }
     private fun setMenuItemListener() {
-        binding.toolbar.setOnMenuItemClickListener{
-            when(it.itemId){
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
                 R.id.btnSearch -> {
                     val searchView = it.actionView as SearchView
 
@@ -142,22 +144,24 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
+                            val currentFragment =
+                                supportFragmentManager.findFragmentById(R.id.frameLayout)
 
-                            if (currentFragment is ApplicationListUpdateListener) {
-                                currentFragment.updateApplicationList(newText.orEmpty())
+                            if (currentFragment is JobListUpdateListener) {
+                                currentFragment.updateJobList(newText.orEmpty())
                             }
                             return true
                         }
                     })
                     true
                 }
+
                 R.id.btnVoiceSearch -> {
                     openVoice()
                     true
                 }
                 R.id.btnMessenger -> {
-                    val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
+                    val intent = Intent(this@HomeJobSeekerActivity,MessengerHomeActivity::class.java)
                     intent.putExtra("userType", userType!!)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
@@ -170,10 +174,21 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                     finish()
                     true
                 }
-                R.id.btnLogout -> {
-//                    logoutUser()
+
+                /*R.id.btnFilter -> {
+                    val intent = Intent(this@HomeJobSeekerActivity, FilterDataActivity::class.java)
+                    intent.putExtra("userType", userType!!)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+//                    finish()
                     true
-                }
+                }*/
+
+                /*R.id.btnLogout -> {
+                    logoutUser()
+                    true
+                }*/
+
                 else -> {
                     false
                 }
@@ -187,7 +202,7 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
     private var btnLogout: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.recruiter_menu, menu)
+        menuInflater.inflate(R.menu.job_seeker_menu, menu)
 
         btnSearch = menu?.findItem(R.id.btnSearch)
         btnVoiceSearch = menu?.findItem(R.id.btnVoiceSearch)
@@ -195,29 +210,26 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         btnMessenger = menu?.findItem(R.id.btnMessenger)
         return true
     }
+
+
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         Log.d(TAG,"currentFragment : $currentFragment")
         when (currentFragment) {
-            is HomeRecruitFragment -> {
-                supportActionBar?.title = "Find Best Employees Here"
+            is HomeJobSeekerFragment -> {
+                supportActionBar?.title = "Find Best Jobs Here"
                 btnSearch?.isVisible = true
                 btnVoiceSearch?.isVisible = true
                 btnMessenger?.isVisible = true
+                /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = false
             }
-            is PostRecruitFragment -> {
-                supportActionBar?.title = "Create Job Post"
-                btnSearch?.isVisible = false
-                btnVoiceSearch?.isVisible = false
-                btnMessenger?.isVisible = false
-                btnLogout?.isVisible = false
-            }
-            is SettingRecruiterFragment -> {
+            is SettingJobSeekerFragment -> {
                 supportActionBar?.title = "Settings"
                 btnSearch?.isVisible = false
                 btnVoiceSearch?.isVisible = false
                 btnMessenger?.isVisible = false
+                /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = true
             }
             else -> {
@@ -265,8 +277,8 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
             if (matches.isNotEmpty()) {
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
 
-                if (currentFragment is ApplicationListUpdateListener) {
-                    currentFragment.updateApplicationList(query.orEmpty())
+                if (currentFragment is JobListUpdateListener) {
+                    currentFragment.updateJobList(query.orEmpty())
                 }
             }
         } else {
@@ -274,20 +286,26 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         }
     }
 
-    override fun onDataReceivedFilterApplicationList(
+    override fun onDataReceivedFilterJobList(
         domainList: MutableList<String>,
         locationList: MutableList<String>,
         workingModeList: MutableList<String>,
         packageList: MutableList<String>
     ) {
-        FilterParameterTransferClass.instance!!.setApplicationData(domainList,locationList,workingModeList,packageList)
+        FilterParameterTransferClass.instance!!.setJobData(
+            domainList,
+            locationList,
+            workingModeList,
+            packageList
+        )
     }
 
     fun replaceFragment(fragment: Fragment) {
+
         supportFragmentManager.beginTransaction().apply {
             if (fragment.isAdded) {
                 show(fragment)
-
+                setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
             } else {
                 add(R.id.frameLayout, fragment)
             }
@@ -302,7 +320,6 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .addToBackStack(null)
             .commit()
-
 
     }
 
@@ -367,5 +384,12 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
     }
 
 
+
+    /* override fun onBackPressed() {
+
+         super.onBackPressed()
+         Log.d("back", "onBackPressed: ")
+
+     }*/
 
 }

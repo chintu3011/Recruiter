@@ -11,20 +11,15 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.chaos.view.PinView
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpverificationLoginBinding
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.SignInCheckModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
@@ -264,7 +259,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                             prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                             val intent = Intent(
                                                 this@OTPVerificationLoginActivity,
-                                                HomeJobActivity::class.java
+                                                HomeJobSeekerActivity::class.java
                                             )
                                             intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())
                                             intent.putExtra("role",response.data.user.iRole)

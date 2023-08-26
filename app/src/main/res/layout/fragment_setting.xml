@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".settings.SettingFragment">
+        tools:context=".settings.SettingJobSeekerFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <RelativeLayout
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rlProfile"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:layout_margin="@dimen/_5sdp"
             android:orientation="horizontal">
 
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rl_ApplyList"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
@@ -143,7 +143,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:id="@+id/rlJobPreference"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
@@ -183,7 +183,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:id="@+id/rlSaveJob"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
@@ -223,7 +223,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:layout_marginStart="@dimen/_5sdp"
             android:id="@+id/rlContactUs"
             android:layout_marginEnd="@dimen/_5sdp"
@@ -263,7 +263,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
+            android:background="@drawable/spinner_border_bg"
             android:id="@+id/rlPolicy"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"

@@ -17,8 +17,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.BuildConfig
@@ -30,7 +28,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityInformationBinding
-import com.amri.emploihunt.jobSeekerSide.HomeJobActivity
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
@@ -353,61 +351,61 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     storeInfoRSkip()
                 }
 
-//                val  map = mutableMapOf<String,String>()
-//                map["userId"] = userId
-//                map["userFName"] = firstName
-//                map["userLName"] = firstName
-//                map["userPhoneNUmber"] = phoneNo
-//                map["userEmailId"] = email
-//
-//                FirebaseDatabase.getInstance().getReference("Users")
-//                    .child(userType)
-//                    .child(userId)
-//                    .setValue(map).addOnCompleteListener{ task ->
-//                        if(task.isSuccessful){
-//                            if(userType == "Job Seeker"){
-//                                CoroutineScope(Dispatchers.IO).launch {
-//                                    val jobSeekerProfileInfo =
-//                                        JobSeekerProfileInfo(this@InformationActivity)
-//
-//                                    jobSeekerProfileInfo.storeBasicProfileData(
-//                                        firstName,
-//                                        lastName,
-//                                        phoneNo,
-//                                        email,
-//                                        "",
-//                                        ""
-//                                    )
-//                                    jobSeekerProfileInfo.storeUserType(
-//                                        userType,
-//                                        userId
-//                                    )
-//                                }
-//                                navigateToHomeActivity()
-//                            }
-//                            if(userType == "Recruiter"){
-//                                CoroutineScope(Dispatchers.IO).launch {
-//                                    val recruiterProfileInfo =
-//                                        RecruiterProfileInfo(this@InformationActivity)
-//
-//                                    recruiterProfileInfo.storeBasicProfileData(
-//                                        firstName,
-//                                        lastName,
-//                                        phoneNo,
-//                                        email,
-//                                        "",
-//                                        ""
-//                                    )
-//                                    recruiterProfileInfo.storeUserType(
-//                                        userType,
-//                                        userId
-//                                    )
-//                                }
-//                                navigateToHomeActivity()
-//                            }
-//
-//                        }
-//                    }
+/*                val  map = mutableMapOf<String,String>()
+                map["userId"] = userId
+                map["userFName"] = firstName
+                map["userLName"] = firstName
+                map["userPhoneNUmber"] = phoneNo
+                map["userEmailId"] = email
+
+                FirebaseDatabase.getInstance().getReference("Users")
+                    .child(userType)
+                    .child(userId)
+                    .setValue(map).addOnCompleteListener{ task ->
+                        if(task.isSuccessful){
+                            if(userType == "Job Seeker"){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val jobSeekerProfileInfo =
+                                        JobSeekerProfileInfo(this@InformationActivity)
+
+                                    jobSeekerProfileInfo.storeBasicProfileData(
+                                        firstName,
+                                        lastName,
+                                        phoneNo,
+                                        email,
+                                        "",
+                                        ""
+                                    )
+                                    jobSeekerProfileInfo.storeUserType(
+                                        userType,
+                                        userId
+                                    )
+                                }
+                                navigateToHomeActivity()
+                            }
+                            if(userType == "Recruiter"){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val recruiterProfileInfo =
+                                        RecruiterProfileInfo(this@InformationActivity)
+
+                                    recruiterProfileInfo.storeBasicProfileData(
+                                        firstName,
+                                        lastName,
+                                        phoneNo,
+                                        email,
+                                        "",
+                                        ""
+                                    )
+                                    recruiterProfileInfo.storeUserType(
+                                        userType,
+                                        userId
+                                    )
+                                }
+                                navigateToHomeActivity()
+                            }
+
+                        }
+                    }*/
             }
         }
     }
@@ -465,7 +463,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         designation = binding.designation.text.toString().trim()
         jobLocation = selectedJobLocation.toString().trim()
         duration = binding.duration.text.toString().trim()
-        salary = binding.salary.text.toString().trim()
+        salary = binding.salary.text.toString().trim().plus(" LPA+")
         if(salary.isEmpty()){
             salary = 0.toString()
         }
@@ -572,6 +570,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vJobLocation",jobLocation)
                     .addQueryParameter("vDuration",duration)
                     .addQueryParameter("vPreferCity",pCity)
+                    .addQueryParameter("vExpectedSalary",salary)
                     .addQueryParameter("vQualification",qualification)
                     .addQueryParameter("vWorkingMode",workingMode)
                     .addQueryParameter("tTagLine","")
@@ -605,7 +604,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 response.data.user.vQualification
                                             )
                                             jobSeekerProfileInfo.storeExperienceData(
-                                                "",
+                                                experience,
                                                 response.data.user.vDesignation,
                                                 "",
                                                 ""
@@ -616,9 +615,9 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             )
                                             jobSeekerProfileInfo.storeJobPreferenceData(
                                                 "",
-                                                "",
+                                                salary,
                                                 response.data.user.vCity,
-                                                ""
+                                                workingMode
                                             )
 
                                         }
@@ -959,10 +958,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 "",
                                                ""
                                             )
-
-
                                         }
-
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -1008,7 +1004,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private fun navigateToHomeActivity() {
         if (userType == "Job Seeker") {
-            val intent = Intent(this@InformationActivity, HomeJobActivity::class.java)
+            val intent = Intent(this@InformationActivity, HomeJobSeekerActivity::class.java)
             intent.putExtra("userType", userType)
             val fullName = firstName + lastName
             makeToast("Welcome $fullName", 0)
