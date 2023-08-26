@@ -39,7 +39,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.FilterApplicationListener {
 
-    private lateinit var binding:ActivityHomeRecruiterBinding
+    lateinit var binding:ActivityHomeRecruiterBinding
 
     private lateinit var homeRecruitFragment: HomeRecruitFragment
     private var doubleBackToExitPressedOnce = false

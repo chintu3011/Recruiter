@@ -72,7 +72,7 @@ class SettingRecruiterFragment : BaseFragment() {
                 (activity as HomeJobSeekerActivity).binding.bottomNavigationView[0]
             }else{
                 val  fragment = HomeRecruitFragment()
-                (activity as HomeRecruiterActivity).bottomNavigationView[0]
+                (activity as HomeRecruiterActivity).binding.bottomNavigation[0]
             }
 
         }
