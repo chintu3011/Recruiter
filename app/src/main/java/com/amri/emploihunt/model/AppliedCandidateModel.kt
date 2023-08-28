@@ -41,6 +41,7 @@ data class UserJobPref(
     val tTagLine: String,
     val vCity: String,
     val vPreferCity: String,
+    /***/val vExpectedSalary:String,
     val isLogin: String,
     val isBlock: String,
     val tCreatedAt: String,

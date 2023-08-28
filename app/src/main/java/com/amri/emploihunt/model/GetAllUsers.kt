@@ -1,7 +1,7 @@
 package com.amri.emploihunt.model
 
 
-data class GetAllJobSeeker(
+data class GetAllUsers(
     val data: List<User>,
     val message: String,
     val status: Int,

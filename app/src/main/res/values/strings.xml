@@ -91,4 +91,6 @@
     <string name="setting">Setting</string>
     <string name="post">Post</string>
     <string name="filter_applications_here">Filter applications here</string>
+    <string name="didn_t_get_proper_user_type">Didn\'t get proper user type</string>
+    <string name="incorrect_view_holder">Incorrect view holder : %1$s</string>
 </resources>

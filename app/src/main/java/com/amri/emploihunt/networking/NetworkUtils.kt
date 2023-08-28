@@ -14,6 +14,8 @@ object NetworkUtils {
     const val INSERT_POST = "$BASE_URL/job/insert_jobs"
     const val GET_USER_BY_ID = "$BASE_URL/user/"
     const val GET_ALL_JOBSEEKER = "$BASE_URL/jobSeeker/get_jobSeeker"
+    const val GET_ALL_RECRUITER = "$BASE_URL/recruiter/get_recruiter"
+    const val GET_USER_BY_FIREBASE_ID = "$BASE_URL/user/get_user_by_firebaseId"
     const val LOGOUT= "$BASE_URL/signin/signout"
     const val GET_CITIES= "$BASE_URL/city/cities"
     const val APPLY= "$BASE_URL/job/apply"
@@ -30,8 +32,6 @@ object NetworkUtils {
     const val SAVE_LIST= "$BASE_URL/job/saveList"
     const val UPDATE_POST = "$BASE_URL/job/update_jobs"
     const val DELETE_POST = "$BASE_URL/job/delete"
-
-
 
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 

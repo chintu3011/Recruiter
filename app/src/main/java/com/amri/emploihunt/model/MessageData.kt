@@ -1,4 +1,4 @@
-package com.amri.emploihunt.messenger
+package com.amri.emploihunt.model
 
 import java.io.Serializable
 

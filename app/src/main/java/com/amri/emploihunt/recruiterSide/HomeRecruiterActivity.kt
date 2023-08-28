@@ -158,7 +158,7 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 }
                 R.id.btnMessenger -> {
                     val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
-                    intent.putExtra("userType", userType!!)
+                    intent.putExtra("role", userType!!)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
                     if (Build.VERSION.SDK_INT >= 34) {

@@ -7,9 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.model.MessageData
 import com.google.firebase.auth.FirebaseAuth
 
-class ChatAdapter(private val messages: List<MessageData>) :
+class ChatAdapter(
+    private val messages: List<MessageData>,
+    private val userId: String?
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object{
@@ -23,7 +27,7 @@ class ChatAdapter(private val messages: List<MessageData>) :
 
 
 //        return VIEW_TYPE_TO
-        return if (message.fromId == FirebaseAuth.getInstance().currentUser?.uid) {
+        return if (message.fromId == userId) {
             VIEW_TYPE_FROM
         } else {
             VIEW_TYPE_TO

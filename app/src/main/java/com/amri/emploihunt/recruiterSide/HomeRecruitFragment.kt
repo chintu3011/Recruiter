@@ -25,7 +25,7 @@ import com.amri.emploihunt.databinding.SinglerowjsBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
-import com.amri.emploihunt.model.GetAllJobSeeker
+import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.model.User
 import com.amri.emploihunt.networking.NetworkUtils
@@ -208,9 +208,9 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                 .addQueryParameter("current_page",currentPage.toString())
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(
-                    GetAllJobSeeker::class.java,
-                    object : ParsedRequestListener<GetAllJobSeeker> {
-                        override fun onResponse(response: GetAllJobSeeker?) {
+                    GetAllUsers::class.java,
+                    object : ParsedRequestListener<GetAllUsers> {
+                        override fun onResponse(response: GetAllUsers?) {
                             try {
                                 response?.let {
                                     hideProgressDialog()

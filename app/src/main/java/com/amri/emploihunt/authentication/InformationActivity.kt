@@ -1,4 +1,4 @@
-package com.amri.emploihunt.settings
+package com.amri.emploihunt.authentication
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.BuildConfig
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.RegistrationActivity
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -40,6 +39,7 @@ import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.DEVICE_TYPE
 import com.amri.emploihunt.util.FCM_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.LATITUDE
 import com.amri.emploihunt.util.LONGITUDE
@@ -625,6 +625,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
                                         prefManager[ROLE] = 0
+                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
 
@@ -700,6 +701,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
                                         prefManager[ROLE] = 0
+                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
 
@@ -888,6 +890,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             )
 
                                         }
+                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -962,6 +965,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
+                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[ROLE] = 1
                                         navigateToHomeActivity()
 

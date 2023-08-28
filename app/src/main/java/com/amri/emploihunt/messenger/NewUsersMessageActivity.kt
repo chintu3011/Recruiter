@@ -1,18 +1,36 @@
 package com.amri.emploihunt.messenger
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.AbsListView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityNewUsersMessageBinding
 import com.amri.emploihunt.jobSeekerSide.UsersJobSeeker
+import com.amri.emploihunt.model.GetAllUsers
+import com.amri.emploihunt.model.User
+import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.UsersRecruiter
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.JOB_SEEKER
+import com.amri.emploihunt.util.PrefManager
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.RECRUITER
+import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.Utils
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,13 +40,30 @@ import java.util.Locale
 class NewUsersMessageActivity : BaseActivity() {
 
     private lateinit var binding: ActivityNewUsersMessageBinding
-    private var userType:String ?= null
+
+    private var userType:Int ?= null
+    private var userId:String ?= null
 
     private lateinit var dataJobSeekerList: MutableList<Any>
     private lateinit var filterJobSeekerList: MutableList<Any>
 
     private lateinit var dataRecruiterList: MutableList<Any>
     private lateinit var filterRecruiterList: MutableList<Any>
+
+    private lateinit var userList : MutableList<User>
+    private lateinit var filterUserList : MutableList<User>
+
+    lateinit var prefManager: SharedPreferences
+
+    private lateinit var layoutManager: LinearLayoutManager
+
+    private var firstVisibleItemPosition = 0
+    private var isScrolling = false
+    private var currentItems = 0
+    private var currentPage = 1
+    private var totalItems = 0
+    private var totalPages = 1
+
 
 //    private lateinit var jobSeekersAdapter: JobSeekersAdapter
 //    private lateinit var recruitersAdapter: RecruitersAdapter
@@ -56,12 +91,35 @@ class NewUsersMessageActivity : BaseActivity() {
         dataRecruiterList = mutableListOf()
         filterRecruiterList = mutableListOf()
 
+        userList = mutableListOf()
+        filterUserList = mutableListOf()
 
-        userType = intent.getStringExtra("userType")
-        Log.d(TAG,userType.toString())
+        /*userType = intent.getStringExtra("userType")*/
+        prefManager = PrefManager.prefManager(this)
 
-        userType?.let {
-            if(it == "Job Seeker"){
+        layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        binding.recyclerView.layoutManager = layoutManager
+
+        userType = prefManager.get(ROLE,0)
+        userId = prefManager.get(FIREBASE_ID)
+
+        Log.d(TAG,"$userId :: $userType")
+
+        userType?.let { userType ->
+            getUsersList(userType){
+                if (it){
+                    newUserMessageAdapter  = NewUserMessageAdapter(filterUserList,this)
+                    binding.recyclerView.adapter = newUserMessageAdapter
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
+
+            }
+        }
+        
+        /*userType?.let {
+            if(it == JOB_SEEKER){
                 getUsersList("Recruiter"){taskComplete ->
                     if(taskComplete){
                         newUserMessageAdapter =  NewUserMessageAdapter(filterRecruiterList,this)
@@ -69,46 +127,71 @@ class NewUsersMessageActivity : BaseActivity() {
                     }
                 }
             }
-            if(it == "Recruiter"){
+            if(it == RECRUITER){
                 getUsersList("Job Seeker"){taskComplete ->
                     if(taskComplete){
                         newUserMessageAdapter = NewUserMessageAdapter(filterJobSeekerList,this)
                         binding.recyclerView.adapter = newUserMessageAdapter
                     }
-
                 }
             }
 
-        }
+        }*/
 
-//        binding.toggleGrp.addOnButtonCheckedListener{ toggleButtonGrp,checkedId, isChecked ->
-//            if (isChecked){
-//                when(checkedId){
-//                    R.id.btnShowJobSeekers -> {
-//                        userType = "Job Seeker"
-//                        getUsersList()
-//                        jobSeekersAdapter = JobSeekersAdapter()
-//                        binding.gridView.adapter = jobSeekersAdapter
-//
-//                    }
-//                    R.id.btnShowRecruiters -> {
-//                        userType = "Recruiter"
-//                        getUsersList()
-//                        recruitersAdapter = RecruitersAdapter()
-//                        binding.gridView.adapter = recruitersAdapter
-//                    }
-//                }
-//            }
-//            else {
-//                if (toggleButtonGrp.checkedButtonId == View.NO_ID){
-//                    userType = "Recruiter"
-//                    getUsersList()
-//                    recruitersAdapter = RecruitersAdapter()
-//                    binding.gridView.adapter = recruitersAdapter
-//
-//                }
-//            }
-//        }
+/*        binding.toggleGrp.addOnButtonCheckedListener{ toggleButtonGrp,checkedId, isChecked ->
+            if (isChecked){
+                when(checkedId){
+                    R.id.btnShowJobSeekers -> {
+                        userType = "Job Seeker"
+                        getUsersList()
+                        jobSeekersAdapter = JobSeekersAdapter()
+                        binding.gridView.adapter = jobSeekersAdapter
+
+                    }
+                    R.id.btnShowRecruiters -> {
+                        userType = "Recruiter"
+                        getUsersList()
+                        recruitersAdapter = RecruitersAdapter()
+                        binding.gridView.adapter = recruitersAdapter
+                    }
+                }
+            }
+            else {
+                if (toggleButtonGrp.checkedButtonId == View.NO_ID){
+                    userType = "Recruiter"
+                    getUsersList()
+                    recruitersAdapter = RecruitersAdapter()
+                    binding.gridView.adapter = recruitersAdapter
+
+                }
+            }
+        }*/
+
+        binding.recyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                currentItems = layoutManager.childCount
+                totalItems = layoutManager.itemCount
+                firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (isScrolling && (totalItems == currentItems + firstVisibleItemPosition)) {
+                    isScrolling = false
+                    currentPage++
+                    Log.d("###", "onScrolled: $currentPage")
+                    /*listenerForLatestMsg{
+                        adapter.notifyDataSetChanged()
+                    }*/
+                }
+            }
+        })
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -154,7 +237,9 @@ class NewUsersMessageActivity : BaseActivity() {
         newUserMessageAdapter.notifyDataSetChanged()
     }
 
-    private fun getUsersList(userType: String, callBack:(Boolean) -> Unit) {
+    /*private fun getUsersList(userType: String, callBack:(Boolean) -> Unit) {
+
+
 
         FirebaseDatabase.getInstance().getReference("Users")
             .child(userType)
@@ -198,6 +283,128 @@ class NewUsersMessageActivity : BaseActivity() {
                     )
                 }
             })
+    }*/
+
+    private fun getUsersList(userType: Int,callBack:(Boolean) -> Unit) {
+
+        if (Utils.isNetworkAvailable(this)) {
+            if (currentPage != 1 && currentPage > totalPages) {
+                return
+            }
+            if (currentPage != 1) binding.layProgressPagination.root.visibility = View.VISIBLE
+
+            if (currentPage == 1) binding.progressCircular.visibility = View.VISIBLE
+
+
+            when (userType) {
+                RECRUITER -> {
+                    AndroidNetworking.get(NetworkUtils.GET_ALL_JOBSEEKER)
+                        .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                        .addQueryParameter("current_page", currentPage.toString())
+                        .setPriority(Priority.MEDIUM).build()
+                        .getAsObject(
+                            GetAllUsers::class.java,
+                            object : ParsedRequestListener<GetAllUsers> {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun onResponse(response: GetAllUsers?) {
+                                    try {
+                                        response?.let {
+                                            hideProgressDialog()
+                                            Log.d("###", "onResponse: ${it.data}")
+                                            filterUserList.addAll(it.data)
+                                            userList.addAll(it.data)
+                                            if (userList.isNotEmpty()) {
+                                                totalPages = it.total_pages
+                                                /*hideShowEmptyView(true)*/
+                                            } else {
+                                                /*hideShowEmptyView(false)*/
+                                            }
+                                            binding.progressCircular.visibility = View.GONE
+                                            callBack(true)
+
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse: catch: ${e.message}")
+                                        callBack(false)
+
+                                    }
+                                }
+
+                                override fun onError(anError: ANError?) {
+                                    /*hideShowEmptyView(false)*/
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                        )
+                                        /*if (it.errorCode >= 500) {
+                                                binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                            }*/
+                                    }
+        //                                hideProgressDialog()
+                                    callBack(false)
+                                }
+                            })
+                }
+                JOB_SEEKER -> {
+                    AndroidNetworking.get(NetworkUtils.GET_ALL_RECRUITER)
+                        .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                        .addQueryParameter("current_page", currentPage.toString())
+                        .setPriority(Priority.MEDIUM).build()
+                        .getAsObject(
+                            GetAllUsers::class.java,
+                            object : ParsedRequestListener<GetAllUsers> {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun onResponse(response: GetAllUsers?) {
+                                    try {
+                                        response?.let {
+                                            hideProgressDialog()
+                                            Log.d("###", "onResponse: ${it.data}")
+                                            filterUserList.addAll(it.data)
+                                            userList.addAll(it.data)
+                                            if (userList.isNotEmpty()) {
+                                                totalPages = it.total_pages
+                                                /*hideShowEmptyView(true)*/
+                                            } else {
+                                                /*hideShowEmptyView(false)*/
+                                            }
+                                            binding.progressCircular.visibility = View.GONE
+                                            callBack(true)
+
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse: catch: ${e.message}")
+                                        callBack(false)
+                                    }
+                                }
+
+                                override fun onError(anError: ANError?) {
+                                    /*hideShowEmptyView(false)*/
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                        )
+                                        /*if (it.errorCode >= 500) {
+                                                binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                            }*/
+                                    }
+        //                                hideProgressDialog()
+                                    callBack(false)
+
+                                }
+                            })
+                }
+                else -> {
+                    makeToast(getString(R.string.didn_t_get_proper_user_type),0)
+                    Log.d(TAG,"${getString(R.string.didn_t_get_proper_user_type)} => userType :: $userType" )
+                }
+            }
+        } else {
+            Utils.showNoInternetBottomSheet(this, this)
+            callBack(false)
+//            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+        }
     }
 
 /*    private inner class JobSeekersAdapter: BaseAdapter(){
