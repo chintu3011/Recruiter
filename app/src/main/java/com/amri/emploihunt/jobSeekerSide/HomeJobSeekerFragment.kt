@@ -37,6 +37,7 @@ import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.IS_ADDED_JOB_PREFERENCE
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.getTimeAgo
 import com.androidnetworking.AndroidNetworking
@@ -58,7 +59,6 @@ FilterParameterTransferClass.FilterJobListListener {
     private lateinit var layoutManager: LinearLayoutManager
     var jobPreferenceList: ArrayList<DataJobPreferenceList> = ArrayList()
     private var adapter: SpinAdapter? = null
-
     private  lateinit var binding: FragmentHomeJobSeekerBinding
     private var firstVisibleItemPosition = 0
     private var isScrolling = false
@@ -100,9 +100,10 @@ FilterParameterTransferClass.FilterJobListListener {
                 // Here you get the current item (a User object) that is selected by its position
                 val pref: DataJobPreferenceList = adapter!!.getItem(position)
                 // Here you can do the action you want to...
-                dataList.clear()
+                filteredDataList.clear()
                 currentPage = 1
                 retrieveJobData(pref.id)
+
             }
 
             override fun onNothingSelected(adapter: AdapterView<*>?) {
@@ -123,7 +124,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 }
             })
 
-        retrieveJobData(0)
+//        retrieveJobData(0)
 
         binding.jobRvList.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -175,7 +176,7 @@ FilterParameterTransferClass.FilterJobListListener {
             if (binding.jobPreferenceSp.visibility == View.VISIBLE){
                 binding.jobPreferenceSp.setSelection(0)
             }else{
-                dataList.clear()
+                filteredDataList.clear()
                 currentPage = 1
                 retrieveJobData(0)
             }
@@ -184,9 +185,9 @@ FilterParameterTransferClass.FilterJobListListener {
 
         binding.btnFilter.setOnClickListener {
 
-            if(userType == 0 || userType == 1){
+            if(prefManager[ROLE, 0] == 0 || prefManager[ROLE, 0] == 1){
                 val intent = Intent(requireContext(), FilterDataActivity::class.java)
-                intent.putExtra("userType", userType!!)
+                intent.putExtra("role",prefManager[ROLE, 0])
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }

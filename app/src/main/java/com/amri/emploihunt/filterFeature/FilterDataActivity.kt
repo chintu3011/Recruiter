@@ -90,7 +90,7 @@ class FilterDataActivity : BaseActivity(),
         window.statusBarColor = ContextCompat.getColor(this@FilterDataActivity,android.R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        userType = intent.getIntExtra("userType",-1)
+        userType = intent.getIntExtra("role",-1)
 
         Log.d(TAG,userType.toString())
 
