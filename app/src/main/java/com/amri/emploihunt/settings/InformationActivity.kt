@@ -56,6 +56,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.lang.reflect.Array
 
 
 class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
@@ -95,8 +96,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
 
 
-    private val qualifications = arrayOf("Select Degree","B.com","B.E.","B.Tech","M.com","B.PHARM")
-    private val jobs = arrayOf("Select JobType","Android Developer","Web Developer.","HR","Project Manager","CEO")
+    lateinit  var  qualifications:kotlin.Array<String>
+    lateinit  var  jobs:kotlin.Array<String>
     var cityList: ArrayList<String> = ArrayList()
     var prefLocations: ArrayList<String> = ArrayList()
 
@@ -113,6 +114,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
         binding = ActivityInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        jobs = resources.getStringArray(R.array.indian_designations)
+        qualifications = resources.getStringArray(R.array.degree_array)
         prefManager = prefManager(this@InformationActivity)
         val window: Window = this@InformationActivity.window
         val background = ContextCompat.getDrawable(this@InformationActivity,
@@ -120,9 +123,9 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         )
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.transparent)
+        window.statusBarColor = ContextCompat.getColor(this@InformationActivity,R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this@InformationActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
         
         setOnClickListener()
         userType = intent.getStringExtra("userType").toString()
@@ -178,7 +181,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             binding.btnNext.visibility = VISIBLE
             binding.btnBack.visibility = GONE
             binding.check1.visibility = VISIBLE
-            binding.check1.setBackgroundResource(R.color.check_color)
+            binding.check1.setBackgroundResource(R.color.blue)
             binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
             binding.check2.visibility = VISIBLE
             binding.check2.setBackgroundResource(R.color.check_def_color)
@@ -197,7 +200,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             binding.btnNext.visibility = VISIBLE
             binding.btnBack.visibility = GONE
             binding.check1.visibility = VISIBLE
-            binding.check1.setBackgroundResource(R.color.check_color)
+            binding.check1.setBackgroundResource(R.color.blue)
             binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
             binding.check2.visibility = VISIBLE
             binding.check2.setBackgroundResource(R.color.check_def_color)

@@ -248,7 +248,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutCityTitle"
                     android:background="@drawable/btn_background"
-                    style="@style/CustomFontStyle"
+
                     android:text="Add"
                     android:textAllCaps="false"
                     android:textColor="@color/white"

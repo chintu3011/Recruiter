@@ -4,14 +4,14 @@
         android:id="@+id/home"
         android:title="@string/home"
         android:icon="@drawable/baseline_home_24"
-        style="@style/CustomFontStyle"
+
         />
 
     <item
         android:id="@+id/post"
         android:title="@string/post"
         android:icon="@drawable/baseline_add_box_24"
-        style="@style/CustomFontStyle"
+
         />
 
 
@@ -25,7 +25,7 @@
         android:id="@+id/setting"
         android:title="@string/setting"
         android:icon="@drawable/baseline_settings_24"
-        style="@style/CustomFontStyle"
+
         />
 
 </menu>

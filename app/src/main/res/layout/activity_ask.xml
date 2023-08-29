@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/ask_background"
     android:fitsSystemWindows="true"
     tools:context=".authentication.AskActivity">
     <ImageView
@@ -22,8 +21,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="Choose your role"
-        android:textColor="@color/black"
-        style="@style/CustomFontStyle"
+        android:textColor="@color/blue"
         android:textSize="35sp"
         android:textStyle="bold" />
 
@@ -69,7 +67,7 @@
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/CustomFontStyle"
+
                     android:gravity="center"
                     android:text="I need Job"
                     android:textStyle="bold"
@@ -91,7 +89,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="OR"
-                style="@style/CustomFontStyle"
                 android:textColor="#676262" />
 
             <View
@@ -149,7 +146,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:textStyle="bold"
-                    style="@style/CustomFontStyle"
                     android:text="I am Hiring"
                     android:textColor="@color/black"
                     android:textSize="20sp" />

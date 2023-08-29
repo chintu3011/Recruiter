@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -36,6 +37,7 @@ import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.isGPSEnabled
 import com.amri.emploihunt.util.Utils.showNoInternetBottomSheet
+import com.amri.emploihunt.util.Utils.toast
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -67,6 +69,7 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import java.util.concurrent.TimeUnit
+import java.util.regex.Pattern
 
 
 class RegistrationActivity : BaseActivity() ,OnClickListener{
@@ -108,9 +111,9 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         )
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@RegistrationActivity,android.R.color.transparent)
+        window.statusBarColor = ContextCompat.getColor(this@RegistrationActivity,R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this@RegistrationActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
         prefmanger = PrefManager.prefManager(this)
         setOnClickListener()
         mAuth = FirebaseAuth.getInstance()
@@ -297,6 +300,39 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             binding.userLName.error = "Please provide a last-name"
             binding.userLName.requestFocus()
             return false
+        }
+        if (firstName.equals(
+                "EmploiHunt", true
+            ) || firstName.equals("EmploiHunt", true) || firstName.equals(
+                "Emploi", true
+            )) {
+            toast(resources.getString(R.string.enter_another_first_name))
+        }
+        if (lastName.equals(
+                "EmploiHunt", true
+            ) || firstName.equals("EmploiHunt", true) || firstName.equals(
+                "Emploi", true
+            )) {
+            toast(resources.getString(R.string.enter_another_last_name))
+        }
+
+
+
+        if (firstName == lastName)  {
+            toast(resources.getString(R.string.first_last_name_not_same))
+        }
+
+        if (firstName.length == 2 || lastName.length == 2)  {
+            toast(resources.getString(R.string.first_last_name_required_min_2_letters))
+        }
+       if (TextUtils.isDigitsOnly(firstName) || TextUtils.isDigitsOnly(lastName))  {
+            toast(resources.getString(R.string.first_last_name_should_be_character))
+        }
+
+        if (Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(firstName)
+                .find() || Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(lastName)
+                .find()) {
+            toast(resources.getString(R.string.first_last_name_should_be_character))
         }
         if (binding.phoneNo.text.toString().isEmpty()) {
             binding.phoneNo.error = "Please provide a mobile no."

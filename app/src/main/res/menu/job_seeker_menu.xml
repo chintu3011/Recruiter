@@ -14,9 +14,9 @@
         app:showAsAction="ifRoom|collapseActionView"
         />
 
-    <item android:id="@+id/btnMessenger"
-        android:title="@string/messenger"
-        android:icon="@drawable/ic_messenger"
+    <item android:id="@+id/btnFilter"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter_list"
         app:showAsAction="ifRoom|collapseActionView"
         />
 

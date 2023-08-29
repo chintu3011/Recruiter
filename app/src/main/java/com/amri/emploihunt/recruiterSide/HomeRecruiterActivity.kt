@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -16,39 +17,58 @@ import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
+import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.authentication.LoginActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityHomeRecruiterBinding
+import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
-import com.amri.emploihunt.jobSeekerSide.JobListUpdateListener
+
 import com.amri.emploihunt.messenger.MessengerHomeActivity
-import com.amri.emploihunt.settings.SettingJobSeekerFragment
+import com.amri.emploihunt.model.LogoutMain
+import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.settings.SettingRecruiterFragment
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.IS_LOGIN
+import com.amri.emploihunt.util.PrefManager
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.Utils
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.FilterApplicationListener {
+class HomeRecruiterActivity : BaseActivity(),
+    FilterParameterTransferClass.FilterApplicationListener {
 
-    lateinit var binding:ActivityHomeRecruiterBinding
+    lateinit var binding: ActivityHomeRecruiterBinding
 
     private lateinit var homeRecruitFragment: HomeRecruitFragment
     private var doubleBackToExitPressedOnce = false
 
-    private var userType:Int ?= null
-    private var userId:String ?= null
+    private var userType: Int? = null
+    private var userId: String? = null
+    lateinit var prefmanger: SharedPreferences
+    private var currentFragment: Fragment? = null
 
-    private var currentFragment:Fragment ?= null
-    companion object{
+    companion object {
         private const val TAG = "HomeRecruiterActivity"
     }
 
@@ -60,10 +80,10 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         if (!isGrantedPermission()) {
             requestPermissions()
         }
-
-        userType = intent.getIntExtra("role",1)
+        prefmanger = PrefManager.prefManager(this)
+        userType = intent.getIntExtra("role", 1)
         userId = intent.getStringExtra("userId")
-        Log.d(TAG,"$userId::$userType")
+        Log.d(TAG, "$userId::$userType")
 
         FilterParameterTransferClass.instance!!.setApplicationListener(this)
 
@@ -75,9 +95,11 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 R.id.home -> {
                     replaceFragment(HomeRecruitFragment())
                 }
+
                 R.id.post -> {
                     replaceFragment(PostRecruitFragment())
                 }
+
                 R.id.setting -> {
                     replaceFragment(SettingRecruiterFragment())
                 }
@@ -105,7 +127,11 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                         }
 
                         doubleBackToExitPressedOnce = true
-                        Toast.makeText(this@HomeRecruiterActivity, "Please click back again to exit", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@HomeRecruiterActivity,
+                            "Please click back again to exit",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
 
                         Handler(Looper.getMainLooper()).postDelayed({
@@ -131,8 +157,8 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
     }
 
     private fun setMenuItemListener() {
-        binding.toolbar.setOnMenuItemClickListener{
-            when(it.itemId){
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
                 R.id.btnSearch -> {
                     val searchView = it.actionView as SearchView
 
@@ -142,7 +168,8 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
+                            val currentFragment =
+                                supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                             if (currentFragment is ApplicationListUpdateListener) {
                                 currentFragment.updateApplicationList(newText.orEmpty())
@@ -152,28 +179,32 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
                     })
                     true
                 }
+
                 R.id.btnVoiceSearch -> {
                     openVoice()
                     true
                 }
-                R.id.btnMessenger -> {
-                    val intent = Intent(this@HomeRecruiterActivity,MessengerHomeActivity::class.java)
-                    intent.putExtra("userType", userType!!)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    if (Build.VERSION.SDK_INT >= 34) {
-                        overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE,R.anim.slide_in_left,R.anim.slide_out_right)
+
+                R.id.btnFilter -> {
+                    if(userType == 0 || userType == 1){
+                        val intent = Intent(this, FilterDataActivity::class.java)
+                        intent.putExtra("userType", userType!!)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
                     }
                     else{
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                        makeToast(getString(R.string.something_error),0)
+                        Log.e("##","Incorrect user type : $userType")
                     }
-                    finish()
+
                     true
                 }
+
                 R.id.btnLogout -> {
-//                    logoutUser()
+                    logoutUser()
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -183,7 +214,7 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
     private var btnSearch: MenuItem? = null
     private var btnVoiceSearch: MenuItem? = null
-    private var btnMessenger : MenuItem? = null
+    private var btnFilter: MenuItem? = null
     private var btnLogout: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -192,37 +223,41 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         btnSearch = menu?.findItem(R.id.btnSearch)
         btnVoiceSearch = menu?.findItem(R.id.btnVoiceSearch)
         btnLogout = menu?.findItem(R.id.btnLogout)
-        btnMessenger = menu?.findItem(R.id.btnMessenger)
+        btnFilter = menu?.findItem(R.id.btnFilter)
         return true
     }
+
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
-        Log.d(TAG,"currentFragment : $currentFragment")
+        Log.d(TAG, "currentFragment : $currentFragment")
         when (currentFragment) {
             is HomeRecruitFragment -> {
                 supportActionBar?.title = "Find Best Employees Here"
                 btnSearch?.isVisible = true
                 btnVoiceSearch?.isVisible = true
-                btnMessenger?.isVisible = true
+                btnFilter?.isVisible = true
                 btnLogout?.isVisible = false
             }
+
             is PostRecruitFragment -> {
                 supportActionBar?.title = "Create Job Post"
                 btnSearch?.isVisible = false
                 btnVoiceSearch?.isVisible = false
-                btnMessenger?.isVisible = false
+                btnFilter?.isVisible = false
                 btnLogout?.isVisible = false
             }
+
             is SettingRecruiterFragment -> {
                 supportActionBar?.title = "Settings"
                 btnSearch?.isVisible = false
                 btnVoiceSearch?.isVisible = false
-                btnMessenger?.isVisible = false
+                btnFilter?.isVisible = false
                 btnLogout?.isVisible = true
             }
+
             else -> {
-                Log.e(TAG,"fragment not found")
-                makeToast(getString(R.string.something_error),0)
+                Log.e(TAG, "fragment not found")
+                makeToast(getString(R.string.something_error), 0)
             }
 
         }
@@ -280,14 +315,19 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         workingModeList: MutableList<String>,
         packageList: MutableList<String>
     ) {
-        FilterParameterTransferClass.instance!!.setApplicationData(domainList,locationList,workingModeList,packageList)
+        FilterParameterTransferClass.instance!!.setApplicationData(
+            domainList,
+            locationList,
+            workingModeList,
+            packageList
+        )
     }
 
     fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             if (fragment.isAdded) {
                 show(fragment)
-
+                setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
             } else {
                 add(R.id.frameLayout, fragment)
             }
@@ -366,6 +406,119 @@ class HomeRecruiterActivity : BaseActivity(), FilterParameterTransferClass.Filte
         builder.show()
     }
 
+
+    private fun logoutUser() {
+        showLogoutBottomSheet()
+    }
+
+    /* override fun onBackPressed() {
+
+         super.onBackPressed()
+         Log.d("back", "onBackPressed: ")
+
+     }*/
+    fun showLogoutBottomSheet() {
+
+        val dialog = BottomSheetDialog(this)
+        val view: View = (this).layoutInflater.inflate(
+            R.layout.logout_bottomsheet,
+            null
+        )
+
+
+        val btnyes = view.findViewById<Button>(R.id.btn_yes)
+        val btnNo = view.findViewById<Button>(R.id.btn_no)
+        val tv_des = view.findViewById<TextView>(R.id.tv_des1)
+        val animation = view.findViewById<LottieAnimationView>(R.id.animationView)
+        tv_des.text = "Are you sure you want to log out?"
+
+        animation.setAnimation(R.raw.logout)
+
+        btnyes.setOnClickListener {
+            logoutAPI(prefmanger.get(AUTH_TOKEN, ""))
+            dialog.dismiss()
+        }
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.show()
+
+    }
+
+    fun logoutAPI(
+        auth: String?,
+
+        ) {
+        try {
+            if (Utils.isNetworkAvailable(this)) {
+                AndroidNetworking.post(NetworkUtils.LOGOUT)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer $auth")
+                    .setPriority(Priority.MEDIUM).build()
+                    .getAsObject(
+                        LogoutMain::class.java,
+                        object : ParsedRequestListener<LogoutMain> {
+                            override fun onResponse(response: LogoutMain?) {
+
+                                if (response != null) {
+                                    hideProgressDialog()
+                                    Toast.makeText(
+                                        this@HomeRecruiterActivity,
+                                        response.data.msg,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    prefmanger.set(IS_LOGIN, false)
+                                    val intent = Intent(
+                                        this@HomeRecruiterActivity,
+                                        LoginActivity::class.java
+                                    )
+                                    startActivity(intent)
+                                    finish()
+                                    overridePendingTransition(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
+                                    )
+                                } else {
+                                    Toast.makeText(
+                                        this@HomeRecruiterActivity,
+                                        getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & body: ${it.errorDetail}"
+                                    )
+                                    Toast.makeText(
+                                        this@HomeRecruiterActivity,
+                                        getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    hideProgressDialog()
+
+                                }
+
+                            }
+                        })
+            } else {
+                Utils.showNoInternetBottomSheet(this, this)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("#message", "onResponse: " + e.message)
+            hideProgressDialog()
+            Toast.makeText(this, getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+        }
+
+    }
 
 
 }

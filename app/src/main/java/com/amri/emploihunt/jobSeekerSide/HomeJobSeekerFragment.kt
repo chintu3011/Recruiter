@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -19,6 +20,9 @@ import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.recruiterSide.JobPostActivity
@@ -28,6 +32,7 @@ import com.amri.emploihunt.databinding.FragmentHomeJobSeekerBinding
 import com.amri.emploihunt.databinding.RowPostDesignBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
+import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.DataJobPreferenceList
 import com.amri.emploihunt.model.GetAllJob
 import com.amri.emploihunt.model.GetJobPreferenceList
@@ -83,13 +88,14 @@ FilterParameterTransferClass.FilterJobListListener {
         Log.d(TAG,"User type : $userType")
         binding = FragmentHomeJobSeekerBinding.inflate(layoutInflater)
 
+        binding.imgOpenDrawer.visibility = View.VISIBLE
         FilterParameterTransferClass.instance!!.setJobListener(this)
 
         prefManager = PrefManager.prefManager(requireContext())
 
         jobPreferenceList.add(DataJobPreferenceList(0,0,"Select job preference","0","0",
             "0","0","0"))
-
+        initDrawersData()
         getJobPreference()
 
         binding.jobPreferenceSp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -182,19 +188,22 @@ FilterParameterTransferClass.FilterJobListListener {
             }
             binding.swipeRefreshLayout.isRefreshing = false
         }
-
-        binding.btnFilter.setOnClickListener {
-
-            if(prefManager[ROLE, 0] == 0 || prefManager[ROLE, 0] == 1){
-                val intent = Intent(requireContext(), FilterDataActivity::class.java)
-                intent.putExtra("role",prefManager[ROLE, 0])
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+        binding.imgOpenDrawer.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.END)
+        }
+        binding.btnMessenger.setOnClickListener {
+            val intent = Intent(requireContext(), MessengerHomeActivity::class.java)
+            intent.putExtra("userType", userType!!)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            if (Build.VERSION.SDK_INT >= 34) {
+                requireActivity().overrideActivityTransition(AppCompatActivity.OVERRIDE_TRANSITION_CLOSE,R.anim.slide_in_left,R.anim.slide_out_right)
             }
             else{
-                makeToast(getString(R.string.something_error),0)
-                Log.e(TAG,"Incorrect user type : $userType")
+                requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             }
+
+
 
         }
         return binding.root
@@ -218,7 +227,29 @@ FilterParameterTransferClass.FilterJobListListener {
         }
         binding.jobsAdapter!!.notifyDataSetChanged()
     }*/
+    private fun initDrawersData() {
+        binding.viewNav.setOnTouchListener { v, event ->
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            false
+        }
 
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerOpened(drawerView: View) {
+                animSlideFromStart(binding.imgOpenDrawer)
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                animSlideFromEnd(binding.imgOpenDrawer)
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+        })
+    }
     private fun retrieveJobData(jobpreferenceId: Int) {
         Log.d("###", "retrieveJobData: ")
         /*val jobRef = database.child("Jobs")
@@ -471,6 +502,7 @@ FilterParameterTransferClass.FilterJobListListener {
                                     "#####",
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
+                                retrieveJobData(0)
                             }
                         }
                     })

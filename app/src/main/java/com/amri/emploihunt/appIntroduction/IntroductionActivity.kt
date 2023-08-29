@@ -38,7 +38,7 @@ class IntroductionActivity : AppCompatActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
         window.navigationBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
 
 //        sharedPreferences = getSharedPreferences("SplashScreen", Context.MODE_PRIVATE)
         
@@ -53,7 +53,7 @@ class IntroductionActivity : AppCompatActivity() {
             listOf(
                 OnBoardingItem(
                     orboardingImage = R.drawable.logo,
-                    title = "Welcome to Emploi Hunt",
+                    title = "Welcome to EmploiHunt",
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 ),
                 OnBoardingItem(

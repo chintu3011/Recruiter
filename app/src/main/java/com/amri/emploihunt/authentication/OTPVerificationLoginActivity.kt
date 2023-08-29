@@ -75,9 +75,9 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
         )
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,android.R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
 
         mAuth = FirebaseAuth.getInstance()
 

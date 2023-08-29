@@ -47,7 +47,7 @@ class SplashActivity : AppCompatActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this@SplashActivity,android.R.color.white)
         window.navigationBarColor = ContextCompat.getColor(this@SplashActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
 
 
 

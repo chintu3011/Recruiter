@@ -63,9 +63,9 @@ class LoginActivity : BaseActivity(),OnClickListener {
         val background =ContextCompat.getDrawable(this@LoginActivity, R.drawable.status_bar_color)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@LoginActivity,android.R.color.transparent)
+        window.statusBarColor = ContextCompat.getColor(this@LoginActivity,R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this@LoginActivity,android.R.color.white)
-        window.setBackgroundDrawable(background)
+
 
         mAuth = FirebaseAuth.getInstance()
         getUserType(mAuth.uid.toString())

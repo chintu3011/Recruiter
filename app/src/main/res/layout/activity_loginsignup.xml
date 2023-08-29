@@ -5,23 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/halfcircleup"
-    tools:context=".authentication.loginsignupActivity">
+    android:background="@drawable/halfcircleup">
 
-    <TextView
+    <ImageView
         android:id="@+id/appName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:gravity="center"
-        android:text="Emploi Hunt"
-        android:textColor="@color/blue"
-        android:textSize="55dp"
-        android:textStyle="bold" />
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/emploihunt_blue"/>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/_200sdp"
         android:src="@drawable/welcome"/>
 
     <LinearLayout
@@ -33,38 +29,30 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnloginmain"
-        android:layout_width="245dp"
-        android:layout_height="55dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_45sdp"
         android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/btntransborder"
-        style="@style/CustomFontStyle"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/btn_with_color_primary"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="25dp"
+        android:textSize="@dimen/_20sdp"
         android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnregmain"
-        android:layout_width="245dp"
-        android:layout_height="55dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_45sdp"
         android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/btntransborder"
-        style="@style/CustomFontStyle"
-        android:text="Register"
+        android:text="@string/register"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="25dp"
+        android:textSize="@dimen/_20sdp"
         android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

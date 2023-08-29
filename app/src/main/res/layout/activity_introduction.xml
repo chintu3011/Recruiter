@@ -32,9 +32,9 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:text="Skip"
-        style="@style/CustomFontStyle"
+        android:fontFamily="@font/freshwost_regular"
         android:textColor="@color/blue"
-        android:textSize="16sp"
+        android:textSize="@dimen/_16sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <View

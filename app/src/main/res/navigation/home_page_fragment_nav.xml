@@ -16,16 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.amri.emploihunt.PostFragment"
+        android:name="com.amri.emploihunt.recruiterSide.PostRecruitFragment"
         android:label="fragment_post"
-        tools:layout="@layout/fragment_post" >
+        tools:layout="@layout/fragment_post_recruit" >
         <action
             android:id="@+id/action_postFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+           />
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.amri.emploihunt.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+
 </navigation>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.recruiter.jobSeekerSide.HomeJobSeekerFragment"
+        android:name="com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home_job_seeker" >
         <action
@@ -16,16 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.example.recruiter.PostFragment"
+        android:name="com.amri.emploihunt.recruiterSide.PostRecruitFragment"
         android:label="fragment_post"
-        tools:layout="@layout/fragment_post" >
+        tools:layout="@layout/fragment_post_recruit" >
         <action
-            android:id="@+id/action_postFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_postFragment_to_profileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.recruiter.profile.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+
 </navigation>

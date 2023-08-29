@@ -12,7 +12,6 @@
         android:layout_height="@dimen/_30sdp"
         android:text="@string/tag"
         app:backgroundTint="@color/white"
-        style="@style/CustomFontStyle"
         android:textSize="@dimen/_10sdp"
         android:insetTop="0dp"
         android:insetBottom="0dp"

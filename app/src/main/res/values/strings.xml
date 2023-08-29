@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Emploi Hunt</string>
+    <string name="app_name">EmploiHunt</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_job_register1">JobRegisterActivity1</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -91,4 +91,17 @@
     <string name="setting">Setting</string>
     <string name="post">Post</string>
     <string name="filter_applications_here">Filter applications here</string>
+    <string name="enter_another_first_name">Enter another first name</string>
+    <string name="enter_another_last_name">Enter another last name</string>
+    <string name="enter_another_first_last_name">Enter another first &amp; last name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="first_last_name_not_same">First &amp; Last name can not be same</string>
+    <string name="first_last_name_required_min_2_letters">First &amp; Last name required Min 3 letters</string>
+    <string name="first_last_name_should_be_character">First &amp; Last name should be in character</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="we_will_send_you_a_6_digit_one_time_password_to_this_number">We will send you a 6-digit one-time password to this number</string>
+    <string name="enter_the_verification_code">Enter the Verification Code</string>
+    <string name="you_can_change_phone_number"><u>Change phone number?</u></string>
+    <string name="verify">Verify</string>
+    <string name="register">Register</string>
 </resources>

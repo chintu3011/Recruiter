@@ -9,8 +9,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:id="@+id/imagelogo"/>
 
     <com.airbnb.lottie.LottieAnimationView
@@ -21,6 +23,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="65dp"
         android:foregroundGravity="center"
+        android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/splash" />
@@ -28,9 +31,10 @@
         android:id="@+id/textname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Emploi Hunt"
+        android:text="EmploiHunt"
         android:layout_below="@id/tree"
         android:textSize="55dp"
+        android:visibility="gone"
         android:gravity="center"
         android:fontFamily="cursive"
         android:textStyle="bold"

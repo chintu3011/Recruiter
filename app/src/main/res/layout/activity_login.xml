@@ -18,38 +18,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <ImageView
                 android:id="@+id/appName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="cursive"
-                android:gravity="center"
-                android:text="Emploi Hunt"
-                android:textColor="@color/white"
-                android:textSize="55dp"
-                android:textStyle="bold" />
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_height="@dimen/_75sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:src="@drawable/emploihunt_white"
+               />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/phoneImg"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_below="@id/appName"
                 android:src="@drawable/phone"
-                app:civ_border_color="@color/white"
-                app:civ_border_overlay="true"
-                app:civ_border_width="3dp"
-                app:civ_circle_background_color="@color/black" />
+
+                />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/phoneImg"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="8dp">
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                app:cardCornerRadius="@dimen/_20sdp"
+                app:cardElevation="@dimen/_5sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -67,11 +65,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/phoneImg"
                         android:layout_marginTop="5dp"
-                        style="@style/CustomFontStyle"
                         android:gravity="center"
-                        android:text="OTP Verification"
+                        android:text="@string/otp_verification"
                         android:textColor="@color/black"
-                        android:textSize="25dp"
+                        android:textSize="@dimen/_25sdp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -80,29 +77,32 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/phoneImg"
                         android:layout_marginTop="10dp"
-                        style="@style/CustomFontStyle"
                         android:gravity="center"
-                        android:text="We will send you a 6-digit one-time password to this number"
-                        android:textColor="#656464" />
+                        android:text="@string/we_will_send_you_a_6_digit_one_time_password_to_this_number"
+                        android:textColor="@color/dark_grey" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:orientation="horizontal">
 
                         <com.hbb20.CountryCodePicker
                             android:id="@+id/cpp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             app:ccpDialog_keyboardAutoPopup="false"
                             app:ccp_autoDetectCountry="true"
                             app:ccp_autoFormatNumber="true"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_2sdp"
                             app:ccp_contentColor="@color/black"
                             app:ccp_defaultNameCode="IND"
-                            app:ccp_showArrow="false"
-                            app:ccp_showFlag="true"
+                            app:ccp_showArrow="true"
+                            app:ccp_showFlag="false"
                             app:ccp_showFullName="false"
-                            app:ccp_textSize="20dp" />
+                            app:ccp_textSize="@dimen/_13sdp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textLayoutPhoneNo"
@@ -110,31 +110,36 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Phone Number"
-                            android:paddingTop="0dp"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:padding="0dp"
                             app:boxBackgroundColor="#FFFFFF"
                             app:boxBackgroundMode="outline"
                             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
                             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                             app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                            app:boxStrokeColor="@color/edit_text_color"
+                            app:boxStrokeColor="@color/blue"
                             app:endIconCheckable="true"
                             app:endIconMode="clear_text"
+                            android:maxLength="10"
                             app:endIconTint="@color/gray"
-                            app:hintTextColor="@color/ed_theme_color"
+                            app:hintTextColor="@color/blue"
                             app:layout_constraintBottom_toTopOf="@+id/textLayoutEmployeeNeed"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
                             app:placeholderText="98257*****"
                             app:startIconDrawable="@drawable/baseline_phone_24"
-                            app:startIconTint="@color/ed_theme_color">
+                            app:startIconTint="@color/blue">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/phoneNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:inputType="phone"
+                                android:maxLength="11"
+                                android:textSize="@dimen/_13sdp"
                                 android:padding="@dimen/_10sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -143,21 +148,17 @@
                         android:id="@+id/btnLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="70dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="70dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginHorizontal="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_25sdp"
                         app:backgroundTint="@null"
                         android:background="@drawable/btn_background"
                         android:clickable="true"
                         android:focusable="true"
-                        style="@style/CustomFontStyle"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:padding="15dp"
                         android:text="Login"
                         android:textAllCaps="false"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/_16sdp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:cornerRadius="30dp"
@@ -176,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/btnLogin"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -186,7 +187,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
-                            style="@style/CustomFontStyle"
                             android:gravity="center"
                             android:text="Not A Member?"
                             android:textSize="15dp"
@@ -200,7 +200,6 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
                             android:layout_toRightOf="@id/UsertextView5"
-                            style="@style/CustomFontStyle"
                             android:gravity="center"
                             android:text="  Register Now"
                             android:textColor="@color/blue"

@@ -28,9 +28,9 @@ class AskActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
 
-        window.statusBarColor = ContextCompat.getColor(this@AskActivity, R.color.royal_blue)
-        window.navigationBarColor = ContextCompat.getColor(this@AskActivity, R.color.royal_blue)
-        window.setBackgroundDrawable(background)
+        window.statusBarColor = ContextCompat.getColor(this@AskActivity, R.color.colorPrimary)
+        window.navigationBarColor = ContextCompat.getColor(this@AskActivity, R.color.white)
+
 
         jobseek = findViewById(R.id.buycv)
         recruit = findViewById(R.id.sellcv)

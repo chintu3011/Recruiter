@@ -14,48 +14,41 @@
         android:background="@drawable/halfcircleback"
         tools:context=".authentication.RegistrationActivity">
 
-        <TextView
+        <ImageView
             android:id="@+id/appName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="cursive"
-            android:gravity="center"
-            android:text="Emploi Hunt"
-            android:textColor="@color/white"
-            android:textSize="55dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/phoneImg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_height="@dimen/_75sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/emploihunt_white"
+            />
+        <ImageView
             android:id="@+id/phoneImg"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_below="@id/appName"
             android:src="@drawable/phone"
-            app:civ_border_color="@color/white"
-            app:civ_border_overlay="true"
-            app:civ_border_width="3dp"
-            app:civ_circle_background_color="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appName" />
+            app:layout_constraintTop_toBottomOf="@+id/appName"
+
+            />
+       
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="@dimen/_30sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardCornerRadius="@dimen/_20sdp"
+            app:cardElevation="@dimen/_6sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,8 +57,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_gravity="top"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_13sdp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -84,24 +78,24 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintEnd_toStartOf="@+id/textLayoutLName"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:placeholderText="John"
                     app:startIconDrawable="@drawable/baseline_person_24"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/userFName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textPersonName"
-                        android:fontFamily="@font/poppinsregular"
+                        android:textSize="@dimen/_13sdp"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,11 +115,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toBottomOf="@+id/textLayoutFName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -133,13 +127,13 @@
                     app:layout_constraintTop_toTopOf="@+id/textLayoutFName"
                     app:placeholderText="Macavn"
                     app:startIconDrawable="@drawable/baseline_person_24"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/userLName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/poppinsregular"
+                        android:textSize="@dimen/_13sdp"
                         android:inputType="textPersonName"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -163,8 +157,8 @@
                     android:id="@+id/layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="top"
                     android:orientation="horizontal"
+                    android:gravity="center"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutEmail"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -173,23 +167,19 @@
 
                     <com.hbb20.CountryCodePicker
                         android:id="@+id/cpp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:paddingStart="0dp"
-                        android:paddingTop="@dimen/_5sdp"
-                        android:paddingEnd="0dp"
-                        android:paddingBottom="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
                         app:ccpDialog_keyboardAutoPopup="false"
                         app:ccp_autoDetectCountry="true"
                         app:ccp_autoFormatNumber="true"
                         app:ccp_contentColor="@color/black"
+                        app:ccp_showArrow="true"
                         app:ccp_defaultNameCode="IND"
-                        app:ccp_showArrow="false"
-                        app:ccp_showFlag="true"
+                        app:ccp_showFlag="false"
                         app:ccp_showFullName="false"
-                        app:ccp_showNameCode="false"
-                        app:ccp_textSize="17dp" />
+                        app:ccp_showNameCode="true"
+                        app:ccp_textSize="@dimen/_13sdp" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textLayoutPhoneNo"
@@ -209,24 +199,24 @@
                         app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                         app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                         app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                        app:boxStrokeColor="@color/edit_text_color"
+                        app:boxStrokeColor="@color/blue"
                         app:endIconCheckable="true"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/gray"
-                        app:helperText="Please Enter 10 Digit number"
                         app:helperTextTextColor="@color/blue"
-                        app:hintTextColor="@color/ed_theme_color"
+                        app:hintTextColor="@color/blue"
                         app:placeholderText="+9199131*****"
                         app:startIconDrawable="@drawable/ic_phone"
-                        app:startIconTint="@color/ed_theme_color">
+                        app:startIconTint="@color/blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/phoneNo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="phone"
-                            android:fontFamily="@font/poppinsregular"
                             android:maxEms="10"
+                            android:maxLength="11"
+                            android:textSize="@dimen/_13sdp"
                             android:padding="@dimen/_10sdp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -248,11 +238,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutCity"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -260,14 +250,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/layout"
                     app:placeholderText="xyz@gmail.com"
                     app:startIconDrawable="@drawable/ic_email"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:ems="13"
-                        android:fontFamily="@font/poppinsregular"
+                        android:textSize="@dimen/_13sdp"
                         android:inputType="textEmailAddress"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -288,13 +278,13 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@id/checkBox"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/checkBox"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -302,14 +292,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail"
                     app:placeholderText="Ahmedabad"
                     app:startIconDrawable="@drawable/baseline_location_city_24"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/city"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:ems="13"
-                        android:fontFamily="@font/poppinsregular"
+                        android:textSize="@dimen/_13sdp"
                         android:inputType="text"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -322,13 +312,12 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:buttonTint="@color/glass_color"
-                    android:fontFamily="@font/poppinsregular"
+                    android:buttonTint="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/btnLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail" />
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCity" />
 
 
                 <LinearLayout
@@ -336,34 +325,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRegistration"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_45sdp"
-                        android:layout_marginStart="70dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="70dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_45sdp"
+                        android:layout_marginEnd="@dimen/_45sdp"
                         android:background="@drawable/btn_background"
                         android:clickable="true"
                         android:focusable="true"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:padding="15dp"
                         android:text="Register"
                         android:textAllCaps="false"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/_16sdp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:backgroundTint="@null"
-                        android:fontFamily="@font/poppinsregular"
-                        app:cornerRadius="30dp"
+                        app:cornerRadius="@dimen/_30sdp"
                         app:rippleColor="@color/glass_color" />
 
                     <ProgressBar

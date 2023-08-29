@@ -84,9 +84,7 @@ class SettingJobSeekerFragment : BaseFragment() {
             val intent = Intent(requireContext(), ApplyListActivity::class.java)
             startActivity(intent)
         }
-        binding.ivLogout.setOnClickListener {
-            logoutUser()
-        }
+
         binding.rlSaveJob.setOnClickListener {
             val intent = Intent(requireContext(), JobSaveActivity::class.java)
             startActivity(intent)
@@ -96,9 +94,7 @@ class SettingJobSeekerFragment : BaseFragment() {
 
         return  binding.root
     }
-    private fun logoutUser() {
-        showLogoutBottomSheet()
-    }
+
     private fun setUserData() {
 
             if (prefmanger.getInt(ROLE,0) == 0) {
@@ -187,95 +183,6 @@ class SettingJobSeekerFragment : BaseFragment() {
 
 
 
-
-    }
-    fun showLogoutBottomSheet() {
-
-        val dialog = BottomSheetDialog(requireContext())
-        val view: View = (this).layoutInflater.inflate(
-            R.layout.logout_bottomsheet,
-            null
-        )
-
-
-        val btnyes = view.findViewById<Button>(R.id.btn_yes)
-        val btnNo = view.findViewById<Button>(R.id.btn_no)
-        val tv_des = view.findViewById<TextView>(R.id.tv_des1)
-        val animation = view.findViewById<LottieAnimationView>(R.id.animationView)
-        tv_des.text = "Are you sure you want to log out?"
-
-        animation.setAnimation(R.raw.logout)
-
-        btnyes.setOnClickListener {
-            logoutAPI(prefmanger.get(AUTH_TOKEN,""))
-            dialog.dismiss()
-        }
-        btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.setCancelable(true)
-        dialog.setContentView(view)
-        dialog.show()
-
-    }
-    fun logoutAPI(
-        auth: String?,
-
-        ) {
-        try {
-            if (Utils.isNetworkAvailable(requireContext())) {
-                AndroidNetworking.post(NetworkUtils.LOGOUT)
-                    .setOkHttpClient(NetworkUtils.okHttpClient)
-                    .addHeaders("Authorization", "Bearer $auth")
-                    .setPriority(Priority.MEDIUM).build()
-                    .getAsObject(
-                        LogoutMain::class.java,
-                        object : ParsedRequestListener<LogoutMain> {
-                            override fun onResponse(response: LogoutMain?) {
-
-                                if (response!= null){
-                                    hideProgressDialog()
-                                    Toast.makeText(requireContext(), response.data.msg, Toast.LENGTH_LONG).show()
-                                    prefmanger.set(IS_LOGIN,false)
-                                    val intent = Intent(requireContext(), LoginActivity::class.java)
-                                    requireContext().startActivity(intent)
-                                    activity!!.finish()
-                                    activity?.overridePendingTransition(
-                                        R.anim.slide_in_right,
-                                        R.anim.slide_out_left
-                                    )
-                                }else{
-                                    Toast.makeText(requireContext(),getString(R.string.something_error),
-                                        Toast.LENGTH_SHORT).show()
-                                }
-
-
-
-
-
-
-                            }
-
-                            override fun onError(anError: ANError?) {
-                                anError?.let {
-                                    Log.e("#####", "onError: code: ${it.errorCode} & body: ${it.errorDetail}")
-                                    Toast.makeText(requireContext(),getString(R.string.something_error),
-                                        Toast.LENGTH_SHORT).show()
-                                    hideProgressDialog()
-
-                                }
-
-                            }
-                        })
-            }else{
-                Utils.showNoInternetBottomSheet(requireContext(), requireActivity())
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.d("#message", "onResponse: "+e.message)
-            hideProgressDialog()
-            Toast.makeText(requireContext(),getString(R.string.something_error), Toast.LENGTH_SHORT).show()
-        }
 
     }
 

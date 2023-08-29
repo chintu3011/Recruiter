@@ -45,8 +45,7 @@
         android:layout_marginEnd="10dp"
         android:text="Skip"
         android:textColor="@color/white"
-        style="@style/CustomFontStyle"
-        android:textSize="16sp"
+        android:textSize="@dimen/_16sdp"
         android:clickable="true"
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"
         app:layout_constraintTop_toBottomOf="@id/topGuildLine"
@@ -103,39 +102,33 @@
             app:shapeAppearanceOverlay="@style/circle" />
     </LinearLayout>
 
-    <com.google.android.material.textview.MaterialTextView
+    <ImageView
         android:id="@+id/appName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_below="@id/checkTikLayout"
-        android:fontFamily="cursive"
-        android:gravity="center"
-        android:text="Emploi Hunt"
-        android:textColor="@color/white"
-        android:textSize="55dp"
-        android:textStyle="bold"
+        android:src="@drawable/emploihunt_white"
         app:layout_constraintBottom_toTopOf="@+id/phoneImg"
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/startGuildLine"
         app:layout_constraintTop_toBottomOf="@+id/btnSkip"
         app:layout_constraintVertical_chainStyle="spread_inside" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/phoneImg"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
         android:layout_below="@id/appName"
-        android:elevation="10dp"
-        android:src="@drawable/info"
-        app:civ_border_color="@color/white"
-        app:civ_border_overlay="true"
-        app:civ_circle_background_color="@color/black"
+        android:src="@drawable/fill_out"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/startGuildLine"
-        app:layout_constraintTop_toBottomOf="@+id/appName" />
+        app:layout_constraintTop_toBottomOf="@+id/appName"
+
+        />
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -171,8 +164,8 @@
                 <Spinner
                     android:id="@+id/inputDegreeTypeSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@drawable/borderret"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutBio"
@@ -187,10 +180,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
                     android:text=" Last Graduation &amp; Degree "
                     android:textColor="@color/blue"
-                    android:textSize="10sp"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/inputDegreeTypeSpinner"
                     app:layout_constraintEnd_toEndOf="@id/inputDegreeTypeSpinner"
@@ -216,13 +208,13 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:counterEnabled="true"
                     app:counterMaxLength="2000"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/radioGrpFreshExp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -230,7 +222,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/inputDegreeTypeSpinner"
                     app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
                     app:startIconDrawable="@drawable/ic_biography"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/bio"
@@ -238,6 +230,7 @@
                         android:layout_height="match_parent"
                         android:inputType="textMultiLine"
                         android:lines="5"
+                        android:textSize="@dimen/_13sdp"
                         android:maxEms="2000"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -260,6 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="@dimen/_13sdp"
                         android:buttonTint="@color/blue"
                         android:text="Fresher" />
 
@@ -268,6 +262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="@dimen/_13sdp"
                         android:buttonTint="@color/blue"
                         android:text="Experienced" />
                 </RadioGroup>
@@ -277,10 +272,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
                     android:text="Fresher/Experienced"
                     android:textColor="@color/blue"
-                    android:textSize="10sp"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/radioGrpFreshExp"
                     app:layout_constraintEnd_toEndOf="@+id/radioGrpFreshExp"
@@ -311,11 +305,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutDesignation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -324,13 +318,14 @@
                     app:layout_constraintVertical_chainStyle="packed"
                     app:placeholderText="Microsoft corporation"
                     app:startIconDrawable="@drawable/ic_company"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/companyName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
+                        android:textSize="@dimen/_13sdp"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -350,11 +345,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutDuration"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -362,12 +357,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
                     app:placeholderText="Software Designer"
                     app:startIconDrawable="@drawable/ic_designation"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/designation"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/_13sdp"
                         android:inputType="textAutoComplete"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -389,10 +385,10 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -400,12 +396,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation"
                     app:placeholderText="3 Years"
                     app:startIconDrawable="@drawable/ic_duration"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/duration"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/_13sdp"
                         android:inputType="time"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -413,10 +410,10 @@
                 <Spinner
                     android:id="@+id/JobLocationSpinnerJ"
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_height="@dimen/_35sdp"
                     android:background="@drawable/borderret"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="15dp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_15sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -428,10 +425,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
                     android:text=" Job Location "
                     android:textColor="@color/blue"
-                    android:textSize="10dp"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/JobLocationSpinnerJ"
                     app:layout_constraintEnd_toEndOf="@+id/JobLocationSpinnerJ"
@@ -448,7 +444,7 @@
                 <Spinner
                     android:id="@+id/inputJobTypeSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/borderret"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
@@ -465,11 +461,11 @@
                     android:layout_height="wrap_content"
 
                     android:background="@color/white"
-                    android:fontFamily="serif"
+                    
                     android:gravity="left"
                     android:text=" Job Type "
                     android:textColor="@color/blue"
-                    android:textSize="10sp"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/inputJobTypeSpinner"
                     app:layout_constraintEnd_toEndOf="@+id/inputJobTypeSpinner"
@@ -494,11 +490,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/inputCitySpinnerJ"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -506,7 +502,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/inputJobTypeSpinner"
                     app:placeholderText="place holder"
                     app:startIconDrawable="@drawable/ic_salary"
-                    app:startIconTint="@color/ed_theme_color"
+                    app:startIconTint="@color/blue"
                     app:suffixText=" LPA"
                     android:layout_marginBottom="@dimen/_10sdp">
 
@@ -515,13 +511,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
+                        android:textSize="@dimen/_13sdp"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/inputCitySpinnerJ"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/borderret"
                     app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
@@ -536,10 +533,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
                     android:text=" City Preference "
                     android:textColor="@color/blue"
-                    android:textSize="10sp"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/inputCitySpinnerJ"
                     app:layout_constraintEnd_toEndOf="@+id/inputCitySpinnerJ"
@@ -570,6 +566,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="On-Site"
+                        android:textSize="@dimen/_13sdp"
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -579,6 +576,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Remote"
+                        android:textSize="@dimen/_13sdp"
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -588,6 +586,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Hybrid"
+                        android:textSize="@dimen/_13sdp"
                         android:textColor="@color/black" />
                 </RadioGroup>
 
@@ -598,10 +597,9 @@
                     android:background="@color/white"
                     android:text="Working Mode"
                     android:textAlignment="textStart"
-                    android:textColor="@color/ed_theme_color"
-                    android:textSize="10dp"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_9sdp"
                     android:textStyle="bold"
-                    app:fontFamily="serif"
                     app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
                     app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingMode"
                     app:layout_constraintHorizontal_bias="0.10"
@@ -630,7 +628,7 @@
                         android:id="@+id/textUploadCV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="serif"
+                        
                         android:text="Upload CV"
                         android:textAlignment="center"
                         android:textColor="@color/blue"
@@ -648,7 +646,8 @@
                             android:id="@+id/btnSelectPdf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/uploadfile" />
+                            android:src="@drawable/uploadfile"
+                            app:tint="@color/blue" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -660,7 +659,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="15dp"
-                                android:fontFamily="serif"
+                                
                                 android:text="Choose File"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"
@@ -671,7 +670,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="15dp"
-                                android:fontFamily="serif"
+                                
                                 android:text="Add Upto 15 MB"
                                 android:textColor="@color/grey"
                                 android:textStyle="bold" />
@@ -685,7 +684,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        android:fontFamily="serif"
                         android:text="No File Chosen"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
@@ -704,24 +702,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="50dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="50dp"
-                        android:backgroundTint="@color/white"
-                        android:fontFamily="serif"
+                        android:layout_marginStart="@dimen/_45sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_45sdp"
+                        android:backgroundTint="@color/blue"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:padding="15dp"
                         android:text="Upload"
                         android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sdp"
                         android:textStyle="bold"
                         android:visibility="visible"
-                        app:cornerRadius="20dp"
-                        app:rippleColor="@color/glass_color"
-                        app:strokeColor="@color/card_theme"
-                        app:strokeWidth="3dp" />
+                        app:cornerRadius="@dimen/_30sdp"
+                        app:rippleColor="@color/glass_color" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.Group
@@ -841,7 +835,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
+                    
                     android:text="Last Graduation &amp; Degree"
                     android:textColor="@color/blue"
                     android:textSize="10sp"
@@ -963,7 +957,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:fontFamily="serif"
+                    
                     android:text=" Job Location "
                     android:textColor="@color/blue"
                     android:textSize="10dp"
@@ -1029,7 +1023,7 @@
                     android:textColor="@color/ed_theme_color"
                     android:textSize="10sp"
                     android:textStyle="bold"
-                    app:fontFamily="serif"
+                    
                     app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingModeR"
                     app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingModeR"
                     app:layout_constraintHorizontal_bias="0.10"

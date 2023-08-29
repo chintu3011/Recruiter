@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
@@ -25,6 +29,7 @@ import com.amri.emploihunt.databinding.SinglerowjsBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
+import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.GetAllJobSeeker
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.model.User
@@ -82,7 +87,8 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
 
         prefManager = prefManager(requireContext())
         database = FirebaseDatabase.getInstance().reference
-        
+        binding.imgOpenDrawer.visibility = View.VISIBLE
+        initDrawersData()
         dataList = mutableListOf()
         filteredDataList = mutableListOf()
         binding.jobSeekerListRv.setHasFixedSize(true)
@@ -152,24 +158,53 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             retrieveJsData()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+        binding.imgOpenDrawer.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.END)
+        }
+        binding.btnMessenger.setOnClickListener {
 
-        binding.btnFilter.setOnClickListener {
+            val intent =
+                Intent(requireContext(), MessengerHomeActivity::class.java)
+            intent.putExtra("userType", userType!!)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            if (Build.VERSION.SDK_INT >= 34) {
+                requireActivity().overrideActivityTransition(
+                    AppCompatActivity.OVERRIDE_TRANSITION_CLOSE,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+            } else {
+                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
 
-            if(userType == 0 || userType == 1){
-                val intent = Intent(requireContext(), FilterDataActivity::class.java)
-                intent.putExtra("userType", userType!!)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-            }
-            else{
-                makeToast(getString(R.string.something_error),0)
-                Log.e(TAG,"Incorrect user type : $userType")
-            }
         }
 
         return binding.root
     }
+    private fun initDrawersData() {
+        binding.viewNav.setOnTouchListener { v, event ->
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            false
+        }
 
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerOpened(drawerView: View) {
+                animSlideFromStart(binding.imgOpenDrawer)
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                animSlideFromEnd(binding.imgOpenDrawer)
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+        })
+    }
     private fun retrieveJsData() {
        /* val userRef = database.child("Users")
         val jobRef = userRef.child("Job Seeker")

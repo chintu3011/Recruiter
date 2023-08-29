@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -19,20 +20,40 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.authentication.LoginActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityHomeJobSeekerBinding
+import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.messenger.MessengerHomeActivity
+import com.amri.emploihunt.model.LogoutMain
+import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.settings.SettingJobSeekerFragment
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.IS_LOGIN
+import com.amri.emploihunt.util.PrefManager
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.Utils
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -45,9 +66,10 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
     private lateinit var homeFragment: HomeJobSeekerFragment
     private var doubleBackToExitPressedOnce = false
 
+    lateinit var prefmanger: SharedPreferences
     private var userType:Int ?= null
     private var userId:String ?= null
-
+    lateinit var prefManager: SharedPreferences
     private var currentFragment: Fragment ?= null
 
     companion object{
@@ -58,11 +80,11 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         super.onCreate(savedInstanceState)
         binding = ActivityHomeJobSeekerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        prefmanger = PrefManager.prefManager(this)
         val window: Window = this@HomeJobSeekerActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@HomeJobSeekerActivity,android.R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this@HomeJobSeekerActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-
+        prefManager = prefManager(this)
         if (!isGrantedPermission()) {
             requestPermissions()
         }
@@ -160,29 +182,26 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                     openVoice()
                     true
                 }
-                R.id.btnMessenger -> {
-                    val intent = Intent(this@HomeJobSeekerActivity,MessengerHomeActivity::class.java)
-                    intent.putExtra("userType", userType!!)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    if (Build.VERSION.SDK_INT >= 34) {
-                        overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE,R.anim.slide_in_left,R.anim.slide_out_right)
+                R.id.btnFilter -> {
+                    if(prefManager[ROLE, 0] == 0 || prefManager[ROLE, 0] == 1){
+                        val intent = Intent(this, FilterDataActivity::class.java)
+                        intent.putExtra("role",prefManager[ROLE, 0])
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
                     }
                     else{
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                        makeToast(getString(R.string.something_error),0)
+                        Log.e(HomeJobSeekerFragment.TAG,"Incorrect user type : $userType")
                     }
-                    finish()
+
                     true
                 }
 
-                /*R.id.btnFilter -> {
-                    val intent = Intent(this@HomeJobSeekerActivity, FilterDataActivity::class.java)
-                    intent.putExtra("userType", userType!!)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                R.id.btnLogout -> {
+                    logoutUser()
 //                    finish()
                     true
-                }*/
+                }
 
                 /*R.id.btnLogout -> {
                     logoutUser()
@@ -198,7 +217,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
     private var btnSearch: MenuItem? = null
     private var btnVoiceSearch: MenuItem? = null
-    private var btnMessenger : MenuItem? = null
+    private var btnFilter : MenuItem? = null
     private var btnLogout: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -207,7 +226,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         btnSearch = menu?.findItem(R.id.btnSearch)
         btnVoiceSearch = menu?.findItem(R.id.btnVoiceSearch)
         btnLogout = menu?.findItem(R.id.btnLogout)
-        btnMessenger = menu?.findItem(R.id.btnMessenger)
+        btnFilter = menu?.findItem(R.id.btnFilter)
         return true
     }
 
@@ -220,7 +239,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 supportActionBar?.title = "Find Best Jobs Here"
                 btnSearch?.isVisible = true
                 btnVoiceSearch?.isVisible = true
-                btnMessenger?.isVisible = true
+                btnFilter?.isVisible = true
                 /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = false
             }
@@ -228,7 +247,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 supportActionBar?.title = "Settings"
                 btnSearch?.isVisible = false
                 btnVoiceSearch?.isVisible = false
-                btnMessenger?.isVisible = false
+                btnFilter?.isVisible = false
                 /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = true
             }
@@ -383,7 +402,9 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         builder.show()
     }
 
-
+    private fun logoutUser() {
+        showLogoutBottomSheet()
+    }
 
     /* override fun onBackPressed() {
 
@@ -391,5 +412,95 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
          Log.d("back", "onBackPressed: ")
 
      }*/
+    fun showLogoutBottomSheet() {
+
+        val dialog = BottomSheetDialog(this)
+        val view: View = (this).layoutInflater.inflate(
+            R.layout.logout_bottomsheet,
+            null
+        )
+
+
+        val btnyes = view.findViewById<Button>(R.id.btn_yes)
+        val btnNo = view.findViewById<Button>(R.id.btn_no)
+        val tv_des = view.findViewById<TextView>(R.id.tv_des1)
+        val animation = view.findViewById<LottieAnimationView>(R.id.animationView)
+        tv_des.text = "Are you sure you want to log out?"
+
+        animation.setAnimation(R.raw.logout)
+
+        btnyes.setOnClickListener {
+            logoutAPI(prefmanger.get(AUTH_TOKEN,""))
+            dialog.dismiss()
+        }
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.show()
+
+    }
+    fun logoutAPI(
+        auth: String?,
+
+        ) {
+        try {
+            if (Utils.isNetworkAvailable(this)) {
+                AndroidNetworking.post(NetworkUtils.LOGOUT)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer $auth")
+                    .setPriority(Priority.MEDIUM).build()
+                    .getAsObject(
+                        LogoutMain::class.java,
+                        object : ParsedRequestListener<LogoutMain> {
+                            override fun onResponse(response: LogoutMain?) {
+
+                                if (response!= null){
+                                    hideProgressDialog()
+                                    Toast.makeText(this@HomeJobSeekerActivity, response.data.msg, Toast.LENGTH_LONG).show()
+                                    prefmanger.set(IS_LOGIN,false)
+                                    val intent = Intent(this@HomeJobSeekerActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                    overridePendingTransition(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
+                                    )
+                                }else{
+                                    Toast.makeText(this@HomeJobSeekerActivity,getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT).show()
+                                }
+
+
+
+
+
+
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                anError?.let {
+                                    Log.e("#####", "onError: code: ${it.errorCode} & body: ${it.errorDetail}")
+                                    Toast.makeText(this@HomeJobSeekerActivity,getString(R.string.something_error),
+                                        Toast.LENGTH_SHORT).show()
+                                    hideProgressDialog()
+
+                                }
+
+                            }
+                        })
+            }else{
+                Utils.showNoInternetBottomSheet(this, this)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("#message", "onResponse: "+e.message)
+            hideProgressDialog()
+            Toast.makeText(this,getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 
 }
