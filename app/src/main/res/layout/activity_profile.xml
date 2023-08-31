@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -69,9 +68,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile"
-                        android:textColor="@color/blue"
-                        android:fontFamily="@font/poppinsbold"
                         android:textSize="@dimen/_15sdp"
+                        android:textColor="@color/black"
                         android:layout_gravity="center"
                         android:id="@+id/toolbar_title" />
 
@@ -159,6 +157,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/userType"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:tint="@color/blue"
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
@@ -166,7 +165,7 @@
                         android:id="@+id/userType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Job Seeker"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/blue"
@@ -193,13 +192,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_50sdp"
-                        android:fontFamily="@font/poppinsregular"
                         android:text="Person Name"
                         app:autoSizeTextType="uniform"
                         android:lines="1"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                        android:textColor="@color/black"
+                        android:textColor="@color/blue"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +209,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/poppinsregular"
                         android:text="Passionate Software Engineer || Tech Enthusiast || Problem Solver"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -225,11 +222,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:fontFamily="@font/poppinsregular"
                         android:text="Amri Systems Ptv. Ltd"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="#000DFF"
+                        android:textColor="@color/blue"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
@@ -324,7 +320,7 @@
                         android:id="@+id/txtAboutJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="About"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -344,6 +340,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/txtAboutJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
+                        android:tint="@color/blue"
                         app:layout_constraintStart_toEndOf="@+id/txtAboutJ"
                         app:layout_constraintTop_toTopOf="@+id/txtAboutJ"
                         app:shapeAppearanceOverlay="@style/circle"
@@ -383,7 +380,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Qualification"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -396,7 +393,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Graduated in CSE"
                         android:textColor="#333333"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -441,7 +438,7 @@
                         android:id="@+id/txtExperienceJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Experience"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -457,6 +454,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
+                        android:tint="@color/blue"
                         app:layout_constraintBottom_toBottomOf="@+id/txtExperienceJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -470,7 +468,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Designation"
                         android:textAlignment="textStart"
                         app:autoSizeTextType="uniform"
@@ -485,7 +483,7 @@
                         android:id="@+id/companyNameJ"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Amri Systems Ptv. Ltd"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -498,7 +496,7 @@
                         android:id="@+id/duration"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="3 Years"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -557,7 +555,7 @@
                         android:id="@+id/txtResumeJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Resume"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -574,6 +572,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
+                        android:tint="@color/blue"
                         app:layout_constraintBottom_toBottomOf="@+id/txtResumeJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -590,7 +589,7 @@
                         android:autoSizeTextType="uniform"
                         android:drawableEnd="@drawable/ic_download"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="file_name.pdf"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#FF02397C"
@@ -636,7 +635,7 @@
                         android:id="@+id/txtJobPrefJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Job Preference"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -652,6 +651,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
+                        android:tint="@color/blue"
                         app:layout_constraintBottom_toBottomOf="@+id/txtJobPrefJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -665,7 +665,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Android Developer"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="#FF02397C"
@@ -680,7 +680,7 @@
                         android:id="@+id/salaryJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="$12 LPA"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
@@ -708,7 +708,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Location: "
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
@@ -723,7 +723,7 @@
                         android:id="@+id/jobLocationJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Ahmedabad"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
@@ -737,7 +737,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Mode: "
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
@@ -752,7 +752,7 @@
                         android:id="@+id/workingModeJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Hybrid"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
@@ -804,7 +804,7 @@
                         android:id="@+id/textAboutR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="About"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold"
@@ -823,6 +823,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/textAboutR"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
+                        android:tint="@color/blue"
                         app:layout_constraintStart_toEndOf="@+id/textAboutR"
                         app:layout_constraintTop_toTopOf="@+id/textAboutR"
                         app:shapeAppearanceOverlay="@style/circle"
@@ -833,7 +834,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:text="Job Title"
                         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                         android:textColor="#FF02397C"
@@ -912,8 +913,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/poppinsregular"
                         android:text="Designation"
+                        android:textColor="@color/blue"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -924,7 +925,7 @@
                         android:id="@+id/workingModeR"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:textColor="@color/black"
                         android:text="Work from home"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"

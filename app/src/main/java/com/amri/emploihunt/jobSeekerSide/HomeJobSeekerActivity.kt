@@ -301,7 +301,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 }
             }
         } else {
-            Toast.makeText(this, "Try Again!", Toast.LENGTH_SHORT).show()
+
         }
     }
 

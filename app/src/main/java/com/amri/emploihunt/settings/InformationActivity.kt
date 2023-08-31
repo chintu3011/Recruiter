@@ -105,6 +105,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private var selectedJobLocation = String()
     private var selectedPreJobLocation = String()
     private var selectedJob = String()
+    private var selectedQualificationR = String()
 
     private var isSkip: Boolean = false
     private lateinit var resumePdf: File
@@ -297,7 +298,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 position: Int,
                 id: Long
             ) {
-                selectedJob = qualifications[position]
+                selectedQualificationR = qualifications[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -573,6 +574,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vJobLocation",jobLocation)
                     .addQueryParameter("vDuration",duration)
                     .addQueryParameter("vPreferCity",pCity)
+                    .addQueryParameter("vPreferJobTitle",jobTitle)
                     .addQueryParameter("vExpectedSalary",salary)
                     .addQueryParameter("vQualification",qualification)
                     .addQueryParameter("vWorkingMode",workingMode)

@@ -49,11 +49,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/companynameadd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,14 +61,14 @@
                     app:layout_constraintVertical_chainStyle="packed"
                     app:placeholderText="Android Developer"
                     app:startIconDrawable="@drawable/ic_job_title"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/jobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,25 +85,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
                     app:placeholderText="Tellva Still Texus."
                     app:startIconDrawable="@drawable/ic_company"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/currentCompany"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_13sdp"
                     android:layout_marginEnd="@dimen/_13sdp"
-                    android:background="@drawable/border_radio_grp"
+                    android:background="@drawable/linear_bg"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@+id/uploadProgress"
@@ -123,7 +123,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/companyLogoIv"
-                        android:layout_width="@dimen/_30sdp"
+                        android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_margin="@dimen/_5sdp"
                         android:src="@drawable/ic_upload" />
@@ -133,8 +133,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:maxLines="1"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:text="File_Name.jpg"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -169,18 +170,18 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutJobRole"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/uploadProgress"
                     app:placeholderText="Job Description Here"
                     app:startIconDrawable="@drawable/ic_biography"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/descadd"
@@ -188,7 +189,6 @@
                         android:layout_height="match_parent"
                         android:lines="5"
                         android:inputType="textMultiLine"
-                        android:fontFamily="@font/poppinsregular"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,18 +205,18 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textLayoutExpDuration"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutdesc"
                     app:placeholderText="Senior Software Developer"
                     app:startIconDrawable="@drawable/baseline_playlist_add_check_circle_24"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/jobroleadd"
@@ -224,7 +224,7 @@
                         android:layout_height="match_parent"
                         android:lines="5"
                         android:inputType="textMultiLine"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -241,25 +241,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutExpDuration"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
                     app:placeholderText="2 Years"
                     app:startIconDrawable="@drawable/ic_duration"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/jobLevel"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="text"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -276,25 +276,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLevel"
                     app:placeholderText="2 Years"
                     app:startIconDrawable="@drawable/ic_star"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/experiencedDuration"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="datetime"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -311,27 +311,27 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
                     app:helperText="Include || after each Skill"
                     app:helperTextTextColor="@color/blue"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutSoftSkills"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutExpDuration"
                     app:placeholderText="Skill1 || Skill2.."
                     app:startIconDrawable="@drawable/ic_skills"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/technicalSkills"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -348,27 +348,27 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
                     app:helperText="Include || after each Skill"
                     app:helperTextTextColor="@color/blue"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutedu"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
                     app:placeholderText="Skill1 || Skill2.."
                     app:startIconDrawable="@drawable/ic_skills"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/softSkills"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -385,25 +385,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutlocation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutSoftSkills"
                     app:placeholderText="Education Requirements"
                     app:startIconDrawable="@drawable/ic_experties"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/eduadd"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -419,11 +419,11 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -431,14 +431,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutedu"
                     app:placeholderText="Ahmedabad"
                     app:startIconDrawable="@drawable/ic_job_location"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/location"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -457,25 +457,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutlocation"
                     app:placeholderText="12 LPA"
                     app:startIconDrawable="@drawable/ic_salary"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/salary"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -503,7 +503,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="@string/on_site"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -513,7 +513,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="@string/remote"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -523,7 +523,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="@string/hybrid"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:textColor="@color/black" />
                 </RadioGroup>
 
@@ -535,9 +535,9 @@
                     android:text="Working Mode"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    android:textColor="@color/ed_theme_color"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintHorizontal_bias="0.09"
@@ -557,25 +557,25 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/edit_text_color"
+                    app:boxStrokeColor="@color/blue"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/flow9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutWorkingMode"
                     app:placeholderText="Need of Employees"
                     app:startIconDrawable="@drawable/ic_no_of_employees"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/noOfEmployeeNeed"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
-                        android:fontFamily="@font/poppinsregular"
+                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -588,7 +588,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="Update Job"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAllCaps="false"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:textStyle="bold"
@@ -609,7 +609,7 @@
                     android:background="@drawable/btn_background"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:text="@string/cancel_update"
                     android:textAllCaps="false"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"

@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Setting"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_15sdp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true" />
@@ -79,7 +79,7 @@
                 android:id="@+id/userName"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_15sdp"
                 android:layout_toEndOf="@+id/profileIv" />
 
@@ -90,7 +90,7 @@
                 android:id="@+id/tvCompany"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_10sdp"
                 android:layout_toEndOf="@+id/profileIv"
                 android:layout_below="@+id/userName" />
@@ -119,6 +119,7 @@
                 android:id="@+id/ivApply"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:tint="@color/blue"
                 android:src="@drawable/baseline_person_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -127,7 +128,6 @@
                 android:text="@string/view_applylist"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivApply"
                 android:layout_centerVertical="true" />
@@ -138,6 +138,7 @@
                 android:scaleType="center"
                 android:padding="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
@@ -158,6 +159,7 @@
                 android:scaleType="center"
                 android:id="@+id/ivPreference"
                 android:layout_centerVertical="true"
+                android:tint="@color/blue"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/baseline_app_settings_alt_24" />
 
@@ -167,7 +169,7 @@
                 android:text="@string/job_preference"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivPreference"
                 android:layout_centerVertical="true" />
@@ -178,6 +180,7 @@
                 android:scaleType="center"
                 android:padding="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
@@ -198,6 +201,7 @@
                 android:scaleType="center"
                 android:id="@+id/ivSaveJob"
                 android:layout_centerVertical="true"
+                android:tint="@color/blue"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/baseline_save_24" />
 
@@ -207,7 +211,7 @@
                 android:text="@string/save_job"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivSaveJob"
                 android:layout_centerVertical="true" />
@@ -218,6 +222,7 @@
                 android:scaleType="center"
                 android:padding="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
@@ -238,6 +243,7 @@
                 android:scaleType="center"
                 android:id="@+id/ivContactUs"
                 android:layout_centerVertical="true"
+                android:tint="@color/blue"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/baseline_call_24" />
 
@@ -247,7 +253,7 @@
                 android:text="@string/contact_us"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivContactUs"
                 android:layout_centerVertical="true" />
@@ -258,6 +264,7 @@
                 android:scaleType="center"
                 android:padding="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
@@ -281,6 +288,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:paddingTop="@dimen/_1sdp"
                 android:paddingBottom="@dimen/_1sdp"
+                android:tint="@color/blue"
                 android:src="@drawable/baseline_admin_panel_settings_24" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -289,7 +297,7 @@
                 android:text="@string/privacy_policy"
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/poppinsmedium"
+                
                 android:textSize="@dimen/_12sdp"
                 android:layout_toEndOf="@+id/ivPrivacy"
                 android:layout_centerVertical="true" />
@@ -301,6 +309,7 @@
                 android:padding="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="@dimen/_15sdp"
+                android:tint="@color/colorPrimary"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
     </LinearLayout>

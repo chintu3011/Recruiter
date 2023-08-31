@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/your_job_posts"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_15sdp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true" />

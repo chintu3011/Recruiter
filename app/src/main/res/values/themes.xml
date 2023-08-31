@@ -47,5 +47,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="elevation">0dp</item>
     </style>
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
 
 </resources>

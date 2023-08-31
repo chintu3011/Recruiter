@@ -16,6 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityFilterDataBinding
+import com.amri.emploihunt.model.GetAllCity
+import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.util.Utils
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Locale
 
@@ -60,13 +67,13 @@ class FilterDataActivity : BaseActivity(),
     private lateinit var selectedTagAdapter: SelectedTagAdapter
 
     private lateinit var domainList:MutableList<String>
-    private lateinit var locationList:MutableList<String>
+    private var locationList:ArrayList<String>  = ArrayList()
     private lateinit var workingModeList:MutableList<String>
     private lateinit var packageList:MutableList<String>
 
 
     private lateinit var filterDomainList:MutableList<String>
-    private lateinit var filterLocationList:MutableList<String>
+    private  var filterLocationList:ArrayList<String>  = ArrayList()
     private lateinit var filterWorkingModeList:MutableList<String>
     private lateinit var filterPackageList:MutableList<String>
 
@@ -78,6 +85,7 @@ class FilterDataActivity : BaseActivity(),
     private lateinit var selectedPackageList:MutableList<String>
 
     private lateinit var myPagerAdapter: MyPagerAdapter
+    var cityList: ArrayList<String> = ArrayList()
 
     private var userType:Int ?= null
 
@@ -91,18 +99,16 @@ class FilterDataActivity : BaseActivity(),
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         userType = intent.getIntExtra("role",-1)
-
+        getAllCity()
         Log.d(TAG,userType.toString())
 
-        domainList = mutableListOf("Android Development", "Web Development", "Ar Vr Development", "Rect Js", "PHP", ".Net")
-        locationList = mutableListOf("Ahmedabad","Surat","Mumbai","Delhi","Pune","Kolkata","Vadodara")
+        domainList = resources.getStringArray(R.array.indian_designations).toMutableList()
         workingModeList = mutableListOf("Hybrid","Remote","On site")
-        packageList = mutableListOf("3 LPA","6 LPA", "10 LPA")
+        packageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
-        filterDomainList = mutableListOf("Android Development", "Web Development", "Ar Vr Development", "Rect Js", "PHP", ".Net")
-        filterLocationList = mutableListOf("Ahmedabad","Surat","Mumbai","Delhi","Pune","Kolkata","Vadodara")
-        filterWorkingModeList = mutableListOf("Hybrid","Remote","On site")
-        filterPackageList = mutableListOf("3 LPA","6 LPA", "10 LPA")
+        filterDomainList = resources.getStringArray(R.array.indian_designations).toMutableList()
+        filterWorkingModeList =mutableListOf("Hybrid","Remote","On site")
+        filterPackageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
         selectedDomainList = mutableListOf()
         selectedLocationList = mutableListOf()
@@ -652,5 +658,45 @@ class FilterDataActivity : BaseActivity(),
 
     }
 
+    fun getAllCity(){
 
+        if (Utils.isNetworkAvailable(this)){
+            showProgressDialog("Please wait....")
+            AndroidNetworking.get(NetworkUtils.GET_CITIES)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllCity::class.java,
+                    object : ParsedRequestListener<GetAllCity> {
+                        override fun onResponse(response: GetAllCity?) {
+                            try {
+
+                                cityList.addAll(response!!.data)
+                                locationList = cityList
+                                filterLocationList = cityList
+                                locationTagAdapter.notifyDataSetChanged()
+                                hideProgressDialog()
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                )
+                                hideProgressDialog()
+
+                            }
+
+
+                        }
+                    })
+        }else{
+            Utils.showNoInternetBottomSheet(this, this)
+        }
+
+    }
 }

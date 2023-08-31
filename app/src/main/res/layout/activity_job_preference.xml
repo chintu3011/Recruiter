@@ -41,7 +41,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:text="@string/job_preference"
-                android:fontFamily="@font/poppinsmedium"
                 android:textSize="@dimen/_15sdp"
                 android:gravity="center"
                 android:visibility="visible"
@@ -74,7 +73,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_12sdp"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/poppinsregular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="@string/what_type_of_job_are_you_looking" />
@@ -87,7 +85,7 @@
                     android:textSize="@dimen/_16sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:fontFamily="@font/poppinsregular" />
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="0dp"

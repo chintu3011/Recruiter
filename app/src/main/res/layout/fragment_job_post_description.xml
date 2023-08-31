@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="@+id/startGuildLine"
                 app:layout_constraintTop_toBottomOf="@+id/jobTitle"
                 app:shapeAppearanceOverlay="@style/cornerCut"
-                app:srcCompat="@drawable/default_company_logo" />
+                app:srcCompat="@mipmap/ic_logo" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/companyName"

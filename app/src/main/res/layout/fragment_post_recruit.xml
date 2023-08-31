@@ -34,7 +34,7 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/companynameadd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,14 +42,13 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 app:placeholderText="Android Developer"
                 app:startIconDrawable="@drawable/ic_job_title"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/jobTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-                    android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,21 +69,21 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
                 app:placeholderText="Tellva Still Texus."
                 app:startIconDrawable="@drawable/ic_company"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/currentCompany"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:text="File_Name.jpg"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -154,14 +153,14 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutJobRole"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/uploadProgress"
                 app:placeholderText="Job Description Here"
                 app:startIconDrawable="@drawable/ic_biography"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/descadd"
@@ -169,7 +168,7 @@
                     android:layout_height="match_parent"
                     android:lines="5"
                     android:inputType="textMultiLine"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,14 +189,14 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textLayoutExpDuration"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutdesc"
                 app:placeholderText="Senior Software Developer"
                 app:startIconDrawable="@drawable/baseline_playlist_add_check_circle_24"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/jobroleadd"
@@ -205,7 +204,7 @@
                     android:layout_height="match_parent"
                     android:lines="5"
                     android:inputType="textMultiLine"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,21 +225,21 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutExpDuration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
                 app:placeholderText="2 Years"
                 app:startIconDrawable="@drawable/ic_duration"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/jobLevel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -260,21 +259,21 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLevel"
                 app:placeholderText="2 Years"
                 app:startIconDrawable="@drawable/ic_star"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/experiencedDuration"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="datetime"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -297,21 +296,21 @@
                 app:endIconTint="@color/gray"
                 app:helperText="Include || after each Skill"
                 app:helperTextTextColor="@color/blue"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutSoftSkills"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutExpDuration"
                 app:placeholderText="Skill1 || Skill2.."
                 app:startIconDrawable="@drawable/ic_skills"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/technicalSkills"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -334,21 +333,21 @@
                 app:endIconTint="@color/gray"
                 app:helperText="Include || after each Skill"
                 app:helperTextTextColor="@color/blue"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutedu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
                 app:placeholderText="Skill1 || Skill2.."
                 app:startIconDrawable="@drawable/ic_skills"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/softSkills"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -369,36 +368,58 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
-                app:layout_constraintBottom_toTopOf="@+id/inputJobRSpinner"
+                app:hintTextColor="@color/blue"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutlocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutSoftSkills"
                 app:placeholderText="Education Requirements"
                 app:startIconDrawable="@drawable/ic_experties"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/eduadd"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/inputJobRSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutlocation"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/spinner_border_bg"
-                android:padding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_15sdp"
+                android:layout_height="wrap_content"
+                android:hint="@string/job_location"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/blue"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutedu" />
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutedu"
+                app:placeholderText="Ahmedabad"
+                app:startIconDrawable="@drawable/ic_job_location"
+                app:startIconTint="@color/blue">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -419,21 +440,21 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputJobRSpinner"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutlocation"
                 app:placeholderText="12 LPA"
                 app:startIconDrawable="@drawable/ic_salary"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/salary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -461,7 +482,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="On-Site"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -471,7 +492,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Remote"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -481,7 +502,7 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
                         android:text="Hybrid"
-                        android:fontFamily="@font/poppinsregular"
+                        
                         android:textColor="@color/black" />
                 </RadioGroup>
             <com.google.android.material.textview.MaterialTextView
@@ -492,9 +513,9 @@
                 android:text="Working Mode"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                android:textColor="@color/ed_theme_color"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
-                android:fontFamily="@font/poppinsregular"
+                
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
                 app:layout_constraintHorizontal_bias="0.09"
@@ -518,21 +539,21 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/gray"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/flow9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutWorkingMode"
                 app:placeholderText="Need of Employees"
                 app:startIconDrawable="@drawable/ic_no_of_employees"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/noOfEmployeeNeed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:fontFamily="@font/poppinsregular"
+                    
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -540,14 +561,12 @@
                 android:id="@+id/btnpostjob"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="Post Job"
-                android:fontFamily="@font/poppinsregular"
+                android:textSize="@dimen/_16sdp"
                 android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:backgroundTint="@null"
@@ -562,13 +581,12 @@
                 android:id="@+id/btnCancelPost"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:fontFamily="@font/poppinsregular"                android:text="Cancel Post"
+                android:textSize="@dimen/_16sdp"
+                android:text="Cancel Post"
                 android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:backgroundTint="@null"

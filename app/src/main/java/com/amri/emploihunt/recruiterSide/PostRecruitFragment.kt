@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import com.amri.emploihunt.R
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -47,6 +48,8 @@ class PostRecruitFragment : BaseFragment() {
     var cityList: ArrayList<String> = ArrayList()
     var selectedJobLocation = String()
     lateinit var  jobLocationAdapter: ArrayAdapter<String>
+    var cityValidator = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +59,7 @@ class PostRecruitFragment : BaseFragment() {
         prefManager = prefManager(requireActivity())
         cityList.add("Select Job Location")
         getAllCity()
-        setAdapters()
+
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
         binding.linearLayout2.setOnClickListener {
@@ -77,18 +80,48 @@ class PostRecruitFragment : BaseFragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-        binding.inputJobRSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
+        binding.location.setAdapter(adapter)
+        binding.location.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
+                arg0: AdapterView<*>?, arg1: View?,
+                arg2: Int, arg3: Long
             ) {
+                binding.location.clearFocus()
                 Log.d("###", "onItemSelected: ")
-                selectedJobLocation = cityList[position]
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+            override fun onNothingSelected(arg0: AdapterView<*>?) {
+                // TODO Auto-generated method stub
+            }
+        }
+        binding.linearLayout2.setOnClickListener {
+            uploadImage()
+        }
+        binding.location.validator = object : AutoCompleteTextView.Validator {
+            override fun isValid(text: CharSequence): Boolean {
+                Log.v("Test", "Checking if valid: $text ${cityList.contains(text.toString())}")
+
+                if (cityList.contains(text.toString())) {
+                    cityValidator = true
+                    return true
+                }
+                cityValidator = false
+                return false
+            }
+
+            override fun fixText(invalidText: CharSequence): CharSequence {
+                // If .isValid() returns false then the code comes here
+                // do whatever way you want to fix in the
+                // users input and  return it
+                binding.location.error = "Please select city in list"
+                return ""
+            }
+        }
+        binding.location.setOnFocusChangeListener { view, b ->
+            if (view.id === R.id.location && !b) {
+                (view as AutoCompleteTextView).performValidation()
 
             }
         }
@@ -97,15 +130,7 @@ class PostRecruitFragment : BaseFragment() {
 
 
 
-    private fun setAdapters() {
 
-        jobLocationAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,cityList)
-        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.inputJobRSpinner.adapter = jobLocationAdapter
-
-
-
-    }
     private fun uploadImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_REQUEST)
@@ -199,9 +224,9 @@ class PostRecruitFragment : BaseFragment() {
             binding.eduadd.error = "Please enter education"
             return  false
 
-        }else if (selectedJobLocation.isNullOrBlank()){
-            binding.inputJobRSpinner.requestFocus()
-            toast("Please select job location")
+        }else if (binding.location.text.toString().isNullOrBlank()){
+            binding.location.requestFocus()
+            binding.location.error = "Please select job location"
             return  false
         }else if (binding.salary.text.toString().isBlank()){
             binding.salary.requestFocus()
@@ -233,7 +258,7 @@ class PostRecruitFragment : BaseFragment() {
         val techskill : String = binding.technicalSkills.text.toString().trim()
         val softskill : String = binding.softSkills.text.toString().trim()
         val edu : String = binding.eduadd.text.toString().trim()
-        val city : String = selectedJobLocation.trim()
+        val city : String = binding.location.text.toString().trim()
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
         when (workmodeid)
@@ -284,7 +309,7 @@ class PostRecruitFragment : BaseFragment() {
                                     binding.technicalSkills.text!!.clear()
                                     binding.softSkills.text!!.clear()
                                     binding.eduadd.text!!.clear()
-                                    binding.inputJobRSpinner.setSelection(0)
+                                    binding.location.text.clear()
                                     binding.textLayoutWorkingMode.clearCheck()
                                     binding.salary.text!!.clear()
                                     binding.noOfEmployeeNeed.text!!.clear()

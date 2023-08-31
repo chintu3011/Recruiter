@@ -38,6 +38,7 @@ import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.Utils
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
@@ -506,7 +507,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             holder.binding.qualificationjs.text = job.vQualification
             holder.binding.citypref.text = job. vPreferCity
             holder.binding.jsjobtype.text = job.vWorkingMode
-            holder.binding.jobrole.text = job.vDesignation
+            holder.binding.jobrole.text = job.vPreferJobTitle
             holder.binding.jscontact.text = job.vMobile
             holder.binding.jsemail.text = job.vEmail
             holder.binding.jscontact.setOnClickListener {
@@ -520,6 +521,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                 intent.type = "message/rfc822"
                 holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
             }
+            Glide.with(holder.itemView.context).load(job.tProfileUrl).placeholder(R.mipmap.ic_logo).into(holder.binding.jsimage)
 
         }
         private fun makePhoneCall(num: String) {

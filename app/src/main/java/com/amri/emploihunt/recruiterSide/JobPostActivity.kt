@@ -176,11 +176,11 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         if (selectedPost.iIsApplied == 1){
             binding.btnApply.isEnabled = false
             binding.btnApply.text = getString(R.string.already_applied)
-            binding.btnApply.setBackgroundColor( resources.getColor(R.color.check_def_color))
+            binding.btnApply.setBackgroundColor( resources.getColor(R.color.colorPrimaryLight))
         }else{
             binding.btnApply.isEnabled = true
             binding.btnApply.text = getString(R.string.apply)
-            binding.btnApply.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.theme_blue))
+            binding.btnApply.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
 
         }
         if (selectedPost.iIsSaved == 1){

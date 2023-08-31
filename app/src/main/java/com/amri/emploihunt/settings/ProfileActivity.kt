@@ -132,30 +132,7 @@ class ProfileActivity : BaseActivity(),OnClickListener {
         setProfileData()
         setOnClickListener()
 
-        binding.toolbar.menu.clear()
 
-        binding.toolbar.inflateMenu(R.menu.profile_menu)
-
-        binding.toolbar.setOnMenuItemClickListener{
-            when(it.itemId){
-                R.id.btnSearch -> {
-
-                    val searchView = it.actionView as SearchView
-
-                    true
-                }
-
-                R.id.btnLogout -> {
-                    logoutUser()
-//                    makeToast("Logout",0)
-                    true
-                }
-
-                else -> {
-                    false
-                }
-            }
-        }
     }
     private fun logoutUser() {
         showLogoutBottomSheet()

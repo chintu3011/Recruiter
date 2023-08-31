@@ -439,7 +439,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 jobModel.tCreatedAt!!.toLong())
             Glide.with(holder.itemView.context)
                 .load(jobModel.tCompanyLogoUrl)
-                .placeholder(R.drawable.default_company_logo)
+                .placeholder(R.mipmap.ic_logo)
                 .into(holder.binding.profileImg)
 //            onCategoryClick.onCategoryClicked(it, templateModel)
             holder.binding.executePendingBindings()
