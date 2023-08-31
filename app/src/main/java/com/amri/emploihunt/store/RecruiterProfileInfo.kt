@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.map
 private val Context.datastore : DataStore<Preferences> by preferencesDataStore("RECRUITER_PROFILE_INFO")
 data class RecruiterProfileInfo(val context: Context){
 
-
-
     companion object {
 
         val userType = stringPreferencesKey("userType")

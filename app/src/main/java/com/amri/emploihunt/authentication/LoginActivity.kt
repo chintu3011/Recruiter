@@ -158,6 +158,8 @@ class LoginActivity : BaseActivity(),OnClickListener {
         phoneNo = "+" + binding.cpp.fullNumber.toString().trim{it <= ' '}
         getUserTypeIfNotSignIn(phoneNo) { userType ->
 
+            /***//*this.userType = userType*/
+
             if (userType.isNotEmpty()) {
                 val correct = checkInputData(phoneNo)
                 if (correct) {

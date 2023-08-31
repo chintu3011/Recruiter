@@ -7,5 +7,4 @@ data class ApplyModel(
 )
 data class DataApply(
     val message: String,
-
 )

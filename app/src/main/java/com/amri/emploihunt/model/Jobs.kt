@@ -25,5 +25,5 @@ data class Jobs(
     var tCreatedAt : String?= null,
     var tUpadatedAt : String?= null,
     var user: User
-    ) :Serializable
+) :Serializable
 

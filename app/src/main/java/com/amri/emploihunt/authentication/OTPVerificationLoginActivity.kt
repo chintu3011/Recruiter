@@ -220,9 +220,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                             try {
                                 response?.let {
                                     //hideProgressDialog()
-
-
-
                                     CoroutineScope(Dispatchers.IO).launch {
                                         if (response.data.user.iRole == 0){
                                             val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
@@ -255,6 +252,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 ""
                                             )
                                             prefManager[IS_LOGIN] = true
+                                            prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                             prefManager[ROLE] = response.data.user.iRole
                                             prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                             val intent = Intent(
@@ -299,6 +297,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 HomeRecruiterActivity::class.java
                                             )
                                             prefManager[IS_LOGIN] = true
+                                            prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                             prefManager[ROLE] = response.data.user.iRole
                                             prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                             intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())

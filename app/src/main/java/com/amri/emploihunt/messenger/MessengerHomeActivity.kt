@@ -3,6 +3,7 @@ package com.amri.emploihunt.messenger
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -14,14 +15,17 @@ import android.view.Window
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityMessengerHomeBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.ROLE
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -33,8 +37,10 @@ class MessengerHomeActivity : BaseActivity() {
     private var currentFragment: Fragment ?= null
     private lateinit var binding: ActivityMessengerHomeBinding
 
-    private lateinit var userId:String
-    private var userType = String()
+    private var userId:String ?= null
+    private var userType:Int ?= null
+
+    lateinit var prefManager: SharedPreferences
     
     companion object{
         private const val TAG = "MessengerHomeActivity"
@@ -50,21 +56,27 @@ class MessengerHomeActivity : BaseActivity() {
         window.statusBarColor = ContextCompat.getColor(this@MessengerHomeActivity, R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
+        prefManager = prefManager(this)
+        userType = prefManager.get(ROLE,0)
+        userId = prefManager.get(FIREBASE_ID)
+        Log.d("####","$userId :: $userType")
+
+
 
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Messenger"
 
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
-
-        userType = intent.getStringExtra("userType").toString()
-        Log.d(TAG,"userType :: $userType")
-
-        if(userType.isNotEmpty()){
+        /*userId = FirebaseAuth.getInstance().currentUser!!.uid*/
+        /*userId = intent.getStringExtra("userId")
+        userType = intent.getIntExtra("role",-1)*/
+        /*Log.d(TAG,"$userId :: $userType")
+*/
+        if(userType != -1 && userId != null){
             replaceFragment(userType)
             binding.btnCreateNewChat.setOnClickListener {
                 val intent = Intent(this@MessengerHomeActivity, NewUsersMessageActivity::class.java)
-                intent.putExtra("userType",userType)
+                intent.putExtra("role",userType)
                 Log.d(TAG,"userType:$userType")
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
@@ -73,8 +85,9 @@ class MessengerHomeActivity : BaseActivity() {
             }
         }
         else{
-            Log.d(TAG,"User type not found from intent")
-            getUserType {userType ->
+            Log.d(TAG,"User type not found from intent => : $userId :: $userType")
+            makeToast(getString(R.string.something_error),0)
+            /*getUserType {userType ->
                 replaceFragment(userType)
                 binding.btnCreateNewChat.setOnClickListener {
                     val intent = Intent(this@MessengerHomeActivity, NewUsersMessageActivity::class.java)
@@ -85,7 +98,7 @@ class MessengerHomeActivity : BaseActivity() {
                     overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
 //                finish()
                 }
-            }
+            }*/
         }
 
         setMenuItemListener()
@@ -114,12 +127,10 @@ class MessengerHomeActivity : BaseActivity() {
             when(it.itemId){
                 R.id.btnSearch -> {
                     val searchView = it.actionView as SearchView
-
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?): Boolean {
                             return true
                         }
-
                         override fun onQueryTextChange(newText: String?): Boolean {
                             val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
@@ -198,7 +209,7 @@ class MessengerHomeActivity : BaseActivity() {
             }
         }
     }*/
-    private fun getUserType(callback: (String) -> Unit) {
+    /*private fun getUserType(callback: (String) -> Unit) {
         FirebaseDatabase.getInstance().getReference("Users").addListenerForSingleValueEvent( object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -218,13 +229,18 @@ class MessengerHomeActivity : BaseActivity() {
                 Log.d(TAG,"error :: ${error.message}")
             }
         })
-    }
+    }*/
 
-    private fun replaceFragment(userType: String){
+    private fun replaceFragment(userType: Int?){
         val fragment:Fragment
+        val bundle:Bundle
         when (userType) {
-            "Job Seeker" -> {
+            0 -> {
                 fragment = RecruiterUserListFragment()
+                bundle = Bundle()
+                bundle.putInt("role",userType)
+                bundle.putString("userId",userId)
+                fragment.arguments = bundle
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment,fragment.javaClass.simpleName)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -232,8 +248,12 @@ class MessengerHomeActivity : BaseActivity() {
                     .commit()
                 currentFragment = fragment
             }
-            "Recruiter" -> {
+            1 -> {
                 fragment = JobSeekerUsersListFragment()
+                bundle = Bundle()
+                bundle.putInt("role",userType)
+                bundle.putString("userId",userId)
+                fragment.arguments = bundle
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment,fragment.javaClass.simpleName)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

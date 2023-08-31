@@ -2,7 +2,6 @@ package com.amri.emploihunt.authentication
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,17 +11,10 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpVerificationRegistrationBinding
-import com.amri.emploihunt.databinding.ActivityOtpverificationLoginBinding
-import com.amri.emploihunt.settings.InformationActivity
-import com.chaos.view.PinView
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
 import com.google.firebase.auth.FirebaseAuth

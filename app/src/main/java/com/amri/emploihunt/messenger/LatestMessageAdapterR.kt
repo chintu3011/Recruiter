@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.model.MessageData
+import com.amri.emploihunt.model.User
 import com.bumptech.glide.Glide
 import com.amri.emploihunt.recruiterSide.UsersRecruiter
 import com.google.firebase.auth.FirebaseAuth
@@ -103,7 +105,7 @@ class LatestMessageAdapterR(
         private val latestMessage: TextView = itemView.findViewById(R.id.latestMsg)
         private val cardView: CardView = itemView.findViewById(R.id.cardView)
 
-        private var user : UsersRecruiter?= null
+        private var user : User?= null
         fun bind(messageData: MessageData){
             latestMessage.text = messageData.message
             val chatPartnerId: String =
@@ -113,7 +115,7 @@ class LatestMessageAdapterR(
                     messageData.fromId!!
                 }
             getChatPartner(chatPartnerId){ user ->
-                this.user = user
+                /*this.user = user*/
 
                 val fullName = user.userFName + " " + user.userLName
                 personName.text = fullName
@@ -125,7 +127,7 @@ class LatestMessageAdapterR(
                         .into(profileImg)
                 }
                 cardView.setOnClickListener {
-                    onChatRClickListener.onChatRClick(absoluteAdapterPosition, user)
+                    /*onChatRClickListener.onChatRClick(absoluteAdapterPosition, user)*/
                 }
             }
 
@@ -139,6 +141,8 @@ class LatestMessageAdapterR(
                 return@setOnLongClickListener true
             }
         }
+
+        /** Need to implement which can get chatPartner From API*/
 
         private fun getChatPartner(chatPartnerId:String, completion: (UsersRecruiter) -> Unit) {
             FirebaseDatabase.getInstance().getReference("Users")
@@ -167,7 +171,7 @@ class LatestMessageAdapterR(
     }
 
     interface OnChatRClickListener{
-        fun onChatRClick(position: Int,usersRecruiter: UsersRecruiter)
-        fun onChatRLongClick(position: Int,usersRecruiter: UsersRecruiter)
+        fun onChatRClick(position: Int,usersRecruiter: User)
+        fun onChatRLongClick(position: Int,usersRecruiter: User)
     }
 }

@@ -38,6 +38,10 @@ const val REWARDED_VIDEO_KEY = "rewardedVideoKey"
 const val RAZORPAY_KEY = "razorpay_key"
 const val IS_BLOCKED = "isBlocked"
 const val ROLE = "role"
+
+const val JOB_SEEKER = 0
+const val RECRUITER = 1
+
 /*var IS_CHALLENGE_UPLOADED = false
 var IS_CHALLENGE_COMMENT_LIKE = false*/
 
