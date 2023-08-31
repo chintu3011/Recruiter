@@ -104,4 +104,6 @@
     <string name="you_can_change_phone_number"><u>Change phone number?</u></string>
     <string name="verify">Verify</string>
     <string name="register">Register</string>
+    <string name="didn_t_get_proper_user_type">Didn\'t get proper user type</string>
+    <string name="incorrect_view_holder">Incorrect view holder : %1$s</string>
 </resources>
