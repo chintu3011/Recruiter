@@ -1,24 +1,32 @@
 package com.amri.emploihunt.messenger
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.TextUtils
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.AbsListView
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityNewUsersMessageBinding
-import com.amri.emploihunt.jobSeekerSide.UsersJobSeeker
 import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.User
 import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.recruiterSide.UsersRecruiter
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.JOB_SEEKER
@@ -31,27 +39,17 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import java.util.Locale
 
-class NewUsersMessageActivity : BaseActivity() {
+class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
 
     private lateinit var binding: ActivityNewUsersMessageBinding
 
-    private var userType:Int ?= null
-    private var userId:String ?= null
+    private var userType: Int? = null
+    private var userId: String? = null
 
-    private lateinit var dataJobSeekerList: MutableList<Any>
-    private lateinit var filterJobSeekerList: MutableList<Any>
-
-    private lateinit var dataRecruiterList: MutableList<Any>
-    private lateinit var filterRecruiterList: MutableList<Any>
-
-    private lateinit var userList : MutableList<User>
-    private lateinit var filterUserList : MutableList<User>
+    private lateinit var userList: MutableList<User>
+    private lateinit var filterUserList: MutableList<User>
 
     lateinit var prefManager: SharedPreferences
 
@@ -64,12 +62,9 @@ class NewUsersMessageActivity : BaseActivity() {
     private var totalItems = 0
     private var totalPages = 1
 
+    private lateinit var newUserMessageAdapter: NewUserMessageAdapter
 
-//    private lateinit var jobSeekersAdapter: JobSeekersAdapter
-//    private lateinit var recruitersAdapter: RecruitersAdapter
-    private lateinit var newUserMessageAdapter : NewUserMessageAdapter
-
-    companion object{
+    companion object {
         private const val TAG = "NewUsersMessageActivity"
     }
 
@@ -79,17 +74,14 @@ class NewUsersMessageActivity : BaseActivity() {
         setContentView(binding.root)
 
         val window: Window = this@NewUsersMessageActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@NewUsersMessageActivity,android.R.color.white)
+        window.statusBarColor =
+            ContextCompat.getColor(this@NewUsersMessageActivity, android.R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Make New Chat"
-
-        dataJobSeekerList = mutableListOf()
-        filterJobSeekerList = mutableListOf()
-        dataRecruiterList = mutableListOf()
-        filterRecruiterList = mutableListOf()
+        setMenuItemListener()
 
         userList = mutableListOf()
         filterUserList = mutableListOf()
@@ -97,75 +89,31 @@ class NewUsersMessageActivity : BaseActivity() {
         /*userType = intent.getStringExtra("userType")*/
         prefManager = PrefManager.prefManager(this)
 
-        layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.layoutManager = layoutManager
 
-        userType = prefManager.get(ROLE,0)
+        userType = prefManager.get(ROLE, 0)
         userId = prefManager.get(FIREBASE_ID)
 
-        Log.d(TAG,"$userId :: $userType")
+        Log.d(TAG, "$userId :: $userType")
 
         userType?.let { userType ->
-            getUsersList(userType){
-                if (it){
-                    newUserMessageAdapter  = NewUserMessageAdapter(filterUserList,this)
+            getUsersList(userType) {
+                if (it) {
+                    newUserMessageAdapter = NewUserMessageAdapter(filterUserList, this)
                     binding.recyclerView.adapter = newUserMessageAdapter
+                } else {
+                    makeToast(getString(R.string.something_error), 0)
                 }
-                else{
-                    makeToast(getString(R.string.something_error),0)
-                }
-
             }
         }
-        
-        /*userType?.let {
-            if(it == JOB_SEEKER){
-                getUsersList("Recruiter"){taskComplete ->
-                    if(taskComplete){
-                        newUserMessageAdapter =  NewUserMessageAdapter(filterRecruiterList,this)
-                        binding.recyclerView.adapter = newUserMessageAdapter
-                    }
-                }
-            }
-            if(it == RECRUITER){
-                getUsersList("Job Seeker"){taskComplete ->
-                    if(taskComplete){
-                        newUserMessageAdapter = NewUserMessageAdapter(filterJobSeekerList,this)
-                        binding.recyclerView.adapter = newUserMessageAdapter
-                    }
-                }
-            }
 
-        }*/
-
-/*        binding.toggleGrp.addOnButtonCheckedListener{ toggleButtonGrp,checkedId, isChecked ->
-            if (isChecked){
-                when(checkedId){
-                    R.id.btnShowJobSeekers -> {
-                        userType = "Job Seeker"
-                        getUsersList()
-                        jobSeekersAdapter = JobSeekersAdapter()
-                        binding.gridView.adapter = jobSeekersAdapter
-
-                    }
-                    R.id.btnShowRecruiters -> {
-                        userType = "Recruiter"
-                        getUsersList()
-                        recruitersAdapter = RecruitersAdapter()
-                        binding.gridView.adapter = recruitersAdapter
-                    }
-                }
-            }
-            else {
-                if (toggleButtonGrp.checkedButtonId == View.NO_ID){
-                    userType = "Recruiter"
-                    getUsersList()
-                    recruitersAdapter = RecruitersAdapter()
-                    binding.gridView.adapter = recruitersAdapter
-
-                }
-            }
-        }*/
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                baseContext,
+                layoutManager.orientation
+            )
+        )
 
         binding.recyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -194,98 +142,7 @@ class NewUsersMessageActivity : BaseActivity() {
         })
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun filterNormalUserList(query: String) {
-        filterJobSeekerList.clear()
-
-        if (!TextUtils.isEmpty(query)){
-            for (user in dataJobSeekerList) {
-                user as UsersJobSeeker
-                if (user.userFName.lowercase(Locale.ROOT)
-                        .contains(query.lowercase(Locale.ROOT))
-                ) {
-                    filterJobSeekerList.add(user)
-                }
-            }
-        }
-        else{
-            filterJobSeekerList.addAll(dataJobSeekerList)
-        }
-
-
-        newUserMessageAdapter.notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun filterRecruiterList(query: String) {
-
-        filterRecruiterList.clear()
-        if (!TextUtils.isEmpty(query)){
-            for (user in dataRecruiterList) {
-                user as UsersRecruiter
-                if (user.userFName.lowercase(Locale.ROOT)
-                        .contains(query.lowercase(Locale.ROOT))
-                ) {
-                    filterRecruiterList.add(user)
-                }
-            }
-        }
-        else{
-            filterRecruiterList.addAll(dataRecruiterList)
-        }
-
-        newUserMessageAdapter.notifyDataSetChanged()
-    }
-
-    /*private fun getUsersList(userType: String, callBack:(Boolean) -> Unit) {
-
-
-
-        FirebaseDatabase.getInstance().getReference("Users")
-            .child(userType)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (userType == "Job Seeker"){
-
-                        dataJobSeekerList.clear()
-                        filterJobSeekerList.clear()
-                        for (childSnapshot: DataSnapshot in snapshot.children) {
-                            val user: UsersJobSeeker? = childSnapshot.getValue(UsersJobSeeker::class.java)
-
-                            user?.let {
-                                filterJobSeekerList.add(user)
-                            }
-                            Log.d("users Id", user?.userFName.toString())
-                        }
-                        dataJobSeekerList.addAll(filterJobSeekerList)
-                        callBack(true)
-
-                    }
-                    else if(userType == "Recruiter"){
-
-                        dataRecruiterList.clear()
-                        filterRecruiterList.clear()
-                        for (childSnapshot: DataSnapshot in snapshot.children) {
-                            val user: UsersRecruiter? = childSnapshot.getValue(UsersRecruiter::class.java)
-                            user?.let {
-                                filterRecruiterList.add(user)
-                            }
-                            Log.d("users Id", childSnapshot.key.toString())
-                        }
-                        dataRecruiterList.addAll(filterRecruiterList)
-                        callBack(true)
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e(
-                        "NewUsersActivity",
-                        "Failed to retrieve job data from Firebase: ${error.message}"
-                    )
-                }
-            })
-    }*/
-
-    private fun getUsersList(userType: Int,callBack:(Boolean) -> Unit) {
+    private fun getUsersList(userType: Int, callBack: (Boolean) -> Unit) {
 
         if (Utils.isNetworkAvailable(this)) {
             if (currentPage != 1 && currentPage > totalPages) {
@@ -341,11 +198,12 @@ class NewUsersMessageActivity : BaseActivity() {
                                                 binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
                                             }*/
                                     }
-        //                                hideProgressDialog()
+                                    //                                hideProgressDialog()
                                     callBack(false)
                                 }
                             })
                 }
+
                 JOB_SEEKER -> {
                     AndroidNetworking.get(NetworkUtils.GET_ALL_RECRUITER)
                         .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
@@ -389,15 +247,19 @@ class NewUsersMessageActivity : BaseActivity() {
                                                 binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
                                             }*/
                                     }
-        //                                hideProgressDialog()
+                                    //                                hideProgressDialog()
                                     callBack(false)
 
                                 }
                             })
                 }
+
                 else -> {
-                    makeToast(getString(R.string.didn_t_get_proper_user_type),0)
-                    Log.d(TAG,"${getString(R.string.didn_t_get_proper_user_type)} => userType :: $userType" )
+                    makeToast(getString(R.string.didn_t_get_proper_user_type), 0)
+                    Log.d(
+                        TAG,
+                        "${getString(R.string.didn_t_get_proper_user_type)} => userType :: $userType"
+                    )
                 }
             }
         } else {
@@ -407,100 +269,98 @@ class NewUsersMessageActivity : BaseActivity() {
         }
     }
 
-/*    private inner class JobSeekersAdapter: BaseAdapter(){
-        override fun getCount(): Int {
-            return tempJobSeekerList.size
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun updateUserList(query: String) {
 
-        override fun getItem(position: Int): Any {
-            return tempJobSeekerList[position]
-        }
+        filterUserList.clear()
 
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            var view = convertView
-            if (view == null){
-                view = layoutInflater.inflate(R.layout.row_new_chat,null)
+        if (!TextUtils.isEmpty(query)){
+            for (user in userList) {
+                val fullName = user.vFirstName + " " + user.vLastName
+                if (fullName.lowercase(Locale.ROOT)
+                        .contains(query.lowercase(Locale.ROOT))
+                ) {
+                    filterUserList.add(user)
+                }
             }
+        }
+        else{
+            filterUserList.addAll(userList)
+        }
+        newUserMessageAdapter.notifyDataSetChanged()
+    }
 
-            val personName = view?.findViewById<MaterialTextView>(R.id.personName)
-            val tagLine = view?.findViewById<TextView>(R.id.tagLine)
-            val profileImg = view?.findViewById<ImageView>(R.id.profileImg)
-            val cardView = view?.findViewById<CardView>(R.id.cardView)
-            val user: UsersJobSeeker = tempJobSeekerList[position]
-            Log.d("userData", user.toString())
+    private var btnSearch: MenuItem? = null
+    private var btnVoiceSearch: MenuItem? = null
+    private var btnDelete: MenuItem? = null
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.messenger_menu,menu)
 
-            val userFullName = user.userFName +" "+user.userLName
-            Log.d("userName", userFullName)
-            personName!!.text = userFullName
-            tagLine!!.text = user.userTagLine
-            if (user.userProfileImgUri.isNotEmpty()){
-                Glide.with(profileImg!!.context).load(user.userProfileImgUri).into(profileImg)
+        btnSearch = menu?.findItem(R.id.btnSearch)
+        btnVoiceSearch = menu?.findItem(R.id.btnVoiceSearch)
+        btnDelete = menu?.findItem(R.id.btnDelete)
+        btnDelete?.isVisible = false
+        return true
+    }
+    private fun setMenuItemListener() {
+        binding.toolbar.setOnMenuItemClickListener{
+            when(it.itemId){
+                R.id.btnSearch -> {
+                    val searchView = it.actionView as SearchView
+                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            return true
+                        }
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            updateUserList(newText.orEmpty())
+                            return true
+                        }
+                    })
+                    true
+                }
+                R.id.btnVoiceSearch -> {
+                    openVoice()
+                    true
+                }
+                R.id.btnDelete -> {
+//                    deleteUser()
+                    true
+                }
+                else -> {
+                    false
+                }
             }
-
-            cardView!!.setOnClickListener{
-
-                val selectedUser = tempJobSeekerList[position]
-                selectedUser.userProfileImg = ""
-                selectedUser.userProfileBannerImg = ""
-                val intent = Intent(this@NewUsersMessageActivity, ChatBoardActivity::class.java)
-                intent.putExtra("userObjectJ", selectedUser)
-                Log.d("NewUsersMessageActivity","selected user = $selectedUser")
-                startActivity(intent)
-            }
-            return view
-
         }
     }
-    private inner class RecruitersAdapter: BaseAdapter(){
-        override fun getCount(): Int {
-            return tempRecruiterList.size
-        }
 
-        override fun getItem(position: Int): Any {
-            return tempRecruiterList[position]
+    private fun openVoice() {
+        try {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            startActivityForResult(intent, 200)
+        } catch (e: ActivityNotFoundException) {
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://market.android.com/details?id=APP_PACKAGE_NAME")
+            )
+            startActivity(browserIntent)
         }
+    }
 
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            var view = convertView
-            if (view == null){
-                view = layoutInflater.inflate(R.layout.row_new_chat,null)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+            val matches = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val query = matches!![0]
+            if (matches.isNotEmpty()) {
+                updateUserList(query.orEmpty())
             }
-
-            val personName = view?.findViewById<MaterialTextView>(R.id.personName)
-            val tagLine = view?.findViewById<TextView>(R.id.tagLine)
-            val profileImg = view?.findViewById<ImageView>(R.id.profileImg)
-            val cardView = view?.findViewById<CardView>(R.id.cardView)
-            val user: UsersRecruiter = tempRecruiterList[position]
-            Log.d("userData", user.toString())
-
-            val userFullName = user.userFName +" "+user.userLName
-            Log.d("userName", userFullName)
-            personName!!.text = userFullName
-            tagLine!!.text = user.userTagLine
-            if (user.userProfileImgUri.isNotEmpty()){
-                Glide.with(profileImg!!.context).load(user.userProfileImgUri).into(profileImg)
-            }
-
-            cardView!!.setOnClickListener{
-                val selectedUser = tempRecruiterList[position]
-                selectedUser.userProfileImg = ""
-                selectedUser.userProfileBannerImg = ""
-                val intent = Intent(this@NewUsersMessageActivity, ChatBoardActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.putExtra("userObjectR", selectedUser)
-                Log.d("NewUsersMessageActivity","selected user = $selectedUser")
-                startActivity(intent)
-                finish()
-            }
-            return view
+        } else {
+            Toast.makeText(this, "Try Again!", Toast.LENGTH_SHORT).show()
         }
-    }*/
+    }
+
 }

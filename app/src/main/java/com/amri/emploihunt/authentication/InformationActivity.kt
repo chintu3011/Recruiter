@@ -56,7 +56,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.lang.reflect.Array
 
 
 class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{

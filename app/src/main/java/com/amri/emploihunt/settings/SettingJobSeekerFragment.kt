@@ -7,37 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.get
 import androidx.lifecycle.coroutineScope
-import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.LoginActivity
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentSettingBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
-import com.amri.emploihunt.model.LogoutMain
-import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruitFragment
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
-import com.amri.emploihunt.util.AUTH_TOKEN
-import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.PrefManager
-import com.amri.emploihunt.util.PrefManager.get
-import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.ROLE
-import com.amri.emploihunt.util.Utils
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
 

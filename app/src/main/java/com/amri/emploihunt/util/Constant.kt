@@ -42,6 +42,13 @@ const val ROLE = "role"
 const val JOB_SEEKER = 0
 const val RECRUITER = 1
 
+
+//chat msg types
+const val TXT_TYPE = 0
+const val PDF_TYPE = 1
+const val IMG_TYPE = 2
+const val EMG_TYPE = 3
+
 /*var IS_CHALLENGE_UPLOADED = false
 var IS_CHALLENGE_COMMENT_LIKE = false*/
 

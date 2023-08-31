@@ -36,17 +36,11 @@ import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityHomeJobSeekerBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
-import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.settings.SettingJobSeekerFragment
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.IS_LOGIN
-import com.amri.emploihunt.util.PrefManager
-import com.amri.emploihunt.util.PrefManager.get
-import com.amri.emploihunt.util.PrefManager.prefManager
-import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
@@ -54,6 +48,10 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.PrefManager.set
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -65,11 +63,10 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
     lateinit var binding : ActivityHomeJobSeekerBinding
     private lateinit var homeFragment: HomeJobSeekerFragment
     private var doubleBackToExitPressedOnce = false
-
     lateinit var prefmanger: SharedPreferences
     private var userType:Int ?= null
     private var userId:String ?= null
-    lateinit var prefManager: SharedPreferences
+
     private var currentFragment: Fragment ?= null
 
     companion object{
@@ -80,17 +77,21 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         super.onCreate(savedInstanceState)
         binding = ActivityHomeJobSeekerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        prefmanger = PrefManager.prefManager(this)
+
         val window: Window = this@HomeJobSeekerActivity.window
         window.statusBarColor = ContextCompat.getColor(this@HomeJobSeekerActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        prefManager = prefManager(this)
+
         if (!isGrantedPermission()) {
             requestPermissions()
         }
 
-        userType = intent.getIntExtra("role",0)
-        userId = intent.getStringExtra("userId")
+        prefmanger = prefManager(this)
+        userType = prefmanger.get(ROLE,0)
+        userId = prefmanger.get(FIREBASE_ID)
+
+        /*userType = intent.getIntExtra("role",0)
+        userId = intent.getStringExtra("userId")*/
         Log.d(TAG,"$userId::$userType")
 
         FilterParameterTransferClass.instance!!.setJobListener(this)
@@ -183,9 +184,9 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                     true
                 }
                 R.id.btnFilter -> {
-                    if(prefManager[ROLE, 0] == 0 || prefManager[ROLE, 0] == 1){
+                    if(userType == 0 || userType == 1){
                         val intent = Intent(this, FilterDataActivity::class.java)
-                        intent.putExtra("role",prefManager[ROLE, 0])
+                        intent.putExtra("role",userType)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                     }
@@ -471,12 +472,6 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                                     Toast.makeText(this@HomeJobSeekerActivity,getString(R.string.something_error),
                                         Toast.LENGTH_SHORT).show()
                                 }
-
-
-
-
-
-
                             }
 
                             override fun onError(anError: ANError?) {

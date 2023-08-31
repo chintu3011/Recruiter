@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +29,6 @@ import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeJobSeekerBinding
 import com.amri.emploihunt.databinding.RowPostDesignBinding
-import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.DataJobPreferenceList
@@ -39,6 +37,7 @@ import com.amri.emploihunt.model.GetJobPreferenceList
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IS_ADDED_JOB_PREFERENCE
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
@@ -61,6 +60,7 @@ FilterParameterTransferClass.FilterJobListListener {
     private lateinit var filteredDataList: MutableList<Jobs>
     private  lateinit var prefManager: SharedPreferences
     private var userType: Int? = null
+    private var userId: String? = null
     private lateinit var layoutManager: LinearLayoutManager
     var jobPreferenceList: ArrayList<DataJobPreferenceList> = ArrayList()
     private var adapter: SpinAdapter? = null
@@ -81,17 +81,19 @@ FilterParameterTransferClass.FilterJobListListener {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val bundle = arguments
+        prefManager = PrefManager.prefManager(requireContext())
+        userType = prefManager.get(ROLE,0)
+        userId = prefManager.get(FIREBASE_ID)
+        /*val bundle = arguments
         if (bundle != null) {
-            userType = bundle.getInt("userType")
-        }
-        Log.d(TAG,"User type : $userType")
+            userType = bundle.getInt("role")
+        }*/
+        Log.d(TAG,"$userId :: $userType")
+
         binding = FragmentHomeJobSeekerBinding.inflate(layoutInflater)
 
         binding.imgOpenDrawer.visibility = View.VISIBLE
         FilterParameterTransferClass.instance!!.setJobListener(this)
-
-        prefManager = PrefManager.prefManager(requireContext())
 
         jobPreferenceList.add(DataJobPreferenceList(0,0,"Select job preference","0","0",
             "0","0","0"))
@@ -504,6 +506,7 @@ FilterParameterTransferClass.FilterJobListListener {
                                 )
                                 retrieveJobData(0)
                             }
+                            retrieveJobData(0)
                         }
                     })
         } else {

@@ -116,6 +116,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:numColumns="1"
+        
         android:verticalSpacing="@dimen/_5sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/layProgressPagination"

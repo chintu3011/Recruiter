@@ -13,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,13 +21,11 @@ import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityMessengerHomeBinding
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.JOB_SEEKER
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
-import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
@@ -120,6 +117,7 @@ class MessengerHomeActivity : BaseActivity() {
         btnSearch = menu?.findItem(R.id.btnSearch)
         btnVoiceSearch = menu?.findItem(R.id.btnVoiceSearch)
         btnDelete = menu?.findItem(R.id.btnDelete)
+        btnDelete?.isVisible = false
         return true
     }
     private fun setMenuItemListener() {
@@ -191,51 +189,11 @@ class MessengerHomeActivity : BaseActivity() {
         }
     }
 
-/*    override fun onRestart() {
-        super.onRestart()
-        getUserType{
-            Log.d(TAG,"$userId :: $it")
-
-            replaceFragment(it)
-            binding.btnCreateNewChat.setOnClickListener {
-                val intent = Intent(this@MessengerHomeActivity, NewUsersMessageActivity::class.java)
-                intent.putExtra("userType",userType)
-                Log.d(TAG,"userType:$userType")
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
-                finish()
-
-            }
-        }
-    }*/
-    /*private fun getUserType(callback: (String) -> Unit) {
-        FirebaseDatabase.getInstance().getReference("Users").addListenerForSingleValueEvent( object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                for (userTypeSnapshot in snapshot.children) {
-                    val userReference = userTypeSnapshot.child(userId)
-
-                    if (userReference.exists()) {
-//                        userType = userTypeSnapshot.key.toString()
-//                        val userTypeValue = userReference.child("userType").getValue(String::class.java)
-                           callback(userTypeSnapshot.key.toString())
-                        break
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d(TAG,"error :: ${error.message}")
-            }
-        })
-    }*/
-
     private fun replaceFragment(userType: Int?){
         val fragment:Fragment
         val bundle:Bundle
         when (userType) {
-            0 -> {
+            JOB_SEEKER -> {
                 fragment = RecruiterUserListFragment()
                 bundle = Bundle()
                 bundle.putInt("role",userType)
@@ -248,7 +206,7 @@ class MessengerHomeActivity : BaseActivity() {
                     .commit()
                 currentFragment = fragment
             }
-            1 -> {
+            RECRUITER -> {
                 fragment = JobSeekerUsersListFragment()
                 bundle = Bundle()
                 bundle.putInt("role",userType)

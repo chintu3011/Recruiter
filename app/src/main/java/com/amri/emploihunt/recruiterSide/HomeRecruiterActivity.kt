@@ -40,10 +40,13 @@ import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.settings.SettingRecruiterFragment
 import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -80,10 +83,15 @@ class HomeRecruiterActivity : BaseActivity(),
         if (!isGrantedPermission()) {
             requestPermissions()
         }
-        prefmanger = PrefManager.prefManager(this)
-        userType = intent.getIntExtra("role", 1)
-        userId = intent.getStringExtra("userId")
-        Log.d(TAG, "$userId::$userType")
+
+        prefmanger = prefManager(this)
+
+        userType = prefmanger.get(ROLE,0)
+        userId = prefmanger.get(FIREBASE_ID)
+
+        /*userType = intent.getIntExtra("role",1)
+        userId = intent.getStringExtra("userId")*/
+        Log.d(TAG,"$userId::$userType")
 
         FilterParameterTransferClass.instance!!.setApplicationListener(this)
 
@@ -204,7 +212,6 @@ class HomeRecruiterActivity : BaseActivity(),
                     logoutUser()
                     true
                 }
-
                 else -> {
                     false
                 }

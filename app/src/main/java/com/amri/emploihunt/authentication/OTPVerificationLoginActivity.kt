@@ -31,16 +31,17 @@ import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IS_LOGIN
+import com.amri.emploihunt.util.JOB_SEEKER
 import com.amri.emploihunt.util.MOB_NO
 import com.amri.emploihunt.util.OS_VERSION
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,23 +137,67 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
     private fun verifyOtp() {
         showProgressDialog("Please wait....")
         val credential = PhoneAuthProvider.getCredential(storedVerificationId,binding.inputOTP.text.toString())
-        navigateToNextActivity(credential)
+
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = task.result?.user
+                    val uid = user?.uid
+                    Log.d(TAG, "userId: $uid")
+                    /*updateDataStore(uid)*/
+                    callUSerLogin(uid)
+                    /*when (userType) {
+                        "Job Seeker" -> {
+                            makeToast("Login successful!", 0)
+                            val intent = Intent(
+                                this@OTPVerificationLoginActivity,
+                                HomeJobActivity::class.java
+                            )
+                            intent.putExtra("phoneNo", txtPhoneNo.text.toString())
+                            intent.putExtra("userType", userType)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
+                            finish()
+                        }
+
+                        "Recruiter" -> {
+                            makeToast("Login successful!", 0)
+                            val intent = Intent(
+                                this@OTPVerificationLoginActivity,
+                                HomeRecruiterActivity::class.java
+                            )
+                            intent.putExtra("phoneNo", txtPhoneNo.text.toString())
+                            intent.putExtra("userType", userType)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
+                            finish()
+                        }
+                        else -> {
+                            Log.d(TAG, "navigateToNextActivity :: User not found.")
+                            makeToast("User not found.", 0)
+                        }
+                    }*/
+
+                } else {
+                    Log.d(TAG, "Login failed: ${task.exception}")
+                    makeToast("Login failed: ${task.exception}", 0)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        makeToast("Try again", 0)
+                    }, 1000)
+                }
+            }
+
     }
-
-
-
-    private fun navigateToNextActivity(credential: PhoneAuthCredential) {
-
-
+    /*private fun navigateToNextActivity(credential: PhoneAuthCredential) {
             mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = task.result?.user
                         val uid = user?.uid
                         Log.d(TAG, "userId: $uid")
-                        /*updateDataStore(uid)*/
+                        *//*updateDataStore(uid)*//*
                         callUSerLogin(uid)
-                        /*when (userType) {
+                        *//*when (userType) {
                             "Job Seeker" -> {
                                 makeToast("Login successful!", 0)
                                 val intent = Intent(
@@ -182,7 +227,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                 Log.d(TAG, "navigateToNextActivity :: User not found.")
                                 makeToast("User not found.", 0)
                             }
-                        }*/
+                        }*//*
 
                     } else {
                         Log.d(TAG, "Login failed: ${task.exception}")
@@ -192,10 +237,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         }, 1000)
                     }
                 }
-
-
-
-    }
+    }*/
 
     private fun callUSerLogin(uid: String?) {
 
@@ -221,101 +263,113 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                 response?.let {
                                     //hideProgressDialog()
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        if (response.data.user.iRole == 0){
-                                            val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
-                                            jobSeekerProfileInfo.storeBasicProfileData(
-                                                response.data.user.vFirstName,
-                                                response.data.user.vLastName,
-                                                response.data.user.vMobile,
-                                                response.data.user.vEmail,
-                                                response.data.user.tTagLine,
-                                                response.data.user.vCurrentCompany
-                                            )
-                                            jobSeekerProfileInfo.storeAboutData(
-                                                response.data.user.tBio,
-                                                response.data.user.vQualification
-                                            )
-                                            jobSeekerProfileInfo.storeExperienceData(
-                                                "",
-                                                response.data.user.vDesignation,
-                                                "",
-                                                ""
-                                            )
-                                            jobSeekerProfileInfo.storeResumeData(
-                                                "",
-                                                response.data.user.tResumeUrl,
-                                            )
-                                            jobSeekerProfileInfo.storeJobPreferenceData(
-                                                "",
-                                                "",
-                                                response.data.user.vCity,
-                                                ""
-                                            )
-                                            prefManager[IS_LOGIN] = true
-                                            prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
-                                            prefManager[ROLE] = response.data.user.iRole
-                                            prefManager[AUTH_TOKEN] = response.data.tAuthToken
-                                            val intent = Intent(
-                                                this@OTPVerificationLoginActivity,
-                                                HomeJobSeekerActivity::class.java
-                                            )
-                                            intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())
-                                            intent.putExtra("role",response.data.user.iRole)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            startActivity(intent)
-                                            overridePendingTransition(
-                                                R.anim.flip_in,
-                                                R.anim.flip_out
-                                            )
-                                            finish()
-                                        }else{
-                                            val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationLoginActivity)
-                                            recruiterProfileInfo.storeBasicProfileData(
-                                                response.data.user.vFirstName,
-                                                response.data.user.vLastName,
-                                                response.data.user.vMobile,
-                                                response.data.user.vEmail,
-                                                response.data.user.tTagLine,
-                                                response.data.user.vCurrentCompany
-                                            )
-                                            recruiterProfileInfo.storeAboutData(
-                                                response.data.user.vDesignation,
-                                                "",
-                                                "",
-                                                response.data.user.tBio,
-                                                response.data.user.vDesignation,
-                                                response.data.user.vWorkingMode
-                                            )
-                                            recruiterProfileInfo.storeProfileImg(
-                                                response.data.user.tProfileUrl
-                                            )
-                                            recruiterProfileInfo.storeProfileBannerImg(
-                                                ""
-                                            )
-                                            val intent = Intent(
-                                                this@OTPVerificationLoginActivity,
-                                                HomeRecruiterActivity::class.java
-                                            )
-                                            prefManager[IS_LOGIN] = true
-                                            prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
-                                            prefManager[ROLE] = response.data.user.iRole
-                                            prefManager[AUTH_TOKEN] = response.data.tAuthToken
-                                            intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())
-                                            intent.putExtra("role", response.data.user.iRole)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            startActivity(intent)
-                                            overridePendingTransition(
-                                                R.anim.flip_in,
-                                                R.anim.flip_out
-                                            )
-                                            finish()
+                                        when (response.data.user.iRole) {
+                                            JOB_SEEKER -> {
+                                                val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
+                                                jobSeekerProfileInfo.storeBasicProfileData(
+                                                    response.data.user.vFirstName,
+                                                    response.data.user.vLastName,
+                                                    response.data.user.vMobile,
+                                                    response.data.user.vEmail,
+                                                    response.data.user.tTagLine,
+                                                    response.data.user.vCurrentCompany
+                                                )
+                                                jobSeekerProfileInfo.storeAboutData(
+                                                    response.data.user.tBio,
+                                                    response.data.user.vQualification
+                                                )
+                                                jobSeekerProfileInfo.storeExperienceData(
+                                                    "",
+                                                    response.data.user.vDesignation,
+                                                    "",
+                                                    ""
+                                                )
+                                                jobSeekerProfileInfo.storeResumeData(
+                                                    "",
+                                                    response.data.user.tResumeUrl,
+                                                )
+                                                jobSeekerProfileInfo.storeJobPreferenceData(
+                                                    "",
+                                                    "",
+                                                    response.data.user.vCity,
+                                                    ""
+                                                )
+                                                prefManager[IS_LOGIN] = true
+                                                prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
+                                                prefManager[ROLE] = response.data.user.iRole
+                                                prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                val intent = Intent(
+                                                    this@OTPVerificationLoginActivity,
+                                                    HomeJobSeekerActivity::class.java
+                                                )
+                                                /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
+                                                intent.putExtra("userId",response.data.user.vFirebaseId)
+                                                intent.putExtra("role",response.data.user.iRole)
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                startActivity(intent)
+                                                overridePendingTransition(
+                                                    R.anim.flip_in,
+                                                    R.anim.flip_out
+                                                )
+                                                makeToast("Login successful!", 0)
+
+                                                finish()
+
+                                            }
+                                            RECRUITER -> {
+                                                val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationLoginActivity)
+                                                recruiterProfileInfo.storeBasicProfileData(
+                                                    response.data.user.vFirstName,
+                                                    response.data.user.vLastName,
+                                                    response.data.user.vMobile,
+                                                    response.data.user.vEmail,
+                                                    response.data.user.tTagLine,
+                                                    response.data.user.vCurrentCompany
+                                                )
+                                                recruiterProfileInfo.storeAboutData(
+                                                    response.data.user.vDesignation,
+                                                    "",
+                                                    "",
+                                                    response.data.user.tBio,
+                                                    response.data.user.vDesignation,
+                                                    response.data.user.vWorkingMode
+                                                )
+                                                recruiterProfileInfo.storeProfileImg(
+                                                    response.data.user.tProfileUrl
+                                                )
+                                                recruiterProfileInfo.storeProfileBannerImg(
+                                                    ""
+                                                )
+                                                val intent = Intent(
+                                                    this@OTPVerificationLoginActivity,
+                                                    HomeRecruiterActivity::class.java
+                                                )
+                                                prefManager[IS_LOGIN] = true
+                                                prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
+                                                prefManager[ROLE] = response.data.user.iRole
+                                                prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
+                                                intent.putExtra("userId",response.data.user.vFirebaseId)
+                                                intent.putExtra("role", response.data.user.iRole)
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                startActivity(intent)
+                                                overridePendingTransition(
+                                                    R.anim.flip_in,
+                                                    R.anim.flip_out
+                                                )
+                                                makeToast("Login successful!", 0)
+
+                                                finish()
+                                            }
+                                            else -> {
+                                                makeToast(getString(R.string.something_error),0)
+                                                Log.d(TAG, "onResponse: incorrect user type : ${response.data.user.iRole}")
+                                                makeToast("Login unsuccessful!", 0)
+
+                                            }
                                         }
-
                                     }
-
                                     hideProgressDialog()
-                                    makeToast("Login successful!", 0)
-
                                 }
                                 //hideProgressDialog()
                             } catch (e: Exception) {
@@ -343,8 +397,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
         }else{
             Utils.showNoInternetBottomSheet(this,this)
         }
-
-
     }
     /*private fun updateDataStore(uid: String?) {
 

@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentJobSeekerUsersListBinding
-import com.amri.emploihunt.jobSeekerSide.UsersJobSeeker
-import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.GetUserById
 import com.amri.emploihunt.model.LatestChatMsg
 import com.amri.emploihunt.model.MessageData
@@ -36,7 +35,6 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import java.util.Locale
 
 class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
@@ -158,6 +156,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
     /** need attention */
     /** Need to create a function similar to below for latest msg listener */
     private fun listenerForLatestMsg(completion: () -> Unit) {
+        binding.progressCircular.visibility = VISIBLE
         latestMessageList.clear()
         filterLatestMessageList.clear()
         if(fromId != null){
@@ -168,72 +167,14 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                     override fun onChildAdded(chatSnapshot: DataSnapshot, previousChildName: String?) {
                         /*Log.d(TAG,"previousChildName : $previousChildName")*/
                         val chatMessage = chatSnapshot.getValue(MessageData::class.java)
-                        Log.d("####", "onChildAdded: ${chatMessage!!.fromId}")
-                        /***/
+
                         if (chatMessage != null) {
+                            Log.d("####", "onChildAdded: ${chatMessage.fromId}")
+                            /***/
                             retrieveJsData(chatMessage)
                         }
-                        sortMainList()
+                        /*sortMainList()*/
                         completion()
-
-                        /*FirebaseDatabase.getInstance().getReference("Users")
-                            .child("Job Seeker")
-                            .addChildEventListener(object: ChildEventListener {
-                                override fun onChildAdded(
-                                    usersSnapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-
-                                    if(chatMessage?.toId == usersSnapshot.key.toString()){
-                                        chatMessage.let {
-//                                        filterLatestMessageList.add(chatMessage)
-                                            latestMessageList.add(chatMessage)
-//                                        sortFilterList()
-                                            sortMainList()
-                                        }
-                                        Log.d("messageData", chatMessage.toId.toString())
-                                    }
-
-//                                Log.d(TAG, chatSnapshot.key.toString())
-                                    completion()
-                                }
-
-                                override fun onChildChanged(
-                                    usersSnapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-                                    if(chatMessage?.toId == usersSnapshot.key.toString()){
-                                        chatMessage.let {
-//                                        filterLatestMessageList.add(chatMessage)
-                                            latestMessageList.add(chatMessage)
-//                                        sortFilterList()
-                                            sortMainList()
-                                            latestMessagesMap[chatSnapshot.key!!] = chatMessage
-                                            refreshRecyclerViewMessages()
-                                        }
-                                        Log.d("messageData", chatMessage.toId.toString())
-                                    }
-
-//                                Log.d(TAG, chatSnapshot.key.toString())
-                                    completion()
-                                }
-
-                                override fun onChildRemoved(snapshot: DataSnapshot) {
-
-                                }
-
-                                override fun onChildMoved(
-                                    snapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-
-                                }
-
-                            })*/
 
                     }
 
@@ -242,71 +183,12 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                         val chatMessage = chatSnapshot.getValue(MessageData::class.java)
                         /***/
                         if (chatMessage != null) {
+                            Log.d("####", "onChildAdded: ${chatMessage.fromId}")
+                            /***/
                             retrieveJsData(chatMessage)
                         }
-//                        sortMainList()
+                        /*sortMainList()*/
                         completion()
-/*                        FirebaseDatabase.getInstance().getReference("Users")
-                            .child("Job Seeker")
-                            .addChildEventListener(object: ChildEventListener {
-                                override fun onChildAdded(
-                                    usersSnapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-
-                                    if(chatMessage?.toId == usersSnapshot.key.toString()){
-                                        chatMessage.let {
-//                                        filterLatestMessageList.add(chatMessage)
-                                            latestMessageList.add(chatMessage)
-//                                        sortFilterList()
-                                            sortMainList()
-                                            *//*latestMessagesMap[chatSnapshot.key!!] = chatMessage
-                                            refreshRecyclerViewMessages()*//*
-                                        }
-                                        Log.d("messageData", chatMessage.toId.toString())
-                                    }
-
-                                    Log.d(TAG, chatSnapshot.key.toString())
-                                    completion()
-                                }
-
-                                override fun onChildChanged(
-                                    usersSnapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-                                    if(chatMessage?.toId == usersSnapshot.key.toString()){
-                                        chatMessage.let {
-//                                        filterLatestMessageList.add(chatMessage)
-                                            latestMessageList.add(chatMessage)
-//                                        sortFilterList()
-                                            sortMainList()
-                                            *//*latestMessagesMap[chatSnapshot.key!!] = chatMessage
-                                            refreshRecyclerViewMessages()*//*
-                                        }
-                                        Log.d("messageData", chatMessage.toId.toString())
-                                    }
-
-                                    Log.d(TAG, chatSnapshot.key.toString())
-                                    completion()
-                                }
-
-                                override fun onChildRemoved(snapshot: DataSnapshot) {
-
-                                }
-
-                                override fun onChildMoved(
-                                    snapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {
-
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-
-                                }
-
-                            })*/
-
 
                     }
 
@@ -335,12 +217,6 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
     private fun retrieveJsData(chatMessage: MessageData) {
 
         if (Utils.isNetworkAvailable(requireContext())) {
-            /*if (currentPage != 1 && currentPage > totalPages) {
-                return
-            }
-            if (currentPage != 1) binding.layProgressPagination.root.visibility = View.VISIBLE
-
-            if (currentPage == 1) binding.progressCircular.visibility = View.VISIBLE*/
             val chatPartnerId:String = if(chatMessage.fromId == this.fromId){
                 chatMessage.toId!!
             } else{
@@ -358,28 +234,20 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                         override fun onResponse(response: GetUserById?) {
                             try {
                                 response?.let {
-//                                    hideProgressDialog()
+                                    hideProgressDialog()
                                     Log.d("###", "onResponse: ${it.data}")
 
-                                    filterLatestMessageList.add(LatestChatMsg(chatMessage,response.data))
-                                    latestMessageList.add(LatestChatMsg(chatMessage,response.data))
+                                    updateOrAddLatestMessage(/*filterLatestMessageList,*/latestMessageList,LatestChatMsg(chatMessage,response.data))
+
+                                    sortMainList()
+                                    /*filterLatestMessageList.add(LatestChatMsg(chatMessage,response.data))
+                                    latestMessageList.add(LatestChatMsg(chatMessage,response.data))*/
 //                                        sortFilterList()
                                     Log.d("messageData", chatMessage.toId.toString())
 
                                     adapter.notifyDataSetChanged()
+                                    binding.progressCircular.visibility = GONE
 
-                                    /*for(user in it.data){
-                                        if(chatMessage?.toId == user.vFirebaseId){
-                                            chatMessage.let {
-//                                        filterLatestMessageList.add(chatMessage)
-                                                latestMessageList.add(chatMessage)
-//                                        sortFilterList()
-                                                sortMainList()
-                                            }
-                                            Log.d("messageData", chatMessage.toId.toString())
-                                        }
-
-                                    }*/
                                     /*if (latestMessageList.isNotEmpty()) {
                                         totalPages = it.total_pages
                                         adapter.notifyDataSetChanged()
@@ -389,6 +257,8 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                                     }*/
                                 }
                             } catch (e: Exception) {
+                                hideProgressDialog()
+                                binding.progressCircular.visibility = GONE
                                 Log.e("#####", "onResponse: catch: ${e.message}")
                             }
                         }
@@ -404,12 +274,41 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                                     binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
                                 }*/
                             }
+                            binding.progressCircular.visibility = GONE
                             hideProgressDialog()
                         }
                     })
         } else {
+            hideProgressDialog()
+            binding.progressCircular.visibility = GONE
             Utils.showNoInternetBottomSheet(requireContext(),requireActivity())
 //            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+        }
+    }
+    
+    fun updateOrAddLatestMessage(
+        /*filterList: MutableList<LatestChatMsg>,*/
+        mainList:MutableList<LatestChatMsg>,
+        newMessage: LatestChatMsg
+    ) {
+        /*val existingIndexF = filterList.indexOfFirst {
+            it.user.vFirebaseId == newMessage.user.vFirebaseId
+        }
+        *//*Log.d(TAG, "updateOrAddLatestMessage: existingIndexF : $existingIndexF")*//*
+        if (existingIndexF != -1) {
+            filterList[existingIndexF] = newMessage
+        } else {
+            filterList.add(newMessage)
+        }*/
+
+        val existingIndexM = mainList.indexOfFirst {
+            it.user.vFirebaseId == newMessage.user.vFirebaseId
+        }
+        /*Log.d(TAG, "updateOrAddLatestMessage: existingIndexM : $existingIndexM")*/
+        if (existingIndexM != -1) {
+            mainList[existingIndexM] = newMessage
+        } else {
+            mainList.add(newMessage)
         }
     }
 
@@ -426,6 +325,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
         )
 
         filterLatestMessageList.addAll(latestMessageList)
+        adapter.notifyDataSetChanged()
 
     }
 
@@ -443,14 +343,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
 
     }*/
 
-    /*    private fun refreshRecyclerViewMessages() {
-            latestMessageList.clear()
-            filterLatestMessageList.clear()
-            latestMessagesMap.values.forEach {
-                filterLatestMessageList.add(it)
-            }
-            latestMessageList.addAll(filterLatestMessageList)
-        }*/
+
 
     @SuppressLint("NotifyDataSetChanged")
     override fun updateUserList(query: String) {

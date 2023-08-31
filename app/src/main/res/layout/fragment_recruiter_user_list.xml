@@ -11,11 +11,33 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/friends_list"
+        android:verticalSpacing="@dimen/_5sdp"
+
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:flow_horizontalGap="@dimen/_3sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layProgressPagination"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <include
+        android:id="@+id/layProgressPagination"
+        layout="@layout/layout_progress_pagination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/colorPrimary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

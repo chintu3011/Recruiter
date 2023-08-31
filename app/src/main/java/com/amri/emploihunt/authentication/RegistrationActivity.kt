@@ -17,7 +17,6 @@ import android.view.View.*
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R

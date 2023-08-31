@@ -26,17 +26,17 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
 import com.amri.emploihunt.databinding.SinglerowjsBinding
-import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
 import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.model.User
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -53,6 +53,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
     private lateinit var dataList: MutableList<User>
     private lateinit var filteredDataList: MutableList<User>
     private var userType: Int? = null
+    private var userId: String? = null
 
     private lateinit var layoutManager: LinearLayoutManager
 
@@ -74,18 +75,22 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         savedInstanceState: Bundle?
     ): View {
 
-        val bundle = arguments
+        /*val bundle = arguments
         if (bundle != null) {
             userType = bundle.getInt("userType")
-        }
-        Log.d(HomeJobSeekerFragment.TAG,"User type : $userType")
+        }*/
+        prefManager = prefManager(requireContext())
+        userType = prefManager.get(ROLE,0)
+        userId = prefManager.get(FIREBASE_ID)
+
+        Log.d(TAG,"User type : $userType")
 
         // Inflate the layout for this fragment
         binding = FragmentHomeRecruitBinding.inflate(layoutInflater)
 
         FilterParameterTransferClass.instance!!.setApplicationListener(this)
 
-        prefManager = prefManager(requireContext())
+
         database = FirebaseDatabase.getInstance().reference
         binding.imgOpenDrawer.visibility = View.VISIBLE
         initDrawersData()

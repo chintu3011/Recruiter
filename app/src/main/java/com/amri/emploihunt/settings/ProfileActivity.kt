@@ -27,7 +27,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat

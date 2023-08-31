@@ -26,8 +26,6 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
     }
-
-
     fun showProgressDialog(msg: String) {
         try {
             val builder = AlertDialog.Builder(this)

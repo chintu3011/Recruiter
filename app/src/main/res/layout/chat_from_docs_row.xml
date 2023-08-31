@@ -11,25 +11,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/chat_msg_to_bg"
+        android:background="@drawable/chat_msg_from_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingVertical="@dimen/_3sdp"
-
-        >
+        app:layout_constraintEnd_toEndOf="parent">
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/msg"
+            android:id="@+id/pdfName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="normal"
+            android:background="#1E2D30"
+            android:paddingVertical="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:lines="1"
+            android:textAlignment="textStart"
+            android:ellipsize="end" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnOpenDoc"
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_75sdp"
+            app:srcCompat="@drawable/pdf_view_icon"
+            android:foreground="@drawable/glass_effect_pdf_view"
+            android:scaleType="fitXY"
             android:elevation="1dp"
             android:maxWidth="@dimen/_200sdp"
-            android:padding="@dimen/_10sdp"
-            android:text="@string/short_lorem_ipsum"
-            android:textAlignment="textStart"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            android:textColor="@color/white"
-            android:textStyle="normal" />
+            android:padding="@dimen/_10sdp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/timeStamp"
@@ -37,8 +47,10 @@
             android:layout_height="wrap_content"
             android:text="@string/hh_mm_ss"
             android:textAlignment="textEnd"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:textColor="#A3FFFFFF" android:layout_marginHorizontal="@dimen/_6sdp"/>
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="#A3FFFFFF"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"/>
     </LinearLayout>
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"

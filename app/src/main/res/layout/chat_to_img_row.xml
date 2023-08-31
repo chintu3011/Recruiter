@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_2sdp">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/chat_msg_to_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnShowImg"
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_75sdp"
+            app:srcCompat="@drawable/default_img"
+            android:foreground="@drawable/glass_effect_pdf_view"
+            android:scaleType="centerInside"
+            android:elevation="1dp"
+            android:maxWidth="@dimen/_200sdp"
+            android:padding="@dimen/_10sdp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hh_mm_ss"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="#A3FFFFFF" android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>
