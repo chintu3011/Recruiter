@@ -79,7 +79,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         Log.d(TAG,"chat board started")
 
         val window: Window = this@ChatBoardActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@ChatBoardActivity,R.color.theme_blue)
+        window.statusBarColor = ContextCompat.getColor(this@ChatBoardActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         prefManager = prefManager(this)
