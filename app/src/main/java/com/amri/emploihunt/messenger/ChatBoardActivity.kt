@@ -122,7 +122,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             userPhoneNumber = user!!.vMobile
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        adapter = ChatAdapter(messageList,fromId)
+        adapter = ChatAdapter(this,messageList,fromId)
         adapter.setHasStableIds(true)
         binding.recyclerView.adapter = adapter
         setOnClickListener()

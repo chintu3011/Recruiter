@@ -899,6 +899,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
                                         prefManager[ROLE] = 1
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
 
                                     }
@@ -971,6 +972,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[IS_LOGIN] = true
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[ROLE] = 1
+                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
 
                                     }

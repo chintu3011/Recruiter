@@ -1,22 +1,39 @@
 package com.amri.emploihunt.messenger
 
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.AsyncTask
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.databinding.PdfViewerDialogBinding
 import com.amri.emploihunt.model.MessageData
 import com.amri.emploihunt.util.IMG_TYPE
 import com.amri.emploihunt.util.PDF_TYPE
 import com.amri.emploihunt.util.TXT_TYPE
+import com.amri.emploihunt.util.Utils
 import com.bumptech.glide.Glide
+import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
+import java.io.BufferedInputStream
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 class ChatAdapter(
+    context: Context,
     private val messages: List<MessageData>,
     private val userId: String?
 ) :
@@ -32,6 +49,7 @@ class ChatAdapter(
         private const val VIEW_TYPE_IMG_FROM = 5
         private const val VIEW_TYPE_IMG_TO = 6
     }
+    private var dialog: Dialog? = null
 
 
     override fun getItemViewType(position: Int): Int {
@@ -127,9 +145,17 @@ class ChatAdapter(
             }
             is FromPdfViewHolder -> {
                 holder.bind(message)
+                holder.itemView.setOnClickListener {
+                    showDialog(holder.itemView.context,false,message.docUri)
+
+                }
             }
             is ToPdfViewHolder -> {
                 holder.bind(message)
+                holder.itemView.setOnClickListener {
+                    showDialog(holder.itemView.context, true, message.docUri)
+                }
+
             }
             is FromImgViewHolder -> {
                 holder.bind(message)
@@ -138,6 +164,7 @@ class ChatAdapter(
                 holder.bind(message)
             }
         }
+
 
     }
 
@@ -170,12 +197,15 @@ class ChatAdapter(
     inner class FromPdfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private var pdfName: TextView = itemView.findViewById(R.id.pdfName)
         private var timeStamp: TextView = itemView.findViewById(R.id.timeStamp)
+
         fun bind(messageData: MessageData){
             pdfName.text = messageData.message
             timeStamp.text = messageData.timeStamp
 
             val pdfUri = messageData.docUri
+
         }
+
 
     }
     inner class ToPdfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -211,5 +241,87 @@ class ChatAdapter(
             val imgUri = messageData.docUri
         }
 
+    }
+    private fun showDialog(context: Context, isOnline: Boolean, docUri: String?) {
+        try {
+
+
+            val builder = AlertDialog.Builder(context)
+            val bindingDialog = PdfViewerDialogBinding.inflate(LayoutInflater.from(context))
+
+            builder.setView(bindingDialog.root)
+            if (isOnline){
+                RetrievePDFFromURL(bindingDialog.idPDFView,bindingDialog.progressCircular).execute("https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf")
+
+            }else{
+                context.contentResolver.takePersistableUriPermission(
+                    Uri.parse(docUri),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                val resumePdf = Utils.convertUriToPdfFile(context, Uri.parse(docUri))!!
+                bindingDialog.idPDFView.fromFile(resumePdf).load()
+            }
+
+            dialog = builder.create()
+            dialog?.let {
+                it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                it.show()
+            }
+            bindingDialog.closeIv.setOnClickListener {
+                (dialog as AlertDialog).dismiss()
+            }
+        } catch (e: Exception) {
+            Log.e("#####", "showProgressDialog exception: ${e.message}")
+        }
+    }
+    class RetrievePDFFromURL(pdfView: PDFView, processBar: ProgressBar) :
+        AsyncTask<String, Void, InputStream>() {
+
+        // on below line we are creating a variable for our pdf view.
+        val mypdfView: PDFView = pdfView
+
+        val processBar: ProgressBar = processBar
+
+        // on below line we are calling our do in background method.
+        override fun doInBackground(vararg params: String?): InputStream? {
+            // on below line we are creating a variable for our input stream.
+            var inputStream: InputStream? = null
+            try {
+                // on below line we are creating an url
+                // for our url which we are passing as a string.
+                val url = URL(params.get(0))
+
+                // on below line we are creating our http url connection.
+                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+
+                // on below line we are checking if the response
+                // is successful with the help of response code
+                // 200 response code means response is successful
+                if (urlConnection.responseCode == 200) {
+                    // on below line we are initializing our input stream
+                    // if the response is successful.
+                    inputStream = BufferedInputStream(urlConnection.inputStream)
+                }
+            }
+            // on below line we are adding catch block to handle exception
+            catch (e: Exception) {
+                // on below line we are simply printing
+                // our exception and returning null
+                e.printStackTrace()
+                return null;
+            }
+            // on below line we are returning input stream.
+            return inputStream;
+        }
+
+        // on below line we are calling on post execute
+        // method to load the url in our pdf view.
+        override fun onPostExecute(result: InputStream?) {
+            // on below line we are loading url within our
+            // pdf view on below line using input stream.
+            mypdfView.fromStream(result).load()
+            processBar.visibility = View.GONE
+
+        }
     }
 }

@@ -159,6 +159,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
 //                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
             }*/
             dataList.clear()
+            filteredDataList.clear()
             currentPage = 1
             retrieveJsData()
             binding.swipeRefreshLayout.isRefreshing = false

@@ -20,10 +20,9 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/btnShowImg"
             android:layout_width="@dimen/_160sdp"
-            android:layout_height="@dimen/_75sdp"
-            app:srcCompat="@mipmap/ic_logo"
+            android:layout_height="@dimen/_120sdp"
+            app:srcCompat="@drawable/baseline_image_24"
             android:foreground="@drawable/glass_effect_pdf_view"
-            android:scaleType="centerInside"
             android:elevation="1dp"
             android:maxWidth="@dimen/_200sdp"
             android:padding="@dimen/_10sdp" />

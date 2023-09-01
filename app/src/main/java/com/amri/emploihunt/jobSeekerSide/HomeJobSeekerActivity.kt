@@ -383,6 +383,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
             )
         val isGranted2 =
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+
         return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
     }
 

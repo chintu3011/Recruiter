@@ -4,31 +4,38 @@
     <item
         android:id="@+id/btnVideoCall"
         android:icon="@drawable/ic_v_call"
+        android:visible="false"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="Video Call" />
     <item
         android:id="@+id/btnCall"
         android:icon="@drawable/ic_call"
+        android:visible="false"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="Voice Call" />
 
     <item android:id="@+id/btnProfile"
         android:title="Profile"
+        android:visible="false"
         android:icon="@drawable/ic_profile"
-        app:showAsAction="collapseActionView"/>
+        android:iconTint="@color/white"
+        app:showAsAction="ifRoom|collapseActionView"/>
     <item
         android:id="@+id/btnStar"
         android:title="Star"
+        android:visible="false"
         android:icon="@drawable/ic_star"
         app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/btnDelete"
         android:icon="@drawable/ic_delete"
         android:title="Delete"
+        android:visible="false"
         app:showAsAction="collapseActionView"/>
     <item
         android:id="@+id/btnReportBlock"
         android:title="Report / Block"
         android:icon="@drawable/ic_report"
+        android:visible="false"
         app:showAsAction="collapseActionView"/>
 </menu>

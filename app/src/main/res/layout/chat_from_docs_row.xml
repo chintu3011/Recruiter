@@ -23,7 +23,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
             android:textStyle="normal"
-            android:background="#1E2D30"
+            android:background="@color/blue"
             android:paddingVertical="@dimen/_2sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:lines="1"
@@ -36,8 +36,9 @@
             android:layout_height="@dimen/_75sdp"
             app:srcCompat="@drawable/pdf_view_icon"
             android:foreground="@drawable/glass_effect_pdf_view"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:elevation="1dp"
+            android:tint="@color/white"
             android:maxWidth="@dimen/_200sdp"
             android:padding="@dimen/_10sdp" />
 

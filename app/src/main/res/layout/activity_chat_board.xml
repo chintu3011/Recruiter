@@ -52,14 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_85sdp"
                 android:layout_margin="0dp"
-                android:background="@color/theme_blue"
+                android:background="@color/colorPrimary"
                 android:elevation="@dimen/_5sdp"
                 android:gravity="top"
                 android:padding="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/nav_menu_chat"
                 app:title="Person Name"
                 app:titleMargin="@dimen/_10sdp"
                 app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
@@ -116,7 +115,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/btnAttach"
             android:drawableStart="@drawable/ic_add_reaction"
-            android:drawableTint="@color/theme_blue"
+            android:drawableTint="@color/blue"
             android:drawablePadding="@dimen/_5sdp"
             android:hint="Message"
             android:textColor="#011132"
@@ -132,7 +131,7 @@
             android:layout_toStartOf="@+id/btnCamara"
             android:layout_marginEnd="@dimen/_5sdp"
             app:srcCompat="@drawable/ic_attach"
-            android:tint="@color/theme_blue"/>
+            android:tint="@color/blue"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/btnCamara"
             android:layout_width="30dp"
@@ -151,7 +150,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:src="@drawable/ic_voice"
         app:fabCustomSize="@dimen/_40sdp"
-        android:backgroundTint="@color/theme_blue"
+        android:backgroundTint="@color/blue"
         app:tint="@color/white"
         app:layout_constraintStart_toEndOf="@id/messageLayout"
         app:layout_constraintTop_toTopOf="@id/messageLayout"
@@ -165,7 +164,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:src="@drawable/ic_send"
         app:fabCustomSize="@dimen/_40sdp"
-        android:backgroundTint="@color/theme_blue"
+        android:backgroundTint="@color/blue"
         android:backgroundTintMode="screen"
         app:tint="@color/white"
         app:layout_constraintStart_toEndOf="@id/messageLayout"
@@ -188,7 +187,7 @@
     <!--                app:layout_constraintEnd_toEndOf="parent"-->
     <!--                app:layout_constraintStart_toStartOf="parent"-->
     <!--                app:layout_constraintTop_toTopOf="parent"-->
-    <!--                app:cardBackgroundColor="@color/theme_blue"-->
+    <!--                app:cardBackgroundColor="@color/blue"-->
     <!--                app:shapeAppearanceOverlay="@style/SpecificCornerCut"-->
     <!--                >-->
     <!--                <androidx.appcompat.widget.Toolbar-->
