@@ -21,7 +21,7 @@
             android:id="@+id/btnShowImg"
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_75sdp"
-            app:srcCompat="@drawable/default_img"
+            app:srcCompat="@mipmap/ic_logo"
             android:foreground="@drawable/glass_effect_pdf_view"
             android:scaleType="centerInside"
             android:elevation="1dp"

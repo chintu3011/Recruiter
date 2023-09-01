@@ -40,6 +40,7 @@ import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.toast
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
@@ -311,7 +312,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     R.anim.flip_in,
                                                     R.anim.flip_out
                                                 )
-                                                makeToast("Login successful!", 0)
+
 
                                                 finish()
 
@@ -357,14 +358,14 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     R.anim.flip_in,
                                                     R.anim.flip_out
                                                 )
-                                                makeToast("Login successful!", 0)
+
 
                                                 finish()
                                             }
                                             else -> {
-                                                makeToast(getString(R.string.something_error),0)
+
                                                 Log.d(TAG, "onResponse: incorrect user type : ${response.data.user.iRole}")
-                                                makeToast("Login unsuccessful!", 0)
+
 
                                             }
                                         }

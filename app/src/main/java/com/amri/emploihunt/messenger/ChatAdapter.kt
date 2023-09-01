@@ -194,7 +194,7 @@ class ChatAdapter(
         private val btnShowImg:ShapeableImageView = itemView.findViewById(R.id.btnShowImg)
         private var timeStamp: TextView = itemView.findViewById(R.id.timeStamp)
         fun bind(messageData: MessageData){
-            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.drawable.default_img).into(btnShowImg)
+            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.mipmap.ic_logo).into(btnShowImg)
             timeStamp.text = messageData.timeStamp
 
             val imgUri = messageData.docUri
@@ -205,7 +205,7 @@ class ChatAdapter(
         private val btnShowImg:ShapeableImageView = itemView.findViewById(R.id.btnShowImg)
         private var timeStamp: TextView = itemView.findViewById(R.id.timeStamp)
         fun bind(messageData: MessageData){
-            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.drawable.default_img).into(btnShowImg)
+            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.mipmap.ic_logo).into(btnShowImg)
             timeStamp.text = messageData.timeStamp
 
             val imgUri = messageData.docUri

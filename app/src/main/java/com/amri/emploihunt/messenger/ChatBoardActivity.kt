@@ -44,16 +44,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
 class ChatBoardActivity : BaseActivity() ,OnClickListener{
-    private var pdfUri: Uri ?= null
-    private var pdfFile: File ?= null
-    private var pdfName: String ?= null
+
 
     private lateinit var binding: ActivityChatBoardBinding
     private lateinit var adapter:ChatAdapter
@@ -71,8 +68,6 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private var userPhoneNumber:String ?= null
 
     private lateinit var prefManager: SharedPreferences
-    /*private var usersJobSeeker =  UsersJobSeeker()
-    private var usersRecruiter = UsersRecruiter()*/
 
     private var user:User ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +121,10 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             }
             userPhoneNumber = user!!.vMobile
         }
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        adapter = ChatAdapter(messageList,fromId)
+        adapter.setHasStableIds(true)
+        binding.recyclerView.adapter = adapter
         setOnClickListener()
 
         textWatcherForMsgEditText()
@@ -137,10 +135,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         super.onStart()
 
         listenerForMessages {
-            binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-            adapter = ChatAdapter(messageList,fromId)
-            adapter.setHasStableIds(true)
-            binding.recyclerView.adapter = adapter
+
             adapter.notifyDataSetChanged()
             Log.d(TAG, messageList.size.toString())
             binding.recyclerView.scrollToPosition(adapter.itemCount - 1)

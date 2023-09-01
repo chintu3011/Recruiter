@@ -166,6 +166,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                 .addChildEventListener(object : ChildEventListener {
                     override fun onChildAdded(chatSnapshot: DataSnapshot, previousChildName: String?) {
                         /*Log.d(TAG,"previousChildName : $previousChildName")*/
+                        Log.d("###", "onChildAdded: ${chatSnapshot.value}")
                         val chatMessage = chatSnapshot.getValue(MessageData::class.java)
 
                         if (chatMessage != null) {

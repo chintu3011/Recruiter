@@ -92,7 +92,7 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
         fromId = prefManager.get(FIREBASE_ID)
 
         _binding = FragmentRecruiterUserListBinding.inflate(inflater, container, false)
-
+        Log.d("###", "onViewCreated: ")
         return binding.root
     }
 
@@ -107,6 +107,7 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
         latestMessageList = mutableListOf()
         filterLatestMessageList = mutableListOf()
 
+        Log.d("###", "onViewCreated: ")
         listenerForLatestMsg {
             adapter = LatestMessageAdapterJ(filterLatestMessageList, requireActivity(),fromId,this)
             binding.recyclerView.adapter = adapter
@@ -145,12 +146,14 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
         latestMessageList.clear()
         filterLatestMessageList.clear()
         if(fromId != null){
+
             FirebaseDatabase.getInstance().getReference("Messenger")
                 .child("LatestMessage")
                 .child(fromId!!)
                 .addChildEventListener(object : ChildEventListener {
                     override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                         val chatMessage = snapshot.getValue(MessageData::class.java)
+                        Log.d("###", "onChildAdded: ")
                         if (chatMessage != null) {
                             Log.d(TAG, "onChildAdded: ${chatMessage.msgId}")
                             retrieveRData(chatMessage)
@@ -162,6 +165,7 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
 
                     override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                         val chatMessage = snapshot.getValue(MessageData::class.java)
+                        Log.d("###", "onChildChanged: ")
                         if (chatMessage != null) {
                             Log.d(TAG, "onChildAdded: ${chatMessage.msgId}")
                             retrieveRData(chatMessage)
@@ -171,16 +175,17 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
-
+                        Log.d("###", "onChildRemoved: ")
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
+                        Log.d("###", "onChildMoved: ")
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-
+                        Log.d("###", "onCancelled: ")
                     }
+
 
                 })
         }
