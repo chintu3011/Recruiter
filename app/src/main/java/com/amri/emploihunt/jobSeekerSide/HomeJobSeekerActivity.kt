@@ -306,7 +306,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         }
     }
 
-    override fun onDataReceivedFilterJobList(
+    /*override fun onDataReceivedFilterJobList(
         domainList: MutableList<String>,
         locationList: MutableList<String>,
         workingModeList: MutableList<String>,
@@ -317,6 +317,19 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
             locationList,
             workingModeList,
             packageList
+        )
+    }*/
+    override fun onDataReceivedFilterJobList(
+        domain: String,
+        location: String,
+        workingMode: String,
+        packageRange: String
+    ) {
+        FilterParameterTransferClass.instance!!.setJobData(
+            domain,
+            location,
+            workingMode,
+            packageRange
         )
     }
 

@@ -13,7 +13,7 @@ import com.google.android.material.button.MaterialButton
 class SelectedTagAdapter(
     private val tagList: MutableList<FilterTagData>,
     private val activity: AppCompatActivity,
-    private val onSelectedTagClickListener: OnSelectedTagClickListener
+    private val onSelectedTagClickListener: OnSelectedTagClickListener,
     /*private val attribute: Int*/
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -31,15 +31,20 @@ class SelectedTagAdapter(
 
         when(holder){
             is SelectedTagViewHolder -> {
-                holder.bind(tag.tagName!!)
+                holder.bind(tag.tagName!!,tag.attribute!!)
             }
         }
     }
 
     inner class SelectedTagViewHolder(itemView: View,onSelectedTagClickListener: OnSelectedTagClickListener) : RecyclerView.ViewHolder(itemView){
         private val btnFilterTag: MaterialButton = itemView.findViewById(R.id.btnFilterTag)
-        fun bind(tag:String){
-            btnFilterTag.text = tag
+        fun bind(tag: String, attribute: Int){
+            if(attribute == 4){
+                btnFilterTag.text = tag.plus(" LPA +")
+            }
+            else{
+                btnFilterTag.text = tag
+            }
             val newTintColor = ContextCompat.getColor(activity, R.color.theme_blue)
             val newTextColor = ContextCompat.getColor(activity, R.color.white)
             btnFilterTag.backgroundTintList =
@@ -50,6 +55,7 @@ class SelectedTagAdapter(
             val isChecked = false
             btnFilterTag.setOnClickListener {
                 onSelectedTagClickListener.onSelectedTagClick(absoluteAdapterPosition,/*attribute,*/isChecked)
+                
                 btnFilterTag.isSelected = !btnFilterTag.isSelected
             }
             btnFilterTag.setOnLongClickListener {

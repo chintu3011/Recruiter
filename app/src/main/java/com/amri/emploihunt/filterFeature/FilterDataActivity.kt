@@ -2,7 +2,7 @@ package com.amri.emploihunt.filterFeature
 
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
@@ -18,23 +17,28 @@ import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityFilterDataBinding
 import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Locale
 
 
-class FilterDataActivity : BaseActivity(),
-    FilterTagAdapter.OnTagClickListener, SelectedTagAdapter.OnSelectedTagClickListener,
+class FilterDataActivity : BaseActivity()/*,
+    FilterTagAdapter.OnTagClickListener*/,MyPagerAdapter.OnTagClickListener, SelectedTagAdapter.OnSelectedTagClickListener,
     MyPagerAdapter.OnSearchQueryChanged {
 
     private lateinit var binding: ActivityFilterDataBinding
 
     companion object {
-        private const val TAG = "FilterJobsActivity"
+        private const val TAG = "FilterDataActivity"
     }
 
     object FilterCategories{
@@ -59,33 +63,45 @@ class FilterDataActivity : BaseActivity(),
         const val PACKAGE = 4
     }
     
-    private lateinit var domainTagAdapter: FilterTagAdapter
+    /*private lateinit var domainTagAdapter: FilterTagAdapter
     private lateinit var locationTagAdapter: FilterTagAdapter
     private lateinit var workingModeTagAdapter: FilterTagAdapter
-    private lateinit var packageTagAdapter: FilterTagAdapter
+    private lateinit var packageTagAdapter: FilterTagAdapter*/
 
     private lateinit var selectedTagAdapter: SelectedTagAdapter
 
+
+    /** Main Lists */
     private lateinit var domainList:MutableList<String>
-    private var locationList:ArrayList<String>  = ArrayList()
+    private lateinit var locationList:MutableList<String>
     private lateinit var workingModeList:MutableList<String>
     private lateinit var packageList:MutableList<String>
 
-
+    /** filtered Lists */
     private lateinit var filterDomainList:MutableList<String>
-    private  var filterLocationList:ArrayList<String>  = ArrayList()
+    private  lateinit var filterLocationList:MutableList<String>
     private lateinit var filterWorkingModeList:MutableList<String>
     private lateinit var filterPackageList:MutableList<String>
 
+    /** selected tagList*/
     private lateinit var selectedTagList:MutableList<FilterTagData>
 
-    private lateinit var selectedDomainList:MutableList<String>
+    /*private lateinit var selectedDomainList:MutableList<String>
     private lateinit var selectedLocationList:MutableList<String>
     private lateinit var selectedWorkingModeList:MutableList<String>
-    private lateinit var selectedPackageList:MutableList<String>
+    private lateinit var selectedPackageList:MutableList<String>*/
+
+    /** final selected selected attributes need to pass to to filter lists */
+    private lateinit var selectedDomain:String
+    private lateinit var selectedLocation:String
+    private lateinit var selectedWorkingMode:String
+    private lateinit var selectedPackage:String
+
 
     private lateinit var myPagerAdapter: MyPagerAdapter
     var cityList: ArrayList<String> = ArrayList()
+
+    lateinit var prefManager: SharedPreferences
 
     private var userType:Int ?= null
 
@@ -95,29 +111,42 @@ class FilterDataActivity : BaseActivity(),
         setContentView(binding.root)
 
         val window: Window = this@FilterDataActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@FilterDataActivity,android.R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this@FilterDataActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        userType = intent.getIntExtra("role",-1)
-        getAllCity()
+
+        prefManager = prefManager(this)
+        userType = prefManager.get(ROLE,0)
+        /*userType = intent.getIntExtra("role",-1)*/
+
         Log.d(TAG,userType.toString())
 
+
+        /** setup of lists */
         domainList = resources.getStringArray(R.array.indian_designations).toMutableList()
+        locationList = mutableListOf()
         workingModeList = mutableListOf("Hybrid","Remote","On site")
         packageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
         filterDomainList = resources.getStringArray(R.array.indian_designations).toMutableList()
+        filterLocationList = mutableListOf()
+        getAllCity()
         filterWorkingModeList =mutableListOf("Hybrid","Remote","On site")
         filterPackageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
-        selectedDomainList = mutableListOf()
+        /*selectedDomainList = mutableListOf()
         selectedLocationList = mutableListOf()
         selectedWorkingModeList = mutableListOf()
-        selectedPackageList = mutableListOf()
+        selectedPackageList = mutableListOf()*/
+
+        selectedDomain = String()
+        selectedLocation = String()
+        selectedWorkingMode = String()
+        selectedPackage = String()
 
         selectedTagList = mutableListOf()
 
-        domainTagAdapter = FilterTagAdapter(
+        /*domainTagAdapter = FilterTagAdapter(
             filterDomainList,
             this,
             AttributeIdentifier.DOMAIN
@@ -136,8 +165,9 @@ class FilterDataActivity : BaseActivity(),
             filterPackageList,
             this,
             AttributeIdentifier.PACKAGE
-        )
-        
+        )*/
+
+
         selectedTagAdapter = SelectedTagAdapter(
             selectedTagList,
             this,
@@ -149,11 +179,11 @@ class FilterDataActivity : BaseActivity(),
             locationTagAdapter,
             workingModeTagAdapter,
             packageTagAdapter
-        )*/
+        )
 
-        /*myPagerAdapter =  MyPagerAdapter(adapterList,this@FilterDataActivity,this, FilterCategories.JOB)*/
+        myPagerAdapter =  MyPagerAdapter(adapterList,this@FilterDataActivity,this, FilterCategories.JOB)*/
 
-        when (userType) {
+        /*when (userType) {
             UserType.JOB_SEEKERS -> {
                 val adapterList: MutableList<FilterTagAdapter> = mutableListOf(
                     domainTagAdapter,
@@ -177,21 +207,55 @@ class FilterDataActivity : BaseActivity(),
                 val adapterList = mutableListOf<FilterTagAdapter>()
                 myPagerAdapter = MyPagerAdapter(adapterList,this@FilterDataActivity,this,-1)
             }
+        }*/
+
+
+        /** setup of pager adapter for view pager */
+        when (userType) {
+            UserType.JOB_SEEKERS -> {
+                val categoriesLists: MutableList<MutableList<String>> = mutableListOf(
+                    filterDomainList,
+                    filterLocationList,
+                    filterWorkingModeList,
+                    filterPackageList
+                )
+                myPagerAdapter =  MyPagerAdapter(categoriesLists,this@FilterDataActivity,this,this, FilterCategories.JOB)
+
+            }
+            UserType.RECRUITER -> {
+                val categoriesLists: MutableList<MutableList<String>> = mutableListOf(
+                    filterDomainList,
+                    filterLocationList,
+                    filterWorkingModeList,
+                    filterPackageList
+                )
+                myPagerAdapter = MyPagerAdapter(categoriesLists,this@FilterDataActivity,this, this,FilterCategories.APPLICATION)
+            }
+            else -> {
+                val categoriesLists = mutableListOf<MutableList<String>>()
+                myPagerAdapter = MyPagerAdapter(categoriesLists,this@FilterDataActivity,this,this,-1)
+            }
         }
 
         val pagerAdapter = myPagerAdapter
         binding.viewPager.adapter = pagerAdapter
 
+
+        /** setup of tabLayout */
         val tabLabels = listOf("Domain", "Location", "Mode", "Package")
         // Attach the TabLayoutMediator after setting up the adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabLabels[position]
         }.attach()
 
+        
+        /** for selected tags */
         binding.recycleSelectedTags.layoutManager = LinearLayoutManager(this@FilterDataActivity,LinearLayoutManager.HORIZONTAL,false)
 
         binding.recycleSelectedTags.adapter = selectedTagAdapter
-        
+
+
+        /** setup of menu */
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
@@ -204,8 +268,6 @@ class FilterDataActivity : BaseActivity(),
     }
 
     private var btnFilter: MenuItem? = null
-    private var btnRemoveSelection: MenuItem? = null
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.filter_preference_menu,menu)
 
@@ -235,36 +297,56 @@ class FilterDataActivity : BaseActivity(),
         binding.toolbar.setOnMenuItemClickListener{
             when(it.itemId){
                 R.id.btnFilter -> {
-
+                    /** pass selected attributes to FilterParameterTransferClass */
                     when(userType){
                         UserType.JOB_SEEKERS -> {
-                            Log.d(TAG,selectedDomainList.toString())
+                            /*Log.d(TAG,selectedDomainList.toString())
                             Log.d(TAG,selectedLocationList.toString())
                             Log.d(TAG,selectedWorkingModeList.toString())
-                            Log.d(TAG,selectedPackageList.toString())
+                            Log.d(TAG,selectedPackageList.toString())*/
+                            Log.d(TAG,selectedDomain)
+                            Log.d(TAG,selectedLocation)
+                            Log.d(TAG,selectedWorkingMode)
+                            Log.d(TAG,selectedPackage)
 
                             FilterParameterTransferClass.instance!!
-                                .setJobData(
+                                /*.setJobData(
                                     selectedDomainList,
                                     selectedLocationList,
                                     selectedWorkingModeList,
                                     selectedPackageList
+                                )*/
+                                .setJobData(
+                                    selectedDomain,
+                                    selectedLocation,
+                                    selectedWorkingMode,
+                                    selectedPackage
                                 )
 
                             finish()
                         }
                         UserType.RECRUITER -> {
-                            Log.d(TAG,selectedDomainList.toString())
+                            /*Log.d(TAG,selectedDomainList.toString())
                             Log.d(TAG,selectedLocationList.toString())
                             Log.d(TAG,selectedWorkingModeList.toString())
-                            Log.d(TAG,selectedPackageList.toString())
+                            Log.d(TAG,selectedPackageList.toString())*/
+                            Log.d(TAG,selectedDomain)
+                            Log.d(TAG,selectedLocation)
+                            Log.d(TAG,selectedWorkingMode)
+                            Log.d(TAG,selectedPackage)
 
                             FilterParameterTransferClass.instance!!
-                                .setApplicationData(
+                                /*.setApplicationData(
                                     selectedDomainList,
                                     selectedLocationList,
                                     selectedWorkingModeList,
                                     selectedPackageList
+                                )*/
+                                .setApplicationData(
+                                    selectedDomain,
+                                    selectedLocation,
+                                    selectedWorkingMode,
+                                    selectedPackage
                                 )
 
                             finish()
@@ -296,12 +378,12 @@ class FilterDataActivity : BaseActivity(),
     }
 
 
-    override fun searchTags(query: String, attribute: Int, filterCategory: Int) {
-        updateTagList(attribute,query,filterCategory)
+    override fun searchTags(query: String, attribute: Int, chipGroup: ChipGroup,filterCategory: Int,onTagClickListener:MyPagerAdapter.OnTagClickListener) {
+        updateTagList(attribute,query, chipGroup,filterCategory,onTagClickListener)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateTagList(identifier: Int, query: String, filterCategory: Int) {
+    private fun updateTagList(identifier: Int, query: String,chipGroup: ChipGroup, filterCategory: Int,onTagClickListener:MyPagerAdapter.OnTagClickListener) {
 
         when (filterCategory){
             FilterCategories.JOB -> {
@@ -309,21 +391,38 @@ class FilterDataActivity : BaseActivity(),
                     SearchViewIdentifier.DOMAIN_SEARCH -> {
                         // Update domain list based on the query
                         filterDomainList.clear()
-
+                        chipGroup.removeAllViews()
+                        
                         if (!TextUtils.isEmpty(query)){
                             for (domain in domainList) {
                                 if (domain.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterDomainList.add(domain)
+
+                                    addSingleChip(
+                                        domain,
+                                        filterDomainList.indexOf(domain),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.DOMAIN
+                                    )
+
                                 }
                             }
                         }
                         else{
                             filterDomainList.addAll(domainList)
+                            addMultipleChips(
+                                filterDomainList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.DOMAIN
+                            )
+
                         }
 
-                        domainTagAdapter.notifyDataSetChanged()
+                        /*domainTagAdapter.notifyDataSetChanged()*/
 
                         return
                     }
@@ -331,63 +430,103 @@ class FilterDataActivity : BaseActivity(),
                     SearchViewIdentifier.LOCATION_SEARCH -> {
                         // Update location list based on the query
                         filterLocationList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (location in locationList) {
                                 if (location.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterLocationList.add(location)
+                                    addSingleChip(
+                                        location,
+                                        filterLocationList.indexOf(location),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.LOCATION
+                                    )
                                 }
                             }
                         }
                         else{
                             filterLocationList.addAll(locationList)
+
+                            addMultipleChips(
+                                filterLocationList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.LOCATION
+                            )
                         }
 
-                        locationTagAdapter.notifyDataSetChanged()
+                        /*locationTagAdapter.notifyDataSetChanged()*/
                         return
                     }
 
                     SearchViewIdentifier.WORKING_MODE_SEARCH -> {
                         // Update working mode list based on the query
                         filterWorkingModeList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (mode in workingModeList) {
                                 if (mode.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterWorkingModeList.add(mode)
+                                    addSingleChip(
+                                        mode,
+                                        filterWorkingModeList.indexOf(mode),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.WORKING_MODE
+                                    )
                                 }
                             }
                         }
                         else{
                             filterWorkingModeList.addAll(workingModeList)
+                            addMultipleChips(
+                                filterWorkingModeList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.WORKING_MODE
+                            )
                         }
 
-                        workingModeTagAdapter.notifyDataSetChanged()
+                        /*workingModeTagAdapter.notifyDataSetChanged()*/
                         return
                     }
 
                     SearchViewIdentifier.PACKAGE_SEARCH -> {
                         // Update package list based on the query
                         filterPackageList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (packageRange in packageList) {
                                 if (packageRange.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterPackageList.add(packageRange)
+                                    addSingleChip(
+                                       packageRange,
+                                        filterPackageList.indexOf(packageRange),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.PACKAGE
+                                    )
                                 }
                             }
                         }
                         else{
                             filterPackageList.addAll(packageList)
+                            addMultipleChips(
+                                filterPackageList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.PACKAGE
+                            )
                         }
 
-                        packageTagAdapter.notifyDataSetChanged()
+                        /*packageTagAdapter.notifyDataSetChanged()*/
 
                         return
                     }
@@ -403,6 +542,7 @@ class FilterDataActivity : BaseActivity(),
                     SearchViewIdentifier.DOMAIN_SEARCH -> {
                         // Update domain list based on the query
                         filterDomainList.clear()
+                        chipGroup.removeAllViews()
 
                         if (!TextUtils.isEmpty(query)){
                             for (domain in domainList) {
@@ -410,80 +550,137 @@ class FilterDataActivity : BaseActivity(),
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterDomainList.add(domain)
+
+                                    addSingleChip(
+                                        domain,
+                                        filterDomainList.indexOf(domain),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.DOMAIN
+                                    )
+
                                 }
                             }
                         }
                         else{
                             filterDomainList.addAll(domainList)
+                            addMultipleChips(
+                                filterDomainList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.DOMAIN
+                            )
+
                         }
 
-                        domainTagAdapter.notifyDataSetChanged()
+                        /*domainTagAdapter.notifyDataSetChanged()*/
+
                         return
                     }
 
                     SearchViewIdentifier.LOCATION_SEARCH -> {
                         // Update location list based on the query
                         filterLocationList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (location in locationList) {
                                 if (location.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterLocationList.add(location)
+                                    addSingleChip(
+                                        location,
+                                        filterLocationList.indexOf(location),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.LOCATION
+                                    )
                                 }
                             }
                         }
                         else{
                             filterLocationList.addAll(locationList)
+
+                            addMultipleChips(
+                                filterLocationList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.LOCATION
+                            )
                         }
 
-                        locationTagAdapter.notifyDataSetChanged()
+                        /*locationTagAdapter.notifyDataSetChanged()*/
                         return
                     }
 
                     SearchViewIdentifier.WORKING_MODE_SEARCH -> {
                         // Update working mode list based on the query
                         filterWorkingModeList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (mode in workingModeList) {
                                 if (mode.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterWorkingModeList.add(mode)
+                                    addSingleChip(
+                                        mode,
+                                        filterWorkingModeList.indexOf(mode),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.WORKING_MODE
+                                    )
                                 }
                             }
                         }
                         else{
                             filterWorkingModeList.addAll(workingModeList)
+                            addMultipleChips(
+                                filterWorkingModeList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.WORKING_MODE
+                            )
                         }
 
-                        workingModeTagAdapter.notifyDataSetChanged()
+                        /*workingModeTagAdapter.notifyDataSetChanged()*/
                         return
                     }
 
                     SearchViewIdentifier.PACKAGE_SEARCH -> {
                         // Update package list based on the query
                         filterPackageList.clear()
-
+                        chipGroup.removeAllViews()
                         if (!TextUtils.isEmpty(query)){
                             for (packageRange in packageList) {
                                 if (packageRange.lowercase(Locale.ROOT)
                                         .contains(query.lowercase(Locale.ROOT))
                                 ) {
                                     filterPackageList.add(packageRange)
+                                    addSingleChip(
+                                        packageRange,
+                                        filterPackageList.indexOf(packageRange),
+                                        chipGroup,
+                                        onTagClickListener,
+                                        AttributeIdentifier.PACKAGE
+                                    )
                                 }
                             }
                         }
                         else{
                             filterPackageList.addAll(packageList)
+                            addMultipleChips(
+                                filterPackageList,
+                                chipGroup,
+                                onTagClickListener,
+                                AttributeIdentifier.PACKAGE
+                            )
                         }
 
-                        packageTagAdapter.notifyDataSetChanged()
+                        /*packageTagAdapter.notifyDataSetChanged()*/
+
                         return
                     }
-
                     else -> {
                         makeToast("Something went wrong",0)
                         return
@@ -500,80 +697,216 @@ class FilterDataActivity : BaseActivity(),
 
     }
 
+    private fun addMultipleChips(
+        tagList: MutableList<String>,
+        chipGroup: ChipGroup,
+        onTagClickListener: MyPagerAdapter.OnTagClickListener,
+        attribute: Int
+    ) {
+        for (index in tagList.indices) {
+            val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+            if(attribute == 4){
+                chip.text = tagList[index].plus(" LPA +")
+            }
+            else{
+                chip.text = tagList[index]
+            }
+
+
+            chipGroup.addView(chip)
+
+            chip.setOnClickListener {
+                onTagClickListener.onTagClick(index,attribute)
+            }
+            chip.setOnLongClickListener {
+                onTagClickListener.onTagLongClick(index,attribute)
+                return@setOnLongClickListener true
+            }
+
+        }
+    }
+
+    private fun addSingleChip(
+        tag: String,
+        index: Int,
+        chipGroup: ChipGroup,
+        onTagClickListener: MyPagerAdapter.OnTagClickListener,
+        attribute: Int
+    ) {
+        val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+        if(attribute == 4){
+            chip.text = tag.plus(" LPA +")
+        }
+        else{
+            chip.text = tag
+        }
+
+        chipGroup.addView(chip)
+
+        chip.setOnClickListener {
+            onTagClickListener.onTagClick(index,attribute)
+        }
+        chip.setOnLongClickListener {
+            onTagClickListener.onTagLongClick(index,attribute)
+            return@setOnLongClickListener true
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onTagClick(position: Int, attribute: Int) {
         when(attribute){
             AttributeIdentifier.DOMAIN -> {
                 Log.d(TAG,"onClick ${filterDomainList[position]}")
 
-                selectedTagList.add(
+                val existingItem = selectedTagList.find {
+                    it.attribute == AttributeIdentifier.DOMAIN
+                }
+
+                if (existingItem != null) {
+                    val index = selectedTagList.indexOf(existingItem)
+                    /*domainList.add(selectedTagList[index].tagName!!)
+                    filterDomainList.add(selectedTagList[index].tagName!!)*/
+                    selectedTagList[index] = FilterTagData(filterDomainList[position],
+                        AttributeIdentifier.DOMAIN
+                    )
+                } else {
+                    selectedTagList.add(
+                        FilterTagData(filterDomainList[position],
+                        AttributeIdentifier.DOMAIN
+                        )
+                    )
+                }
+
+                /*selectedTagList.add(
                     FilterTagData(filterDomainList[position],
                         AttributeIdentifier.DOMAIN
                     )
-                )
+                )*/
                 selectedTagAdapter.notifyDataSetChanged()
 
-                selectedDomainList.add(filterDomainList[position])
+                selectedDomain = filterDomainList[position]
+                /*selectedDomainList.add(filterDomainList[position])*/
                 makeToast("${filterDomainList[position]} added",0)
 
-                domainList.remove(filterDomainList[position])
-                filterDomainList.removeAt(position)
+                /*domainList.remove(filterDomainList[position])
+                filterDomainList.removeAt(position)*/
 
-                domainTagAdapter.notifyDataSetChanged()
+//                domainTagAdapter.notifyDataSetChanged()
 
             }
             AttributeIdentifier.LOCATION -> {
                 Log.d(TAG,"onClick ${filterLocationList[position]}")
+                val existingItem = selectedTagList.find {
+                    it.attribute == AttributeIdentifier.LOCATION
+                }
 
-                selectedTagList.add(
+                if (existingItem != null) {
+                    val index = selectedTagList.indexOf(existingItem)
+                    /*locationList.add(selectedTagList[index].tagName!!)
+                    filterLocationList.add(selectedTagList[index].tagName!!)*/
+                    selectedTagList[index] = FilterTagData(filterLocationList[position],
+                        AttributeIdentifier.LOCATION
+                    )
+                } else {
+                    selectedTagList.add(
+                        FilterTagData(filterLocationList[position],
+                            AttributeIdentifier.LOCATION
+                        )
+                    )
+                }
+
+                /*selectedTagList.add(
                     FilterTagData(filterLocationList[position],
                         AttributeIdentifier.LOCATION
                     )
-                )
+                )*/
                 selectedTagAdapter.notifyDataSetChanged()
 
-                selectedLocationList.add(filterLocationList[position])
+                selectedLocation = filterLocationList[position]
+                /*selectedLocationList.add(filterLocationList[position])*/
                 makeToast("${filterLocationList[position]} added",0)
 
-                locationList.remove(filterLocationList[position])
-                filterLocationList.removeAt(position)
-                locationTagAdapter.notifyDataSetChanged()
+               /* locationList.remove(filterLocationList[position])
+                filterLocationList.removeAt(position)*/
+//                locationTagAdapter.notifyDataSetChanged()
 
             }
             AttributeIdentifier.WORKING_MODE -> {
 
                 Log.d(TAG,"onClick ${filterWorkingModeList[position]}")
 
-                selectedTagList.add(
+
+                val existingItem = selectedTagList.find { it.attribute == AttributeIdentifier.WORKING_MODE }
+
+                if (existingItem != null) {
+
+                    val index = selectedTagList.indexOf(existingItem)
+                    /*workingModeList.add(selectedTagList[index].tagName!!)
+                    filterWorkingModeList.add(selectedTagList[index].tagName!!)*/
+                    selectedTagList[index] = FilterTagData(filterWorkingModeList[position],
+                        AttributeIdentifier.WORKING_MODE
+                    )
+                } else {
+
+                    selectedTagList.add(
+                        FilterTagData(filterWorkingModeList[position],
+                            AttributeIdentifier.WORKING_MODE
+                        )
+                    )
+                }
+
+                /*selectedTagList.add(
                     FilterTagData(filterWorkingModeList[position],
                         AttributeIdentifier.WORKING_MODE
                     )
-                )
+                )*/
                 selectedTagAdapter.notifyDataSetChanged()
 
-                selectedWorkingModeList.add(filterWorkingModeList[position])
+                selectedWorkingMode = filterWorkingModeList[position]
+                /*selectedWorkingModeList.add(filterWorkingModeList[position])*/
                 makeToast("${filterWorkingModeList[position]} added",0)
 
-                workingModeList.remove(filterWorkingModeList[position])
-                filterWorkingModeList.removeAt(position)
-                workingModeTagAdapter.notifyDataSetChanged()
+               /* workingModeList.remove(filterWorkingModeList[position])
+                filterWorkingModeList.removeAt(position)*/
+//                workingModeTagAdapter.notifyDataSetChanged()
             }
             AttributeIdentifier.PACKAGE -> {
                 Log.d(TAG,"onClick ${filterPackageList[position]}")
 
-                selectedTagList.add(
+                val existingItem = selectedTagList.find { it.attribute == AttributeIdentifier.PACKAGE }
+
+                if (existingItem != null) {
+
+                    val index = selectedTagList.indexOf(existingItem)
+                    /*packageList.add(selectedTagList[index].tagName!!)
+                    filterPackageList.add(selectedTagList[index].tagName!!)*/
+
+                    selectedTagList[index] = FilterTagData(filterPackageList[position],
+                        AttributeIdentifier.PACKAGE
+                    )
+                } else {
+
+                    selectedTagList.add(
+                        FilterTagData(filterPackageList[position],
+                            AttributeIdentifier.PACKAGE
+                        )
+                    )
+                }
+                
+                /*selectedTagList.add(
                     FilterTagData(filterPackageList[position],
                         AttributeIdentifier.PACKAGE
                     )
-                )
+                )*/
                 selectedTagAdapter.notifyDataSetChanged()
 
-                selectedPackageList.add(filterPackageList[position])
+                selectedPackage = filterPackageList[position]
+                /*selectedPackageList.add(filterPackageList[position])*/
                 makeToast("${filterPackageList[position]} added",0)
 
-                packageList.remove(filterPackageList[position])
-                filterPackageList.removeAt(position)
-                packageTagAdapter.notifyDataSetChanged()
+                /*packageList.remove(filterPackageList[position])
+                filterPackageList.removeAt(position)*/
+//                packageTagAdapter.notifyDataSetChanged()
 
             }
             else -> {
@@ -613,35 +946,39 @@ class FilterDataActivity : BaseActivity(),
 //            Log.d(TAG,tag.attribute.toString())
             when (tag.attribute) {
                 AttributeIdentifier.DOMAIN -> {
-                    selectedDomainList.remove(tag.tagName)
+                    selectedDomain = ""
+                    /*selectedDomainList.remove(tag.tagName)*/
 
                     filterDomainList.add(tag.tagName!!)
                     domainList.add(tag.tagName!!)
-                    domainTagAdapter.notifyDataSetChanged()
+//                    domainTagAdapter.notifyDataSetChanged()
                 }
 
                 AttributeIdentifier.LOCATION -> {
-                    selectedLocationList.remove(tag.tagName)
+                    selectedLocation = ""
+                    /*selectedLocationList.remove(tag.tagName)*/
 
                     filterLocationList.add(tag.tagName!!)
                     locationList.add(tag.tagName!!)
-                    locationTagAdapter.notifyDataSetChanged()
+//                    locationTagAdapter.notifyDataSetChanged()
                 }
 
                 AttributeIdentifier.WORKING_MODE -> {
-                    selectedWorkingModeList.remove(tag.tagName)
+                    selectedWorkingMode = ""
+                    /*selectedWorkingModeList.remove(tag.tagName)*/
 
                     filterWorkingModeList.add(tag.tagName!!)
                     workingModeList.add(tag.tagName!!)
-                    workingModeTagAdapter.notifyDataSetChanged()
+//                    workingModeTagAdapter.notifyDataSetChanged()
                 }
 
                 AttributeIdentifier.PACKAGE -> {
-                    selectedPackageList.remove(tag.tagName)
+                    selectedPackage = ""
+                    /*selectedPackageList.remove(tag.tagName)*/
 
                     filterPackageList.add(tag.tagName!!)
                     packageList.add(tag.tagName!!)
-                    packageTagAdapter.notifyDataSetChanged()
+//                    packageTagAdapter.notifyDataSetChanged()
                 }
 
                 else -> {
@@ -658,7 +995,7 @@ class FilterDataActivity : BaseActivity(),
 
     }
 
-    fun getAllCity(){
+    private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
             showProgressDialog("Please wait....")
@@ -667,13 +1004,14 @@ class FilterDataActivity : BaseActivity(),
                 .getAsObject(
                     GetAllCity::class.java,
                     object : ParsedRequestListener<GetAllCity> {
+                        @SuppressLint("NotifyDataSetChanged")
                         override fun onResponse(response: GetAllCity?) {
                             try {
 
                                 cityList.addAll(response!!.data)
-                                locationList = cityList
-                                filterLocationList = cityList
-                                locationTagAdapter.notifyDataSetChanged()
+                                locationList = cityList.toMutableList()
+                                filterLocationList = cityList.toMutableList()
+//                                locationTagAdapter.notifyDataSetChanged()
                                 hideProgressDialog()
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")

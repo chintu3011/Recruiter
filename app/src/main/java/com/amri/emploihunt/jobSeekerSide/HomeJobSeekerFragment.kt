@@ -204,9 +204,6 @@ FilterParameterTransferClass.FilterJobListListener {
             else{
                 requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
             }
-
-
-
         }
         return binding.root
 
@@ -252,32 +249,9 @@ FilterParameterTransferClass.FilterJobListListener {
             }
         })
     }
-    private fun retrieveJobData(jobpreferenceId: Int) {
+    private fun retrieveJobData(jobPreferenceId: Int) {
         Log.d("###", "retrieveJobData: ")
-        /*val jobRef = database.child("Jobs")
 
-        jobRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                filteredDataList.clear()
-                dataList.clear()
-                for (snapshot in dataSnapshot.children) {
-                    val job: Jobs? = snapshot.getValue(Jobs::class.java)
-                    job?.let {
-                        filteredDataList.add(job)
-                    }
-                }
-                dataList.addAll(filteredDataList)
-                Log.d("###", "getCount: ${dataList}")
-                // Notify the adapter that the data has changed
-                jobListAdapter = CustomAdapter()
-                gridView.adapter = jobListAdapter
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.e("MainActivity", "Failed to retrieve job data from Firebase: ${error.message}")
-            }
-        })*/
         if (Utils.isNetworkAvailable(requireContext())) {
             if (currentPage != 1 && currentPage > totalPages) {
                 return
@@ -288,7 +262,7 @@ FilterParameterTransferClass.FilterJobListListener {
 
             AndroidNetworking.get(NetworkUtils.GET_ALL_JOB)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
-                .addQueryParameter("iJobPreferenceId",jobpreferenceId.toString())
+                .addQueryParameter("iJobPreferenceId",jobPreferenceId.toString())
                 .addQueryParameter("current_page",currentPage.toString())
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(GetAllJob::class.java,
@@ -351,59 +325,6 @@ FilterParameterTransferClass.FilterJobListListener {
             }
         }
     }
-
-    /*private inner class CustomAdapter : BaseAdapter() {
-        override fun getCount(): Int {
-            Log.d("###", "getCount: ${dataList.size}")
-            return dataList.size
-        }
-
-        override fun getItem(position: Int): Any {
-            return dataList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        @SuppressLint("SetTextI18n", "InflateParams")
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var myview = convertView
-            if (myview == null) {
-                myview = layoutInflater.inflate(R.layout.row_post_design, null)
-            }
-            val name: MaterialTextView = myview!!.findViewById(R.id.jobTitle)
-            val sal: MaterialTextView = myview.findViewById(R.id.salary)
-            val exp: MaterialTextView = myview.findViewById(R.id.experiencedDuration)
-            val qual: MaterialTextView = myview.findViewById(R.id.qualification)
-            val loc: TextView = myview.findViewById(R.id.city)
-            val img: ImageView = myview.findViewById(R.id.profileImg)
-            val about: MaterialTextView = myview.findViewById(R.id.aboutPost)
-            val compname: MaterialTextView = myview.findViewById(R.id.companyName)
-            val employess: MaterialTextView = myview.findViewById(R.id.employees)
-            val cv: CardView = myview.findViewById(R.id.cardViewinfo)
-            val job: Jobs = dataList[position]
-            name.text = job.jobTile
-            sal.text = job.salary + " LPA"
-            exp.text = job.experienceDuration + " years"
-            qual.text = job.education
-            loc.text = job.jobLocation
-            about.text = job.aboutPost
-            compname.text = job.companyName
-            employess.text = job.employeeNeed + " Employees"
-            Glide.with(img.context).load(job.companyLogo).into(img)
-            cv.setOnClickListener {
-                val activity: AppCompatActivity = view?.context as AppCompatActivity
-                val jobTitle = dataList[position]
-                val jobPostDescriptionFragment = JobPostDescriptionFragment.newInstance(jobTitle)
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, jobPostDescriptionFragment)
-                    .addToBackStack(null)
-                    .commit()
-            }
-            return myview
-        }
-    }*/
     var changePostLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
@@ -430,7 +351,7 @@ FilterParameterTransferClass.FilterJobListListener {
             val jobModel = dataList[position]
 
             holder.binding.jobTitle.text = jobModel.vJobTitle
-            holder.binding.salary.text = jobModel.vSalaryPackage +"LPA"
+            holder.binding.salary.text = jobModel.vSalaryPackage +" LPA +"
             holder.binding.experiencedDuration.text = jobModel.vExperience + " years"
             holder.binding.qualification.text = jobModel.vEducation
             holder.binding.city.text = jobModel.vAddress
@@ -570,7 +491,7 @@ FilterParameterTransferClass.FilterJobListListener {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    /*@SuppressLint("NotifyDataSetChanged")
     override fun onDataReceivedFilterJobList(
         domainList: MutableList<String>,
         locationList: MutableList<String>,
@@ -621,8 +542,8 @@ FilterParameterTransferClass.FilterJobListListener {
                     true
                 }
                 val packageMatches = if(packageList.isNotEmpty()){
-
                     packageList.any { packageRange ->
+
                         val packageRangeWords = packageRange.split(" ")
                         packageRangeWords.any { word ->
                             job.vSalaryPackage?.contains(word, ignoreCase = true) == true
@@ -632,6 +553,78 @@ FilterParameterTransferClass.FilterJobListListener {
                 else{
                     true
                 }
+                // If all criteria match, add the job to the filteredJobs list
+                if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
+                    filteredDataList.add(job)
+                }
+            }
+        }
+        else{
+            filteredDataList.addAll(dataList)
+        }
+        Log.d(TAG,"FilteredList: $filteredDataList")
+        binding.jobsAdapter!!.notifyDataSetChanged()
+    }*/
+    override fun onDataReceivedFilterJobList(
+        domain: String,
+        location: String,
+        workingMode: String,
+        packageRange: String
+    ) {
+        Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
+
+        filteredDataList.clear()
+        if(domain.isNotEmpty() || location.isNotEmpty() || workingMode.isNotEmpty() || packageRange.isNotEmpty() ){
+
+            for(job in dataList){
+
+                val domainMatches = if (domain.isNotEmpty()) {
+
+                    job.vJobTitle?.contains(
+                        domain.substring(
+                            0,
+                            if (domain.indexOf(" ") != -1) domain.indexOf(" ")
+                            else domain.length
+                        ),
+                        ignoreCase = true) == true
+                } else {
+                    true
+                }
+                val locationMatches = if (location.isNotEmpty()){
+
+                    job.vAddress?.contains(
+                        location.substring(
+                            0,
+                            if (location.indexOf(" ") != -1) location.indexOf(" ")
+                            else location.length
+                        ),
+                        ignoreCase = true) == true
+                }
+                else{
+                    true
+                }
+                val workingModeMatches = if (workingMode.isNotEmpty()){
+
+                    job.vWrokingMode?.contains(
+                        workingMode.substring(
+                            0,
+                            if (workingMode.indexOf(" ") != -1) workingMode.indexOf(" ")
+                            else workingMode.length
+                        ),
+                        ignoreCase = true) == true
+
+                }
+                else{
+                    true
+                }
+                val packageMatches = if(packageRange.isNotEmpty()){
+                    job.vSalaryPackage?.trim()?.toInt()!! >= packageRange.toInt()
+                }
+                else{
+                    true
+                }
+
+                
                 // If all criteria match, add the job to the filteredJobs list
                 if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
                     filteredDataList.add(job)

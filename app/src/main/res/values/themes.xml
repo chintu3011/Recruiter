@@ -26,6 +26,9 @@
     <style name="cornerCut">
         <item name="cornerSize">30%</item>
     </style>
+    <style name="cornerCut_1">
+        <item name="cornerSize">15%</item>
+    </style>
 
     <style name="circle">
         <item name="cornerSize">50%</item>

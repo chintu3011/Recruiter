@@ -36,7 +36,7 @@ class FilterTagAdapter(
 
         when (holder) {
             is TagViewHolder -> {
-                holder.bind(tag)
+                holder.bind(tag,attribute)
             }
         }
     }
@@ -45,8 +45,13 @@ class FilterTagAdapter(
     inner class TagViewHolder(itemView: View, onTagClickListener: OnTagClickListener) : RecyclerView.ViewHolder(itemView){
 
         private val btnFilterTag:MaterialButton = itemView.findViewById(R.id.btnFilterTag)
-        fun bind (tag:String){
-            btnFilterTag.text = tag
+        fun bind (tag:String,attribute: Int){
+            if(attribute == 4){
+                btnFilterTag.text = "$tag LPA +"
+            }
+            else{
+                btnFilterTag.text = tag
+            }
         }
         init {
             btnFilterTag.setOnClickListener {

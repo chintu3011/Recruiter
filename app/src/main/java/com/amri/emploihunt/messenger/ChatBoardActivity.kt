@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -15,12 +16,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
@@ -38,18 +42,26 @@ import com.amri.emploihunt.util.TXT_TYPE
 import com.amri.emploihunt.util.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignTop
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
 class ChatBoardActivity : BaseActivity() ,OnClickListener{
+
 
 
     private lateinit var binding: ActivityChatBoardBinding
@@ -67,9 +79,15 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private var userFName:String ?= null
     private var userPhoneNumber:String ?= null
 
+//    private lateinit var popupWindow:PopupWindow
+
     private lateinit var prefManager: SharedPreferences
 
     private var user:User ?= null
+
+    private lateinit var balloon: Balloon
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -122,26 +140,80 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             userPhoneNumber = user!!.vMobile
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        adapter = ChatAdapter(this,messageList,fromId)
-        adapter.setHasStableIds(true)
-        binding.recyclerView.adapter = adapter
+
         setOnClickListener()
 
         textWatcherForMsgEditText()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onStart() {
-        super.onStart()
 
         listenerForMessages {
-
-            adapter.notifyDataSetChanged()
             Log.d(TAG, messageList.size.toString())
+            adapter = ChatAdapter(this,messageList,fromId)
+            binding.recyclerView.adapter = adapter
             binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+            adapter.notifyDataSetChanged()
         }
 
+        /*popupWindow = PopupWindow(this@ChatBoardActivity)
+        val popupView = layoutInflater.inflate(R.layout.chat_board_add_popup,null)
+        popupWindow.contentView = popupView
+        val btnAttach = popupView.findViewById<ShapeableImageView>(R.id.btnAttach)
+        btnAttach.setOnClickListener {
+            selectPdf()
+            popupWindow.dismiss()
+        }
+        val btnCamara = popupView.findViewById<ShapeableImageView>(R.id.btnCamara)
+        btnCamara.setOnClickListener {
+            selectImg()
+            popupWindow.dismiss()
+        }*/
+
+        /*val addPopupLayout: View = layoutInflater.inflate(com.amri.emploihunt.R.layout.chat_board_add_popup, null)
+        val cardView = addPopupLayout.findViewById<CardView>(R.id.cardView)
+
+        val cardHeight:Int = cardView.height
+        val cardWidth:Int = cardView.width*/
+
+       /* cardView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // The CardView's height and width are now available
+                cardHeight = cardView.height
+                cardWidth = cardView.width
+
+                // Do something with these values
+
+                // Remove the listener to prevent multiple callbacks
+                cardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })*/
+        balloon = createBalloon(baseContext){
+            setLayout(R.layout.chat_board_add_popup)
+            setArrowSize(10)
+            setArrowOrientation(ArrowOrientation.TOP)
+            setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            setArrowPosition(0.5f)
+            setWidth(190)
+            setHeight(150)
+            setCornerRadius(30f)
+            setBackgroundColor(ContextCompat.getColor(this@ChatBoardActivity, R.color.white))
+            setBalloonAnimation(BalloonAnimation.ELASTIC)
+            setLifecycleOwner(lifecycleOwner)
+            build()
+        }
+
+        val btnAttach = balloon.getContentView().findViewById<ShapeableImageView>(R.id.btnAttach)
+        btnAttach.setOnClickListener {
+            selectPdf()
+            balloon.dismiss()
+        }
+        val btnCamara = balloon.getContentView().findViewById<ShapeableImageView>(R.id.btnCamara)
+        btnCamara.setOnClickListener {
+            selectImg()
+            balloon.dismiss()
+        }
+
+
     }
+
 
     private fun textWatcherForMsgEditText() {
         binding.inputMessage.addTextChangedListener(object : TextWatcher {
@@ -190,12 +262,12 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                     }
 
                     override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                        val messageData = snapshot.getValue(MessageData::class.java)
+                       /* val messageData = snapshot.getValue(MessageData::class.java)
                         if (messageData != null ){
                             messageList.add(messageData)
                             Log.d("messageData", messageData.message.toString())
                             completion()
-                        }
+                        }*/
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -222,8 +294,9 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private fun setOnClickListener(){
         binding.btnSend.setOnClickListener(this)
         binding.btnVoiceMsg.setOnClickListener(this)
-        binding.btnAttach.setOnClickListener(this)
-        binding.btnCamara.setOnClickListener(this)
+        binding.btnAdd.setOnClickListener (this)
+        /*binding.btnAttach.setOnClickListener(this)
+        binding.btnCamara.setOnClickListener(this)*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -232,18 +305,28 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             R.id.btnSend -> {
                 Log.d(TAG,"Attempt to send Text message")
                 performSendTextMsg(TXT_TYPE,"",binding.inputMessage.text.toString())
-
             }
             R.id.btnVoiceMsg -> {
                 openVoice()
                 Log.d(TAG,"Attempt to send Voice Message message")
             }
-            R.id.btnAttach -> {
+            R.id.btnAdd -> {
+                
+                binding.btnAdd.showAlignTop(balloon)
+
+               /* val anchorViewLocation = IntArray(2)
+                binding.btnAdd.getLocationOnScreen(anchorViewLocation)
+                val yOffset = anchorViewLocation[1] - popupWindow.height
+
+                Show the pop-up window with the calculated y-offset
+                popupWindow.showAtLocation(binding.root, Gravity.NO_GRAVITY, 0, yOffset)*/
+            }
+            /*R.id.btnAttach -> {
                 selectPdf()
             }
             R.id.btnCamara -> {
                 selectImg()
-            }
+            }*/
 
         }
     }
@@ -286,14 +369,14 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             when (requestCode) {
                 12 -> if (resultCode == RESULT_OK) {
 
-                    val uri: Uri = data?.data!!
-                    val pdfFile = Utils.convertUriToPdfFile(this@ChatBoardActivity, uri)!!
+                    val pdfUri: Uri = data?.data!!
+                    val pdfFile = Utils.convertUriToPdfFile(this@ChatBoardActivity, pdfUri)!!
 
-                    if (uri.toString().startsWith("content://")) {
+                    if (pdfUri.toString().startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
                             myCursor = this.contentResolver.query(
-                                uri,
+                                pdfUri,
                                 null,
                                 null,
                                 null,
@@ -301,8 +384,42 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                             )
                             if (myCursor != null && myCursor.moveToFirst()) {
                                 val pdfName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    performSendTextMsg(PDF_TYPE, uri.toString(),pdfName)
+                                    val storageRef = Firebase.storage.reference
+                                    val path = "docs/chatDocs/$fromId/$toId/$pdfName"
+                                    val pdfRef = storageRef.child(path)
+
+                                    pdfRef.putFile(pdfUri)
+                                        .addOnProgressListener {
+                                            binding.fileName.text = pdfName
+                                            binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.disable_blue))
+                                            binding.uploadProgressLayout.visibility = VISIBLE
+                                            binding.btnSend.isEnabled = false
+                                            binding.btnVoiceMsg.isEnabled = false
+                                            val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
+                                            binding.uploadProgressBar.progress = progress
+                                        }
+                                        .addOnSuccessListener {
+
+                                            pdfRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                                binding.fileName.text = ""
+                                                binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+                                                binding.uploadProgressLayout.visibility = GONE
+                                                binding.btnSend.isEnabled = true
+                                                binding.btnVoiceMsg.isEnabled = true
+                                                performSendTextMsg(PDF_TYPE, downloadUri.toString(),pdfName)
+                                            }
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            binding.fileName.text = ""
+                                            binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+                                            binding.uploadProgressLayout.visibility = GONE
+                                            binding.btnSend.isEnabled = true
+                                            binding.btnVoiceMsg.isEnabled = true
+                                            makeToast("Document is not stored successfully",0)
+                                            Log.e(TAG, "onActivityResult: error while storing document $exception" )
+                                        }
                                 }
                             }
                         } finally {
@@ -334,16 +451,35 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                                     val imageRef = storageRef.child(path)
 
                                     imageRef.putFile(imageUri)
-                                        .addOnSuccessListener { taskSnapshot ->
+                                        .addOnProgressListener {
+                                            binding.fileName.text = imgName
+                                            binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.disable_blue))
+                                            binding.uploadProgressLayout.visibility = VISIBLE
+                                            binding.btnSend.isEnabled = false
+                                            binding.btnVoiceMsg.isEnabled = false
+                                            val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
+                                            binding.uploadProgressBar.progress = progress
+                                        }
+                                        .addOnSuccessListener {
 
                                             imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-
+                                                binding.fileName.text = ""
+                                                binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+                                                binding.uploadProgressLayout.visibility = GONE
+                                                binding.btnSend.isEnabled = true
+                                                binding.btnVoiceMsg.isEnabled = true
                                                 performSendTextMsg(IMG_TYPE,
                                                     downloadUri.toString(),imgName)
                                             }
                                         }
                                         .addOnFailureListener { exception ->
-                                            // Handle any errors
+                                            binding.fileName.text = ""
+                                            binding.btnVoiceMsg.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
+                                            binding.uploadProgressLayout.visibility = GONE
+                                            binding.btnSend.isEnabled = true
+                                            binding.btnVoiceMsg.isEnabled = true
+                                            makeToast("Img is not stored successfully",0)
+                                            Log.e(TAG, "onActivityResult: error while storing Img $exception" )
                                         }
                                 }
                             }
@@ -351,9 +487,6 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                             myCursor?.close()
                         }
                     }
-
-
-
                 }
                 200 -> if (resultCode == RESULT_OK) {
                     val matches = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
@@ -461,7 +594,6 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                 .child(fromId!!)
                 .setValue(messageData)
 
-            adapter.notifyDataSetChanged()
         }
 
     }

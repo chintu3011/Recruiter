@@ -8,36 +8,46 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:layout_marginVertical="@dimen/_2sdp">
 
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/layout"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
     android:background="@drawable/chat_msg_from_bg"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/_2sdp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnShowImg"
         android:layout_width="@dimen/_160sdp"
         android:layout_height="@dimen/_120sdp"
         app:srcCompat="@drawable/baseline_image_24"
-        android:foreground="@drawable/glass_effect_pdf_view"
-        android:elevation="1dp"
         android:maxWidth="@dimen/_200sdp"
-        android:padding="@dimen/_10sdp" />
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/cornerCut_1"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeStamp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/hh_mm_ss"
         android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-        android:textColor="#A3FFFFFF" android:paddingHorizontal="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_4sdp"/>
-</LinearLayout>
+        android:textColor="#A3FFFFFF"
+        android:background="@drawable/time_stamp_gradient"
+        android:paddingHorizontal="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="@dimen/_2sdp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 <androidx.constraintlayout.widget.Barrier
     android:id="@+id/barrier2"

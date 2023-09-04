@@ -35,7 +35,7 @@ class LatestMessageAdapterR(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_old_chat, parent, false)
+            .inflate(R.layout.row_latest_chat, parent, false)
         return LatestMsgViewHolder(view)
     }
 

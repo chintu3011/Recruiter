@@ -3,8 +3,10 @@ package com.amri.emploihunt.messenger
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
@@ -27,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
 import java.io.BufferedInputStream
+import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -146,8 +149,7 @@ class ChatAdapter(
             is FromPdfViewHolder -> {
                 holder.bind(message)
                 holder.itemView.setOnClickListener {
-                    showDialog(holder.itemView.context,false,message.docUri)
-
+                    showDialog(holder.itemView.context,true,message.docUri)
                 }
             }
             is ToPdfViewHolder -> {
@@ -155,7 +157,6 @@ class ChatAdapter(
                 holder.itemView.setOnClickListener {
                     showDialog(holder.itemView.context, true, message.docUri)
                 }
-
             }
             is FromImgViewHolder -> {
                 holder.bind(message)
@@ -164,16 +165,10 @@ class ChatAdapter(
                 holder.bind(message)
             }
         }
-
-
     }
 
     override fun getItemCount(): Int {
         return messages.size
-    }
-
-    override fun setHasStableIds(hasStableIds: Boolean) {
-        super.setHasStableIds(hasStableIds)
     }
 
     inner class FromTxtViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -203,10 +198,7 @@ class ChatAdapter(
             timeStamp.text = messageData.timeStamp
 
             val pdfUri = messageData.docUri
-
         }
-
-
     }
     inner class ToPdfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private var pdfName: TextView = itemView.findViewById(R.id.pdfName)
@@ -224,7 +216,40 @@ class ChatAdapter(
         private val btnShowImg:ShapeableImageView = itemView.findViewById(R.id.btnShowImg)
         private var timeStamp: TextView = itemView.findViewById(R.id.timeStamp)
         fun bind(messageData: MessageData){
-            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.mipmap.ic_logo).into(btnShowImg)
+
+            // Decode the image file to get its dimensions
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(messageData.docUri, options)
+            val imageWidth = options.outWidth
+            val imageHeight = options.outHeight
+
+// Define min and max dimensions for the ImageView
+            val minWidth = 600 // Change this to your desired minimum width
+            val minHeight = 700 // Change this to your desired minimum height
+            val maxWidth = 1500 // Change this to your desired maximum width
+            val maxHeight = 1500 // Change this to your desired maximum height
+
+// Calculate scaling factors to fit within the specified range
+            val widthScaleFactor = minOf(1.0, maxWidth.toDouble() / imageWidth)
+            val heightScaleFactor = minOf(1.0, maxHeight.toDouble() / imageHeight)
+
+// Use the smaller scaling factor to ensure the image fits within both dimensions
+            val scaleFactor = minOf(widthScaleFactor, heightScaleFactor)
+
+// Calculate the ImageView dimensions
+            val imageViewWidth = (imageWidth * scaleFactor).toInt()
+            val imageViewHeight = (imageHeight * scaleFactor).toInt()
+
+// Ensure the dimensions are within the specified min and max dimensions
+            val finalWidth = maxOf(minWidth, minOf(maxWidth, imageViewWidth))
+            val finalHeight = maxOf(minHeight, minOf(maxHeight, imageViewHeight))
+
+// Set the ImageView dimensions
+            btnShowImg.layoutParams.width = finalWidth
+            btnShowImg.layoutParams.height = finalHeight
+
+            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.drawable.baseline_image_24).into(btnShowImg)
             timeStamp.text = messageData.timeStamp
 
             val imgUri = messageData.docUri
@@ -235,7 +260,39 @@ class ChatAdapter(
         private val btnShowImg:ShapeableImageView = itemView.findViewById(R.id.btnShowImg)
         private var timeStamp: TextView = itemView.findViewById(R.id.timeStamp)
         fun bind(messageData: MessageData){
-            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.mipmap.ic_logo).into(btnShowImg)
+
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(messageData.docUri, options)
+            val imageWidth = options.outWidth
+            val imageHeight = options.outHeight
+
+// Define min and max dimensions for the ImageView
+            val minWidth = 600 // Change this to your desired minimum width
+            val minHeight = 700 // Change this to your desired minimum height
+            val maxWidth = 1500 // Change this to your desired maximum width
+            val maxHeight = 1500 // Change this to your desired maximum heigh
+
+// Calculate scaling factors to fit within the specified range
+            val widthScaleFactor = minOf(1.0, maxWidth.toDouble() / imageWidth)
+            val heightScaleFactor = minOf(1.0, maxHeight.toDouble() / imageHeight)
+
+// Use the smaller scaling factor to ensure the image fits within both dimensions
+            val scaleFactor = minOf(widthScaleFactor, heightScaleFactor)
+
+// Calculate the ImageView dimensions
+            val imageViewWidth = (imageWidth * scaleFactor).toInt()
+            val imageViewHeight = (imageHeight * scaleFactor).toInt()
+
+// Ensure the dimensions are within the specified min and max dimensions
+            val finalWidth = maxOf(minWidth, minOf(maxWidth, imageViewWidth))
+            val finalHeight = maxOf(minHeight, minOf(maxHeight, imageViewHeight))
+
+// Set the ImageView dimensions
+            btnShowImg.layoutParams.width = finalWidth
+            btnShowImg.layoutParams.height = finalHeight
+
+            Glide.with(btnShowImg.context).load(messageData.docUri?.toUri()).placeholder(R.drawable.baseline_image_24).into(btnShowImg)
             timeStamp.text = messageData.timeStamp
 
             val imgUri = messageData.docUri
@@ -251,7 +308,7 @@ class ChatAdapter(
 
             builder.setView(bindingDialog.root)
             if (isOnline){
-                RetrievePDFFromURL(bindingDialog.idPDFView,bindingDialog.progressCircular).execute("https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf")
+                RetrievePDFFromURL(bindingDialog.idPDFView,bindingDialog.progressCircular).execute(docUri)
 
             }else{
                 context.contentResolver.takePersistableUriPermission(

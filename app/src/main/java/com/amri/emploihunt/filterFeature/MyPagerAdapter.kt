@@ -10,12 +10,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
 
 class MyPagerAdapter(
-    private val adapterList: MutableList<FilterTagAdapter>,
+    /*private val adapterList: MutableList<FilterTagAdapter>,*/
+    private val categoriesLists : MutableList<MutableList<String>>,
     private val activity: AppCompatActivity,
     private val onSearchQueryChanged: OnSearchQueryChanged,
+    private val onTagClickListener: OnTagClickListener,
     private val filterCategory: Int
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -39,41 +43,68 @@ class MyPagerAdapter(
     }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_recycler_view,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_chip_grp_view,parent,false)
 
-        return TagViewViewHolder(view,onSearchQueryChanged)
+        return TagViewViewHolder(view,onSearchQueryChanged,onTagClickListener)
     }
 
     override fun getItemCount(): Int {
-        return adapterList.size
+        /*return adapterList.size*/
+        return categoriesLists.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val adapter: FilterTagAdapter = adapterList[position]
+        /*val adapter: FilterTagAdapter = adapterList[position]*/
+        val list: MutableList<String> = categoriesLists[position]
 
         when(holder){
             is TagViewViewHolder -> {
-                holder.bind(adapter,activity,filterCategory,position+1)
+                /*holder.bind(adapter,activity,filterCategory,position+1)*/
+                holder.bind(list,activity,filterCategory,position+1)
             }
         }
     }
 
-    inner class TagViewViewHolder(itemView: View, onSearchQueryChanged: OnSearchQueryChanged) : RecyclerView.ViewHolder(itemView){
+    inner class TagViewViewHolder(itemView: View, onSearchQueryChanged: OnSearchQueryChanged,onTagClickListener: OnTagClickListener) : RecyclerView.ViewHolder(itemView){
 
-        private val recyclerView:RecyclerView = itemView.findViewById(R.id.recyclerView)
+        /*private val recyclerView:RecyclerView = itemView.findViewById(R.id.recyclerView)*/
+        private val chipGroup:ChipGroup = itemView.findViewById(R.id.chipGroup)
         private val btnSearch:ShapeableImageView = itemView.findViewById(R.id.btnSearch)
         private val searchView:SearchView = itemView.findViewById(R.id.searchView)
 
         private var attribute = -1
 
-        fun bind(adapter: FilterTagAdapter, activity: AppCompatActivity, filterCategory: Int, attribute: Int){
+        /*fun bind(adapter: FilterTagAdapter, activity: AppCompatActivity, filterCategory: Int, attribute: Int)*/
+        fun bind(list: MutableList<String>, activity: AppCompatActivity, filterCategory: Int, attribute: Int){
+
+
 
             this.attribute = attribute
-            val gridLayoutManagerDomain = GridLayoutManager(activity, 2)
+            /*val gridLayoutManagerDomain = GridLayoutManager(activity, 2)
             setSpanLookUP(gridLayoutManagerDomain)
             recyclerView.layoutManager = gridLayoutManagerDomain
-            recyclerView.adapter = adapter
+            recyclerView.adapter = adapter*/
 
+            for (index in list.indices) {
+                val chip = activity.layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+                
+                if(attribute == 4){
+                    chip.text = list[index].plus(" LPA +")
+                }
+                else{
+                    chip.text = list[index]
+                }
+                chipGroup.addView(chip)
+
+                chip.setOnClickListener {
+                    onTagClickListener.onTagClick(index,attribute)
+                }
+                chip.setOnLongClickListener {
+                    onTagClickListener.onTagLongClick(index,attribute)
+                    return@setOnLongClickListener true
+                }
+
+            }
             when (filterCategory) {
                 JOB -> {
                     when(attribute){
@@ -128,9 +159,6 @@ class MyPagerAdapter(
                     Toast.makeText(activity,"Filter Category not found",Toast.LENGTH_SHORT).show()
                 }
             }
-
-
-
         }
 
         init {
@@ -156,7 +184,7 @@ class MyPagerAdapter(
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    onSearchQueryChanged.searchTags(newText.orEmpty(),attribute,filterCategory)
+                    onSearchQueryChanged.searchTags(newText.orEmpty(),attribute,chipGroup,filterCategory,onTagClickListener)
                     return true
                 }
 
@@ -166,16 +194,22 @@ class MyPagerAdapter(
     }
 
 
-    private fun setSpanLookUP(gridLayoutManager: GridLayoutManager) {
+    /*private fun setSpanLookUP(gridLayoutManager: GridLayoutManager) {
         gridLayoutManager.spanSizeLookup = object :GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
                 return if (position % 3 == 0) 2 else 1
             }
         }
-    }
+    }*/
 
     interface OnSearchQueryChanged{
-        fun searchTags(query:String,attribute:Int,filterCategory: Int)
+        fun searchTags(query:String,attribute:Int,chipGroup: ChipGroup,filterCategory: Int,onTagClickListener: OnTagClickListener)
+    }
+
+    interface OnTagClickListener{
+        fun onTagClick(position: Int, attribute: Int)
+        fun onTagLongClick(position: Int, attribute: Int)
+
     }
 
 }

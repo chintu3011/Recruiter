@@ -4,7 +4,9 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://192.168.1.3:5000/api"
+    private const val BASE_URL = "http://192.168.1.5:5000/api"
+    /*private const val BASE_URL = "http://192.168.249.196:5000/api"*/
+    /*private const val BASE_URL = "http://192.168.221.196:5000/api"*/
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
     const val CHECK_USER_EXISTING = "$BASE_URL/signin/check_user_existing"

@@ -7,18 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
-import com.amri.emploihunt.jobSeekerSide.UsersJobSeeker
 import com.amri.emploihunt.model.LatestChatMsg
 import com.amri.emploihunt.model.User
 import com.bumptech.glide.Glide
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class LatestMessageAdapterJ(
     private val messages: MutableList<LatestChatMsg>,
@@ -34,7 +28,7 @@ class LatestMessageAdapterJ(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_old_chat, parent, false)
+            .inflate(R.layout.row_latest_chat, parent, false)
         return LatestMsgViewHolder(view)
     }
 

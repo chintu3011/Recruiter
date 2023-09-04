@@ -7,41 +7,47 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/_2sdp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/chat_msg_to_bg"
+        android:foreground="@drawable/glass_effect_pdf_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/pdfName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="normal"
-            android:background="@color/colorPrimary"
-            android:paddingVertical="@dimen/_2sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:lines="1"
-            android:textAlignment="textStart"
-            android:ellipsize="end" />
+        android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/btnOpenDoc"
-            android:layout_width="@dimen/_160sdp"
-            android:layout_height="@dimen/_75sdp"
+            android:id="@+id/pdfIcon"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
             app:srcCompat="@drawable/pdf_view_icon"
-            android:foreground="@drawable/glass_effect_pdf_view"
             android:scaleType="centerInside"
             android:tint="@color/white"
-            android:elevation="1dp"
-            android:maxWidth="@dimen/_200sdp"
-            android:padding="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pdfName"
+            android:layout_width="wrap_content"
+            android:maxWidth="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:text="pdf name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            android:paddingVertical="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:lines="2"
+            android:textAlignment="textStart"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@+id/pdfIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pdfIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/pdfIcon"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/timeStamp"
@@ -50,9 +56,13 @@
             android:text="@string/hh_mm_ss"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-            android:textColor="#A3FFFFFF" android:paddingHorizontal="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_4sdp"/>
-    </LinearLayout>
+            android:textColor="#A3FFFFFF"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            app:layout_constraintTop_toBottomOf="@+id/pdfName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"

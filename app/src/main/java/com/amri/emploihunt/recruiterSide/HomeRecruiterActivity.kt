@@ -316,7 +316,7 @@ class HomeRecruiterActivity : BaseActivity(),
         }
     }
 
-    override fun onDataReceivedFilterApplicationList(
+    /*override fun onDataReceivedFilterApplicationList(
         domainList: MutableList<String>,
         locationList: MutableList<String>,
         workingModeList: MutableList<String>,
@@ -327,6 +327,19 @@ class HomeRecruiterActivity : BaseActivity(),
             locationList,
             workingModeList,
             packageList
+        )
+    }*/
+    override fun onDataReceivedFilterApplicationList(
+        domain: String,
+        location: String,
+        workingMode: String,
+        packageRange: String
+    ) {
+        FilterParameterTransferClass.instance!!.setApplicationData(
+            domain,
+            location,
+            workingMode,
+            packageRange
         )
     }
 

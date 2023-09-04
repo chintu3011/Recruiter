@@ -101,7 +101,7 @@
                 app:layout_constraintTop_toTopOf="@id/profileBackImg"
                 app:layout_constraintVertical_bias="0.51"
                 app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/profile_default_image"
+                app:srcCompat="@drawable/default_person_icon"
                 app:strokeColor="@color/white"
                 app:strokeWidth="@dimen/_5sdp" />
 

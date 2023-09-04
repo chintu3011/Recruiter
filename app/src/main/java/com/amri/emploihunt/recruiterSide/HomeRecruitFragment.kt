@@ -27,6 +27,7 @@ import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
 import com.amri.emploihunt.databinding.SinglerowjsBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
 import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.Jobs
@@ -343,7 +344,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         binding.jobSeekerAdapter!!.notifyDataSetChanged()
     }*/
 
-    @SuppressLint("NotifyDataSetChanged")
+   /* @SuppressLint("NotifyDataSetChanged")
     override fun onDataReceivedFilterApplicationList(
         domainList: MutableList<String>,
         locationList: MutableList<String>,
@@ -431,7 +432,80 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         }
         Log.d(TAG, "FilteredList: $filteredDataList")
         binding.jobSeekerAdapter!!.notifyDataSetChanged()
+    }*/
+
+     @SuppressLint("NotifyDataSetChanged")
+    override fun onDataReceivedFilterApplicationList(
+        domain: String,
+        location: String,
+        workingMode: String,
+        packageRange: String
+    ) {
+         Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
+
+        filteredDataList.clear()
+        if (domain.isNotEmpty() || location.isNotEmpty() || workingMode.isNotEmpty() || packageRange.isNotEmpty()) {
+
+            for (application in dataList) {
+                val domainMatches = if (domain.isNotEmpty()) {
+
+                    application.vDesignation.contains(
+                        domain.substring(
+                            0,
+                            if (domain.indexOf(" ") != -1) domain.indexOf(" ")
+                            else domain.length
+                        ),
+                        ignoreCase = true)
+                } else {
+                    true
+                }
+                val locationMatches = if (location.isNotEmpty()){
+
+                    application.vPreferCity.contains(
+                        location.substring(
+                            0,
+                            if (location.indexOf(" ") != -1) location.indexOf(" ")
+                            else location.length
+                        ),
+                        ignoreCase = true)
+                }
+                else{
+                    true
+                }
+                val workingModeMatches = if (workingMode.isNotEmpty()){
+
+                    application.vWorkingMode.contains(
+                        workingMode.substring(
+                            0,
+                            if (workingMode.indexOf(" ") != -1) workingMode.indexOf(" ")
+                            else workingMode.length
+                        ),
+                        ignoreCase = true)
+
+                }
+                else{
+                    true
+                }
+                val packageMatches = if(packageRange.isNotEmpty()){
+                    application.vExpectedSalary.trim().toInt() >= packageRange.toInt()
+                }
+                else{
+                    true
+                }
+
+                // If all criteria match, add the job to the filteredJobs list
+                if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
+                    filteredDataList.add(application)
+                }
+            }
+        } else {
+            filteredDataList.addAll(dataList)
+        }
+        Log.d(TAG, "FilteredList: $filteredDataList")
+        binding.jobSeekerAdapter!!.notifyDataSetChanged()
     }
+
+
 
 
 /*    private inner class CustomAdapter : BaseAdapter() {

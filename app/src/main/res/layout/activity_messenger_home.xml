@@ -117,8 +117,10 @@
         android:id="@+id/btnCreateNewChat"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
-        android:backgroundTint="#2196F3"
+        app:backgroundTint="@color/theme_blue"
+        app:tint="@color/white"
         android:src="@drawable/ic_add_people"
+
         app:fabCustomSize="@dimen/_50sdp"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
