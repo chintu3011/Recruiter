@@ -171,7 +171,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         binding.softSkills.text = selectedPost.tSoftSkill
         binding.tvSalary.text = "Salary - ${selectedPost.vSalaryPackage.toString()} Lakh"
         binding.education.text = selectedPost.vEducation
-        Glide.with(this@JobPostActivity).load(selectedPost.tCompanyLogoUrl).into(binding.companyLogo)
+        Glide.with(this@JobPostActivity).load(selectedPost.tCompanyLogoUrl).placeholder(R.mipmap.ic_logo).into(binding.companyLogo)
 
         if (selectedPost.iIsApplied == 1){
             binding.btnApply.isEnabled = false

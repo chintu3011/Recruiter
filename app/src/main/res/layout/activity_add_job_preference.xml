@@ -83,14 +83,14 @@
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
                     app:placeholderText="Android Developer"
                     app:startIconDrawable="@drawable/ic_job_title"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/jobTitle"
@@ -154,7 +154,7 @@
                     android:background="@color/white"
                     android:text="Working Mode"
                     android:textAlignment="textStart"
-                    android:textColor="@color/ed_theme_color"
+                    android:textColor="@color/blue"
                     android:textSize="10dp"
                     android:textStyle="bold"
                     app:fontFamily="serif"
@@ -177,7 +177,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/radioGrpWorkingMode"
                     app:layout_constraintVertical_chainStyle="packed"
                     app:startIconDrawable="@drawable/ic_salary"
-                    app:startIconTint="@color/ed_theme_color"
+                    app:startIconTint="@color/blue"
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -185,6 +185,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/ivSalary"
                         android:gravity="center_vertical"
+                        app:tint="@color/blue"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:src="@drawable/ic_salary"/>
 
@@ -216,14 +217,14 @@
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/ed_theme_color"
+                    app:hintTextColor="@color/blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutSalaryTitle"
                     app:layout_constraintVertical_chainStyle="packed"
                     app:placeholderText="Android Developer"
                     app:startIconDrawable="@drawable/ic_job_location"
-                    app:startIconTint="@color/ed_theme_color">
+                    app:startIconTint="@color/blue">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/cityTitle"
@@ -237,22 +238,21 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnAdd"
-                    android:layout_width="245dp"
-                    android:layout_height="55dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="10dp"
+                    android:textSize="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_40sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutCityTitle"
                     android:background="@drawable/btn_background"
-
                     android:text="Add"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_18sdp"
                     android:textStyle="bold" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             

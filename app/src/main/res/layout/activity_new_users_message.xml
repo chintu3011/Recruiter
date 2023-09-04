@@ -94,13 +94,6 @@
 
 <!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_20sdp"
-        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <ProgressBar
         android:layout_width="@dimen/_50sdp"
@@ -116,14 +109,12 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:numColumns="1"
-        
-        android:verticalSpacing="@dimen/_5sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/layProgressPagination"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
-        app:layout_constraintTop_toBottomOf="@+id/space"/>
+        app:layout_constraintTop_toBottomOf="@+id/appBar"/>
 
     <include
         android:id="@+id/layProgressPagination"

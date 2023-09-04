@@ -116,7 +116,7 @@
                     android:textStyle="bold"
                     android:visibility="gone"
                     app:autoSizeTextType="uniform"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/topGuildLine" />
@@ -144,7 +144,7 @@
                     android:maxLines="1"
                     android:scrollHorizontally="true"
                     android:text="Chintan Patel"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="@color/black"
@@ -165,7 +165,7 @@
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textColor="@color/black"
                     android:textStyle="normal"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="@+id/companyLogo"
                     app:layout_constraintEnd_toEndOf="@+id/UserName"
@@ -224,9 +224,9 @@
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textColor="#302F2F"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textStyle="bold"
-                    app:drawableTint="#CB302F2F"
+                    app:drawableTint="@color/blue"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/flow1"
                     />
@@ -249,7 +249,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/poppinsregular"
                     android:visibility="visible"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
@@ -289,12 +288,12 @@
                     android:drawableLeft="@drawable/ic_biography"
                     android:drawablePadding="@dimen/_5sdp"
                     android:text="@string/bio"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:drawableTint="@color/black"
+                    app:drawableTint="@color/blue"
                     app:layout_constraintBottom_toTopOf="@id/tvBio"
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
@@ -343,8 +342,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:drawableTint="@color/black"
-                    android:fontFamily="@font/poppinsregular"
+                    app:drawableTint="@color/blue"
+                   
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider1" />
@@ -356,9 +355,8 @@
                     android:text="Experience"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppinsregular"
                     app:layout_constraintBottom_toBottomOf="@+id/dashDivider"
                     app:layout_constraintEnd_toStartOf="@+id/dashDivider"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -385,7 +383,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="5+ Years"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textStyle="bold"
@@ -414,10 +412,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Education"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/dashDivider2"
                     app:layout_constraintEnd_toStartOf="@+id/dashDivider2"
@@ -448,7 +446,7 @@
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:layout_constraintBottom_toBottomOf="@id/dashDivider2"
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -489,8 +487,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:drawableTint="@color/black"
-                    android:fontFamily="@font/poppinsregular"
+                    app:drawableTint="@color/blue"
+                   
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider3" />
@@ -502,9 +500,9 @@
                     android:text="Android Developer"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
@@ -516,7 +514,7 @@
                     android:layout_height="wrap_content"
                     android:text="5 Year"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textStyle="bold"
@@ -547,9 +545,9 @@
                     android:text="Amri System"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
@@ -561,7 +559,7 @@
                     android:layout_height="wrap_content"
                     android:text="Ahemdabad"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textStyle="bold"
@@ -604,8 +602,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:drawableTint="@color/black"
-                    android:fontFamily="@font/poppinsregular"
+                    app:drawableTint="@color/blue"
+                   
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider4" />
@@ -645,8 +643,8 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:drawableTint="@color/black"
-                    android:fontFamily="@font/poppinsregular"
+                    app:drawableTint="@color/blue"
+                   
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider5" />
@@ -654,7 +652,7 @@
                     android:id="@+id/imgPdf"
                     android:layout_width="@dimen/_45sdp"
                     android:layout_height="@dimen/_45sdp"
-                    android:src="@drawable/profile_default_image"
+                    android:src="@drawable/pdf_view_icon"
                     app:layout_constraintHorizontal_bias="0.5"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_5sdp"
@@ -666,13 +664,13 @@
                     android:id="@+id/btnopen"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/theme_blue"
+                    android:backgroundTint="@color/blue"
                     android:insetTop="0dp"
                     android:insetRight="@dimen/_5sdp"
                     android:insetBottom="0dp"
                     android:text="Open"
                     android:visibility="visible"
-                    android:fontFamily="@font/poppinsregular"
+                   
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="15sp"
@@ -731,7 +729,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:fontFamily="@font/poppinsregular"
+           
             app:cornerRadius="@dimen/_5sdp"
             android:layout_gravity="bottom"
             android:clickable="true"

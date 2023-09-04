@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/layout"
         app:shapeAppearanceOverlay="@style/circle"
-        app:srcCompat="@drawable/profile_default_image" />-->
+        app:srcCompat="@drawable/default_person_icon" />-->
 
 
     <LinearLayout

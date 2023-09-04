@@ -68,7 +68,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private lateinit var adapter:ChatAdapter
 
     companion object{
-        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.profile_default_image
+        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.default_person_icon
         private const val TAG = "ChatBoardActivity"
     }
 

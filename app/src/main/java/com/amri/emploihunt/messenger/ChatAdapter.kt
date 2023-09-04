@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.AsyncTask
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.databinding.FullScreenImageViewBinding
 import com.amri.emploihunt.databinding.PdfViewerDialogBinding
 import com.amri.emploihunt.model.MessageData
 import com.amri.emploihunt.util.IMG_TYPE
@@ -26,6 +28,10 @@ import com.amri.emploihunt.util.PDF_TYPE
 import com.amri.emploihunt.util.TXT_TYPE
 import com.amri.emploihunt.util.Utils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
 import java.io.BufferedInputStream
@@ -149,20 +155,37 @@ class ChatAdapter(
             is FromPdfViewHolder -> {
                 holder.bind(message)
                 holder.itemView.setOnClickListener {
-                    showDialog(holder.itemView.context,true,message.docUri)
+                    val intent = Intent(holder.itemView.context,PDfViewActivity::class.java)
+                    intent.putExtra("Uri",message.docUri)
+                    holder.itemView.context.startActivity(intent)
                 }
             }
             is ToPdfViewHolder -> {
                 holder.bind(message)
                 holder.itemView.setOnClickListener {
-                    showDialog(holder.itemView.context, true, message.docUri)
+                    val intent = Intent(holder.itemView.context,PDfViewActivity::class.java)
+                    intent.putExtra("Uri",message.docUri)
+                    holder.itemView.context.startActivity(intent)
                 }
             }
             is FromImgViewHolder -> {
                 holder.bind(message)
+                holder.itemView.setOnClickListener {
+//                    showImageDialog(holder.itemView.context,message.docUri)
+                    val intent = Intent(holder.itemView.context,FullImageViewActivity::class.java)
+                    intent.putExtra("Uri",message.docUri)
+                    holder.itemView.context.startActivity(intent)
+
+                }
             }
             is ToImgViewHolder -> {
                 holder.bind(message)
+                holder.itemView.setOnClickListener {
+                    val intent = Intent(holder.itemView.context,FullImageViewActivity::class.java)
+                    intent.putExtra("Uri",message.docUri)
+                    holder.itemView.context.startActivity(intent)
+
+                }
             }
         }
     }
@@ -318,6 +341,52 @@ class ChatAdapter(
                 val resumePdf = Utils.convertUriToPdfFile(context, Uri.parse(docUri))!!
                 bindingDialog.idPDFView.fromFile(resumePdf).load()
             }
+
+            dialog = builder.create()
+            dialog?.let {
+                it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                it.show()
+            }
+            bindingDialog.closeIv.setOnClickListener {
+                (dialog as AlertDialog).dismiss()
+            }
+        } catch (e: Exception) {
+            Log.e("#####", "showProgressDialog exception: ${e.message}")
+        }
+    }
+    private fun showImageDialog(context: Context, docUri: String?) {
+        try {
+
+
+            val builder = AlertDialog.Builder(context)
+            val bindingDialog = FullScreenImageViewBinding.inflate(LayoutInflater.from(context))
+            Log.d(TAG, "showImageDialog: $docUri")
+            builder.setView(bindingDialog.root)
+            Glide.with(context)
+                .load(docUri)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        //TODO: something on exception
+                        return false
+                    }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        bindingDialog.progressCircular.visibility = View.GONE
+                        //do something when picture already loaded
+                        return false
+                    }
+                })
+                .into(bindingDialog.ivImageView)
 
             dialog = builder.create()
             dialog?.let {

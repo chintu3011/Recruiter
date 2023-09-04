@@ -173,7 +173,7 @@
                     
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/dotDivider1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -497,7 +497,7 @@
                     android:text="Experience"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
                     
                     app:layout_constraintBottom_toBottomOf="@+id/dashDivider"
@@ -526,7 +526,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="5+ Years"
-                    
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textStyle="bold"
@@ -557,7 +556,7 @@
                     
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/theme_blue"
+                    android:textColor="@color/blue"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/dashDivider2"
                     app:layout_constraintEnd_toStartOf="@+id/dashDivider2"
@@ -622,7 +621,7 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/theme_blue"
+                    android:backgroundTint="@color/blue"
                     android:insetTop="0dp"
                     android:insetRight="@dimen/_5sdp"
                     android:insetBottom="0dp"

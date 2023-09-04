@@ -9,19 +9,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
 
 
 
-        <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/idPDFView"
+        <com.amri.emploihunt.util.TouchImageView
+            android:id="@+id/ivImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp" />
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
         <ProgressBar
             android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
@@ -31,12 +32,15 @@
             android:indeterminateTint="@color/colorPrimary"/>
         <!--on below line we are creating our pdf view-->
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeIv"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:id="@+id/closeIv"
-            android:tint="@color/colorPrimary"
-            android:src="@drawable/baseline_close_24"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_10sdp"/>
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:tint="@color/blue"
+            android:src="@drawable/baseline_close_24" />
     </RelativeLayout>
 </layout>

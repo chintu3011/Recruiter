@@ -197,7 +197,7 @@ class JobSaveActivity : BaseActivity() {
                 holder.itemView.context,
                 applyModel.tCreatedAt!!.toLong()
             )
-            Glide.with(holder.itemView.context).load(applyModel.job.tCompanyLogoUrl).into(holder.binding.profileImg)
+            Glide.with(holder.itemView.context).load(applyModel.job.tCompanyLogoUrl).placeholder(R.mipmap.ic_logo).into(holder.binding.profileImg)
 //            onCategoryClick.onCategoryClicked(it, templateModel)
             holder.binding.executePendingBindings()
             holder.itemView.setOnClickListener {

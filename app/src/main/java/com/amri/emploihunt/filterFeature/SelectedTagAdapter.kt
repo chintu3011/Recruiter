@@ -45,7 +45,7 @@ class SelectedTagAdapter(
             else{
                 btnFilterTag.text = tag
             }
-            val newTintColor = ContextCompat.getColor(activity, R.color.theme_blue)
+            val newTintColor = ContextCompat.getColor(activity, R.color.blue)
             val newTextColor = ContextCompat.getColor(activity, R.color.white)
             btnFilterTag.backgroundTintList =
                 ColorStateList.valueOf(newTintColor)

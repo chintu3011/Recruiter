@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/circle"
-        app:srcCompat="@drawable/profile_default_image" />
+        app:srcCompat="@drawable/default_person_icon" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnChangeImg"

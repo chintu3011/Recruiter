@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                android:textColor="@color/theme_blue"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
                 android:fontFamily="@font/poppinsregular"
                 app:layout_constraintBottom_toBottomOf="@+id/jobTitle"

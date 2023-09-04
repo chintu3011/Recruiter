@@ -108,4 +108,6 @@
     <string name="incorrect_view_holder">Incorrect view holder : %1$s</string>
     <string name="file_name">File name</string>
     <string name="wait_while_uploading">Wait while uploading...</string>
+    <string name="cancel_post">Cancel Post</string>
+    <string name="post_job">Post Job</string>
 </resources>

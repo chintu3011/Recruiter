@@ -28,7 +28,7 @@ class SettingJobSeekerFragment : BaseFragment() {
 
 
     private lateinit var prefmanger: SharedPreferences
-    private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.profile_default_image
+    private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.default_person_icon
     lateinit var binding: FragmentSettingBinding
     private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
     private lateinit var recruiterProfileInfo: RecruiterProfileInfo

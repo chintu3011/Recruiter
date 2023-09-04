@@ -117,7 +117,7 @@
         android:id="@+id/btnCreateNewChat"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
-        app:backgroundTint="@color/theme_blue"
+        app:backgroundTint="@color/blue"
         app:tint="@color/white"
         android:src="@drawable/ic_add_people"
 

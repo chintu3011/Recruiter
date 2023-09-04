@@ -151,7 +151,7 @@
                     android:layout_marginStart="@dimen/_13sdp"
                     android:layout_marginEnd="@dimen/_13sdp"
                     android:progress="0"
-                    android:progressTint="@color/theme_blue"
+                    android:progressTint="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutdesc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

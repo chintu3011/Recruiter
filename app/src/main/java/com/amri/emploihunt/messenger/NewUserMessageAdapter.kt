@@ -134,7 +134,7 @@ class NewUserMessageAdapter(
             personName.text = userFullName
             tagLine.text = user.tTagLine
             if ( user.tProfileUrl != null ){
-                Glide.with(profileImg.context).load(user.tProfileUrl).placeholder(R.drawable.profile_default_image).into(profileImg)
+                Glide.with(profileImg.context).load(user.tProfileUrl).placeholder(R.drawable.default_person_icon).into(profileImg)
             }
 
             cardView.setOnClickListener{
