@@ -39,6 +39,7 @@ import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
 
@@ -298,6 +299,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[IS_LOGIN] = true
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
+                                                prefManager[USER_ID] = response.data.user.id
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                                 val intent = Intent(
                                                     this@OTPVerificationLoginActivity,
@@ -346,6 +348,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     HomeRecruiterActivity::class.java
                                                 )
                                                 prefManager[IS_LOGIN] = true
+                                                prefManager[USER_ID] = response.data.user.id
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken

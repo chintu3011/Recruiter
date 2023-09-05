@@ -110,4 +110,9 @@
     <string name="wait_while_uploading">Wait while uploading...</string>
     <string name="cancel_post">Cancel Post</string>
     <string name="post_job">Post Job</string>
+    <string name="a_new_version_of_the_app_is_available_it_s_time_to_update_bhadegadiwala_app">A new version of the app is available.Update EmploiHunt App.</string>
+    <string name="you_have_to_not_enough_balance_please_add_money_in_wallet">You have insufficient coins. Please add coin to your wallet.</string>
+    <string name="update_details">Update details</string>
+    <string name="your_account_has_been_blocked_due_to_unauthenticated_activities_please_contact_to_bhadegadiwala_app_or_call_on_917990380970">Your account has been blocked due to unauthenticated activities. Please contact to EmploiHunt app or call on +918469000537</string>
+
 </resources>
