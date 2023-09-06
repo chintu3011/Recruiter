@@ -35,6 +35,8 @@ object NetworkUtils {
     const val UPDATE_POST = "$BASE_URL/job/update_jobs"
     const val DELETE_POST = "$BASE_URL/job/delete"
     const val GET_LATEST_APP_VERSION_CODE = "$BASE_URL/update_app/get_latest_app_version_code"
+    const val CONTACT_US = "$BASE_URL/contact-us/insert_user_contact"
+    const val TERMS_PRIVACY = "$BASE_URL/terms-privacy-policy/get_terms_policy_by_id"
 
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 

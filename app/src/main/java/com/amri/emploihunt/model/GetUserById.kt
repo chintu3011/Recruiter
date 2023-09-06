@@ -31,7 +31,7 @@ data class User(
     /**/val vPreferJobTitle: String,
     val vExpectedSalary: String,
     val isLogin: String,
-    val isBlock: String,
+    val isBlock: Int,
     val tCreatedAt: String,
     val tUpadatedAt: String
 ):Serializable

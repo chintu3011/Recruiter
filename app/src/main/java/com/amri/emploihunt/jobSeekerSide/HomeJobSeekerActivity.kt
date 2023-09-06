@@ -25,6 +25,7 @@ import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -38,6 +39,7 @@ import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.settings.ContactUsActivity
 import com.amri.emploihunt.settings.SettingJobSeekerFragment
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.IS_LOGIN
@@ -49,6 +51,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
@@ -92,6 +95,10 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
         /*userType = intent.getIntExtra("role",0)
         userId = intent.getStringExtra("userId")*/
+
+        if (prefmanger.getInt(IS_BLOCKED,0)==1){
+            showAccountBlockBottomSheet()
+        }
         Log.d(TAG,"$userId::$userType")
 
         FilterParameterTransferClass.instance!!.setJobListener(this)
@@ -510,6 +517,41 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         }
 
     }
+    fun showAccountBlockBottomSheet() {
 
+        val dialog = BottomSheetDialog(this)
+        val view: View = layoutInflater.inflate(
+            R.layout.account_block_bottomsheet,
+            null
+        )
+
+        val tvDes = view.findViewById<TextView>(R.id.tv_des)
+        val btn_contactUs = view.findViewById<Button>(R.id.btn_contactUs)
+        val btn_ok = view.findViewById<Button>(R.id.btn_cancel)
+        val animationView = view.findViewById<LottieAnimationView>(R.id.animationView)
+
+        animationView.setAnimation(R.raw.block)
+
+
+        btn_contactUs.setOnClickListener {
+            val intent = Intent (this, ContactUsActivity::class.java)
+            intent.putExtra("for_block",true)
+            startActivity(intent)
+
+        }
+        btn_ok.setOnClickListener {
+            ActivityCompat.finishAffinity(this)
+            dialog.dismiss()
+        }
+
+
+
+        dialog.setCancelable(true)
+
+        dialog.setContentView(view)
+
+        dialog.show()
+
+    }
 
 }

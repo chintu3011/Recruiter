@@ -34,9 +34,11 @@ import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.UpdateAppModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
+import com.amri.emploihunt.settings.ContactUsActivity
 import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.DEVICE_TYPE
+import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.OS_VERSION
 import com.amri.emploihunt.util.PrefManager.get
@@ -148,6 +150,7 @@ class SplashActivity : BaseActivity() {
                                     val updateMsg = it.data.tMessage
 
                                     val currentVersionCode = BuildConfig.VERSION_CODE
+                                    prefManager[IS_BLOCKED] = it.data.isBlock
                                     if (it.data.isBlock == 1){
                                         showAccountBlockBottomSheet()
                                     }else{
@@ -224,9 +227,9 @@ class SplashActivity : BaseActivity() {
 
 
         btn_contactUs.setOnClickListener {
-//            val intent = Intent (this, ContactUsActivity::class.java)
-//            intent.putExtra("for_block",true)
-//            startActivity(intent)
+            val intent = Intent (this, ContactUsActivity::class.java)
+            intent.putExtra("for_block",true)
+            startActivity(intent)
 
         }
         btn_ok.setOnClickListener {

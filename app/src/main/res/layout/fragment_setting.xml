@@ -312,5 +312,49 @@
                 android:tint="@color/colorPrimary"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_border_bg"
+            android:id="@+id/rlterms"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:id="@+id/ivTerms"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingBottom="@dimen/_1sdp"
+                android:tint="@color/blue"
+                android:src="@drawable/baseline_import_contacts_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/terms_amp_amp_condition"
+                android:textColor="@color/black"
+                android:layout_marginStart="@dimen/_10sdp"
+
+                android:textSize="@dimen/_12sdp"
+                android:layout_toEndOf="@+id/ivTerms"
+                android:layout_centerVertical="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:padding="@dimen/_5sdp"
+                android:layout_alignParentEnd="true"
+                android:tint="@color/colorPrimary"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/baseline_arrow_forward_ios_24" />
+        </RelativeLayout>
+
     </LinearLayout>
 </layout>

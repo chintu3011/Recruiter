@@ -30,6 +30,7 @@ import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.JOB_SEEKER
 import com.amri.emploihunt.util.MOB_NO
@@ -301,6 +302,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[ROLE] = response.data.user.iRole
                                                 prefManager[USER_ID] = response.data.user.id
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                prefManager[IS_BLOCKED] = response.data.user.isBlock
                                                 val intent = Intent(
                                                     this@OTPVerificationLoginActivity,
                                                     HomeJobSeekerActivity::class.java
@@ -352,6 +354,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                prefManager[IS_BLOCKED] = response.data.user.isBlock
                                                 /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
                                                 intent.putExtra("userId",response.data.user.vFirebaseId)
                                                 intent.putExtra("role", response.data.user.iRole)
