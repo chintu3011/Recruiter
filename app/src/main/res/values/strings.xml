@@ -22,12 +22,13 @@
     <string name="permission_title">Need Permissions</string>
     <string name="permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
     <string name="permission_go_to_settings">GOTO SETTINGS</string>
-    <string name="cancel">cancel\n</string>
+    <string name="cancel">cancel</string>
     <string name="please_wait">Please wait…</string>
     <string name="plz_enable_gps">Please enable GPS</string>
     <string name="job_role_amp_responsibility"><![CDATA[Job Role & Responsibility]]></string>
     <string name="job_level">Job level</string>
     <string name="retry">Retry</string>
+    <string name="msg_no_campus_found">Sorry! at this moment no any campus placement are Available.</string>
     <string name="msg_no_job_found">Umm… We searched fat and wide and couldn\'t find data matching your search. Let\'s check with another one.</string>
     <string name="msg_no_job_found_save_job">Umm… We finding your save job and couldn\'t find data matching your saved job.</string>
     <string name="msg_server_maintenance">The server is under maintenance. We really appreciate your patience and support. Please wait and try after some time.</string>
@@ -120,5 +121,10 @@
     <string name="submit">Submit</string>
     <string name="name">Name</string>
     <string name="terms_amp_amp_condition">Terms &amp; Condition</string>
+    <string name="campus">Campus</string>
+    <string name="expire1">%dd %dh %dm Remaining</string>
+    <string name="expire2">%dh %dm Remaining</string>
+    <string name="expire3">%dm Remaining</string>
+    <string name="are_you_want_to_sure_for_apply_for_placement">Are You want to sure for apply %1$s for placement</string>
 
 </resources>

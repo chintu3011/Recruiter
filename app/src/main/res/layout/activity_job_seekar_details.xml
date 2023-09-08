@@ -41,7 +41,7 @@
                 android:layout_height="0dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
+
                 android:textSize="@dimen/_15sdp"
                 android:visibility="gone"
                 android:gravity="center"

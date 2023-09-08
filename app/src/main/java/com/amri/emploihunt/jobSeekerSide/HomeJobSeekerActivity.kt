@@ -34,6 +34,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginActivity
 import com.amri.emploihunt.basedata.BaseActivity
+import com.amri.emploihunt.campus.CampusListFragment
 import com.amri.emploihunt.databinding.ActivityHomeJobSeekerBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
@@ -55,6 +56,7 @@ import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.Utils.toast
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -113,10 +115,9 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 R.id.setting -> {
                     replaceFragment(SettingJobSeekerFragment())
                 }
-                /*R.id.chat -> {
-                    val intent = Intent(this@HomeJobSeekerActivity, MessengerHomeActivity::class.java)
-                    startActivity(intent)
-                }*/
+                R.id.campus -> {
+                    replaceFragment(CampusListFragment())
+                }
             }
             true
         }
@@ -178,6 +179,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                                 supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                             if (currentFragment is JobListUpdateListener) {
+                                currentFragment.updateJobList(newText.orEmpty())
+                            }else if (currentFragment is CampusListFragment) {
                                 currentFragment.updateJobList(newText.orEmpty())
                             }
                             return true
@@ -259,6 +262,15 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = true
             }
+            is CampusListFragment -> {
+                supportActionBar?.title = "Campus Placement"
+                btnSearch?.isVisible = true
+                btnVoiceSearch?.isVisible = true
+
+                btnFilter?.isVisible = false
+                /*btnFilter?.isVisible = true*/
+                btnLogout?.isVisible = false
+            }
             else -> {
                 Log.e(TAG,"fragment not found")
                 makeToast(getString(R.string.something_error),0)
@@ -288,11 +300,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
             )
             startActivityForResult(intent, 200)
         } catch (e: ActivityNotFoundException) {
-            val browserIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://market.android.com/details?id=APP_PACKAGE_NAME")
-            )
-            startActivity(browserIntent)
+            toast("Problem in voice search,${e.message}")
         }
     }
 
@@ -305,6 +313,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                 if (currentFragment is JobListUpdateListener) {
+                    currentFragment.updateJobList(query.orEmpty())
+                }else if (currentFragment is CampusListFragment) {
                     currentFragment.updateJobList(query.orEmpty())
                 }
             }

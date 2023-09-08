@@ -37,6 +37,8 @@ object NetworkUtils {
     const val GET_LATEST_APP_VERSION_CODE = "$BASE_URL/update_app/get_latest_app_version_code"
     const val CONTACT_US = "$BASE_URL/contact-us/insert_user_contact"
     const val TERMS_PRIVACY = "$BASE_URL/terms-privacy-policy/get_terms_policy_by_id"
+    const val GET_ALL_CAMPUS = "$BASE_URL/campus_placement/campus"
+    const val CAMPUS_APPLY = "$BASE_URL/campus_placement/apply"
 
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 

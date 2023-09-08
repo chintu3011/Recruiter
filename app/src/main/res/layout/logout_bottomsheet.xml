@@ -33,7 +33,7 @@
             android:id="@+id/btn_yes"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_40sdp"
-            android:fontFamily="@font/poppinsmedium"
+
             android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
@@ -46,7 +46,7 @@
             android:id="@+id/btn_no"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_31sdp"
-            android:fontFamily="@font/poppinsmedium"
+
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_gravity="center"
             android:background="@drawable/button_negative_drawble"

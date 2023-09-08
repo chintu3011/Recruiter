@@ -37,6 +37,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".campus.ApplyForCampusActivity"
+            android:exported="false" />
+        <activity
             android:name=".settings.TermsPrivacyActivity"
             android:exported="false" />
         <activity

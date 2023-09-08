@@ -6,6 +6,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -69,7 +70,7 @@ class MyPagerAdapter(
 
         /*private val recyclerView:RecyclerView = itemView.findViewById(R.id.recyclerView)*/
         private val chipGroup:ChipGroup = itemView.findViewById(R.id.chipGroup)
-        private val btnSearch:ShapeableImageView = itemView.findViewById(R.id.btnSearch)
+        private val btnSearch:AppCompatImageView = itemView.findViewById(R.id.btnSearch)
         private val searchView:SearchView = itemView.findViewById(R.id.searchView)
 
         private var attribute = -1
