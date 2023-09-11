@@ -25,6 +25,7 @@ import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -33,11 +34,13 @@ import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginActivity
 import com.amri.emploihunt.basedata.BaseActivity
+import com.amri.emploihunt.campus.CampusListFragment
 import com.amri.emploihunt.databinding.ActivityHomeJobSeekerBinding
 import com.amri.emploihunt.filterFeature.FilterDataActivity
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.model.LogoutMain
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.settings.ContactUsActivity
 import com.amri.emploihunt.settings.SettingJobSeekerFragment
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.IS_LOGIN
@@ -49,9 +52,11 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
+import com.amri.emploihunt.util.Utils.toast
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -92,6 +97,10 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
         /*userType = intent.getIntExtra("role",0)
         userId = intent.getStringExtra("userId")*/
+
+        if (prefmanger.getInt(IS_BLOCKED,0)==1){
+            showAccountBlockBottomSheet()
+        }
         Log.d(TAG,"$userId::$userType")
 
         FilterParameterTransferClass.instance!!.setJobListener(this)
@@ -106,10 +115,9 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 R.id.setting -> {
                     replaceFragment(SettingJobSeekerFragment())
                 }
-                /*R.id.chat -> {
-                    val intent = Intent(this@HomeJobSeekerActivity, MessengerHomeActivity::class.java)
-                    startActivity(intent)
-                }*/
+                R.id.campus -> {
+                    replaceFragment(CampusListFragment())
+                }
             }
             true
         }
@@ -171,6 +179,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                                 supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                             if (currentFragment is JobListUpdateListener) {
+                                currentFragment.updateJobList(newText.orEmpty())
+                            }else if (currentFragment is CampusListFragment) {
                                 currentFragment.updateJobList(newText.orEmpty())
                             }
                             return true
@@ -252,6 +262,15 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 /*btnFilter?.isVisible = true*/
                 btnLogout?.isVisible = true
             }
+            is CampusListFragment -> {
+                supportActionBar?.title = "Campus Placement"
+                btnSearch?.isVisible = true
+                btnVoiceSearch?.isVisible = true
+
+                btnFilter?.isVisible = false
+                /*btnFilter?.isVisible = true*/
+                btnLogout?.isVisible = false
+            }
             else -> {
                 Log.e(TAG,"fragment not found")
                 makeToast(getString(R.string.something_error),0)
@@ -281,11 +300,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
             )
             startActivityForResult(intent, 200)
         } catch (e: ActivityNotFoundException) {
-            val browserIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://market.android.com/details?id=APP_PACKAGE_NAME")
-            )
-            startActivity(browserIntent)
+            toast("Problem in voice search,${e.message}")
         }
     }
 
@@ -298,6 +313,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                 if (currentFragment is JobListUpdateListener) {
+                    currentFragment.updateJobList(query.orEmpty())
+                }else if (currentFragment is CampusListFragment) {
                     currentFragment.updateJobList(query.orEmpty())
                 }
             }
@@ -510,6 +527,41 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         }
 
     }
+    fun showAccountBlockBottomSheet() {
 
+        val dialog = BottomSheetDialog(this)
+        val view: View = layoutInflater.inflate(
+            R.layout.account_block_bottomsheet,
+            null
+        )
+
+        val tvDes = view.findViewById<TextView>(R.id.tv_des)
+        val btn_contactUs = view.findViewById<Button>(R.id.btn_contactUs)
+        val btn_ok = view.findViewById<Button>(R.id.btn_cancel)
+        val animationView = view.findViewById<LottieAnimationView>(R.id.animationView)
+
+        animationView.setAnimation(R.raw.block)
+
+
+        btn_contactUs.setOnClickListener {
+            val intent = Intent (this, ContactUsActivity::class.java)
+            intent.putExtra("for_block",true)
+            startActivity(intent)
+
+        }
+        btn_ok.setOnClickListener {
+            ActivityCompat.finishAffinity(this)
+            dialog.dismiss()
+        }
+
+
+
+        dialog.setCancelable(true)
+
+        dialog.setContentView(view)
+
+        dialog.show()
+
+    }
 
 }

@@ -40,13 +40,23 @@
                 android:id="@+id/btn_ok"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_40sdp"
-
                 android:backgroundTint="@color/blue"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_margin="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
-                android:text="Ok"
+                android:text="@string/apply"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_12sdp" />
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/_10sdp"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_12sdp" />
 

@@ -267,7 +267,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         val binding_ = InternetBottomSheetLayoutBinding.inflate(layoutInflater)
         binding_.tvDes.text =
             getString(R.string.thank_you_dear_candidate_please_wait_hr_are_contact_soon, company)
-        binding_.animationView.setAnimation(R.raw.apply_success)
+        binding_.animationView.setAnimation(R.raw.apply)
         binding_.btnOk.setOnClickListener {
             bottomSheetDialog.dismiss()
 

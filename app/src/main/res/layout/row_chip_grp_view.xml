@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/_10sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/btnSearch"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
@@ -13,8 +13,8 @@
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/circle"
-        app:srcCompat="@drawable/ic_search" />
+        app:srcCompat="@drawable/ic_search"
+        app:tint="@color/blue" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"

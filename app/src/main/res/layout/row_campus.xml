@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_5sdp"
+        android:id="@+id/cardViewinfo"
+        app:rippleColor="@color/card_ripple_color"
+        android:clickable="true"
+
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:focusable="true"
+        tools:context=".MainActivity2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="D A Placement"
+                    android:textColor="@color/blue"
+                    android:id="@+id/tvName"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_toStartOf="@+id/remingTime"
+                    android:layout_alignParentStart="true"
+                    android:textSize="@dimen/_18sdp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18 hours Reaming"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/remingTime"
+                    android:background="@drawable/reaming_time_bg"
+                    android:drawableTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="@dimen/_12sdp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llDate"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_below="@+id/remingTime"
+                    android:layout_alignParentEnd="true"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/baseline_calendar_month_24"
+                        android:tint="@color/blue"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:text="06-09-2023"
+                        android:id="@+id/tvDate"
+                        android:textSize="@dimen/_12sdp"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mahudha road, Near Khatraj chokdi Mahemdavad"
+                    android:textColor="@color/blue"
+                    android:padding="@dimen/_2sdp"
+                    android:id="@+id/tvAddress"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tvName"
+                    android:layout_toStartOf="@+id/llDate"
+                    android:textSize="@dimen/_12sdp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Android Developer - 7 Vacancy,\nAndroid Developer - 7 Vacancy,\nAndroid Developer - 7 Vacancy"
+                    android:textColor="@color/black"
+                    android:id="@+id/tvVacancy"
+                    android:padding="@dimen/_2sdp"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:drawableStart="@drawable/ic_job_title"
+                    android:drawableTint="@color/blue"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tvAddress"
+                    android:textSize="@dimen/_12sdp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BE(Computer),\nBTECH,\nBCA,\nMCA"
+                    android:textColor="@color/black"
+                    android:id="@+id/tvQulication"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:drawableTint="@color/blue"
+                    android:drawableStart="@drawable/ic_qualification"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_alignEnd="@+id/tvVacancy"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/tvAddress"
+                    android:textSize="@dimen/_12sdp"/>
+
+
+
+            </RelativeLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegistration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_campus_shape"
+                android:clickable="true"
+                android:focusable="true"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_16sdp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:backgroundTint="@null"
+                app:cornerRadius="@dimen/_30sdp"
+                app:rippleColor="@color/glass_color" />
+        </LinearLayout>
+
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

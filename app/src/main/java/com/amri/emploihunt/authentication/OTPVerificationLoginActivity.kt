@@ -30,6 +30,7 @@ import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.IS_BLOCKED
 import com.amri.emploihunt.util.IS_LOGIN
 import com.amri.emploihunt.util.JOB_SEEKER
 import com.amri.emploihunt.util.MOB_NO
@@ -39,6 +40,7 @@ import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
 
@@ -293,7 +295,9 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[IS_LOGIN] = true
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
+                                                prefManager[USER_ID] = response.data.user.id
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                prefManager[IS_BLOCKED] = response.data.user.isBlock
                                                 val intent = Intent(
                                                     this@OTPVerificationLoginActivity,
                                                     HomeJobSeekerActivity::class.java
@@ -341,9 +345,11 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     HomeRecruiterActivity::class.java
                                                 )
                                                 prefManager[IS_LOGIN] = true
+                                                prefManager[USER_ID] = response.data.user.id
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                                prefManager[IS_BLOCKED] = response.data.user.isBlock
                                                 /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
                                                 intent.putExtra("userId",response.data.user.vFirebaseId)
                                                 intent.putExtra("role", response.data.user.iRole)

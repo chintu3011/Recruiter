@@ -8,14 +8,14 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_des1"
+        android:id="@+id/tv_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Are you sure you want book this ride?"
-        android:textColor="@color/black"
+        android:text="@string/your_account_has_been_blocked_due_to_unauthenticated_activities_please_contact_to_bhadegadiwala_app_or_call_on_917990380970"
+        android:textColor="@color/blue"
         android:textSize="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/poppinsregular"/>
+        android:textStyle="bold"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -30,32 +30,31 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/btn_yes"
-            android:layout_width="@dimen/_100sdp"
+            android:id="@+id/btn_contactUs"
+            android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_40sdp"
-
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="@string/contact_us"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
-            android:layout_margin="@dimen/_10sdp"
-            android:text="@string/yes"
             android:textAllCaps="false"
             android:textSize="@dimen/_12sdp" />
-
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_no"
-            android:layout_width="@dimen/_100sdp"
+            android:id="@+id/btn_cancel"
+            android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_31sdp"
-
+            
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_gravity="center"
             android:background="@drawable/button_negative_drawble"
             android:textColor="@color/blue"
             android:layout_margin="@dimen/_10sdp"
-            android:text="@string/no"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="Ok"
             android:textAllCaps="false"
             android:textSize="@dimen/_12sdp" />
-
 
     </LinearLayout>
 

@@ -40,7 +40,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:text="@string/job_preference"
-                android:fontFamily="@font/poppinsmedium"
+
                 android:textSize="@dimen/_15sdp"
                 android:gravity="center"
                 android:visibility="gone"

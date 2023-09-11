@@ -259,6 +259,7 @@ class FilterDataActivity : BaseActivity()/*,
         setMenuItemListener()
         supportFragmentManager.addOnBackStackChangedListener {
             invalidateOptionsMenu() // This triggers onPrepareOptionsMenu()
+
         }
     }
 
@@ -361,7 +362,7 @@ class FilterDataActivity : BaseActivity()/*,
         }
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
@@ -369,7 +370,7 @@ class FilterDataActivity : BaseActivity()/*,
             }
 
         }
-        return super.onContextItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -1004,8 +1005,8 @@ class FilterDataActivity : BaseActivity()/*,
                             try {
 
                                 cityList.addAll(response!!.data)
-                                locationList = cityList.toMutableList()
-                                filterLocationList = cityList.toMutableList()
+                                locationList.addAll(response!!.data)
+                                filterLocationList.addAll(response!!.data)
 //                                locationTagAdapter.notifyDataSetChanged()
                                 hideProgressDialog()
                             } catch (e: Exception) {

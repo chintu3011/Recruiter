@@ -42,6 +42,15 @@
             android:exported="false"/>
 
         <activity
+            android:name=".campus.ApplyForCampusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settings.TermsPrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settings.ContactUsActivity"
+            android:exported="false" />
+        <activity
             android:name=".messenger.PDfViewActivity"
             android:exported="false" />
         <activity

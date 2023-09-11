@@ -51,6 +51,7 @@ import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.convertUriToPdfFile
 import com.amri.emploihunt.util.Utils.showNoInternetBottomSheet
@@ -736,6 +737,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
                                         prefManager[ROLE] = 0
+                                        prefManager[USER_ID] = response.data.user.id
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
@@ -811,6 +813,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
                                         prefManager[ROLE] = 0
+                                        prefManager[USER_ID] = response.data.user.id
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
@@ -938,6 +941,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
+                                        prefManager[USER_ID] = response.data.user.id
                                         prefManager[ROLE] = 1
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         navigateToHomeActivity()
@@ -1010,6 +1014,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
+                                        prefManager[USER_ID] = response.data.user.id
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[ROLE] = 1
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken

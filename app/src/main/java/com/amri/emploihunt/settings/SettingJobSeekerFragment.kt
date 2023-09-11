@@ -72,8 +72,21 @@ class SettingJobSeekerFragment : BaseFragment() {
             val intent = Intent(requireContext(), JobSaveActivity::class.java)
             startActivity(intent)
         }
+        binding.rlContactUs.setOnClickListener {
+            val intent = Intent(requireContext(), ContactUsActivity::class.java)
+            startActivity(intent)
+        }
 
-
+        binding.rlPolicy.setOnClickListener {
+            val intent = Intent(requireContext(), TermsPrivacyActivity::class.java)
+            intent.putExtra("Privacy",true)
+            startActivity(intent)
+        }
+        binding.rlterms.setOnClickListener {
+            val intent = Intent(requireContext(), TermsPrivacyActivity::class.java)
+            intent.putExtra("Privacy",false)
+            startActivity(intent)
+        }
 
         return  binding.root
     }

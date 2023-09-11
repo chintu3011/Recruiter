@@ -32,6 +32,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
@@ -291,9 +292,40 @@ object Utils {
         } else if (diff < 48 * HOUR_MILLIS) {
             mActivity.resources.getString(R.string.yesterday)
         } else {
+            Log.d("##", "getTimeAgo: else $time")
+
             (diff / DAY_MILLIS).toString() + mActivity.resources.getString(R.string.days_ago)
         }
     }
+    fun getTimeReaming(mActivity: Context, mTime: Long): String? {
+        var time = mTime
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000
+        }
+
+        val now = System.currentTimeMillis()
+        if (time < now || time <= 0) {
+            return null
+        }
+
+        val differenceSec =(time - now)
+        val days =  differenceSec / (60 * 60 * 24)
+        val remainder1 = differenceSec % 86400
+        val hour =  remainder1 / (60 * 60)
+        val remainder = differenceSec % 3600
+        val minutes =  remainder / 60
+        if (days.toInt() !=0){
+             return  mActivity.resources.getString(R.string.expire1,days,hour,minutes)
+        }else if (hour.toInt() != 0){
+             return mActivity.resources.getString(R.string.expire2,hour,minutes)
+        }else if (minutes.toInt() != 0) {
+
+             return  mActivity.resources.getString(R.string.expire3, minutes)
+        }
+        return null
+    }
+
 
     suspend fun getBitmapFromUri(context: Context, uri: Uri?): Bitmap {
         val finalBitmap: Deferred<Bitmap> = GlobalScope.async(Dispatchers.IO) {
