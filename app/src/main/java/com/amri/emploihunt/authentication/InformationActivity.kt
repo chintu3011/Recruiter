@@ -12,17 +12,14 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.amri.emploihunt.BuildConfig
 import com.amri.emploihunt.R
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityInformationBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
@@ -31,8 +28,6 @@ import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
-import com.amri.emploihunt.store.JobSeekerProfileInfo
-import com.amri.emploihunt.store.RecruiterProfileInfo
 import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.DEVICE_ID
@@ -55,6 +50,11 @@ import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.convertUriToPdfFile
 import com.amri.emploihunt.util.Utils.showNoInternetBottomSheet
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.BuildConfig
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -131,11 +131,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private lateinit var resumePdf: File
 
 
-    private lateinit var nextStack:Stack<View>
+    /*private lateinit var nextStack:Stack<View>
     private lateinit var backStack:Stack<View>
-    private lateinit var checkStack:Stack<ShapeableImageView>
     private lateinit var jGroupArray:ArrayList<View>
-    private lateinit var rGroupArray:ArrayList<View>
+    private lateinit var rGroupArray:ArrayList<View>*/
+
+    private lateinit var checkStack:Stack<ShapeableImageView>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -145,18 +146,30 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         qualifications = resources.getStringArray(R.array.degree_array)
         prefManager = prefManager(this@InformationActivity)
 
-        nextStack = Stack()
-        backStack = Stack()
+        /*nextStack = Stack()
+        backStack = Stack()*/
         checkStack = Stack()
-        jGroupArray = arrayListOf(binding.jsAboutGrp,binding.jsFreshExpGrp,binding.jsCurPosGrp,binding.jsPreferJobGrp,binding.jsResumeGrp,binding.profilImgGrp)
+        /*jGroupArray = arrayListOf(binding.jsAboutGrp,binding.jsFreshExpGrp,binding.jsCurPosGrp,binding.jsPreferJobGrp,binding.jsResumeGrp,binding.profilImgGrp)*/
 
-        rGroupArray = arrayListOf(binding.rAboutGrp,binding.rCurrPosGrp,binding.profilImgGrp)
+        /*rGroupArray = arrayListOf(binding.rAboutGrp,binding.rCurrPosGrp,binding.profilImgGrp)*/
 
         binding.check1.visibility = VISIBLE
         binding.check1.setBackgroundResource(R.color.blue)
         binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
 
         checkStack.push(binding.check1)
+
+        val inn: Animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
+        val out: Animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right)
+
+        // set the animation type to ViewFlipper
+
+        // set the animation type to ViewFlipper
+        binding.jsViewFlipper.inAnimation = inn
+        binding.jsViewFlipper.outAnimation = out
+        
+        binding.rViewFlipper.inAnimation = inn
+        binding.rViewFlipper.outAnimation = out
 
         setOnClickListener()
         userType = intent.getIntExtra("role",0)
@@ -236,7 +249,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 binding.jsSubLayout.visibility = GONE
                 binding.jsLayout2.visibility = GONE
                 binding.jsLayout3.visibility = GONE*/
-                jGroupArray[grpPointer].visibility = VISIBLE
+                /*jGroupArray[grpPointer].visibility = VISIBLE*/
                 grpPointer++
                 binding.btnNext.visibility = VISIBLE
                 binding.btnBack.visibility = GONE
@@ -270,7 +283,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private fun setOnClickListener() {
         binding.btnSelectPdf.setOnClickListener(this)
         binding.uploadBtn.setOnClickListener(this)
-        binding.addProfileImg.setOnClickListener(this)
+        binding.addProfileImgJ.setOnClickListener(this)
+        binding.addProfileImgR.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnNext.setOnClickListener(this)
         binding.btnSkip.setOnClickListener(this)
@@ -468,7 +482,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
 
     }
-
+    var profilLayoutStatusNext = false
+    var profilLayoutStatusBack = false
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.uploadBtn -> {
@@ -485,6 +500,9 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     }
                 }*/
                 binding.uploadBtn.visibility = GONE
+                binding.btnNext.visibility = VISIBLE
+
+
                 /*binding.btnSubmit.visibility = VISIBLE*/
             }
             R.id.btnSelectPdf -> {
@@ -497,15 +515,28 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 if (userType == JOB_SEEKER) storeInfoJ()
             }
             R.id.btnExperienced -> {
-
+                binding.exLayout2.visibility = VISIBLE
+                binding.exLayout1.visibility = GONE
+                binding.btnNext.visibility = VISIBLE
+                binding.btnBack.visibility = VISIBLE
             }
             R.id.btnFresher -> {
-                btnPointer ++
+                if(userType == JOB_SEEKER) {
+                    binding.jsViewFlipper.showNext()
+                    setLayoutJ()
+                }
+                /*
+                else{
+                    binding.rViewFlipper.showNext()
+                    binding.btnBack.visibility = VISIBLE
+                    binding.btnNext.visibility = VISIBLE
+                }*/
             }
             R.id.btnNext -> {
-                makeToast(grpPointer.toString(),0)
+               /* makeToast(grpPointer.toString(),0)*/
                 /*btnPointer += 1*/
                 /*changeLayout(layoutID,btnPointer)*/
+                /*
                 if(userType == JOB_SEEKER){
                     if(grpPointer < jGroupArray.size) {
                         binding.btnNext.visibility = VISIBLE
@@ -585,6 +616,46 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 else{
                     makeToast(getString(R.string.something_error),0)
                 }
+
+                 */
+
+                if(userType == JOB_SEEKER){
+                    binding.jsViewFlipper.showNext()
+
+                    setLayoutJ()
+                    /*if(binding.jsViewFlipper.currentView ==  binding.jsExperienceGrp){
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = GONE
+                    }
+                    if(binding.jsViewFlipper.currentView == binding.profileImgLayoutJ){
+                        binding.btnNext.visibility = GONE
+                        binding.btnBack.visibility = VISIBLE
+                    }*/
+
+                }
+                else{
+                    binding.rViewFlipper.showNext()
+                }
+            }
+            R.id.btnBack -> {
+                if(userType == JOB_SEEKER){
+                    binding.jsViewFlipper.showPrevious()
+                    setLayoutJ()
+                    /*if(binding.jsViewFlipper.currentView == binding.jsAboutGrp) {
+                        binding.btnBack.visibility = GONE
+                    }
+                    if(binding.jsViewFlipper.currentView ==  binding.jsExperienceGrp){
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = GONE
+                    }
+                    if(binding.rViewFlipper.currentView ==  binding.jsResumeGrp){
+                        binding.btnNext.visibility = VISIBLE
+                    }*/
+
+                }
+                else{
+                    binding.rViewFlipper.showPrevious()
+                }
             }
             R.id.btnSkip -> {
 
@@ -599,6 +670,30 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
     }
+
+    private fun setLayoutJ() {
+        if(binding.jsViewFlipper.currentView == binding.jsAboutGrp){
+            binding.btnNext.visibility = VISIBLE
+            binding.btnBack.visibility = GONE
+        }
+        else if(binding.jsViewFlipper.currentView == binding.jsExperienceGrp){
+            binding.btnNext.visibility = GONE
+            binding.exLayout2.visibility = GONE
+            binding.exLayout1.visibility = VISIBLE
+            binding.btnBack.visibility = VISIBLE
+        }
+        else if(binding.jsViewFlipper.currentView == binding.jsPreferJobGrp || binding.jsViewFlipper.currentView == binding.jsResumeGrp){
+            binding.btnBack.visibility = VISIBLE
+            binding.btnNext.visibility = VISIBLE
+        }
+        else if(binding.jsViewFlipper.currentView == binding.profileImgLayoutJ){
+            binding.btnBack.visibility = VISIBLE
+            binding.btnNext.visibility = GONE
+            
+        }
+
+    }
+
     private fun selectpdf() {
         val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
         pdfIntent.type = "application/pdf"

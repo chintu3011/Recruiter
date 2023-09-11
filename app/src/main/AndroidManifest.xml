@@ -41,9 +41,9 @@
             android:name=".settings.UpdateProfileDataService"
             android:exported="false"/>
 
-        <activity
+<!--        <activity
             android:name=".campus.ApplyForCampusActivity"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".settings.TermsPrivacyActivity"
             android:exported="false" />
@@ -169,12 +169,12 @@
         <activity
             android:name=".authentication.InformationActivity"
             android:exported="true" >
-         <!--   <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".authentication.OTPVerificationRegistrationActivity"
@@ -202,11 +202,11 @@
         <activity
             android:name=".appIntroduction.SplashActivity"
             android:exported="true">
-            <intent-filter>
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".authentication.LoginsignupActivity"

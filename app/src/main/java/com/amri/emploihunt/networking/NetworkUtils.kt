@@ -4,9 +4,10 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://192.168.1.3:5000/api"
-    /*private const val BASE_URL = "http://192.168.249.196:5000/api"*/
-    /*private const val BASE_URL = "http://192.168.221.196:5000/api"*/
+    private const val BASE_URL = "http://192.168.1.5:5000/api"
+    /*private const val BASE_URL = "http://192.168.148.196:5000/api"*/
+    /*private const val BASE_URL = "http://192.168.223.196:5000/api"*/
+
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
     const val CHECK_USER_EXISTING = "$BASE_URL/signin/check_user_existing"
@@ -34,11 +35,17 @@ object NetworkUtils {
     const val SAVE_LIST= "$BASE_URL/job/saveList"
     const val UPDATE_POST = "$BASE_URL/job/update_jobs"
     const val DELETE_POST = "$BASE_URL/job/delete"
+    const val FIlTER_JOBS = "$BASE_URL/job/jobs_filter"
+    const val INSERT_EXPERIENCE = "$BASE_URL/experince/insert_experince"
+    const val UPDATE_PROFILE_DETAILS = "$BASE_URL/user/update_profile_details"
+
     const val GET_LATEST_APP_VERSION_CODE = "$BASE_URL/update_app/get_latest_app_version_code"
+
     const val CONTACT_US = "$BASE_URL/contact-us/insert_user_contact"
     const val TERMS_PRIVACY = "$BASE_URL/terms-privacy-policy/get_terms_policy_by_id"
     const val GET_ALL_CAMPUS = "$BASE_URL/campus_placement/campus"
     const val CAMPUS_APPLY = "$BASE_URL/campus_placement/apply"
+
 
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()
 

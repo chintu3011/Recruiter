@@ -126,5 +126,24 @@
     <string name="expire2">%dh %dm Remaining</string>
     <string name="expire3">%dm Remaining</string>
     <string name="are_you_want_to_sure_for_apply_for_placement">Are You want to sure for apply %1$s for placement</string>
+    <string name="designation">Designation\t</string>
+    <string name="company_name">Company name</string>
+    <string name="duration">Duration</string>
+    <string name="add">Add</string>
+    <string name="expertise">Experience</string>
+    <string name="qualification">Qualification</string>
+    <string name="fresher">Fresher</string>
+    <string name="experienced">Experienced</string>
+    <string name="residential_city">Residencialy City</string>
+    <string name="about">about</string>
+    <string name="experience">experience</string>
+    <string name="show_more">show more\n</string>
+    <string name="current_position">Current position</string>
+    <string name="working_mode">Working mode</string>
+    <string name="applicant_name">Applicant name\n</string>
+    <string name="applicant_designation">Applicant Designation</string>
+    <string name="prefer_city">Prefer City</string>
+    <string name="not_match_any_data_based_on_your_filter">Not match any data based on your filter</string>
+    <string name="show_less">Show less</string>
 
 </resources>
