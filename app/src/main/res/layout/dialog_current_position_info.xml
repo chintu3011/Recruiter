@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutCompanyName"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/company_name"
+            android:paddingTop="0dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@color/ed_theme_color"
+            app:layout_constraintBottom_toTopOf="@+id/spDesignationJ"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:placeholderText="Ahmedabad"
+            app:startIconDrawable="@drawable/ic_company"
+            app:startIconTint="@color/ed_theme_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/companyName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textAutoComplete"
+                android:fontFamily="@font/poppinsregular"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spDesignationJ"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Designation"
+            android:paddingTop="0dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:hintTextColor="@color/ed_theme_color"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
+            app:placeholderText="Back-Hand Developer"
+            app:startIconDrawable="@drawable/ic_designation"
+            app:startIconTint="@color/ed_theme_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/designation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:fontFamily="@font/poppinsregular"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/jobLocation"
+            style="@style/spinnerStyle"
+            android:layout_margin="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spDesignationJ"
+            app:smsp_hint="@string/job_location"
+            app:smsp_hintColor="@color/blue"
+            app:smsp_isOutlined="false"
+            app:smsp_isSearchable="true"
+            app:smsp_multilineError="true"
+            app:smsp_outlinedBoxColor="@color/black"
+            app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+            app:smsp_outlinedHintPadding="4dp"
+            app:smsp_outlinedHintStartX="10dp"
+            app:smsp_outlinedStrokeWidth="1dp"
+            app:smsp_searchHeaderTextColor="#ffff"
+            app:smsp_searchHintColor="@color/search_hint_color"
+            app:smsp_searchTextColor="@color/search_text_color" />
+
+        <RadioGroup
+            android:id="@+id/radioGrpWorkingMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:background="@drawable/border_radio_grp"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jobLocation">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioBtnOnsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/blue"
+                android:text="On-Site"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/black" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioBtnRemote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/blue"
+                android:text="Remote"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/black" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioBtnHybrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/blue"
+                android:text="Hybrid"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/black" />
+        </RadioGroup>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="Working Mode"
+            android:fontFamily="@font/poppinsregular"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/ed_theme_color"
+            android:textStyle="bold"
+            app:fontFamily="serif"
+            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
+            app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingMode"
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingMode"
+            app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingMode" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

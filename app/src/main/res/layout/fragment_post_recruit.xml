@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutJobTitle"
+                android:id="@+id/textLayoutCompanyName"
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
                 app:placeholderText="Tellva Still Texus."
                 app:startIconDrawable="@drawable/ic_company"
                 app:startIconTint="@color/blue">
@@ -591,7 +591,7 @@
                 android:visibility="visible"
                 app:backgroundTint="@null"
                 app:layout_constraintBottom_toBottomOf="@+id/btnpostjob"
-                app:layout_constraintEnd_toStartOf="@+id/textLayoutJobTitle"
+                app:layout_constraintEnd_toStartOf="@+id/textLayoutCompanyName"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btnpostjob"
                 app:layout_constraintTop_toTopOf="@+id/btnpostjob"

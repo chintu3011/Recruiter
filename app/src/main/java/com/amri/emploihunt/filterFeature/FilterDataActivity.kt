@@ -110,11 +110,6 @@ class FilterDataActivity : BaseActivity()/*,
          binding = ActivityFilterDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val window: Window = this@FilterDataActivity.window
-        window.statusBarColor = ContextCompat.getColor(this@FilterDataActivity,R.color.colorPrimary)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-
-
         prefManager = prefManager(this)
         userType = prefManager.get(ROLE,0)
         /*userType = intent.getIntExtra("role",-1)*/

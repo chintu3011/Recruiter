@@ -23,7 +23,7 @@
         app:shapeAppearanceOverlay="@style/circle"
         android:padding="@dimen/_5sdp"
         app:strokeWidth="@dimen/_5sdp"
-        app:strokeColor="#007BFF"
+        app:strokeColor="@color/colorPrimary"
         android:elevation="@dimen/_5sdp"
         app:layout_constraintTop_toTopOf="@+id/profileBackImg"
         app:layout_constraintBottom_toBottomOf="@id/profileBackImg"

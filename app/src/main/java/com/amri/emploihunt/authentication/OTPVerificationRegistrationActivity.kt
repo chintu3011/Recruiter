@@ -17,6 +17,7 @@ import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpVerificationRegistrationBinding
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
+import com.amri.emploihunt.store.UserDataRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -42,7 +43,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
     private lateinit var phoneNo: String
     private lateinit var email: String
     private lateinit var city: String
-    private lateinit var userType: String
+    private var userType: Int ? = null
     private lateinit var termsConditions:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,14 +52,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         binding = ActivityOtpVerificationRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val window: Window = this@OTPVerificationRegistrationActivity.window
-        val background = ContextCompat.getDrawable(this@OTPVerificationRegistrationActivity,
-            R.drawable.status_bar_color
-        )
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationRegistrationActivity,R.color.colorPrimary)
-        window.navigationBarColor = ContextCompat.getColor(this@OTPVerificationRegistrationActivity,android.R.color.white)
 
 
 
@@ -72,7 +66,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         email = intent.getStringExtra("email").toString()
         city = intent.getStringExtra("city").toString()
         lastName = intent.getStringExtra("lName").toString()
-        userType = intent.getStringExtra("userType").toString()
+        userType = intent.getIntExtra("role",-1)
         storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
         termsConditions = intent.getStringExtra("termsConditions").toString()
 
@@ -134,8 +128,9 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
                     val user = task.result?.user
                     val uid = user?.uid
                     Log.d(TAG,"userId:$uid")
-                    makeEmptyDataStoreForNewUser()
-                    passInfoToNextActivity(uid)
+                    makeEmptyDataStoreForNewUser{
+                        passInfoToNextActivity(uid)
+                    }
 
                 } else {
                     makeToast("Registration failed: ${task.exception}",1)
@@ -145,19 +140,11 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
                 }
             }
     }
-    private fun makeEmptyDataStoreForNewUser() {
-
-        if(userType == "Job Seeker"){
-            CoroutineScope(Dispatchers.IO).launch {
-                val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationRegistrationActivity)
-                jobSeekerProfileInfo.emptyDataStore()
-            }
-        }
-        if(userType == "Recruiter"){
-            CoroutineScope(Dispatchers.IO).launch {
-                val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationRegistrationActivity)
-                recruiterProfileInfo.emptyDataStore()
-            }
+    private fun makeEmptyDataStoreForNewUser(callback: () -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val userDataRepository = UserDataRepository(this@OTPVerificationRegistrationActivity)
+            userDataRepository.emptyDataStore()
+            callback()
         }
     }
 
@@ -169,7 +156,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         intent.putExtra("phoneNo",phoneNo)
         intent.putExtra("email",email)
         intent.putExtra("city",city)
-        intent.putExtra("userType",userType)
+        intent.putExtra("role",userType)
         intent.putExtra("termsConditions",termsConditions)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)

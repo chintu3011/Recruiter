@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/_6sdp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/layout"
+            app:layout_constraintEnd_toStartOf="@+id/layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/layout" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profileImgCard"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_140sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_3sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/layout"
+            app:layout_constraintStart_toStartOf="@+id/layout"
+            app:layout_constraintTop_toTopOf="@+id/layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profileImg"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintBottom_toTopOf="@id/applicantName"
+                    app:layout_constraintEnd_toEndOf="@+id/applicantName"
+                    app:layout_constraintStart_toStartOf="@+id/applicantName"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:srcCompat="@drawable/profile_default_image" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/applicant_name"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profileImg" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_130sdp"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="@dimen/_1sdp"
+            app:layout_constraintBottom_toTopOf="@id/view2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/_6sdp"
+                android:paddingStart="@dimen/_90sdp"
+                android:paddingEnd="@dimen/_7sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantDesignation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/applicant_designation"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_16sdp"
+                    android:textColor="@color/blue"
+                    app:layout_constraintEnd_toStartOf="@+id/applicantExpSalary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantExpSalary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="12 LPA +"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/applicantDesignation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/applicantDesignation"
+                    app:layout_constraintTop_toTopOf="@id/applicantDesignation" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="applicantDesignation,applicantExpSalary"
+                    app:flow_horizontalGap="@dimen/_4sdp"
+                    app:flow_horizontalStyle="packed"
+                    app:flow_verticalGap="@dimen/_4sdp"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintBottom_toTopOf="@+id/applicantQualification"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantQualification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/qualification"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/blue"
+                    app:layout_constraintBottom_toTopOf="@+id/flow"
+                    app:layout_constraintStart_toStartOf="@+id/flow15"
+                    app:layout_constraintTop_toBottomOf="@+id/flow15" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/numYears"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="3+"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/_3sdp"
+                    android:text="Years Experience"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/blue" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    app:constraint_referenced_ids="numYears,txtExperience"
+                    app:flow_horizontalGap="@dimen/_3sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/flow10"
+                    app:layout_constraintStart_toStartOf="@+id/applicantQualification"
+                    app:layout_constraintTop_toBottomOf="@+id/applicantQualification" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantPrefCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/post_subtitle_tv"
+                    android:backgroundTint="@color/blue"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/prefer_city"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/applicantWorkingMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/post_subtitle_tv"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/working_mode"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/white" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:constraint_referenced_ids="applicantPrefCity,applicantWorkingMode"
+                    app:flow_horizontalAlign="start"
+                    app:flow_horizontalGap="@dimen/_5sdp"
+                    app:flow_horizontalStyle="packed"
+                    app:flow_verticalAlign="top"
+                    app:flow_verticalGap="@dimen/_5sdp"
+                    app:flow_verticalStyle="packed"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="@+id/flow"
+                    app:layout_constraintTop_toBottomOf="@+id/flow" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPhone"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_phone"
+            app:backgroundTint="@color/white"
+            app:fabCustomSize="@dimen/_30sdp"
+            app:elevation="@dimen/_2sdp"
+            android:layout_margin="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="@id/layout"
+            app:layout_constraintEnd_toStartOf="@+id/btnEmail"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/layout"
+            app:layout_constraintTop_toBottomOf="@id/layout"
+            app:maxImageSize="@dimen/_15sdp"
+            app:tint="@color/black" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnEmail"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_email"
+            app:backgroundTint="@color/white"
+            app:fabCustomSize="@dimen/_30sdp"
+            app:elevation="@dimen/_2sdp"
+            android:layout_margin="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="@id/btnPhone"
+            app:layout_constraintEnd_toEndOf="@id/layout"
+            app:layout_constraintStart_toEndOf="@+id/btnPhone"
+            app:layout_constraintTop_toTopOf="@id/btnPhone"
+            app:maxImageSize="@dimen/_15sdp"
+            app:tint="@color/black" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:background="#2D60C3AD"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/btnEmail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

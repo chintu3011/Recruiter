@@ -70,7 +70,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:src="@drawable/default_person_icon" />
+                android:src="@drawable/profile_default_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"

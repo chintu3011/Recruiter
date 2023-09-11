@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:weightSum="2">
+
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/sp_searchable"
+                style="@style/spinnerStyle"
+                app:smsp_hint="Outlined Style"
+                app:smsp_hintColor="#0e9aa7"
+                app:smsp_isOutlined="true"
+                app:smsp_outlinedBoxColor="#0e9aa7"
+                app:smsp_outlinedBoxRadius="12dp"
+                app:smsp_outlinedHintPadding="4dp"
+                app:smsp_outlinedHintStartX="10dp"
+                app:smsp_outlinedStrokeWidth="1dp"
+                app:smsp_isSearchable="true"
+                app:smsp_multilineError="true"
+                app:smsp_searchHeaderTextColor="#ffff"
+                app:smsp_searchHintColor="@color/search_hint_color"
+                app:smsp_searchTextColor="@color/search_text_color" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

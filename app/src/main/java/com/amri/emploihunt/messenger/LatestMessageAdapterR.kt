@@ -29,7 +29,7 @@ class LatestMessageAdapterR(
 
 
     companion object{
-        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.default_person_icon
+        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.profile_default_image
         private const val TAG = "LatestMessageAdapterR"
     }
 
@@ -123,7 +123,7 @@ class LatestMessageAdapterR(
                     /*Log.d(TAG, user.userProfileImgUri)*/
                     Glide.with(itemView)
                         .load(user.userProfileImgUri)
-                        .placeholder(R.drawable.default_person_icon)
+                        .placeholder(R.drawable.profile_default_image)
                         .into(profileImg)
                 }
                 cardView.setOnClickListener {

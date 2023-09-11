@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.amri.emploihunt.R
+import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityFullImageViewBinding
 import com.amri.emploihunt.databinding.FullScreenImageViewBinding
 import com.amri.emploihunt.databinding.PdfViewerDialogBinding
@@ -14,7 +15,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-class FullImageViewActivity : AppCompatActivity() {
+class FullImageViewActivity : BaseActivity() {
     lateinit var binding: ActivityFullImageViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

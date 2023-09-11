@@ -182,7 +182,7 @@
                         app:ccp_textSize="@dimen/_13sdp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textLayoutPhoneNo"
+                        android:id="@+id/textResidentialCity"
                         style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

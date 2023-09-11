@@ -1,5 +1,7 @@
 package com.amri.emploihunt.filterFeature
 
+import android.util.Log
+
 class FilterParameterTransferClass {
 
     /*For Job Filter for job seekers*/
@@ -65,6 +67,7 @@ class FilterParameterTransferClass {
     }*/
     fun setApplicationData(domain: String, location: String, workingMode: String, packageRange: String){
         if(applicationListener != null){
+            Log.d("$$$$", applicationListener.toString())
             applicationListener!!.onDataReceivedFilterApplicationList(domain,location,workingMode,packageRange)
         }
     }

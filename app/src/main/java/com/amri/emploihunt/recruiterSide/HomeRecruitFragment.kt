@@ -25,6 +25,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
+import com.amri.emploihunt.databinding.RowAppicationsBinding
 import com.amri.emploihunt.databinding.SinglerowjsBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
@@ -41,6 +42,7 @@ import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.lang.NullPointerException
 import java.util.Locale
 
 class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
@@ -447,8 +449,11 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         if (domain.isNotEmpty() || location.isNotEmpty() || workingMode.isNotEmpty() || packageRange.isNotEmpty()) {
 
             for (application in dataList) {
-                val domainMatches = if (domain.isNotEmpty()) {
-
+                val domainMatches = if (application.vDesignation.isNullOrEmpty()){
+                    false
+                }
+                else if (domain.isNullOrEmpty()) {
+                    Log.d(TAG, "onDataReceivedFilterApplicationList: $application")
                     application.vDesignation.contains(
                         domain.substring(
                             0,
@@ -456,7 +461,8 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                             else domain.length
                         ),
                         ignoreCase = true)
-                } else {
+                }
+                else {
                     true
                 }
                 val locationMatches = if (location.isNotEmpty()){
@@ -568,7 +574,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
     ) : RecyclerView.Adapter<JobSeekerAdapter.CategoriesHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesHolder {
             return CategoriesHolder(
-                SinglerowjsBinding.inflate(
+                RowAppicationsBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
@@ -577,19 +583,17 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
 
             val job: User = applicationList[position]
-           holder.binding.jsname.text = job.vFirstName + " " + job.vLastName
-            holder.binding.qualificationjs.text = job.vQualification
-            holder.binding.citypref.text = job. vPreferCity
-            holder.binding.jsjobtype.text = job.vWorkingMode
-            holder.binding.jobrole.text = job.vDesignation
-            holder.binding.jscontact.text = job.vMobile
-            holder.binding.jsemail.text = job.vEmail
-            holder.binding.jscontact.setOnClickListener {
-                val num: String =  holder.binding.jscontact.text.toString()
+            holder.binding.applicantName.text = job.vFirstName + " " + job.vLastName
+            holder.binding.applicantQualification.text = job.vQualification
+            holder.binding.applicantPrefCity.text = job. vPreferCity
+            holder.binding.applicantWorkingMode.text = job.vWorkingMode
+            holder.binding.applicantDesignation.text = job.vDesignation
+            holder.binding.btnPhone.setOnClickListener {
+                val num: String =  job.vMobile
                 makePhoneCall(num)
             }
-            holder.binding.jsemail.setOnClickListener {
-                val emailsend = holder.binding.jsemail.text.toString()
+            holder.binding.btnEmail.setOnClickListener {
+                val emailsend = job.vEmail
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
                 intent.type = "message/rfc822"
@@ -606,7 +610,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             return applicationList.size
         }
 
-        inner class CategoriesHolder(val binding: SinglerowjsBinding) :
+        inner class CategoriesHolder(val binding: RowAppicationsBinding) :
             RecyclerView.ViewHolder(binding.root)
 
         interface OnCategoryClick {

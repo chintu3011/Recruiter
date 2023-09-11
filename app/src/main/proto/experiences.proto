@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.amri.emploihunt.proto;
+ // Replace with your package name
+
+message Experience {
+  string vDesignation = 1;
+  string vCompanyName = 2;
+  string vJobLocation = 4;
+  string vDuration = 3;
+}
+
+message ExperienceList {
+  repeated Experience experiences = 1;
+}

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import com.amri.emploihunt.R
+import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityPdfViewActvityBinding
 import com.github.barteksc.pdfviewer.PDFView
 import java.io.BufferedInputStream
@@ -14,7 +15,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class PDfViewActivity : AppCompatActivity() {
+class PDfViewActivity : BaseActivity() {
     lateinit var binding: ActivityPdfViewActvityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

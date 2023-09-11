@@ -3,13 +3,14 @@ package com.amri.emploihunt.settings
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,495 +20,907 @@ import android.provider.OpenableColumns
 import android.provider.Settings
 import android.util.Base64
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.OnClickListener
-import android.widget.Button
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.lifecycle.coroutineScope
-import com.airbnb.lottie.LottieAnimationView
+import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.LoginActivity
+import com.amri.emploihunt.basedata.BaseActivity
+import com.amri.emploihunt.databinding.ActivityProfileBinding
+import com.amri.emploihunt.model.Experience
+import com.amri.emploihunt.model.GetUserById
+import com.amri.emploihunt.model.User
+import com.amri.emploihunt.model.UserExpModel
+import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.store.ExperienceViewModel
+import com.amri.emploihunt.store.UserDataRepository
+import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.PrefManager
+import com.amri.emploihunt.util.PrefManager.get
+import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.amri.emploihunt.basedata.BaseActivity
-import com.amri.emploihunt.databinding.ActivityProfileBinding
-import com.amri.emploihunt.model.LogoutMain
-import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.store.JobSeekerProfileInfo
-import com.amri.emploihunt.store.RecruiterProfileInfo
-import com.amri.emploihunt.util.AUTH_TOKEN
-import com.amri.emploihunt.util.IS_LOGIN
-import com.amri.emploihunt.util.PrefManager
-import com.amri.emploihunt.util.PrefManager.get
-import com.amri.emploihunt.util.PrefManager.set
-import com.amri.emploihunt.util.ROLE
-import com.amri.emploihunt.util.Utils
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignTop
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
+import org.json.JSONObject
+import java.io.Serializable
 
-class ProfileActivity : BaseActivity(),OnClickListener {
+
+@AndroidEntryPoint
+class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.UpdateProfileDataListener {
+    private var _binding: ActivityProfileBinding? = null
+
     private lateinit var prefmanger: SharedPreferences
-    private lateinit var alertDialogBasicInfo: AlertDialog;
+
+    companion object{
+        const val TAG = "ProfileActivity"
+    }
+
+    private lateinit var alertDialogBasicInfo: AlertDialog
     private lateinit var alertDialogAboutInfo: AlertDialog
-    private lateinit var alertDialogExperience: AlertDialog;
+    private lateinit var alertDialogQualification: AlertDialog
+    private lateinit var alertDialogExperience: AlertDialog
     private lateinit var alertDialogResumeInfo: AlertDialog
-    private lateinit var alertDialogRecruiterInfo: AlertDialog;
-    private lateinit var alertDialogPrefInfo: AlertDialog
-    private lateinit var alertDialogProfileBanner: AlertDialog;
+    private lateinit var alertDialogRecruiterInfo: AlertDialog
+    private lateinit var alertDialogProfileBanner: AlertDialog
     private lateinit var alertDialogProfileImg: AlertDialog
 
-    private lateinit var jobSeekerProfileInfo: JobSeekerProfileInfo
-    private lateinit var recruiterProfileInfo: RecruiterProfileInfo
-    private var _binding: ActivityProfileBinding? = null
+    private var addAboutImg: ShapeableImageView ?= null
+    private var addQualificationImg: ShapeableImageView ?= null
+    private var addExperienceImg: ShapeableImageView ?= null
+    private var addResumeImg: ShapeableImageView ?= null
+    private var addCurrentPosImg: ShapeableImageView ?= null
+
+    private var callBalloon: Balloon ?= null
+    private var emailBalloon: Balloon ?= null
+
+    /*private lateinit var userDataRepository: userDataRepository
+    private lateinit var userDataRepository: userDataRepository*/
+    private lateinit var userDataRepository: UserDataRepository
+    private val experienceViewModel: ExperienceViewModel by viewModels()
+
     private val binding get() = _binding!!
-    private var type: String? = null
-    private var id: String? = null
+
+    private var userType: Int? = null
+    private var userId: String? = null
+
+   //common data
     private var fName: String? = null
     private var lName: String? = null
+    private var fullName: String? = null
     private var phoneNumber: String? = null
     private var emailId: String? = null
-    private var profileImg: String? = null
-    private var profileImgUri: Uri? = null
-    private var profileBannerImg: String? = null
-    private var photoBitmap: Bitmap? = null
-    private var profileBannerImgUri: Uri? = null
-    private var tageLine: String? = null
-    private var currentCompany: String? = null
+    private var tagLine: String? = null
 
-    //jobSeeker Data
+    private var residentialCity:String? = null
+
+    private var profileImgUri: String? = null
+    private var profileBannerImgUri: String? = null
+
+    //User Data
     private var bio: String? = null
     private var qualification: String? = null
-    private var experienceState: String? = null
+
+    private var currentCompany: String? = null
     private var designation: String? = null
-    private var prevCompany: String? = null
-    private var prevJobDuration: String? = null
+    private var jobLocation: String? = null
+    private var workingMode:String? = null
+
+    private lateinit var experienceList:MutableList<Experience>
+    
     private var resumeUri: String? = null
     private var resumeFileName: String? = null
-    private val resumeFirebaseUri: String? = null
-    private var pdfUri: Uri? = null
-    private var prefJobTitle: String? = null
-    private var expectedSalary: String? = null
-    private var prefJobLocation: String? = null
-    private var prefWorkingMode: String? = null
-
-    //Recruiter Data
-    private var jobTitleR: String? = null
-    private var salaryR: String? = null
-    private var jobLocationR: String? = null
-    private var jobDesR: String? = null
-    private var designationR: String? = null
-    private var workingModeR: String? = null
-
-    private var map:MutableMap<String,String> ? = null
+    
+    @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(_binding!!.root)
-        jobSeekerProfileInfo = JobSeekerProfileInfo(this)
-        recruiterProfileInfo = RecruiterProfileInfo(this)
 
         prefmanger = PrefManager.prefManager(this)
-        id = FirebaseAuth.getInstance().currentUser?.uid
-        Log.d("$id", "$type")
+        userId = prefmanger.get(FIREBASE_ID)
+        userType = prefmanger.get(ROLE,0)
+        Log.d("$userId", "$userType")
+        
+        
+       /* userDataRepository = userDataRepository(this)
+        userDataRepository = userDataRepository(this)*/
+        userDataRepository = UserDataRepository(this)
+
+        UpdateSeverHelperClass.instance!!.setListener(this)
+        
+        experienceList = mutableListOf()
+
         setProfileData()
         setOnClickListener()
 
+        onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
 
-    }
-    private fun logoutUser() {
-        showLogoutBottomSheet()
+                val user = User(-1,"",userType!!,fName!!,lName!!,phoneNumber!!,emailId!!,qualification!!,"","",currentCompany!!,designation!!,jobLocation!!,"",workingMode!!,bio!!,tagLine!!,residentialCity!!,"","","","","","","")
+                val updateDataServiceIntent = Intent(this@ProfileActivity, UpdateProfileDataService::class.java)
+                updateDataServiceIntent.putExtra("userObject",user)
+                startService(updateDataServiceIntent)
+                finish()
+            }
+        })
 
     }
 
     private fun setProfileData() {
 
-        if (prefmanger.getInt(ROLE,0) == 0) {
-            binding.groupJobSeeker.visibility = View.VISIBLE
-            binding.groupRecruiter.visibility = View.GONE
-            Log.d("isPermissionToShowImg", isGrantedPermission().toString())
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserProfileBannerImg().collect {
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        binding.profileBackImg.setImageBitmap(bitmap)
+        Log.d("isPermissionToShowImg", isGrantedPermission().toString())
+        /** profile banner */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserProfileBannerUrl().collect {
+
+                profileBannerImgUri = it
+                Glide.with(this@ProfileActivity)
+                    .load(profileBannerImgUri)
+                    .apply(
+                        RequestOptions
+                            .placeholderOf(R.drawable.profile_default_back_img)
+                            .error(R.drawable.profile_default_back_img)
+                            .fitCenter()
+
+                    )
+                    .into(binding.profileBackImg)
+
+                /*val previouslyEncodedImage: String = it
+                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
+                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
+                    binding.profileBackImg.setImageBitmap(bitmap)
+                }*/
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: profile banner data is updated")
+        }
+        /** profile Img */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserProfileImgUrl().collect {
+
+                profileImgUri = it
+                Glide.with(this@ProfileActivity)
+                    .load(profileImgUri)
+                    .apply(
+                        RequestOptions
+                            .placeholderOf(R.drawable.profile_default_image)
+                            .error(R.drawable.profile_default_image)
+                            .circleCrop()
+                    )
+                    .into(binding.profileImg)
+                /*val previouslyEncodedImage: String = it
+                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
+                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
+                    binding.profileImg.setImageBitmap(bitmap)
+                }*/
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: profile img data is updated")
+        }
+        /** FName */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserFName().collect {
+                fName = it
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: first name data is updated")
+        }
+        /** LName */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserLName().collect {
+                /*binding.userName.visibility = VISIBLE*/
+                lName = it
+                /*fullName = fName.plus(" $lName")
+                binding.userName.text = fullName!!*/
+
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: Last name data is updated")
+        }
+        /** full Name */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserFullName().collect{
+                showViewIfNotEmpty(it,binding.userName)
+                fullName = it
+                binding.userName.text = fullName
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: Full name:$fullName data is updated")
+        }
+        /** phone number */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserPhoneNumber().collect { phoneNo ->
+                phoneNumber = phoneNo
+                if (phoneNo.isNotEmpty()) {
+                    callBalloon = createMsgBalloon(phoneNo, R.drawable.ic_call, baseContext)
+                    if (callBalloon != null) {
+                        callBalloon!!.setOnBalloonClickListener {
+                            makePhoneCall(phoneNo)
+                            callBalloon!!.dismiss()
+                        }
+                        callBalloon!!.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                            callBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                } else {
+                    binding.btnPhone.foreground =
+                        ContextCompat.getDrawable(baseContext, R.drawable.glass_effect)
+                    callBalloon = createMsgBalloon(
+                        "Phone no. Not Found",
+                        R.drawable.ic_call,
+                        baseContext
+                    )
+                    if (callBalloon != null) {
+                        callBalloon!!.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                            callBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                }
+
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: phone no data is updated")
+        }
+        /** email id*/
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserEmailId().collect { email ->
+                emailId = email
+                if (email.isNotEmpty()) {
+                    emailBalloon = createMsgBalloon(email, R.drawable.ic_email, baseContext)
+
+                    if (emailBalloon != null) {
+                        emailBalloon!!.setOnBalloonClickListener {
+                            makeEmail(email)
+                            emailBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                } else {
+                    emailBalloon = createMsgBalloon(
+                        "Email Id Not Found",
+                        R.drawable.ic_email,
+                        baseContext
+                    )
+                    if (emailBalloon != null) {
+                        emailBalloon!!.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                            emailBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                }
+
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: email data is updated")
+        }
+        /** tagLine */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserTageLine().collect {
+                showViewIfNotEmpty(it, binding.expertise)
+                tagLine = it
+                binding.expertise.text = tagLine
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: Tage line data is updated")
+        }
+        /** current company */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserCurrentCompany().collect {
+                showViewIfNotEmpty(it,binding.currentCompany)
+                currentCompany = it
+                binding.currentCompany.text = currentCompany
+                if(userType == 1){
+                    showViewIfNotEmpty(it,binding.companyNameR)
+                    binding.companyNameR.text = currentCompany
+                }
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: current Company:$currentCompany data is updated")
+        }
+        /** residential City*/
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getResidentialCity().collect{
+                showViewIfNotEmpty(it,binding.residentialCity)
+                residentialCity = it
+                binding.residentialCity.text = residentialCity
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: residential:$residentialCity data is updated")
+        }
+        /** Bio */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserBio().collect {
+                bio = it
+                if(userType == 0) {
+                    binding.bioJ.setText(bio)
+                    addAboutImg = createAddDataImg(binding.aboutInfoLayoutJ, R.id.txtAboutJ)
+
+                    if (addAboutImg != null) {
+                        decideAddImgToVisibility(bio.isNullOrEmpty(), binding.bioJ, addAboutImg!!)
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addAboutImg is null")
+                    }
+                }
+                else{
+                    binding.bioR.setText(bio)
+                    addAboutImg = createAddDataImg(binding.aboutInfoLayoutR, R.id.txtAboutR)
+
+                    if (addAboutImg != null) {
+                        decideAddImgToVisibility(bio.isNullOrEmpty(), binding.bioR, addAboutImg!!)
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addAboutImg is null")
+                    }
+                }
+
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: About data is updated")
+        }
+        /** qualification */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserQualification().collect {
+                /*showViewIfNotEmpty(it,binding.qualificationJ)*/
+                qualification = it
+                if(userType == 0) {
+                    binding.qualificationJ.text = qualification
+                    addQualificationImg =
+                        createAddDataImg(binding.qualificationLayoutJ, R.id.txtQualificationJ)
+
+                    if (addQualificationImg != null) {
+                        decideAddImgToVisibility(
+                            qualification.isNullOrEmpty(),
+                            binding.qualificationJ,
+                            addQualificationImg!!
+                        )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addQualificationImg is null")
+                    }
+                }
+                else{
+                    binding.qualificationR.text = qualification
+                    addQualificationImg =
+                        createAddDataImg(binding.qualificationLayoutR, R.id.txtQualificationR)
+
+                    if (addQualificationImg != null) {
+                        decideAddImgToVisibility(
+                            qualification.isNullOrEmpty(),
+                            binding.qualificationR,
+                            addQualificationImg!!
+                        )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addQualificationImg is null")
                     }
                 }
             }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserProfileImg().collect {
+        } .invokeOnCompletion {
+            Log.d(TAG, "setProfileData: Qualification data is updated")
+        }
+        /** Designation */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserDesignation().collect {
 
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        binding.profileImg.setImageBitmap(bitmap)
+                designation = it
+                if(userType == 1){
+                    showViewIfNotEmpty(it,binding.designationR)
+                    binding.designationR.text = designation
+                   /* addCurrentPosImg =
+                        createAddDataImg(binding.qualificationLayoutR, R.id.txtQualificationR)
+
+                    if (addQualificationImg != null) {
+                        decideAddImgToVisibility(
+                            qualification.isNullOrEmpty(),
+                            binding.qualificationR,
+                            addQualificationImg!!
+                        )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addQualificationImg is null")
+                    }*/
+                }
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: Designation data is updated")
+        }
+        /** Job Location */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserJobLocation().collect{
+                jobLocation = it
+                if(userType == 1){
+                    showViewIfNotEmpty(it,binding.jobLocation)
+                    binding.jobLocation.text = jobLocation
+                }
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: JobLocation data is updated")
+        }
+        /** working mode */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserPrefWorkingMode().collect{
+                workingMode = it
+                if(userType == 1){
+                    showViewIfNotEmpty(it,binding.workingModeR)
+                    binding.workingModeR.text = workingMode
+                    addCurrentPosImg = createAddDataImg(binding.currPosLayoutR,R.id.txtCurrentPositionR)
+                    if(addCurrentPosImg != null){
+                        val b = (currentCompany.isNullOrEmpty() && designation.isNullOrEmpty() && jobLocation.isNullOrEmpty() && workingMode.isNullOrEmpty())
+                        decideAddImgToVisibility(b,binding.positionLayoutR,addCurrentPosImg!!)
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addAboutImg is null")
                     }
                 }
             }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserFName().collect {
-                    binding.userName.text = it
-                    fName = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserLName().collect {
-                    val fullName = "${binding.userName.text} $it"
-                    binding.userName.text = fullName
-                    lName = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPhoneNumber().collect {
-                    phoneNumber = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserEmailId().collect {
-                    emailId = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserTageLine().collect {
-                    binding.expertise.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserCurrentCompany().collect {
-                    binding.currentCompany.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserBio().collect {
-                    binding.bioJ.setText(it)
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserQualification().collect {
-                    binding.qualificationJ.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserExperienceState().collect {
+        }.invokeOnCompletion {
 
+            Log.d(TAG, "setProfileData: Working mode R data is updated")
+        }
+        /** Experience */
+        lifecycle.coroutineScope.launch {
+            Log.d(TAG, "setProfileData: trying to update experience data")
+            addExperienceImg = createAddDataImg(binding.experienceLayout,R.id.txtExperienceJ)
+            experienceViewModel.readFromLocal().collect{ list ->
+                experienceList.clear()
+                if(!designation.isNullOrEmpty() && ! currentCompany.isNullOrEmpty() && !jobLocation.isNullOrEmpty()) {
+                    experienceList.add(
+                        Experience(
+                            designation!!,
+                            currentCompany!!,
+                            jobLocation!!,
+                            ""
+                        )
+                    )
                 }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserDesignation().collect {
-                    binding.designationJ.text = it
+                for (experience in list.toMutableList()) {
+                    experienceList.add(experience)
                 }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPrevCompany().collect {
-                    binding.companyNameJ.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPrevJobDuration().collect {
-                    binding.duration.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserResumeFileName().collect {
-                    binding.resumeFileNameJ.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserResumeUri().collect {
 
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPerfJobTitle().collect {
-                    binding.jobTitleJ.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserExpectedSalary().collect {
-                    binding.salaryJ.text = "$it LPA"
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPrefJobLocation().collect {
-                    binding.jobLocationJ.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserPrefWorkingMode().collect {
-                    binding.workingModeJ.text = it
-                }
-            }
-        }else{
-            binding.groupJobSeeker.visibility = View.GONE
-            binding.groupRecruiter.visibility = View.VISIBLE
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileBannerImg().collect {
-//                        val imageUri: Uri? = if (it.isNotEmpty()) Uri.parse(it) else null
-//                        binding.profileBackImg.setImageURI(imageUri)
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        binding.profileBackImg.setImageBitmap(bitmap)
-                    }
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileImg().collect {
-//                        val imageUri: Uri? = if (it.isNotEmpty()) Uri.parse(it) else null
-//                        binding.profileBackImg.setImageURI(imageUri)
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        binding.profileImg.setImageBitmap(bitmap)
-                    }
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileBannerImg().collect {
-                    binding.profileBackImg.setImageURI(it.toUri())
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileImg().collect {
-                    binding.profileImg.setImageURI(it.toUri())
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserFName().collect {
-                    binding.userName.text = it
-                    fName = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserLName().collect {
-                    val fullName = "${binding.userName.text} $it"
-                    binding.userName.text = fullName
-                    lName = it
-                }
-            }
+                if (addExperienceImg != null) {
 
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserPhoneNumber().collect {
-                    phoneNumber = it
+                    decideAddImgToVisibility(
+                        experienceList.isEmpty(),
+                        binding.dataLayout,
+                        addExperienceImg!!
+                    )
+                } else {
+                    makeToast(getString(R.string.something_error), 0)
+                    Log.d(TAG, "setProfileData: addExperienceImg is null")
+                }
+                Log.d(TAG, "setProfileData: Experience data \n $experienceList")
+                setExperiences()
+            }
+        } .invokeOnCompletion {
+            Log.d(TAG, "setProfileData: experience data is updated")
+        }
+        /** Resume file */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserResumeUri().collect {
+                resumeUri = it
+                resumeFileName = fName!!.plus("'s ").plus("Resume")
+                binding.resumeFileNameJ.text = resumeFileName
+                addResumeImg = createAddDataImg(binding.resumeLayout,R.id.txtResumeJ)
+
+                if(addResumeImg != null){
+
+                    decideAddImgToVisibility(resumeUri.isNullOrEmpty(), binding.resumeFileNameJ, addResumeImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                    Log.d(TAG, "setProfileData: addResumeImg is null")
                 }
             }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserEmailId().collect {
-                    emailId = it
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: resume file data is updated")
+        }
+
+        if (userType == 0) {
+            binding.groupJobSeeker.visibility = VISIBLE
+            binding.groupRecruiter.visibility = GONE
+            binding.userType.text = getString(R.string.job_seeker)
+        }
+        else{
+            binding.groupJobSeeker.visibility = GONE
+            binding.groupRecruiter.visibility = VISIBLE
+            binding.userType.text = getString(R.string.recruiter)
+        }
+        Log.d(TAG, "setProfileData: profile data updated")
+    }
+
+    private fun setExperiences(){
+        binding.dataLayout.removeAllViews()
+        binding.btnShowMore.isActivated = false
+        binding.btnShowMore.text = getString(R.string.show_more)
+        /*addExperienceImg = createAddDataImg(binding.experienceLayout,R.id.txtExperienceJ)*/
+        if (experienceList.isEmpty()){
+            binding.dataLayout.visibility = GONE
+            /*if (addExperienceImg != null){
+             addExperienceImg!!.visibility = VISIBLE
+            }*/
+        }
+        else{
+/*            if (addExperienceImg != null){
+                addExperienceImg!!.visibility = GONE
+            }*/
+            binding.dataLayout.visibility = VISIBLE
+
+            for (index in 0 until 3) {
+                if(index < experienceList.size){
+                    val experience = experienceList[index]
+                    val experienceRow = layoutInflater.inflate(R.layout.row_experience, null)
+
+                    val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
+                    val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
+                    /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                    val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
+                    val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
+                    btnDelete.visibility = GONE
+                    designationTextView.text = experience.vDesignation
+                    companyNameTextView.text = experience.vCompanyName
+                    /*jobLocationTextView.text = experience.vJobLocation*/
+                    durationTextView.text = experience.vDuration.toString().plus(" Years")
+
+                    binding.dataLayout.addView(experienceRow)
+                }
+                else{
+                    break
                 }
             }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserTageLine().collect {
-                    binding.expertise.text = it
-                }
+            if(experienceList.size > 3){
+                binding.btnShowMore.visibility = VISIBLE
             }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserCurrentCompany().collect {
-                    binding.currentCompany.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserCurrentCompany().collect {
-                    binding.currentCompany.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserJobTitle().collect {
-                    binding.jobTitleR.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserSalary().collect {
-                    binding.salaryR.text = "$it LPA"
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserJobLocation().collect {
-                    binding.jobLocationR.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserBio().collect {
-                    binding.jobDesR.setText(it)
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserDesignation().collect {
-                    binding.designationR.text = it
-                }
-            }
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserWorkingMode().collect {
-                    binding.workingModeR.text = it
-                }
+            else{
+                binding.btnShowMore.visibility = GONE
             }
         }
 
     }
 
+    private fun decideAddImgToVisibility(
+        dataState: Boolean,
+        view: View,
+        addImg: ShapeableImageView
+    ) {
+        if(dataState){
+            Log.d(TAG, "decideAddImgToVisibility: all data is null or empty : ${true}")
+            view.visibility = GONE
+            addImg.visibility = VISIBLE
+
+        }
+        else{
+            Log.d(TAG, "decideAddImgToVisibility: ${false}")
+            view.visibility = VISIBLE
+            addImg.visibility = GONE
+        }
+    }
+
+    private fun showViewIfNotEmpty(value: String, view: View) {
+        if(value.isNotEmpty()){
+            view.visibility = VISIBLE
+        }
+        else{
+            view.visibility = GONE
+        }
+    }
+
+    private fun createAddDataImg(layout:ConstraintLayout,view:Int):ShapeableImageView{
+
+        val imageView = ShapeableImageView(baseContext)
+        imageView.id = View.generateViewId()
+        imageView.layoutParams = ConstraintLayout.LayoutParams(
+            0,
+            200
+        )
+        imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        imageView.setImageResource(R.drawable.default_add_data_icon)
+
+        layout.addView(imageView)
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(layout)
+        constraintSet.connect(
+            imageView.id,
+            ConstraintSet.START,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.START,
+            0
+        )
+        constraintSet.connect(
+            imageView.id,
+            ConstraintSet.END,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.END,
+            0
+        )
+        constraintSet.connect(
+            imageView.id,
+            ConstraintSet.TOP,
+            view,
+            ConstraintSet.BOTTOM,
+            0
+        )
+        constraintSet.connect(
+            imageView.id,
+            ConstraintSet.BOTTOM,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.BOTTOM,
+            0
+        )
+        constraintSet.applyTo(layout)
+        imageView.visibility = GONE
+        return imageView
+    }
+
+    private fun createMsgBalloon(msg: String, icon: Int, baseContext: Context): Balloon {
+        val balloon = createBalloon(baseContext){
+            setWidth(BalloonSizeSpec.WRAP)
+            setHeight(BalloonSizeSpec.WRAP)
+            setText(msg)
+            setText(msg)
+            setTextSize(8f)
+            setTextTypeface(Typeface.BOLD)
+            setTextColorResource(R.color.black)
+            setTextGravity(Gravity.CENTER)
+            setIconDrawableResource(icon)
+            setIconHeight(12)
+            setIconWidth(12)
+            setIconColorResource(R.color.black)
+            setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            setArrowSize(8)
+            setArrowPosition(0.5f)
+            setPadding(12)
+            setCornerRadius(8f)
+            setBackgroundColorResource(R.color.white)
+            setElevation(3)
+            setBalloonAnimation(BalloonAnimation.ELASTIC)
+            setLifecycleOwner(lifecycleOwner)
+            build()
+        }
+
+        return balloon
+    }
+
     private fun setOnClickListener() {
+        binding.btnPhone.setOnClickListener(this)
+        binding.btnEmail.setOnClickListener(this)
         binding.profileBackImg.setOnClickListener(this)
         binding.addProfileImg.setOnClickListener(this)
         binding.editBasicInfo.setOnClickListener(this)
         binding.editAboutJ.setOnClickListener(this)
+        binding.editQualificationJ.setOnClickListener(this)
         binding.editExperienceJ.setOnClickListener(this)
+        binding.btnShowMore.setOnClickListener(this)
         binding.editResumeJ.setOnClickListener(this)
-        binding.editJobPrefJ.setOnClickListener(this)
-        binding.editInfoR.setOnClickListener(this)
-        binding.btnPhone.setOnClickListener(this)
-        binding.btnEmail.setOnClickListener(this)
-
+        binding.editAboutR.setOnClickListener(this)
+        binding.editCurrPosR.setOnClickListener(this)
+        binding.editQualificationR.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.profileBackImg -> {
-                profileBannerDialogView(binding.userType.text.toString())
+                profileBannerDialogView()
             }
 
             R.id.addProfileImg -> {
-                profileImgDialogView(binding.userType.text.toString())
+                profileImgDialogView()
             }
 
             R.id.editBasicInfo -> {
                 basicInfoDialogView()
             }
-
             R.id.editAboutJ -> {
+                addAboutImg!!.visibility = GONE
                 aboutInfoJDialogView()
             }
-
+            R.id.editQualificationJ ->{
+                addQualificationImg!!.visibility = GONE
+                qualificationDialogView()
+            }
             R.id.editExperienceJ -> {
+                addExperienceImg!!.visibility = GONE
                 experienceInfoDialogView()
+            }
+            R.id.btnShowMore -> {
+
+                if (!binding.btnShowMore.isActivated) {
+                    if(experienceList.size > 3){
+                        for (index in 3 until experienceList.size) {
+                            val experience = experienceList[index]
+                            val experienceRow = layoutInflater.inflate(R.layout.row_experience, null)
+
+                            val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
+                            val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
+                            /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                            val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
+                            val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
+                            btnDelete.visibility = GONE
+
+                            designationTextView.text = experience.vDesignation
+                            companyNameTextView.text = experience.vCompanyName
+                            /*jobLocationTextView.text = experience.vJobLocation*/
+                            durationTextView.text = experience.vDuration.plus(" Years")
+
+                            binding.dataLayout.addView(experienceRow)
+                        }
+                        binding.btnShowMore.text = getString(R.string.show_less)
+                    }
+                }
+                else{
+                    if(experienceList.size > 3) {
+                        binding.dataLayout.removeAllViews()
+                        for (index in 0 until 3) {
+                            val experience = experienceList[index]
+                            val experienceRow = layoutInflater.inflate(R.layout.row_experience, null)
+
+                            val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
+                            val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
+                            /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                            val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
+                            val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
+                            btnDelete.visibility = GONE
+
+                            designationTextView.text = experience.vDesignation
+                            companyNameTextView.text = experience.vCompanyName
+                            /*jobLocationTextView.text = experience.vJobLocation*/
+                            durationTextView.text = experience.vDuration.toString().plus(" Years")
+
+                            binding.dataLayout.addView(experienceRow)
+                        }
+                    }
+                    binding.btnShowMore.text = getString(R.string.show_more)
+                }
+                binding.btnShowMore.isActivated = !binding.btnShowMore.isActivated
+
             }
 
             R.id.editResumeJ -> {
+                addResumeImg!!.visibility = GONE
                 resumeInfoDialogView()
             }
-
-            R.id.editJobPrefJ -> {
-                jobPrefInfoDialogView()
+            R.id.editAboutR -> {
+                addAboutImg!!.visibility = GONE
+                aboutInfoJDialogView()
+            }
+            R.id.editQualificationR ->{
+                addQualificationImg!!.visibility = GONE
+                qualificationDialogView()
+            }
+            R.id.editCurrPosR -> {
+                addCurrentPosImg!!.visibility = GONE
+                currentPositionDialogView()
             }
 
-            R.id.editInfoR -> {
-                recruiterAboutInfoDialogView()
-            }
             R.id.btnPhone -> {
-                makePhoneCall(phoneNumber!!)
+                if(callBalloon != null){
+                    binding.btnPhone.showAlignTop(callBalloon!!)
+                }
             }
             R.id.btnEmail -> {
-                makeEmail(emailId!!)
+                if(emailBalloon != null){
+                    binding.btnEmail.showAlignTop(emailBalloon!!)
+                }
             }
         }
     }
 
+    private fun currentPositionDialogView() {
+        val currentPositionDialog = layoutInflater.inflate(R.layout.dialog_current_position_info, null)
 
-    private fun recruiterAboutInfoDialogView() {
-        val recruiterInfoDialogView = layoutInflater.inflate(R.layout.dialog_recruter_info, null)
+        var selectedJobLocation = String()
 
-        val edJobTitle = recruiterInfoDialogView.findViewById<EditText>(R.id.jobTitle)
-        val edSalary = recruiterInfoDialogView.findViewById<EditText>(R.id.salary)
-        val edJobLobLocation = recruiterInfoDialogView.findViewById<EditText>(R.id.jobLocation)
-        val edJobDescription = recruiterInfoDialogView.findViewById<EditText>(R.id.jobDes)
-        val edDesignation = recruiterInfoDialogView.findViewById<EditText>(R.id.designation)
-        val radioGrpWorkingMode =
-            recruiterInfoDialogView.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
+        val edCompanyName = currentPositionDialog.findViewById<EditText>(R.id.companyName)
+        val edJobTitle = currentPositionDialog.findViewById<EditText>(R.id.designation)
+        val spJobLocation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
+        spJobLocation.setSearchDialogGravity(Gravity.TOP)
+        spJobLocation.arrowPaddingRight = 19
+        spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
+        spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spJobLocation.isOutlined = true
+                selectedJobLocation = spJobLocation.item[position]
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+        val radioGrpWorkingMode = currentPositionDialog.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
 
         alertDialogRecruiterInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
-            .setView(recruiterInfoDialogView)
+            .setView(currentPositionDialog)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
-                jobTitleR = edJobTitle.text.toString().trim()
-                salaryR = edSalary.text.toString().trim()
-                jobLocationR = edJobLobLocation.text.toString().trim()
-                jobDesR = edJobDescription.text.toString().trim()
-                designationR = edDesignation.text.toString().trim()
+                currentCompany = edCompanyName.text.toString().trim()
+                designation = edJobTitle.text.toString().trim()
+                jobLocation = selectedJobLocation.trim()
+                workingMode = getSelectedRadioItem(radioGrpWorkingMode, currentPositionDialog)
 
-                workingModeR = getSelectedRadioItem(radioGrpWorkingMode, recruiterInfoDialogView)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    recruiterProfileInfo.storeAboutData(
-                        jobTitleR!!,
-                        salaryR!!,
-                        jobLocationR!!,
-                        jobDesR!!,
-                        designationR!!,
-                        workingModeR!!
+                    userDataRepository.storeCurrentPositionData(
+                        currentCompany!!,
+                        designation!!,
+                        jobLocation!!,
+                        workingMode!!
                     )
                 }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+            }
+            .setOnDismissListener {
+                if(addCurrentPosImg != null){
+                    val b = (currentCompany.isNullOrEmpty() && designation.isNullOrEmpty() && jobLocation.isNullOrEmpty() && workingMode.isNullOrEmpty())
+                    decideAddImgToVisibility(b,binding.positionLayoutR,addCurrentPosImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
             }
             .create()
         alertDialogRecruiterInfo.show()
-    }
-
-    private fun jobPrefInfoDialogView() {
-        val jobPrefDialogView = layoutInflater.inflate(R.layout.dialog_job_preference_info, null)
-
-        val edJobTitle = jobPrefDialogView.findViewById<EditText>(R.id.jobTitle)
-        val edExpectedSalary = jobPrefDialogView.findViewById<EditText>(R.id.salary)
-        val edJobLocation = jobPrefDialogView.findViewById<EditText>(R.id.jobLocation)
-        val radioGroupWorkingMode =
-            jobPrefDialogView.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
-
-
-        alertDialogPrefInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
-            .setView(jobPrefDialogView)
-            .setTitle("Change Info")
-            .setPositiveButton("Done") { dialog, _ ->
-
-                prefJobTitle = edJobTitle.text.toString()
-
-                expectedSalary =
-                    edExpectedSalary.text.toString()
-                prefJobLocation = edJobLocation.text.toString()
-                prefWorkingMode = getSelectedRadioItem(radioGroupWorkingMode, jobPrefDialogView)
-
-
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    jobSeekerProfileInfo.storeJobPreferenceData(
-                        prefJobTitle!!,
-                        expectedSalary!!,
-                        prefJobLocation!!,
-                        prefWorkingMode!!
-                    )
-                }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-        alertDialogPrefInfo.show()
     }
 
     private lateinit var tvResumeFileName: TextView
@@ -515,11 +928,10 @@ class ProfileActivity : BaseActivity(),OnClickListener {
     private fun resumeInfoDialogView() {
         val resumeDialogView = layoutInflater.inflate(R.layout.dialog_resume_info, null)
 
-//        resumeUri = pdfUri.toString()
-
         val btnUpload = resumeDialogView.findViewById<ShapeableImageView>(R.id.btnUpload)
 
         tvResumeFileName = resumeDialogView.findViewById<TextView>(R.id.resumeFileName)
+        tvResumeFileName.text = resumeFileName!!
         btnUpload.setOnClickListener{
             selectPdf()
         }
@@ -533,16 +945,23 @@ class ProfileActivity : BaseActivity(),OnClickListener {
             .setPositiveButton("Done") { dialog, _ ->
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    jobSeekerProfileInfo.storeResumeData(
-                        resumeFileName!!,
+                    userDataRepository.storeResumeData(
                         resumeUri!!
                     )
                 }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+            }
+            .setOnDismissListener {
+                if(addResumeImg != null){
+
+                    decideAddImgToVisibility(resumeUri.isNullOrEmpty(), binding.resumeFileNameJ, addResumeImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
             }
             .create()
 
@@ -552,71 +971,62 @@ class ProfileActivity : BaseActivity(),OnClickListener {
 
     private lateinit var profileBackImg: ImageView
     private lateinit var btnSelectImg: ImageView
-    private fun profileBannerDialogView(userType: String) {
+    private fun profileBannerDialogView() {
         val profileBannerDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_cover_img, null)
 
         profileBackImg = profileBannerDialogView.findViewById(R.id.profileBackImg)
-        if (userType == "Job Seeker"){
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserProfileBannerImg().collect {
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        profileBackImg.setImageBitmap(bitmap)
-                    }
+
+        if(profileBannerImgUri != null) {
+            Glide.with(this@ProfileActivity)
+                .load(profileBannerImgUri)
+                .apply(
+                    RequestOptions
+                        .placeholderOf(R.drawable.profile_default_back_img)
+                        .error(R.drawable.profile_default_back_img)
+                        .fitCenter()
+                )
+                .into(profileBackImg)
+        }
+       /* lifecycle.coroutineScope.launch {
+            userDataRepository.getUserProfileBannerUrl().collect {
+                val previouslyEncodedImage: String = it
+                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
+                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
+                    profileBackImg.setImageBitmap(bitmap)
                 }
             }
-        }
-        else{
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileBannerImg().collect {
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        profileBackImg.setImageBitmap(bitmap)
-                    }
-                }
-            }
-        }
+        }*/
         btnSelectImg = profileBannerDialogView.findViewById(R.id.btnChangeImg)
         btnSelectImg.setOnClickListener {
             if (isGrantedPermission()) {
-                makeToast("hello please click",0)
                 selectImg("bannerImg")
             } else {
                 requestPermissions("bannerImg")
             }
         }
 
-
-
         alertDialogProfileBanner = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setTitle("Change Banner Image")
             .setView(profileBannerDialogView)
             .setPositiveButton("Done") { dialog, _ ->
-                val baos = ByteArrayOutputStream()
+                /*val baos = ByteArrayOutputStream()
                 photoBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val b = baos.toByteArray()
                 val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
                 profileBannerImg = encodedImage
-                Log.d("Img Encoded String..", profileBannerImg!!)
+                Log.d("Img Encoded String..", profileBannerImg!!)*/
                 CoroutineScope(Dispatchers.IO).launch {
-                    if(userType == "Job Seeker"){
-                        jobSeekerProfileInfo.storeProfileBannerImg(
-                            profileBannerImg!!
-                        )
-                    }
-                    if(userType == "Recruiter"){
-                        recruiterProfileInfo.storeProfileBannerImg(
-                            profileBannerImg!!
-                        )
-                    }
-
+                    userDataRepository.storeProfileBannerImg(
+                        profileBannerImgUri!!
+                    )
+                }.invokeOnCompletion {
+                    Log.d(
+                        TAG,
+                        "onActivityResult: Profile Banner Img is Stored in datastore"
+                    )
                 }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -628,35 +1038,24 @@ class ProfileActivity : BaseActivity(),OnClickListener {
     }
     private lateinit var profileImgDia: ImageView
     private lateinit var btnChangeImg: ImageView
-    private fun profileImgDialogView(userType: String) {
+    private fun profileImgDialogView() {
         val profileImgDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_img, null)
 
         profileImgDia = profileImgDialogView.findViewById(R.id.profileImg)
-        if (userType == "Job Seeker"){
-            lifecycle.coroutineScope.launch {
-                jobSeekerProfileInfo.getUserProfileImg().collect {
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        profileImgDia.setImageBitmap(bitmap)
-                    }
-                }
-            }
+
+        if(profileImgUri != null) {
+            Glide.with(this@ProfileActivity)
+                .load(profileImgUri)
+                .apply(
+                    RequestOptions
+                        .placeholderOf(R.drawable.profile_default_image)
+                        .error(R.drawable.profile_default_image)
+                        .circleCrop()
+                )
+                .into(profileImgDia)
         }
-        else{
-            lifecycle.coroutineScope.launch {
-                recruiterProfileInfo.getUserProfileImg().collect {
-                    val previouslyEncodedImage: String = it
-                    if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                        val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                        profileImgDia.setImageBitmap(bitmap)
-                    }
-                }
-            }
-        }
+
         btnChangeImg = profileImgDialogView.findViewById(R.id.btnChangeImg)
         btnChangeImg.setOnClickListener {
             if (isGrantedPermission()) {
@@ -670,27 +1069,23 @@ class ProfileActivity : BaseActivity(),OnClickListener {
             .setTitle("Change Banner Image")
             .setView(profileImgDialogView)
             .setPositiveButton("Done") { dialog, _ ->
-                val baos = ByteArrayOutputStream()
+               /* val baos = ByteArrayOutputStream()
                 photoBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val b = baos.toByteArray()
                 val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
                 profileImg = encodedImage
-                Log.d("Img Encoded String..", profileImg!!)
+                Log.d("Img Encoded String..", profileImg!!)*/
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    if(userType == "Job Seeker"){
-                        jobSeekerProfileInfo.storeProfileImg(
-                            profileImg!!
+                    userDataRepository.storeProfileImg(
+                        profileImgUri!!,
+                    )
+                }.invokeOnCompletion {
+                        Log.d(
+                            TAG,
+                            "onActivityResult: Profile Img is Stored in datastore"
                         )
                     }
-                    if(userType == "Recruiter"){
-                        recruiterProfileInfo.storeProfileImg(
-                            profileImg!!
-                        )
-                    }
-
-                }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -700,81 +1095,477 @@ class ProfileActivity : BaseActivity(),OnClickListener {
         alertDialogProfileImg.show()
 
     }
-
+    
+    @SuppressLint("NotifyDataSetChanged")
     private fun experienceInfoDialogView() {
+        Log.d(TAG, "experienceInfoDialogView: experience list \n $experienceList")
         val expDialogView = layoutInflater.inflate(R.layout.dialog_experience_info, null)
 
-        val edDesignation = expDialogView.findViewById<EditText>(R.id.designation)
-        val edCompanyName = expDialogView.findViewById<EditText>(R.id.companyName)
-        val edDuration = expDialogView.findViewById<EditText>(R.id.duration)
+        var selectedDesignation = String()
+        var enteredCompanyName = String()
+        var selectedJobLocation = String()
+        var enteredDuration = String()
+        val spDesignation = expDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.designation)
+        spDesignation.setSearchDialogGravity(Gravity.TOP)
+        spDesignation.arrowPaddingRight = 19
+        spDesignation.item = resources.getStringArray(R.array.indian_designations).toList()
+        spDesignation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spDesignation.isOutlined = true
+                selectedDesignation = spDesignation.item[position]
+            }
 
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                
+            }
+        }
+        val edCompanyName = expDialogView.findViewById<TextInputEditText>(R.id.companyName)
+        val spJobLocation = expDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
+        spJobLocation.setSearchDialogGravity(Gravity.TOP)
+        spJobLocation.arrowPaddingRight = 19
+        spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
+        spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spJobLocation.isOutlined = true
+                selectedJobLocation = spJobLocation.item[position]
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+        val edDuration = expDialogView.findViewById<TextInputEditText>(R.id.duration)
+
+        val btnAddExperience = expDialogView.findViewById<MaterialButton>(R.id.btnAddExperience)
+
+
+        val recyclerView = expDialogView.findViewById<RecyclerView>(R.id.recyclerView)
+
+        val adapter = ExperienceAdapter(this,experienceList)
+        recyclerView.adapter = adapter
+        recyclerView.scrollToPosition(adapter.itemCount - 1)
+        adapter.notifyDataSetChanged()
+
+        btnAddExperience.setOnClickListener {
+            enteredCompanyName = edCompanyName.text.toString().trim()
+            enteredDuration = (edDuration.text.toString().trim())
+            /*try {
+                enteredDuration = (edDuration.text.toString().trim())
+            }
+            catch (e : NumberFormatException){
+                Log.e(TAG, "experienceInfoDialogView: $e")
+                edDuration.error = "Enter Valid Number"
+            }*/
+
+            if(selectedDesignation.isNotEmpty() && selectedJobLocation.isNotEmpty() && enteredCompanyName.isNotEmpty() && enteredDuration.isNotEmpty()){
+                val jsonObject = JSONObject()
+                jsonObject.put("vDesignation", selectedDesignation)
+                jsonObject.put("vCompany",enteredCompanyName)
+                jsonObject.put("vJobLocation",selectedJobLocation)
+                jsonObject.put("vDuration", enteredDuration)
+
+                if(Utils.isNetworkAvailable(this)){
+                      AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
+                          .addHeaders("Authorization", "Bearer " + prefmanger[AUTH_TOKEN, ""])
+                          .addJSONObjectBody(
+                              jsonObject
+                          )
+                          .setPriority(Priority.MEDIUM).build()
+                          .getAsObject(
+                              UserExpModel::class.java,
+                                object : ParsedRequestListener<UserExpModel>{
+                                    override fun onResponse(response: UserExpModel?) {
+                                        try {
+                                            response?.let {
+                                                Log.d(TAG, "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
+                                                )
+                                                experienceList.add(Experience(
+                                                    selectedDesignation,
+                                                    enteredCompanyName,
+                                                    selectedJobLocation,
+                                                    enteredDuration
+                                                ))
+                                                recyclerView.scrollToPosition(adapter.itemCount - 1)
+                                                adapter.notifyDataSetChanged()
+                                            }
+                                        }
+                                        catch (e: Exception) {
+                                            Log.e("#####", "onResponse Exception: ${e.message}")
+                                        }
+                                        finally {
+                                            spDesignation.clearFocus()
+                                            spDesignation.clearSelection()
+                                            spJobLocation.clearFocus()
+                                            spJobLocation.clearSelection()
+                                            edCompanyName.text?.clear()
+                                            edCompanyName.clearFocus()
+                                            edDuration.text?.clear()
+                                            edDuration.clearFocus()
+                                            selectedDesignation = ""
+                                            enteredCompanyName = ""
+                                            selectedJobLocation = ""
+                                            enteredDuration = ""
+                                        }
+
+                                    }
+
+                                    override fun onError(anError: ANError?) {
+                                        anError?.let {
+                                            Log.e(
+                                                "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                            )
+                                        }
+                                        spDesignation.clearFocus()
+                                        spDesignation.clearSelection()
+                                        spJobLocation.clearFocus()
+                                        spJobLocation.clearSelection()
+                                        edCompanyName.text?.clear()
+                                        edCompanyName.clearFocus()
+                                        edDuration.text?.clear()
+                                        edDuration.clearFocus()
+                                        selectedDesignation = ""
+                                        enteredCompanyName = ""
+                                        selectedJobLocation = ""
+                                        enteredDuration = ""
+                                    }
+
+                                }
+                              )
+
+                } else {
+                    Utils.showNoInternetBottomSheet(this,this@ProfileActivity)
+                    spDesignation.clearFocus()
+                    spDesignation.clearSelection()
+                    spJobLocation.clearFocus()
+                    spJobLocation.clearSelection()
+                    edCompanyName.text?.clear()
+                    edCompanyName.clearFocus()
+                    edDuration.text?.clear()
+                    edDuration.clearFocus()
+                    selectedDesignation = ""
+                    enteredCompanyName = ""
+                    selectedJobLocation = ""
+                    enteredDuration = ""
+                }
+
+
+            }
+            else {
+                if (selectedDesignation.isEmpty()) {
+                    spDesignation.errorText = "Select A Designation"
+                }
+
+                if (enteredCompanyName.isEmpty()) {
+                    edCompanyName.error = "Enter Company Name"
+                }
+                if (selectedJobLocation.isEmpty()) {
+                    spJobLocation.errorText = "Select A Job Location"
+                }
+                if (enteredDuration.isEmpty()) {
+                    edDuration.error = "Enter Duration"
+                }
+            }
+
+        }
         alertDialogExperience = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(expDialogView)
             .setTitle("Change Info")
+            .setNeutralButton("OK"){ dialog,_ ->
+                experienceViewModel.writeToLocal(experienceList.toList()).invokeOnCompletion {
+                    Log.d(TAG, "experienceInfoDialogView: experienceList is updated in datastore")
+                }
+                adapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
+            /*
             .setPositiveButton("Done") { dialog, _ ->
 
-                experienceState = "Experienced"
-                designation = edDesignation.text.toString().trim()
+                /*experienceState = "Experienced"*/
+                /*designation = edDesignation.text.toString().trim()
                 prevCompany = edCompanyName.text.toString().trim()
-                prevJobDuration = edDuration.text.toString().trim()
+                prevJobDuration = edDuration.text.toString().trim()*/
+
+               /* CoroutineScope(Dispatchers.IO)
+                    .launch {
+                        experienceDataStore.saveExperienceList(experienceList.toList())
+                    }
+                    .invokeOnCompletion {
+                        lifecycle.coroutineScope.launch {
+                            val experienceFlow: Flow<List<Experience>> = experienceDataStore.getExperienceList()
+                            experienceFlow.collect{
+                                val experiences = it.toMutableList()
+                                Log.d(TAG, "experienceInfoDialogView: OnDataStored in DataStore \n $experiences")
+
+                            }
+                        }
+                    }*/
+
+                /*experienceList.clear()
+                experienceList.addAll(experienceList)*/
+                adapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            } */
+            .setOnDismissListener {
+                setExperiences()
+                if(addExperienceImg != null){
+                    decideAddImgToVisibility(experienceList.isEmpty(),binding.dataLayout,addExperienceImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
+
+            }
+            .create()
+        alertDialogExperience.show()
+    }
+    class ExperienceAdapter(
+        private var mActivity: AppCompatActivity,
+        private var experienceList: MutableList<Experience>,
+       /* private val onExperienceClickLiner:OnExperienceClickLiner*/
+    ) : RecyclerView.Adapter<ExperienceAdapter.ExperiencesHolder>(){
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperiencesHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.row_experience,parent,
+                false)
+
+            return ExperiencesHolder(view/*,onExperienceClickLiner*/)
+        }
+
+        override fun getItemCount(): Int {
+            return experienceList.size
+        }
+
+        override fun onBindViewHolder(holder: ExperiencesHolder, position: Int) {
+            val experience = experienceList[position]
+
+            holder.bind(experience)
+        }
+
+        inner class ExperiencesHolder(itemView: View/*,onExperienceClickLiner: OnExperienceClickLiner*/):RecyclerView.ViewHolder(itemView) {
+
+            private val designation = itemView.findViewById<MaterialTextView>(R.id.designation)
+            private val companyName = itemView.findViewById<MaterialTextView>(R.id.companyName)
+            private val jobLocation = itemView.findViewById<MaterialTextView>(R.id.jobLocation)
+            private val duration = itemView.findViewById<MaterialTextView>(R.id.duration)
+
+            private val cardView = itemView.findViewById<CardView>(R.id.cardView)
+            private val btnDelete = itemView.findViewById<FloatingActionButton>(R.id.btnDelete)
+
+            @SuppressLint("NotifyDataSetChanged")
+            fun bind(experience: Experience){
+                designation.text = experience.vDesignation
+                companyName.text = experience.vCompanyName
+                jobLocation.text = experience.vJobLocation
+                duration.text = experience.vDuration.plus(" Years")
+                btnDelete.visibility = GONE
+                btnDelete.setOnClickListener {
+                    btnDelete.visibility = GONE
+                    experienceList.removeAt(absoluteAdapterPosition)
+                    notifyDataSetChanged()
+                }
+                cardView.setOnLongClickListener {
+                    btnDelete.visibility = VISIBLE
+                    return@setOnLongClickListener true
+                }
+            }
+        }
+    }
+
+
+    private fun qualificationDialogView(){
+        val animation: Animation = AnimationUtils.loadAnimation(this, R.anim.sp_fade)
+
+        val selectedQualifications:MutableList<String> = mutableListOf()
+        if(qualification != null){
+            val list = qualification!!.split(" - ")
+            for(word in list){
+                selectedQualifications.add(word)
+            }
+        }
+
+        val qualificationDialog = layoutInflater.inflate(R.layout.dialog_qualification_info,null)
+        val chipGroup = qualificationDialog.findViewById<ChipGroup>(R.id.chipGroup)
+        for(qualification in selectedQualifications){
+            val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+            chip.text = qualification
+            chipGroup.addView(chip)
+            chip.setOnClickListener {
+                chip.startAnimation(animation)
+                chip.postDelayed({ chipGroup.removeView(chip) }, 200)
+                selectedQualifications.remove(qualification)
+            }
+        }
+        val spQualification = qualificationDialog.findViewById<SmartMaterialSpinner<String>>(R.id.qualification)
+        spQualification.setSearchDialogGravity(Gravity.TOP)
+        spQualification.arrowPaddingRight = 19
+        spQualification.item = resources.getStringArray(R.array.degree_array).toList()
+        spQualification.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spQualification.isOutlined = true
+
+                val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+                makeToast(spQualification.item[position],0)
+                chip.text = spQualification.item[position]
+                selectedQualifications.add(spQualification.item[position])
+                chipGroup.addView(chip)
+                /*chip.startAnimation(animation)
+                chip.postDelayed({  }, 20)*/
+
+                chip.setOnClickListener {
+                    chip.startAnimation(animation)
+                    chip.postDelayed({ chipGroup.removeView(chip) }, 200)
+                    selectedQualifications.remove(qualification)
+                }
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                spQualification.errorText = "On Nothing Selected"
+            }
+        }
+
+        alertDialogQualification = AlertDialog.Builder(this,R.style.CustomAlertDialogStyle)
+            .setView(qualificationDialog)
+            .setTitle("Edit Qualifications")
+            .setPositiveButton("Done"){dialog,_ ->
+
+                qualification = selectedQualifications.joinToString(" - ")
+                binding.qualificationJ.text = qualification
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    jobSeekerProfileInfo.storeExperienceData(
-                        experienceState!!,
-                        designation!!,
-                        prevCompany!!,
-                        prevJobDuration!!
+                    userDataRepository.storeQualificationData(
+                        qualification!!,
                     )
                 }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "qualificationDialogView: $qualification")
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
-            .create()
-        alertDialogExperience.show()
+            .setOnDismissListener {
+                if(addQualificationImg != null){
+                    decideAddImgToVisibility(qualification.isNullOrEmpty(),binding.qualificationJ,addQualificationImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
+            }
+                .create()
+        alertDialogQualification.show()
     }
 
     private fun aboutInfoJDialogView() {
         val aboutDialogView = layoutInflater.inflate(R.layout.dialog_about_info, null)
 
         val edBio = aboutDialogView.findViewById<EditText>(R.id.bio)
-        val edQualification = aboutDialogView.findViewById<EditText>(R.id.qualification)
+        edBio.setText(bio!!)
 
         alertDialogAboutInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(aboutDialogView)
-            .setTitle("Change Basics")
+            .setTitle("Change Bio")
             .setPositiveButton("Done") { dialog, _ ->
                 bio = edBio.text.toString().trim()
-                qualification = edQualification.text.toString().trim()
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    jobSeekerProfileInfo.storeAboutData(
+                    userDataRepository.storeAboutData(
                         bio!!,
-                        qualification!!
                     )
+                }.invokeOnCompletion {
+                    Log.d(TAG, "aboutInfoJDialogView: bio stored in dataStore")
                 }
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+            }
+            .setOnDismissListener {
+                if(addAboutImg != null) {
+                    decideAddImgToVisibility(bio.isNullOrEmpty(), binding.qualificationJ, addAboutImg!!)
+                }
+                else{
+                    makeToast(getString(R.string.something_error),0)
+                }
             }
             .create()
         alertDialogAboutInfo.show()
     }
 
     private fun basicInfoDialogView() {
+        val animation: Animation = AnimationUtils.loadAnimation(this, R.anim.sp_fade)
+
         val basicDialogView = layoutInflater.inflate(R.layout.dialog_profile_basic_info, null)
 
 
+        val expertiseList:MutableList<String> = mutableListOf()
+
+        var selectedJobLocation = String()
+
+        if(tagLine != null){
+            val list = tagLine!!.split(" || ")
+            for(word in list){
+                expertiseList.add(word)
+            }
+        }
+
         val edUserFName = basicDialogView.findViewById<EditText>(R.id.userFName)
+        edUserFName.setText(fName!!)
         val edUserLName = basicDialogView.findViewById<EditText>(R.id.userLName)
+        edUserLName.setText(lName!!)
         val edExpertise = basicDialogView.findViewById<EditText>(R.id.expertise)
-        val edCurrentCompany = basicDialogView.findViewById<EditText>(R.id.currentCompany)
-        val edPhoneNo = basicDialogView.findViewById<EditText>(R.id.phoneNo)
+        val chipGroup = basicDialogView.findViewById<ChipGroup>(R.id.chipGroup)
+        for(expertise  in expertiseList){
+            val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+            chip.text = expertise
+            chipGroup.addView(chip)
+            chip.setOnClickListener {
+                chip.startAnimation(animation)
+                chip.postDelayed({ chipGroup.removeView(chip) }, 200)
+                expertiseList.remove(expertise)
+            }
+        }
+
+        val addExpertise = basicDialogView.findViewById<FloatingActionButton>(R.id.btnAdd)
+        addExpertise.setOnClickListener {
+            val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+            val expertise = edExpertise.text.trim().toString()
+            chip.text = expertise
+            expertiseList.add(expertise)
+            chipGroup.addView(chip)
+            /*chip.startAnimation(animation)
+            chip.postDelayed({  }, 20)*/
+
+            chip.setOnClickListener {
+                chip.startAnimation(animation)
+                chip.postDelayed({ chipGroup.removeView(chip) }, 200)
+                expertiseList.remove(expertise)
+            }
+            edExpertise.text?.clear()
+            edExpertise.requestFocus()
+        }
+
+        val spJobLocation = basicDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
+        spJobLocation.setSearchDialogGravity(Gravity.TOP)
+        spJobLocation.arrowPaddingRight = 19
+        spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
+        spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spJobLocation.isOutlined = true
+                selectedJobLocation = spJobLocation.item[position]
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+        /*val edCurrentCompany = basicDialogView.findViewById<EditText>(R.id.currentCompany)
+        edCurrentCompany.setText(currentCompany!!)*/
+        /*val edPhoneNo = basicDialogView.findViewById<EditText>(R.id.phoneNo)
+        edPhoneNo.setText(phoneNumber)*/
         val edEmail = basicDialogView.findViewById<EditText>(R.id.email)
+        edEmail.setText(emailId!!)
         alertDialogBasicInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(basicDialogView)
             .setTitle("Change Info")
@@ -782,41 +1573,58 @@ class ProfileActivity : BaseActivity(),OnClickListener {
 
                 fName = edUserFName.text.toString().trim()
                 lName = edUserLName.text.toString().trim()
-                tageLine = edExpertise.text.toString().trim()
-                currentCompany = edCurrentCompany.text.toString().trim()
-                phoneNumber = edPhoneNo.text.toString().trim()
+                fullName = fName.plus(lName)
+                tagLine = expertiseList.joinToString(" || ")
+                residentialCity = selectedJobLocation
+                /*phoneNumber = edPhoneNo.text.toString().trim()*/
                 emailId = edEmail.text.toString().trim()
 
-                if (binding.userType.text.toString().trim() == "Job Seeker") {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        jobSeekerProfileInfo.storeBasicProfileData(
-                            fName!!,
-                            lName!!,
-                            phoneNumber!!,
-                            emailId!!,
-                            tageLine!!,
-                            currentCompany!!
-                        )
-                    }
-                }
-                if (binding.userType.text.toString().trim() == "Recruiter") {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        recruiterProfileInfo.storeBasicProfileData(
-                            fName!!,
-                            lName!!,
-                            phoneNumber!!,
-                            emailId!!,
-                            tageLine!!,
-                            currentCompany!!
-                        )
-                    }
-                }
 
-//                Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    userDataRepository.storeBasicInfo(
+                        fName!!,
+                        lName!!,
+                        phoneNumber!!,
+                        emailId!!,
+                        tagLine!!,
+                        residentialCity!!
+                    )
+                }
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+            }
+            .setOnDismissListener {
+                showViewIfNotEmpty(fullName!!, binding.userName)
+                showViewIfNotEmpty(tagLine!!, binding.expertise)
+                showViewIfNotEmpty(residentialCity!!, binding.residentialCity)
+
+                if (emailId!!.isNotEmpty()) {
+                    emailBalloon = createMsgBalloon(emailId!!, R.drawable.ic_email, baseContext)
+
+                    if (emailBalloon != null) {
+                        emailBalloon!!.setOnBalloonClickListener {
+                            makeEmail(emailId!!)
+                            emailBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                } else {
+                    emailBalloon = createMsgBalloon(
+                        "Email Id Not Found",
+                        R.drawable.ic_email,
+                        baseContext
+                    )
+                    if (emailBalloon != null) {
+                        emailBalloon!!.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                            emailBalloon!!.dismiss()
+                        }
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                    }
+                }
             }
             .create()
         alertDialogBasicInfo.show()
@@ -852,15 +1660,13 @@ class ProfileActivity : BaseActivity(),OnClickListener {
                 12 -> if (resultCode == RESULT_OK) {
                     uploadProgressBar.visibility = View.VISIBLE
                     uploadProgressBar.progress = 10
-                    pdfUri = data?.data!!
-                    val uri: Uri = data.data!!
-                    val uriString: String = uri.toString()
+                    val pdfUri = data?.data!!
                     resumeFileName = null.toString()
-                    if (uriString.startsWith("content://")) {
+                    if (pdfUri.toString().startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
                             myCursor = contentResolver?.query(
-                                uri,
+                                pdfUri,
                                 null,
                                 null,
                                 null,
@@ -888,25 +1694,126 @@ class ProfileActivity : BaseActivity(),OnClickListener {
 
                 24 -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-                    if (photoUri != null) {
+                    if (photoUri.toString().startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this.contentResolver.query(
+                                photoUri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                val storageRef = Firebase.storage.reference
+                                val path = "images/userImages/$userId/profileBannerImg"
+                                val imageRef = storageRef.child(path)
 
+                                imageRef.putFile(photoUri)
+                                    .addOnProgressListener {
+                                        /*binding.uploadProgressLayout.visibility = VISIBLE*/
+                                        /*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
+                                        binding.uploadProgressBar.progress = progress*/
+                                    }
+                                    .addOnSuccessListener {
 
-                        val contentResolver: ContentResolver = contentResolver
-                        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
-                        photoBitmap = Bitmap.createScaledBitmap(bitmap, profileBackImg.width, profileBackImg.height, false)
-                        profileBackImg.setImageBitmap(photoBitmap)
+                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                            /*binding.uploadProgressLayout.visibility = GONE*/
+                                            profileBannerImgUri = downloadUri.toString()
+                                            if(profileBannerImgUri != null) {
+                                                Glide.with(this@ProfileActivity)
+                                                    .load(profileBannerImgUri)
+                                                    .apply(
+                                                        RequestOptions
+                                                            .placeholderOf(R.drawable.profile_default_back_img)
+                                                            .error(R.drawable.profile_default_back_img)
+                                                            .fitCenter()
+                                                    )
+                                                    .into(profileBackImg)
+                                            }
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
 
+                                        /*binding.uploadProgressLayout.visibility = GONE*/
+                                        makeToast("Img is not stored successfully",0)
+                                        Log.e(TAG, "onActivityResult: error while storing Img $exception" )
+                                    }
+
+                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                                }
+                                else{
+                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
+                                }*/
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
                     }
                 }
 
                 44 -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-                    if (photoUri != null) {
 
-                        val contentResolver: ContentResolver = contentResolver
-                        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
-                        photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
-                        profileImgDia.setImageBitmap(photoBitmap)
+                    if (photoUri.toString().startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this.contentResolver.query(
+                                photoUri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                val storageRef = Firebase.storage.reference
+                                val path = "images/userImages/$userId/profileImg"
+                                val imageRef = storageRef.child(path)
+
+                                imageRef.putFile(photoUri)
+                                    .addOnProgressListener {
+                                        /*binding.uploadProgressLayout.visibility = VISIBLE*/
+                                        /*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
+                                        binding.uploadProgressBar.progress = progress*/
+                                    }
+                                    .addOnSuccessListener {
+
+                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                            /*binding.uploadProgressLayout.visibility = GONE*/
+                                            profileImgUri = downloadUri.toString()
+                                            Glide.with(this@ProfileActivity)
+                                                .load(profileImgUri)
+                                                .apply(
+                                                    RequestOptions
+                                                        .placeholderOf(R.drawable.profile_default_image)
+                                                        .error(R.drawable.profile_default_image)
+                                                        .circleCrop()
+                                                )
+                                                .into(profileImgDia)
+                                            /*val contentResolver: ContentResolver = contentResolver
+                                            val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
+                                            photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
+                                            profileImgDia.setImageBitmap(photoBitmap)*/
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        /*binding.uploadProgressLayout.visibility = GONE*/
+                                        makeToast("Img is not stored successfully",0)
+                                        Log.e(TAG, "onActivityResult: error while storing Img $exception" )
+                                    }
+                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                                }
+                                else{
+                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
+                                }*/
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
                     }
                 }
             }
@@ -926,23 +1833,108 @@ class ProfileActivity : BaseActivity(),OnClickListener {
 
     private fun getSelectedRadioItem(radioGroup: RadioGroup, dialogView: View): String {
         val selectedItemId = radioGroup.checkedRadioButtonId
-        val radioButton = dialogView.findViewById<View>(selectedItemId) as RadioButton
-        if (selectedItemId != -1) {
+        val radioButton = dialogView.findViewById<View>(selectedItemId) as RadioButton?
+        if (selectedItemId != -1 && radioButton != null) {
             return radioButton.text.toString()
         }
         return ""
     }
 
 
-    override fun onDestroy() {
+  /*  override fun onDestroy() {
         super.onDestroy()
-        _binding = null
-        val updateDataServiceIntent = Intent(this, UpdateProfileDataService::class.java)
-        updateDataServiceIntent.putExtra("userType",type)
-        updateDataServiceIntent.putExtra("userId",id)
-        startService(updateDataServiceIntent)
-    }
 
+        val updateDataServiceIntent = Intent(this, UpdateProfileDataService::class.java)
+        startService(updateDataServiceIntent)
+    }*/
+    override fun updateData() {
+        lifecycle.coroutineScope.launch{
+            Log.d(TAG, "updateData: Updated data process service running")
+
+            if (Utils.isNetworkAvailable(this@ProfileActivity)) {
+                if (userType == 0) {
+                    AndroidNetworking.post(NetworkUtils.UPDATE_PROFILE_DETAILS)
+                        .setOkHttpClient(NetworkUtils.okHttpClient)
+                        .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN,"")}")
+                        .addQueryParameter("vFirstName", fName)
+                        .addQueryParameter("vLastName", lName)
+                        .addQueryParameter("vEmail", emailId)
+                        .addQueryParameter("tBio", bio)
+                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vCurrentCompany", currentCompany)
+                        .addQueryParameter("vDesignation", designation)
+                        .addQueryParameter("vJobLocation", jobLocation)
+                        .addQueryParameter("vQualification", qualification)
+                        .addQueryParameter("tTagLine",tagLine)
+                        .setPriority(Priority.MEDIUM).build().getAsObject(
+                            GetUserById::class.java,
+                            object : ParsedRequestListener<GetUserById> {
+                                override fun onResponse(response: GetUserById?) {
+                                    try {
+                                        response?.let {
+                                            Log.d(TAG, "onResponse: Profile Data Updated Successfully")
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse Exception: ${e.message}")
+                                    }
+                                }
+
+                                override fun onError(anError: ANError?) {
+                                    hideProgressDialog()
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                        )
+                                    }
+                                }
+                            })
+                }
+                else{
+                    AndroidNetworking.post(NetworkUtils.UPDATE_PROFILE_DETAILS)
+                        .setOkHttpClient(NetworkUtils.okHttpClient)
+                        .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN,"")}")
+                        .addQueryParameter("vFirstName", fName)
+                        .addQueryParameter("vLastName", lName)
+                        .addQueryParameter("vEmail", emailId)
+                        .addQueryParameter("tBio", bio)
+                        .addQueryParameter("vQualification", qualification)
+                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vCurrentCompany", currentCompany)
+                        .addQueryParameter("vDesignation", designation)
+                        .addQueryParameter("vJobLocation", jobLocation)
+                        .addQueryParameter("vWorkingMode","")
+                        .addQueryParameter("tTagLine", tagLine)
+                        .setPriority(Priority.MEDIUM).build().getAsObject(
+                            GetUserById::class.java,
+                            object : ParsedRequestListener<GetUserById> {
+                                override fun onResponse(response: GetUserById?) {
+                                    try {
+                                        response?.let {
+                                            Log.d(TAG, "onResponse: Profile Data Updated Successfully")
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse Exception: ${e.message}")
+                                    }
+                                }
+
+                                override fun onError(anError: ANError?) {
+                                    hideProgressDialog()
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                        )
+                                    }
+                                }
+                            })
+                }
+            }
+            else {
+                Utils.showNoInternetBottomSheet(this@ProfileActivity, this@ProfileActivity)
+            }
+        }
+    }
 
     private fun requestPermissions(s: String) {
         val permissions: Collection<String> =
@@ -1030,7 +2022,9 @@ class ProfileActivity : BaseActivity(),OnClickListener {
         }
         builder.show()
     }
-    fun showLogoutBottomSheet() {
+
+
+    /*fun showLogoutBottomSheet() {
 
         val dialog = BottomSheetDialog(this)
         val view: View = (this).layoutInflater.inflate(
@@ -1047,15 +2041,9 @@ class ProfileActivity : BaseActivity(),OnClickListener {
 
         animation.setAnimation(R.raw.logout)
 
-
-
-
         btnyes.setOnClickListener {
             logoutAPI(prefmanger.get(AUTH_TOKEN,""))
             dialog.dismiss()
-
-
-
         }
         btnNo.setOnClickListener {
             dialog.dismiss()
@@ -1071,11 +2059,8 @@ class ProfileActivity : BaseActivity(),OnClickListener {
     }
     fun logoutAPI(
         auth: String?,
-
         ) {
         try {
-
-
             if (Utils.isNetworkAvailable(this)) {
                 AndroidNetworking.post(NetworkUtils.LOGOUT)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
@@ -1101,12 +2086,6 @@ class ProfileActivity : BaseActivity(),OnClickListener {
                                     Toast.makeText(this@ProfileActivity,getString(R.string.something_error),
                                         Toast.LENGTH_SHORT).show()
                                 }
-
-
-
-
-
-
                             }
 
                             override fun onError(anError: ANError?) {
@@ -1131,5 +2110,7 @@ class ProfileActivity : BaseActivity(),OnClickListener {
         }
 
     }
+*/
+
 
 }

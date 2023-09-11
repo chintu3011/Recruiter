@@ -27,38 +27,47 @@ data class JobSeekerProfileInfo(val context: Context) {
 
         val userBio = stringPreferencesKey("userBio")
         val userQualification = stringPreferencesKey("userQualification")
-        val userExperienceState = stringPreferencesKey("userExperienceState")
-        val userDesignation = stringPreferencesKey("userDesignation")
-        val userPrevCompany = stringPreferencesKey("userPrevCompany")
-        val userPrevJobDuration = stringPreferencesKey("userPrevJobDuration")
+        /*val userExperienceState = stringPreferencesKey("userExperienceState")*/
+
+
+        val userLastDesignation = stringPreferencesKey("userLastDesignation")
+        val userLastCompany = stringPreferencesKey("userLastCompany")
+        val userLastJobDuration = stringPreferencesKey("userLastJobDuration")
         val userResumeUri = stringPreferencesKey("userResumeUri")
         val userResumeFileName = stringPreferencesKey("userResumeFileName")
         val userPerfJobTitle = stringPreferencesKey("userPerfJobTitle")
-        val userExpectedSalary = stringPreferencesKey("userExpectedSalary")
+        /*val userExpectedSalary = stringPreferencesKey("userExpectedSalary")*/
         val userPrefJobLocation = stringPreferencesKey("userPrefJobLocation")
         val userWorkingMode = stringPreferencesKey("userWorkingMode")
     }
 
     suspend fun storeAboutData(
         bio:String,
-        qualification:String
+        /*qualification:String*/
     ){
         context.datastore.edit {
             it[userBio] = bio
+            /*it[userQualification] = qualification*/
+        }
+    }
+    suspend fun storeQualificationData(
+        qualification:String
+    ){
+        context.datastore.edit {
             it[userQualification] = qualification
         }
     }
-    suspend fun storeExperienceData(
-        experienceState:String,
+    suspend fun storeLastExperienceData(
+        /*experienceState:String,*/
         designation: String,
-        prevCompany:String,
-        prevJobDuration:String
+        lastCompany:String,
+        lastJobDuration:String
     ){
         context.datastore.edit {
-            it[userExperienceState] = experienceState
-            it[userDesignation] = designation
-            it[userPrevCompany] = prevCompany
-            it[userPrevJobDuration] = prevJobDuration
+            /*it[userExperienceState] = experienceState*/
+            it[userLastDesignation] = designation
+            it[userLastCompany] = lastCompany
+            it[userLastJobDuration] = lastJobDuration
         }
     }
     suspend fun storeResumeData(
@@ -73,13 +82,13 @@ data class JobSeekerProfileInfo(val context: Context) {
 
     suspend fun storeJobPreferenceData(
         prefJobTitle:String,
-        expectedSalary:String,
+        /*expectedSalary:String,*/
         prefJobLocation:String,
         prefWorkingMode:String
     ) {
         context.datastore.edit {
             it[userPerfJobTitle] = prefJobTitle
-            it[userExpectedSalary] = expectedSalary
+            /*it[userExpectedSalary] = expectedSalary*/
             it[userPrefJobLocation] = prefJobLocation
             it[userWorkingMode] = prefWorkingMode
         }
@@ -185,17 +194,17 @@ data class JobSeekerProfileInfo(val context: Context) {
     fun getUserQualification() = context.datastore.data.map {
         it[userQualification]?:""
     }
-    fun getUserExperienceState() = context.datastore.data.map {
+    /*fun getUserExperienceState() = context.datastore.data.map {
         it[userExperienceState]?:""
+    }*/
+    fun getUserLastDesignation() = context.datastore.data.map {
+        it[userLastDesignation]?:""
     }
-    fun getUserDesignation() = context.datastore.data.map {
-        it[userDesignation]?:""
+    fun getUserLastCompany() = context.datastore.data.map {
+        it[userLastCompany]?:""
     }
-    fun getUserPrevCompany() = context.datastore.data.map {
-        it[userPrevCompany]?:""
-    }
-    fun getUserPrevJobDuration() = context.datastore.data.map {
-        it[userPrevJobDuration]?:""
+    fun getUserLastJobDuration() = context.datastore.data.map {
+        it[userLastJobDuration]?:""
     }
     fun getUserResumeFileName() = context.datastore.data.map {
         it[userResumeFileName]?:""
@@ -206,9 +215,9 @@ data class JobSeekerProfileInfo(val context: Context) {
     fun getUserPerfJobTitle() = context.datastore.data.map {
         it[userPerfJobTitle]?:""
     }
-    fun getUserExpectedSalary() = context.datastore.data.map {
+    /*fun getUserExpectedSalary() = context.datastore.data.map {
         it[userExpectedSalary]?:""
-    }
+    }*/
     fun getUserPrefJobLocation() = context.datastore.data.map {
         it[userPrefJobLocation]?:""
     }

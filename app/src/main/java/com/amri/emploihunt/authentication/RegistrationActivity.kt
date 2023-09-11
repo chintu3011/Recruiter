@@ -14,10 +14,9 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.View.*
-import android.view.Window
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.androidnetworking.AndroidNetworking
@@ -91,7 +90,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     private lateinit var phoneNo: String
     private lateinit var email: String
     private lateinit var city: String
-    private lateinit var userType: String
+    private var userType: Int ?= null
     private lateinit var termsConditionsAcceptance:String
 
     var cityList: ArrayList<String> = ArrayList()
@@ -104,14 +103,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val window: Window = this@RegistrationActivity.window
-        val background =ContextCompat.getDrawable(this@RegistrationActivity,
-            R.drawable.status_bar_color
-        )
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@RegistrationActivity,R.color.colorPrimary)
-        window.navigationBarColor = ContextCompat.getColor(this@RegistrationActivity,android.R.color.white)
 
         prefmanger = PrefManager.prefManager(this)
         setOnClickListener()
@@ -148,14 +140,14 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         phoneNo = "+" + binding.cpp.fullNumber.toString()
         email = binding.email.text.toString()
         city = binding.city.text.toString()
-        userType = intent.getStringExtra("userType").toString()
+        userType = intent.getIntExtra("role",-1)
         termsConditionsAcceptance =  if (binding.checkBox.isChecked) {
             "Accepted"
         }
         else{
             "Not Accepted"
         }
-        val correct = inputFieldConformation(userType,firstName,lastName,phoneNo,email,city,termsConditionsAcceptance)
+        val correct = inputFieldConformation(userType!!,firstName,lastName,phoneNo,email,city,termsConditionsAcceptance)
 
         isPhNoRegBefore(phoneNo,exist)
         if (!correct) return
@@ -253,7 +245,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         city = binding.city.text.toString()
         isPhNoRegBefore(phoneNo,exist)
         val correct = inputFieldConformation(
-            userType,
+            userType!!,
             firstName,
             lastName,
             phoneNo,
@@ -278,7 +270,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
 
     var exist:Boolean=false
     private fun inputFieldConformation(
-        userType: String,
+        userType: Int,
         firstName: String,
         lastName: String,
         phoneNo: String,
@@ -286,7 +278,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         city: String,
         termsConditionsAcceptance: String
     ): Boolean {
-        if(userType.isEmpty()){
+        if(userType == -1){
             makeToast("Please go back and select one job type.", 1)
             return false
         }
@@ -460,6 +452,23 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         showProgressDialog(resources.getString(R.string.please_wait))
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
         fusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
             if (task.isSuccessful && task.result != null) {
                 val latLast = task.result?.latitude.toString()
@@ -489,10 +498,29 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
 
     private fun getCustomCurrentLocation(fusedLocationClient: FusedLocationProviderClient) {
         val cancellationTokenSource = CancellationTokenSource()
-        val currentLocationTask: Task<Location> = fusedLocationClient.getCurrentLocation(
-            com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY,
-            cancellationTokenSource.token
-        )
+        val currentLocationTask: Task<Location> = if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        else {
+            fusedLocationClient.getCurrentLocation(
+                com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY,
+                cancellationTokenSource.token
+            )
+        }
         currentLocationTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val latCurrent = task.result?.latitude.toString()
@@ -505,7 +533,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 intent.putExtra("lName",lastName)
                 intent.putExtra("phoneNo",phoneNo)
                 intent.putExtra("email",email)
-                intent.putExtra("userType",userType)
+                intent.putExtra("role",userType)
                 intent.putExtra("termsConditions",termsConditionsAcceptance)
                 intent.putExtra("storedVerificationId",storedVerificationId)
                 startActivity(intent)

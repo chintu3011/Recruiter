@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
@@ -36,14 +37,18 @@ import com.amri.emploihunt.model.GetAllJob
 import com.amri.emploihunt.model.GetJobPreferenceList
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.util.ADDRESS
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IS_ADDED_JOB_PREFERENCE
+import com.amri.emploihunt.util.JOB_TITLE
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.SALARY_PACKAGE
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.getTimeAgo
+import com.amri.emploihunt.util.WORKING_MODE
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -430,7 +435,8 @@ FilterParameterTransferClass.FilterJobListListener {
                             retrieveJobData(0)
                         }
                     })
-        } else {
+        }
+        else {
             Utils.showNoInternetBottomSheet(requireContext(),requireActivity())
         }
     }
@@ -565,7 +571,7 @@ FilterParameterTransferClass.FilterJobListListener {
         Log.d(TAG,"FilteredList: $filteredDataList")
         binding.jobsAdapter!!.notifyDataSetChanged()
     }*/
-    override fun onDataReceivedFilterJobList(
+    /*override fun onDataReceivedFilterJobList(
         domain: String,
         location: String,
         workingMode: String,
@@ -574,6 +580,8 @@ FilterParameterTransferClass.FilterJobListListener {
         Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
 
         filteredDataList.clear()
+
+
         if(domain.isNotEmpty() || location.isNotEmpty() || workingMode.isNotEmpty() || packageRange.isNotEmpty() ){
 
             for(job in dataList){
@@ -636,6 +644,73 @@ FilterParameterTransferClass.FilterJobListListener {
         }
         Log.d(TAG,"FilteredList: $filteredDataList")
         binding.jobsAdapter!!.notifyDataSetChanged()
+    }*/
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDataReceivedFilterJobList(
+        domain: String,
+        location: String,
+        workingMode: String,
+        packageRange: String
+    ) {
+        Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
+
+        filteredDataList.clear()
+        if (Utils.isNetworkAvailable(requireContext())) {
+            if (currentPage != 1 && currentPage > totalPages) {
+                return
+            }
+            if (currentPage != 1) binding.layProgressPagination.root.visibility = View.VISIBLE
+
+            if (currentPage == 1) binding.progressCircular.visibility = View.VISIBLE
+
+            AndroidNetworking.get(NetworkUtils.FIlTER_JOBS)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter(JOB_TITLE,domain)
+                .addQueryParameter(ADDRESS,location)
+                .addQueryParameter(WORKING_MODE,workingMode)
+                .addQueryParameter(SALARY_PACKAGE,packageRange)
+                .addQueryParameter("current_page",currentPage.toString())
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(GetAllJob::class.java,
+                    object : ParsedRequestListener<GetAllJob> {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(response: GetAllJob?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+                                    binding.progressCircular.visibility = GONE
+                                    Log.d("###", "onResponse FilterJobList: ${it.data}")
+                                    filteredDataList.addAll(it.data)
+                                    binding.jobsAdapter!!.notifyDataSetChanged()
+                                }
+                            } catch (e: Exception) {
+                                binding.progressCircular.visibility = GONE
+                                Log.e("#####", "onResponse FilterJobList: catch: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            binding.progressCircular.visibility = GONE
+                            hideShowEmptyView(false)
+                            anError?.let {
+                                Log.e(
+                                     TAG,
+                                    "onError FilterJobList: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                )
+                                if (it.errorCode >= 500) {
+                                    binding.layEmptyView.tvNoData.text =
+                                        activity?.getString(R.string.not_match_any_data_based_on_your_filter)
+                                }
+                            }
+                            hideProgressDialog()
+                        }
+                    })
+        } else {
+            binding.progressCircular.visibility = GONE
+            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+        }
+        Log.d(TAG,"FilteredList: $filteredDataList")
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

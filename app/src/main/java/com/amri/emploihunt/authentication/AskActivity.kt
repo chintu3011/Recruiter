@@ -11,43 +11,32 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
+import com.amri.emploihunt.basedata.BaseActivity
 
-class AskActivity : AppCompatActivity() {
-    lateinit var jobseek : CardView
-    lateinit var recruit : CardView
+class AskActivity : BaseActivity() {
+    private lateinit var jobseek : CardView
+    private lateinit var recruit : CardView
     lateinit var activity : Activity
-    lateinit var userType: String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ask)
 
-        val window: Window = this@AskActivity.window
-        val background = ContextCompat.getDrawable(this@AskActivity, R.drawable.status_bar_color)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-
-        window.statusBarColor = ContextCompat.getColor(this@AskActivity, R.color.colorPrimary)
-        window.navigationBarColor = ContextCompat.getColor(this@AskActivity, R.color.white)
-
-
         jobseek = findViewById(R.id.buycv)
         recruit = findViewById(R.id.sellcv)
         activity = this
         jobseek.setOnClickListener {
-            userType = "Job Seeker"
-            navigateToNextActivity(userType)
+            navigateToNextActivity(0)
         }
         recruit.setOnClickListener {
-            userType = "Recruiter"
-            navigateToNextActivity(userType)
+            navigateToNextActivity(1)
         }
     }
 
-    private fun navigateToNextActivity(userType: String) {
+    private fun navigateToNextActivity(userType: Int) {
         val intent = Intent(this@AskActivity, RegistrationActivity::class.java)
-        intent.putExtra("userType",userType)
+        intent.putExtra("role",userType)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         finish()

@@ -3,9 +3,10 @@ package com.amri.emploihunt.authentication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityLoginsignupBinding
 
-class LoginsignupActivity : AppCompatActivity() {
+class LoginsignupActivity : BaseActivity() {
     lateinit var binding : ActivityLoginsignupBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

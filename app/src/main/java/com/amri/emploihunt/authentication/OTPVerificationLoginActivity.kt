@@ -71,14 +71,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
         binding = ActivityOtpverificationLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         prefManager = prefManager(this)
-        val window: Window = this@OTPVerificationLoginActivity.window
-        val background = ContextCompat.getDrawable(this@OTPVerificationLoginActivity,
-            R.drawable.status_bar_color
-        )
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
-        window.statusBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,R.color.colorPrimary)
-        window.navigationBarColor = ContextCompat.getColor(this@OTPVerificationLoginActivity,android.R.color.white)
 
 
         mAuth = FirebaseAuth.getInstance()
@@ -277,14 +270,17 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 )
                                                 jobSeekerProfileInfo.storeAboutData(
                                                     response.data.user.tBio,
+                                                    /*response.data.user.vQualification*/
+                                                )
+                                                jobSeekerProfileInfo.storeQualificationData(
                                                     response.data.user.vQualification
                                                 )
-                                                jobSeekerProfileInfo.storeExperienceData(
+                                                /*jobSeekerProfileInfo.storeExperienceData(
                                                     "",
                                                     response.data.user.vDesignation,
                                                     "",
                                                     ""
-                                                )
+                                                )*/
                                                 jobSeekerProfileInfo.storeResumeData(
                                                     "",
                                                     response.data.user.tResumeUrl,
@@ -293,7 +289,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     "",
                                                     "",
                                                     response.data.user.vCity,
-                                                    ""
                                                 )
                                                 prefManager[IS_LOGIN] = true
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId

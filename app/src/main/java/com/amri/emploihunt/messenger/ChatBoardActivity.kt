@@ -20,11 +20,9 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
@@ -68,7 +66,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private lateinit var adapter:ChatAdapter
 
     companion object{
-        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.default_person_icon
+        private val DEFAULT_PROFILE_IMAGE_RESOURCE = R.drawable.profile_default_image
         private const val TAG = "ChatBoardActivity"
     }
 

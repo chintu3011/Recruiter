@@ -3,17 +3,21 @@ package com.amri.emploihunt.basedata
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.amri.emploihunt.R
 
 import com.amri.emploihunt.databinding.LayoutCommonDialogBinding
 import com.amri.emploihunt.databinding.LayoutProgressbarBinding
@@ -24,7 +28,9 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val window: Window = this@BaseActivity.window
+        window.statusBarColor = ContextCompat.getColor(this@BaseActivity, R.color.colorPrimary)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
     fun showProgressDialog(msg: String) {
         try {

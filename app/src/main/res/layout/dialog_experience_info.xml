@@ -1,118 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutDesignation"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/inputLayoutExperience"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Designation"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutCompanyName"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:placeholderText="Software Designer"
-        app:startIconDrawable="@drawable/ic_designation"
-        app:startIconTint="@color/ed_theme_color">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/designation"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textAutoComplete"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutCompanyName"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/designation"
+                style="@style/spinnerStyle"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutCompanyName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:smsp_hint="@string/designation"
+                app:smsp_hintColor="@color/blue"
+                app:smsp_isOutlined="false"
+                app:smsp_isSearchable="true"
+                app:smsp_multilineError="true"
+                app:smsp_outlinedBoxColor="@color/black"
+                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                app:smsp_outlinedHintPadding="4dp"
+                app:smsp_outlinedHintStartX="10dp"
+                app:smsp_outlinedStrokeWidth="1dp"
+                app:smsp_searchHeaderTextColor="#ffff"
+                app:smsp_searchHintColor="@color/search_hint_color"
+                app:smsp_searchTextColor="@color/search_text_color" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutCompanyName"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/company_name"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/designation"
+                app:placeholderText="Microsoft corporation"
+                app:startIconDrawable="@drawable/ic_company"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/companyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/jobLocation"
+                style="@style/spinnerStyle"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutDuration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
+                app:smsp_hint="@string/job_location"
+                app:smsp_hintColor="@color/blue"
+                app:smsp_isOutlined="false"
+                app:smsp_isSearchable="true"
+                app:smsp_multilineError="true"
+                app:smsp_outlinedBoxColor="@color/black"
+                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                app:smsp_outlinedHintPadding="4dp"
+                app:smsp_outlinedHintStartX="10dp"
+                app:smsp_outlinedStrokeWidth="1dp"
+                app:smsp_searchHeaderTextColor="#ffff"
+                app:smsp_searchHintColor="@color/search_hint_color"
+                app:smsp_searchTextColor="@color/search_text_color" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutDuration"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/duration"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/gray"
+                app:helperText="Enter Duration in years"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/btnAddExperience"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/jobLocation"
+                app:placeholderText="3 Years"
+                app:startIconDrawable="@drawable/ic_duration"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddExperience"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:backgroundTint="#C5E8E0"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/add"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:cornerRadius="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutDuration" />
+
+            <!--            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteExperience"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:backgroundTint="#C5E8E0"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/delete"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:cornerRadius="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnAddExperience"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutDuration" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Company Name"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutDuration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation"
-        app:placeholderText="Microsoft corporation"
-        app:startIconDrawable="@drawable/ic_company"
-        app:startIconTint="@color/ed_theme_color">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/companyName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textAutoComplete"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutDuration"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Duration"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:maxHeight="@dimen/_250sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
-        app:placeholderText="3 Years"
-        app:startIconDrawable="@drawable/ic_duration"
-        app:startIconTint="@color/ed_theme_color">
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutExperience"
+        app:layout_constraintVertical_bias="0.112">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/duration"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="time"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

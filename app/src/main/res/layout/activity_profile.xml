@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:scaleType="center"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile"
+                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -41,50 +80,16 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_end="10dp" />
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:elevation="@dimen/_5sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:scaleType="center"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_back" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile"
-                        android:textSize="@dimen/_15sdp"
-                        android:textColor="@color/black"
-                        android:layout_gravity="center"
-                        android:id="@+id/toolbar_title" />
-
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.AppBarLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileBackImg"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_100sdp"
-                android:scaleType="fitXY"
                 android:background="@color/white"
+                android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile_default_back_img" />
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -101,7 +106,7 @@
                 app:layout_constraintTop_toTopOf="@id/profileBackImg"
                 app:layout_constraintVertical_bias="0.51"
                 app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/default_person_icon"
+                app:srcCompat="@drawable/profile_default_image"
                 app:strokeColor="@color/white"
                 app:strokeWidth="@dimen/_5sdp" />
 
@@ -130,23 +135,25 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout1"
+                android:id="@+id/basicInfoCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="visible"
                 app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/profileBackImg"
-                app:rippleColor="@color/card_ripple_color"
-                android:clickable="true"
-                android:focusable="true">
+                app:rippleColor="@color/card_ripple_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/basicInfoLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/editBasicInfo"
@@ -154,10 +161,10 @@
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
+                        android:tint="@color/blue"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/userType"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:tint="@color/blue"
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
@@ -165,8 +172,8 @@
                         android:id="@+id/userType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Job Seeker"
+
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/blue"
                         android:textStyle="bold"
@@ -178,6 +185,7 @@
                         app:layout_constraintWidth_default="wrap" />
 
                     <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flow18"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:constraint_referenced_ids="userType,editBasicInfo"
@@ -189,33 +197,69 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userName"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_50sdp"
-                        android:text="Person Name"
-                        app:autoSizeTextType="uniform"
+
+                        android:ellipsize="end"
                         android:lines="1"
+                        android:maxLines="1"
+                        android:text="@string/file_name"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
                         android:textColor="@color/blue"
                         android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/residentialCity"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editBasicInfo" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/residentialCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/residential_city"
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="#3C3F40"
+                        android:textStyle="italic"
+                        app:layout_constraintBottom_toBottomOf="@+id/userName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/userName"
+                        app:layout_constraintTop_toTopOf="@+id/userName" />
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flow17"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        app:flow_verticalGap="@dimen/_3sdp"
+                        app:flow_horizontalGap="@dimen/_10sdp"
+                        app:flow_horizontalStyle="packed"
+                        app:flow_verticalStyle="packed"
+                        app:flow_wrapMode="chain"
+                        app:flow_horizontalAlign="start"
+                        app:flow_verticalAlign="bottom"
+                        app:flow_horizontalBias="0.0"
+                        app:constraint_referenced_ids="userName,residentialCity"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editBasicInfo"
-                        tools:targetApi="o" />
+                        app:layout_constraintTop_toBottomOf="@+id/editBasicInfo" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/expertise"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:text="Passionate Software Engineer || Tech Enthusiast || Problem Solver"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textStyle="bold"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/userName" />
+                        app:layout_constraintTop_toBottomOf="@+id/flow17" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/currentCompany"
@@ -226,12 +270,13 @@
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/blue"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/expertise" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:id="@+id/spacer1"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_10sdp"
@@ -239,7 +284,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/currentCompany">
 
-                    </Space>
+                    </androidx.legacy.widget.Space>
 
                     <com.google.android.material.imageview.ShapeableImageView
 
@@ -283,45 +328,46 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spacer1" />
+                    
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:id="@+id/space"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout1" />
+                app:layout_constraintTop_toBottomOf="@+id/basicInfoCard" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout2"
+                android:id="@+id/aboutInfoCardJ"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space"
-                android:clickable="true"
-                android:focusable="true"
-                app:rippleColor="@color/card_ripple_color"
-                >
+                app:rippleColor="@color/card_ripple_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/aboutInfoLayoutJ"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtAboutJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="About"
+                        android:text="@string/about"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -337,10 +383,10 @@
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
+                        android:tint="@color/blue"
                         app:layout_constraintBottom_toBottomOf="@+id/txtAboutJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        android:tint="@color/blue"
                         app:layout_constraintStart_toEndOf="@+id/txtAboutJ"
                         app:layout_constraintTop_toTopOf="@+id/txtAboutJ"
                         app:shapeAppearanceOverlay="@style/circle"
@@ -352,19 +398,20 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
                         app:etv_animationTime="10"
                         app:etv_expandLines="3"
                         app:etv_showLine="false"
+                        app:etv_textContentColor="@color/black"
+                        app:etv_textContentSize="15sp"
                         app:etv_textExpand="show more"
                         app:etv_textShrink="Show less"
-                        app:etv_textContentSize="15sp"
-                        app:etv_textContentColor="@color/black"
                         app:etv_textStateColor="#9F000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/editAboutJ" />
 
-                    <View
+                    <!--<View
                         android:id="@+id/view1"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_2sdp"
@@ -373,15 +420,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"/>
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="visible"/>-->
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <!--                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtQualificationJ"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        
-                        android:text="Qualification"
+                        android:text = "@string/qualification"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -393,11 +440,88 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        
-                        android:text="Graduated in CSE"
+                        android:text=""
                         android:textColor="#333333"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="normal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtQualificationJ"
+                        android:visibility="gone"/>-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.legacy.widget.Space
+                android:id="@+id/space6"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/aboutInfoCardJ" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/qualificationCardJ"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardElevation="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/space6"
+                app:rippleColor="@color/card_ripple_color">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/qualificationLayoutJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtQualificationJ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/qualification"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/editQualificationJ"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/editQualificationJ"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:padding="3dp"
+                        android:scaleType="centerInside"
+                        android:tint="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtQualificationJ"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/txtQualificationJ"
+                        app:layout_constraintTop_toTopOf="@+id/txtQualificationJ"
+                        app:shapeAppearanceOverlay="@style/circle"
+                        app:srcCompat="@drawable/pencil_edit" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/qualificationJ"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text=""
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="#333333"
+                        android:textStyle="normal"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtQualificationJ" />
@@ -406,40 +530,39 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:id="@+id/space1"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout2" />
+                app:layout_constraintTop_toBottomOf="@+id/qualificationCardJ" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout3"
+                android:id="@+id/experienceCardJ"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space1"
-                app:rippleColor="@color/card_ripple_color"
-                android:clickable="true"
-                android:focusable="true">
+                app:rippleColor="@color/card_ripple_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/experienceLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:visibility="visible">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtExperienceJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Experience"
+                        android:text="@string/experience"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/editExperienceJ"
@@ -463,100 +586,75 @@
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/designationJ"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/dataLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        
-                        android:text="Designation"
-                        android:textAlignment="textStart"
-                        app:autoSizeTextType="uniform"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textColor="#FF02397C"
-                        android:textStyle="bold"
+                        android:layout_marginVertical="@dimen/_20sdp"
+                        android:orientation="vertical"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/editExperienceJ" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/companyNameJ"
+                        android:id="@+id/btnShowMore"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Amri Systems Ptv. Ltd"
-                        android:textAlignment="textStart"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                        app:layout_constraintEnd_toStartOf="@id/duration"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/designationJ" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/duration"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        
-                        android:text="3 Years"
-                        android:textAlignment="textEnd"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                        app:autoSizeTextType="uniform"
+                        android:background="#97DACB"
+                        android:text="@string/show_more"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                        android:textColor="@color/blue"
+                        android:textStyle="normal"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/companyNameJ"
-                        app:layout_constraintTop_toBottomOf="@id/designationJ"
-                        app:layout_constraintWidth_default="wrap"/>
-
-                    <androidx.constraintlayout.helper.widget.Flow
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="companyNameJ,duration"
-                        app:flow_horizontalStyle="spread_inside"
-                        app:flow_verticalStyle="packed"
-                        app:flow_wrapMode="chain"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/designationJ" />
+                        app:layout_constraintTop_toBottomOf="@id/dataLayout"
+                        app:layout_goneMarginBottom="@dimen/_10sdp" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </com.google.android.material.card.MaterialCardView>
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:id="@+id/space2"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout3" />
+                app:layout_constraintTop_toBottomOf="@+id/experienceCardJ" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout4"
+                android:id="@+id/resumeCardJ"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space2"
-                app:rippleColor="@color/card_ripple_color"
-                android:clickable="true"
-                android:focusable="true">
+                app:rippleColor="@color/card_ripple_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/resumeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtResumeJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Resume"
+                        android:text="@string/resume"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -586,14 +684,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        android:autoSizeTextType="uniform"
                         android:drawableEnd="@drawable/ic_download"
                         android:drawablePadding="@dimen/_5sdp"
-                        
-                        android:text="file_name.pdf"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="#FF02397C"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintHorizontal_chainStyle="packed"
@@ -603,16 +700,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:id="@+id/space3"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout4" />
+                app:layout_constraintTop_toBottomOf="@+id/resumeCardJ" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout5"
+            <!--<com.google.android.material.card.MaterialCardView
+                android:id="@+id/jobPrefCardJ"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cardElevation="@dimen/_5sdp"
@@ -629,13 +726,14 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtJobPrefJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
+
                         android:text="Job Preference"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
@@ -665,31 +763,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
-                        
-                        android:text="Android Developer"
+                        android:text="sadcsdv"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="#FF02397C"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/salaryJ"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editJobPrefJ" />
+                        />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/salaryJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="$12 LPA"
+                        android:text="sdvsdv"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/black"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/jobTitleJ"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/jobTitleJ"
-                        app:layout_constraintTop_toTopOf="@+id/jobTitleJ" />
+                        android:textColor="@color/black" />
                     <androidx.constraintlayout.helper.widget.Flow
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -701,15 +787,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/editJobPrefJ" />
+                        app:layout_constraintTop_toBottomOf="@id/editJobPrefJ"
+                        android:visibility="gone"
+                        />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtLocationJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        
-                        android:text="Location: "
+
+                        android:text="@string/location_"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
                         android:textStyle="normal"
@@ -723,22 +811,22 @@
                         android:id="@+id/jobLocationJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Ahmedabad"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@+id/txtLocationJ"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/txtLocationJ"
-                        app:layout_constraintTop_toTopOf="@+id/txtLocationJ" />
+                        app:layout_constraintTop_toTopOf="@+id/txtLocationJ"
+                        android:visibility="gone"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/txtWorkingModeJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        
-                        android:text="Mode: "
+
+                        android:text="@string/mode_"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
                         android:textStyle="normal"
@@ -752,8 +840,7 @@
                         android:id="@+id/workingModeJ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="Hybrid"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="@color/black"
                         android:textStyle="normal"
@@ -763,36 +850,160 @@
                         app:layout_constraintTop_toTopOf="@+id/txtWorkingModeJ"
                         app:layout_constraintVertical_bias="0.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <Space
+            </com.google.android.material.card.MaterialCardView>
+            <androidx.legacy.widget.Space
                 android:id="@+id/space4"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout5" />
+                app:layout_constraintTop_toBottomOf="@+id/jobPrefCardJ" />
+            -->
+
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/groupJobSeeker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="layout2,space1,layout3,space2,layout4,space3,layout5,space4" />
+                app:constraint_referenced_ids="aboutInfoCardJ,space1,qualificationCardJ,space6,experienceCardJ,space2,resumeCardJ,space3" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout2R"
+                android:id="@+id/aboutInfoCardR"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardElevation="@dimen/_5sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space"
-                android:clickable="true"
-                android:focusable="true"
                 app:rippleColor="@color/card_ripple_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/aboutInfoLayoutR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtAboutR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/editAboutR"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/editAboutR"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:padding="3dp"
+                        android:scaleType="centerInside"
+                        android:tint="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtAboutR"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/txtAboutR"
+                        app:layout_constraintTop_toTopOf="@+id/txtAboutR"
+                        app:shapeAppearanceOverlay="@style/circle"
+                        app:srcCompat="@drawable/pencil_edit" />
+
+                    <ru.embersoft.expandabletextview.ExpandableTextView
+                        android:id="@+id/bioR"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
+                        app:etv_animationTime="10"
+                        app:etv_expandLines="3"
+                        app:etv_showLine="false"
+                        app:etv_textContentColor="@color/black"
+                        app:etv_textContentSize="15sp"
+                        app:etv_textExpand="show more"
+                        app:etv_textShrink="Show less"
+                        app:etv_textStateColor="#9F000000"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editAboutR" />
+
+                    <!--<View
+                        android:id="@+id/view1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:background="#46C8C8C8"
+                        app:layout_constraintTop_toBottomOf="@id/bioJ"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:visibility="visible"/>-->
+
+                    <!--                    <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/txtQualificationJ"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:text = "@string/qualification"
+                                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                            android:textStyle="bold"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@id/view1" />
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/qualificationJ"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:text=""
+                                            android:textColor="#333333"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                            android:textStyle="normal"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@id/txtQualificationJ"
+                                            android:visibility="gone"/>-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.legacy.widget.Space
+                android:id="@+id/space7"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/aboutInfoCardR" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/currentPosCardR"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                app:cardElevation="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/space7"
+                app:rippleColor="@color/card_ripple_color">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/currPosLayoutR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
@@ -800,164 +1011,226 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_10sdp">
 
-                    <TextView
-                        android:id="@+id/textAboutR"
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtCurrentPositionR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        
-                        android:text="About"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:text="@string/current_position"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/editInfoR"
+                        app:layout_constraintEnd_toStartOf="@+id/editCurrPosR"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/editInfoR"
+                        android:id="@+id/editCurrPosR"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:padding="3dp"
                         android:scaleType="centerInside"
-                        app:layout_constraintBottom_toBottomOf="@+id/textAboutR"
+                        android:tint="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtCurrentPositionR"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        android:tint="@color/blue"
-                        app:layout_constraintStart_toEndOf="@+id/textAboutR"
-                        app:layout_constraintTop_toTopOf="@+id/textAboutR"
+                        app:layout_constraintStart_toEndOf="@+id/txtCurrentPositionR"
+                        app:layout_constraintTop_toTopOf="@+id/txtCurrentPositionR"
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/jobTitleR"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        
-                        android:text="Job Title"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                        android:textColor="#FF02397C"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/salary_r"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/editInfoR" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/salary_r"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$ 25 LPA"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textStyle="normal"
-                        app:layout_constraintBottom_toBottomOf="@+id/jobTitleR"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/jobTitleR"
-                        app:layout_constraintTop_toTopOf="@+id/jobTitleR" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/jobLocationR"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/positionLayoutR"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Ahmedabad"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/salary_r" />
+                        app:layout_constraintTop_toBottomOf="@+id/editCurrPosR" >
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/designationR"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="@string/designation"
+                            android:textAlignment="textStart"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_2sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:background="#46C8C8C8"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/jobLocationR" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/companyNameR"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="@string/company_name"
+                            android:textAlignment="textStart"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textColor="@color/blue"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/designationR" />
 
-                    <ru.embersoft.expandabletextview.ExpandableTextView
-                        android:id="@+id/jobDesR"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:etv_animationTime="10"
-                        app:etv_expandLines="3"
-                        app:etv_showLine="false"
-                        app:etv_textShrink="Show less"
-                        app:etv_textContentSize="15sp"
-                        app:etv_textContentColor="@color/black"
-                        app:etv_textStateColor="#9F000000"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/jobLocation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="@string/job_location"
+                            android:textAlignment="textStart"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textColor="@color/black"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/workingModeR"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/workingModeR"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/workingModeR" />
 
-                    <View
-                        android:id="@+id/view3"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_2sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:background="#46C8C8C8"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/jobDesR" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/workingModeR"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/working_mode"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="#504F4F"
+                            android:textStyle="normal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toEndOf="@+id/jobLocation"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/jobLocation" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/designationR"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:text="Designation"
-                        android:textColor="@color/blue"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view3" />
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:id="@+id/flow16"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:constraint_referenced_ids="jobLocation,workingModeR"
+                            app:flow_horizontalGap="@dimen/_10sdp"
+                            app:flow_horizontalStyle="spread_inside"
+                            app:flow_verticalGap="@dimen/_3sdp"
+                            app:flow_verticalStyle="packed"
+                            app:flow_wrapMode="chain"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/companyNameR" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/workingModeR"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        
-                        android:textColor="@color/black"
-                        android:text="Work from home"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textStyle="normal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/designationR" />
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <Space
+
+            <androidx.legacy.widget.Space
                 android:id="@+id/space5"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_10sdp"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@+id/layout2R" />
+                app:layout_constraintTop_toBottomOf="@+id/currentPosCardR" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/qualificationCardR"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardElevation="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/space5"
+                app:rippleColor="@color/card_ripple_color">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/qualificationLayoutR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="visible">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtQualificationR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/qualification"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/editQualificationR"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/editQualificationR"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:padding="3dp"
+                        android:scaleType="centerInside"
+                        android:tint="@color/blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtQualificationR"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/txtQualificationR"
+                        app:layout_constraintTop_toTopOf="@+id/txtQualificationR"
+                        app:shapeAppearanceOverlay="@style/circle"
+                        app:srcCompat="@drawable/pencil_edit" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/qualificationR"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="@string/qualification"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="#333333"
+                        android:textStyle="normal"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtQualificationR" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.legacy.widget.Space
+                android:id="@+id/space8"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@+id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/qualificationCardR" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/groupRecruiter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                app:constraint_referenced_ids="layout2R,space5" />
-
+                app:constraint_referenced_ids="aboutInfoCardR,space7,currentPosCardR,space5,qualificationCardR,space8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

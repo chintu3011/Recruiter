@@ -49,6 +49,13 @@ const val PDF_TYPE = 1
 const val IMG_TYPE = 2
 const val EMG_TYPE = 3
 
+const val JOB_TITLE = "vJobTitle"
+const val ADDRESS = "vAddress"
+const val WORKING_MODE = "vWrokingMode"
+const val SALARY_PACKAGE = "vSalaryPackage"
+
+
+
 /*var IS_CHALLENGE_UPLOADED = false
 var IS_CHALLENGE_COMMENT_LIKE = false*/
 

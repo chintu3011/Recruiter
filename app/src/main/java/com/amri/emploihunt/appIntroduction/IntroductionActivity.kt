@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginsignupActivity
+import com.amri.emploihunt.basedata.BaseActivity
 
 
-class IntroductionActivity : AppCompatActivity() {
+class IntroductionActivity : BaseActivity() {
+
     lateinit var decorView: View
 
     private lateinit var onboradingItemsAdapter: OnBoradingItemsAdapter
@@ -29,16 +31,6 @@ class IntroductionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_introduction)
-
-        val window: Window = this@IntroductionActivity.window
-        val background = ContextCompat.getDrawable(this@IntroductionActivity,
-            R.drawable.status_bar_color
-        )
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-        window.statusBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
-        window.navigationBarColor = ContextCompat.getColor(this@IntroductionActivity,android.R.color.white)
-
 
 //        sharedPreferences = getSharedPreferences("SplashScreen", Context.MODE_PRIVATE)
         

@@ -2,7 +2,10 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.google.protobuf'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -42,6 +45,30 @@ android {
         compiler_version = '3.0.0-beta6'
     }
 
+    
+    protobuf {
+        protoc {
+            artifact = "com.google.protobuf:protoc:3.20.1"
+        }
+
+        generateProtoTasks {
+            all().each { task ->
+                task.builtins {
+                    java {
+                        option 'lite'
+                    }
+                    kotlin {
+                        option 'lite'
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -64,9 +91,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'androidx.datastore:datastore-core-android:1.1.0-alpha04'
-    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha04'
-    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha04'
+
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
@@ -76,6 +101,21 @@ dependencies {
     implementation 'com.google.firebase:firebase-appcheck-playintegrity:17.0.1'
 
 
+    //datastore
+    implementation 'androidx.datastore:datastore-core-android:1.1.0-alpha04'
+    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha04'
+    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha04'
+
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "com.google.protobuf:protobuf-javalite:3.21.5"
+    implementation 'com.google.protobuf:protobuf-kotlin-lite:3.21.5'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5'
+    
+    implementation "com.google.dagger:hilt-android:2.48"
+    kapt "com.google.dagger:hilt-compiler:2.48"
 
     //Animation Dependency
     implementation 'com.github.gayanvoice:android-animations:1.0.2'
@@ -98,9 +138,9 @@ dependencies {
     //DialogPlus
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
-    //image cropper
-//    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
-//    implementation 'com.squareup.picasso:picasso:2.8'
+/*    image cropper
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.squareup.picasso:picasso:2.8'*/
 
     //glide image Dependency
     implementation 'com.github.bumptech.glide:glide:4.15.1'
@@ -130,5 +170,8 @@ dependencies {
 
     //balloon
     implementation "com.github.skydoves:balloon:1.5.4"
+
+    //smart spinner
+    implementation ("com.github.chivorns:smartmaterialspinner:1.5.0")
 
 }

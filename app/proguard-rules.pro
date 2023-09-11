@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class androidx.appcompat.widget.** { *; }
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }

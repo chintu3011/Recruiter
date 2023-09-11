@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.amri.emploihunt.authentication.LoginsignupActivity
+import com.amri.emploihunt.basedata.BaseActivity
 
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
@@ -31,7 +32,7 @@ import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.ROLE
 
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
     lateinit var decorView: View
     lateinit var activity: Activity
     private lateinit var preferencesForIntroScreen: SharedPreferences

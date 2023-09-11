@@ -70,7 +70,7 @@ class LatestMessageAdapterJ(
                 /*Log.d(TAG, user.userProfileImgUri)*/
                 Glide.with(itemView)
                     .load(messageData.user.tProfileUrl)
-                    .placeholder(R.drawable.default_person_icon)
+                    .placeholder(R.drawable.profile_default_image)
                     .into(profileImg)
             }
             cardView.setOnClickListener {

@@ -1,247 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutFName"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="First name"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintEnd_toStartOf="@+id/textLayoutLName"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:placeholderText="John"
-        app:startIconDrawable="@drawable/baseline_person_24"
-        app:startIconTint="@color/ed_theme_color">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/userFName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/poppinsregular"
-            android:inputType="textPersonName"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutFName"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/first_name"
+            android:paddingTop="0dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@color/ed_theme_color"
+            app:placeholderText="John"
+            app:startIconDrawable="@drawable/baseline_person_24"
+            app:startIconTint="@color/ed_theme_color">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutLName"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Last name"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toBottomOf="@+id/textLayoutFName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textLayoutFName"
-        app:layout_constraintTop_toTopOf="@+id/textLayoutFName"
-        app:placeholderText="Macavn"
-        app:startIconDrawable="@drawable/baseline_person_24"
-        app:startIconTint="@color/ed_theme_color">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userFName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppinsregular"
+                android:inputType="textPersonName"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/userLName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPersonName"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutLName"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/last_name"
+            android:paddingTop="0dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@color/ed_theme_color"
+            app:placeholderText="Macavn"
+            app:startIconDrawable="@drawable/baseline_person_24"
+            app:startIconTint="@color/ed_theme_color">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        app:constraint_referenced_ids="textLayoutFName,textLayoutLName"
-        app:flow_horizontalStyle="spread_inside"
-        app:flow_wrapMode="chain"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
-        app:layout_constraintEnd_toEndOf="@+id/textLayoutTechSkills"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textLayoutTechSkills"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userLName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppinsregular"
+                android:inputType="textPersonName"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutTechSkills"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Expertise"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:helperText="Include || after each Expertise"
-        app:helperTextTextColor="@color/blue"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutCurrentCompany"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flow"
-        app:placeholderText="Expertise1 || Expertise2.."
-        app:startIconDrawable="@drawable/ic_experties"
-        app:startIconTint="@color/ed_theme_color">
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            app:constraint_referenced_ids="textLayoutFName,textLayoutLName"
+            app:flow_horizontalStyle="spread_inside"
+            app:flow_wrapMode="chain"
+            app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/textLayoutTechSkills"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/expertise"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textAutoComplete"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutTechSkills"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/expertise"
+            android:paddingTop="10dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@color/ed_theme_color"
+            app:placeholderText="Expertise"
+            app:startIconDrawable="@drawable/ic_experties"
+            app:startIconTint="@color/ed_theme_color">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutCurrentCompany"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Company Name"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutPhoneNo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
-        app:placeholderText="Tellva Still Texus."
-        app:startIconDrawable="@drawable/ic_company"
-        app:startIconTint="@color/ed_theme_color">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/expertise"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/currentCompany"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPersonName"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+                android:fontFamily="@font/poppinsregular"
+                android:inputType="textAutoComplete"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutPhoneNo"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Phone number"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:counterEnabled="true"
-        app:counterMaxLength="13"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:helperText="Include Country Code"
-        app:helperTextTextColor="@color/blue"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toTopOf="@+id/textLayoutEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutCurrentCompany"
-        app:placeholderText="+9198351*****"
-        app:startIconDrawable="@drawable/ic_phone"
-        app:startIconTint="@color/ed_theme_color">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAdd"
+            style="@style/FloatingActionButtonStyle"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/white"
+            app:elevation="@dimen/_5sdp"
+            app:fabCustomSize="@dimen/_35sdp"
+            app:maxImageSize="@dimen/_20sdp"
+            app:tint="@color/blue"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="phone"
-            android:fontFamily="@font/poppinsregular"
-            android:maxEms="13"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow11"
+            android:layout_width="0dp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="textLayoutTechSkills,btnAdd"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flow" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textLayoutEmail"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Email"
-        android:paddingTop="0dp"
-        app:boxBackgroundColor="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-        app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-        app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-        app:boxCornerRadiusTopStart="@dimen/_5sdp"
-        app:boxStrokeColor="@color/edit_text_color"
-        app:endIconCheckable="true"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@color/ed_theme_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutPhoneNo"
-        app:placeholderText="xyz@gmail.com"
-        app:startIconDrawable="@drawable/ic_email"
-        app:startIconTint="@color/ed_theme_color">
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:fadeScrollbars="false"
+            android:paddingVertical="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textLayoutTechSkills"
+            android:background="#4AC7DBE3"
+            app:layout_constraintVertical_bias="0.0">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
-            android:fontFamily="@font/poppinsregular"
-            android:padding="@dimen/_10sdp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadeScrollbars="false"
+                android:scrollbars="horizontal" />
+        </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/jobLocation"
+            style="@style/spinnerStyle"
+            android:layout_margin="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/textLayoutEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView"
+            app:smsp_hint="@string/job_location"
+            app:smsp_hintColor="@color/blue"
+            app:smsp_isOutlined="false"
+            app:smsp_isSearchable="true"
+            app:smsp_multilineError="true"
+            app:smsp_outlinedBoxColor="@color/black"
+            app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+            app:smsp_outlinedHintPadding="4dp"
+            app:smsp_outlinedHintStartX="10dp"
+            app:smsp_outlinedStrokeWidth="1dp"
+            app:smsp_searchHeaderTextColor="#ffff"
+            app:smsp_searchHintColor="@color/search_hint_color"
+            app:smsp_searchTextColor="@color/search_text_color" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutEmail"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Email"
+            android:paddingTop="0dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:boxStrokeColor="@color/edit_text_color"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@color/ed_theme_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jobLocation"
+            app:placeholderText="xyz@gmail.com"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/ed_theme_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppinsregular"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
