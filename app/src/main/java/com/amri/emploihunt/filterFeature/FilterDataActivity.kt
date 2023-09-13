@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
@@ -73,7 +74,7 @@ class FilterDataActivity : BaseActivity()/*,
 
     /** Main Lists */
     private lateinit var domainList:MutableList<String>
-    private lateinit var locationList:MutableList<String>
+    private lateinit var locationList:ArrayList<String>
     private lateinit var workingModeList:MutableList<String>
     private lateinit var packageList:MutableList<String>
 
@@ -99,7 +100,7 @@ class FilterDataActivity : BaseActivity()/*,
 
 
     private lateinit var myPagerAdapter: MyPagerAdapter
-    var cityList: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
 
     lateinit var prefManager: SharedPreferences
 
@@ -119,13 +120,20 @@ class FilterDataActivity : BaseActivity()/*,
 
         /** setup of lists */
         domainList = resources.getStringArray(R.array.indian_designations).toMutableList()
-        locationList = mutableListOf()
+        locationList = arrayListOf()
         workingModeList = mutableListOf("Hybrid","Remote","On site")
         packageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
         filterDomainList = resources.getStringArray(R.array.indian_designations).toMutableList()
         filterLocationList = mutableListOf()
-        getAllCity()
+        getAllCity(locationList){
+            if(locationList.isNotEmpty()){
+               filterLocationList.addAll(locationList)
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
+            }
+        }
         filterWorkingModeList =mutableListOf("Hybrid","Remote","On site")
         filterPackageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
@@ -991,7 +999,7 @@ class FilterDataActivity : BaseActivity()/*,
 
     }
 
-    private fun getAllCity(){
+  /*  private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
             showProgressDialog("Please wait....")
@@ -1032,5 +1040,5 @@ class FilterDataActivity : BaseActivity()/*,
             Utils.showNoInternetBottomSheet(this, this)
         }
 
-    }
+    }*/
 }

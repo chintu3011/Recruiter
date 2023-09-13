@@ -40,7 +40,6 @@ import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.ADDRESS
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
-import com.amri.emploihunt.util.IS_ADDED_JOB_PREFERENCE
 import com.amri.emploihunt.util.JOB_TITLE
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
@@ -76,7 +75,11 @@ FilterParameterTransferClass.FilterJobListListener {
     private var currentPage = 1
     private var totalItems = 0
     private var totalPages = 1
-
+    private var isFilter = false
+    private var domain = ""
+    private var location = ""
+    private var workingMode = ""
+    private var packageRange = ""
     companion object{
         const val TAG = "HomeJobSeekerFragment"
     }
@@ -86,6 +89,7 @@ FilterParameterTransferClass.FilterJobListListener {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+
         prefManager = PrefManager.prefManager(requireContext())
         userType = prefManager.get(ROLE,0)
         userId = prefManager.get(FIREBASE_ID)
@@ -110,11 +114,14 @@ FilterParameterTransferClass.FilterJobListListener {
                 adapterView: AdapterView<*>?, view: View?,
                 position: Int, id: Long
             ) {
+                Log.d("###$", "onItemSelected: $position")
                 // Here you get the current item (a User object) that is selected by its position
                 val pref: DataJobPreferenceList = adapter!!.getItem(position)
                 // Here you can do the action you want to...
                 filteredDataList.clear()
                 currentPage = 1
+                binding.jobRvList.visibility = GONE
+                isFilter = false
                 retrieveJobData(pref.id)
 
             }
@@ -159,7 +166,13 @@ FilterParameterTransferClass.FilterJobListListener {
                     isScrolling = false
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
-                    retrieveJobData(0)
+                    if (isFilter){
+                        filterJobsApi(domain, location, workingMode, packageRange)
+                    }else{
+                        retrieveJobData(0)
+                        isFilter = false
+                    }
+
                 }
             }
         })
@@ -178,6 +191,7 @@ FilterParameterTransferClass.FilterJobListListener {
         })*/
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
+            binding.jobRvList.visibility = GONE
             /*val query = binding.search.query?.trim()
             if (query!!.isEmpty()) {
 //                callGetAllTemplateCategoriesAPI(state_name = stateName)
@@ -186,13 +200,18 @@ FilterParameterTransferClass.FilterJobListListener {
 //                callGetAllTemplateCategoriesAPI(query.toString(), stateName)
             }*/
 
+            if (jobPreferenceList.size != 0){
+                binding.jobPreferenceSp.visibility = View.VISIBLE
+            }
             if (binding.jobPreferenceSp.visibility == View.VISIBLE){
                 binding.jobPreferenceSp.setSelection(0)
-            }else{
-                filteredDataList.clear()
-                currentPage = 1
-                retrieveJobData(0)
+
             }
+
+            filteredDataList.clear()
+            currentPage = 1
+            retrieveJobData(0)
+            isFilter = false
             binding.swipeRefreshLayout.isRefreshing = false
         }
         binding.imgOpenDrawer.setOnClickListener {
@@ -327,6 +346,7 @@ FilterParameterTransferClass.FilterJobListListener {
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
                 retrieveJobData(0)
+                isFilter = false
             }
         }
     }
@@ -336,6 +356,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 dataList.clear()
                 currentPage = 1
                 retrieveJobData(0)
+                isFilter = false
             }
         }
     class JobsAdapter(
@@ -430,9 +451,10 @@ FilterParameterTransferClass.FilterJobListListener {
                                     "#####",
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
-                                retrieveJobData(0)
+
                             }
                             retrieveJobData(0)
+                            isFilter = false
                         }
                     })
         }
@@ -489,13 +511,13 @@ FilterParameterTransferClass.FilterJobListListener {
             return label
         }
     }
-    override fun onResume() {
+/*    override fun onResume() {
         super.onResume()
         if (IS_ADDED_JOB_PREFERENCE){
             getJobPreference()
             IS_ADDED_JOB_PREFERENCE = false
         }
-    }
+    }*/
 
     /*@SuppressLint("NotifyDataSetChanged")
     override fun onDataReceivedFilterJobList(
@@ -652,10 +674,26 @@ FilterParameterTransferClass.FilterJobListListener {
         workingMode: String,
         packageRange: String
     ) {
-        Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
+
+        Log.d("##","${domain}, ${location},${workingMode} ,${packageRange}")
 
         filteredDataList.clear()
+        currentPage = 1
+        totalPages = 1
+        isFilter = true
+        this@HomeJobSeekerFragment.domain = domain
+        this@HomeJobSeekerFragment.location = location
+        this@HomeJobSeekerFragment.workingMode = workingMode
+        this@HomeJobSeekerFragment.packageRange = packageRange
+        binding.jobPreferenceSp.visibility = View.GONE
+        filterJobsApi(domain,location,workingMode,packageRange)
+
+
+    }
+
+    fun filterJobsApi(domain: String, location: String, workingMode: String, packageRange: String) {
         if (Utils.isNetworkAvailable(requireContext())) {
+            Log.d("###", "onDataReceivedFilterJobList: $currentPage $totalPages")
             if (currentPage != 1 && currentPage > totalPages) {
                 return
             }
@@ -694,7 +732,7 @@ FilterParameterTransferClass.FilterJobListListener {
                             hideShowEmptyView(false)
                             anError?.let {
                                 Log.e(
-                                     TAG,
+                                    TAG,
                                     "onError FilterJobList: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 if (it.errorCode >= 500) {
@@ -710,7 +748,6 @@ FilterParameterTransferClass.FilterJobListListener {
             hideShowEmptyView(isShow = false, isInternetAvailable = false)
         }
         Log.d(TAG,"FilteredList: $filteredDataList")
-
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -4,9 +4,10 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://192.168.1.5:5000/api"
+    private const val BASE_URL = "http://172.190.170.96:5000/api"
     /*private const val BASE_URL = "http://192.168.148.196:5000/api"*/
-    /*private const val BASE_URL = "http://192.168.223.196:5000/api"*/
+  /*  private const val BASE_URL = "http://192.168.119.196:5000/api"*/
+
 
 
     const val REGISTER_USER = "$BASE_URL/signin/register_user"
@@ -37,6 +38,7 @@ object NetworkUtils {
     const val DELETE_POST = "$BASE_URL/job/delete"
     const val FIlTER_JOBS = "$BASE_URL/job/jobs_filter"
     const val INSERT_EXPERIENCE = "$BASE_URL/experince/insert_experince"
+    const val GET_ALL_EXPERIENCE = "$BASE_URL/experince/experince"
     const val UPDATE_PROFILE_DETAILS = "$BASE_URL/user/update_profile_details"
 
     const val GET_LATEST_APP_VERSION_CODE = "$BASE_URL/update_app/get_latest_app_version_code"

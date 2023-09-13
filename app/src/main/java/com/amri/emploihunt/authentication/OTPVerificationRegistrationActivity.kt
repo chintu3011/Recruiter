@@ -11,20 +11,25 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpVerificationRegistrationBinding
+import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
 import com.amri.emploihunt.store.UserDataRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+@AndroidEntryPoint
 class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
 
     companion object{
@@ -140,12 +145,16 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
                 }
             }
     }
+    private val experienceViewModel: ExperienceViewModel by viewModels()
+
     private fun makeEmptyDataStoreForNewUser(callback: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val userDataRepository = UserDataRepository(this@OTPVerificationRegistrationActivity)
             userDataRepository.emptyDataStore()
             callback()
         }
+        experienceViewModel.clearFromLocal()
+
     }
 
     private fun passInfoToNextActivity(uid: String?) {

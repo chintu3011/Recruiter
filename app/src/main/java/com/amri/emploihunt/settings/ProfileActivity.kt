@@ -43,8 +43,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.authentication.AskActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityProfileBinding
+import com.amri.emploihunt.model.CommonMessageModel
 import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.GetUserById
 import com.amri.emploihunt.model.User
@@ -70,6 +72,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.ktx.Firebase
@@ -183,7 +186,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
-                val user = User(-1,"",userType!!,fName!!,lName!!,phoneNumber!!,emailId!!,qualification!!,"","",currentCompany!!,designation!!,jobLocation!!,"",workingMode!!,bio!!,tagLine!!,residentialCity!!,"","","","","","","")
+                val user = User(-1,"",userType!!,fName!!,lName!!,phoneNumber!!,emailId!!,qualification!!,"","",currentCompany!!,designation!!,jobLocation!!,"",workingMode!!,bio!!,tagLine!!,residentialCity!!,"","","","",-1,"","")
                 val updateDataServiceIntent = Intent(this@ProfileActivity, UpdateProfileDataService::class.java)
                 updateDataServiceIntent.putExtra("userObject",user)
                 startService(updateDataServiceIntent)
@@ -997,10 +1000,33 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }*/
         btnSelectImg = profileBannerDialogView.findViewById(R.id.btnChangeImg)
         btnSelectImg.setOnClickListener {
-            if (isGrantedPermission()) {
+
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+
+            if (deniedPermissions.isEmpty()) {
                 selectImg("bannerImg")
             } else {
-                requestPermissions("bannerImg")
+                requestPermissions(deniedPermissions) {
+                    if (it) {
+                        selectImg("bannerImg")
+                    } else {
+                        alertDialogProfileBanner.dismiss()
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you aren't given required permissions.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
             }
         }
 
@@ -1055,10 +1081,33 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         btnChangeImg = profileImgDialogView.findViewById(R.id.btnChangeImg)
         btnChangeImg.setOnClickListener {
-            if (isGrantedPermission()) {
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+
+            if (deniedPermissions.isEmpty()) {
                 selectImg("profileImg")
             } else {
-                requestPermissions("profileImg")
+                requestPermissions(deniedPermissions){
+                    if (it) {
+                        selectImg("profileImg")
+                    }
+                    else{
+                        alertDialogProfileImg.dismiss()
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you aren't given required permissions.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
             }
         }
 
@@ -1169,9 +1218,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                           )
                           .setPriority(Priority.MEDIUM).build()
                           .getAsObject(
-                              UserExpModel::class.java,
-                                object : ParsedRequestListener<UserExpModel>{
-                                    override fun onResponse(response: UserExpModel?) {
+                              CommonMessageModel::class.java,
+                                object : ParsedRequestListener<CommonMessageModel>{
+                                    override fun onResponse(response: CommonMessageModel?) {
                                         try {
                                             response?.let {
                                                 Log.d(TAG, "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
@@ -1375,16 +1424,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private fun qualificationDialogView(){
         val animation: Animation = AnimationUtils.loadAnimation(this, R.anim.sp_fade)
 
-        val selectedQualifications:MutableList<String> = mutableListOf()
+        /*var selectedQualifications:MutableList<String> = mutableListOf()
         if(qualification != null){
             val list = qualification!!.split(" - ")
             for(word in list){
                 selectedQualifications.add(word)
             }
-        }
+        }*/
 
         val qualificationDialog = layoutInflater.inflate(R.layout.dialog_qualification_info,null)
-        val chipGroup = qualificationDialog.findViewById<ChipGroup>(R.id.chipGroup)
+        /*val chipGroup = qualificationDialog.findViewById<ChipGroup>(R.id.chipGroup)
         for(qualification in selectedQualifications){
             val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
             chip.text = qualification
@@ -1394,8 +1443,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 chip.postDelayed({ chipGroup.removeView(chip) }, 200)
                 selectedQualifications.remove(qualification)
             }
-        }
+        }*/
         val spQualification = qualificationDialog.findViewById<SmartMaterialSpinner<String>>(R.id.qualification)
+
         spQualification.setSearchDialogGravity(Gravity.TOP)
         spQualification.arrowPaddingRight = 19
         spQualification.item = resources.getStringArray(R.array.degree_array).toList()
@@ -1403,19 +1453,20 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 spQualification.isOutlined = true
 
-                val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+                qualification = spQualification.item[position]
+               /* val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
                 makeToast(spQualification.item[position],0)
                 chip.text = spQualification.item[position]
                 selectedQualifications.add(spQualification.item[position])
                 chipGroup.addView(chip)
-                /*chip.startAnimation(animation)
-                chip.postDelayed({  }, 20)*/
+                *//*chip.startAnimation(animation)
+                chip.postDelayed({  }, 20)*//*
 
                 chip.setOnClickListener {
                     chip.startAnimation(animation)
                     chip.postDelayed({ chipGroup.removeView(chip) }, 200)
                     selectedQualifications.remove(qualification)
-                }
+                }*/
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -1428,7 +1479,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setTitle("Edit Qualifications")
             .setPositiveButton("Done"){dialog,_ ->
 
-                qualification = selectedQualifications.joinToString(" - ")
+                /*qualification = selectedQualifications.joinToString(" - ")*/
                 binding.qualificationJ.text = qualification
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -1933,7 +1984,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }
     }
 
-    private fun requestPermissions(s: String) {
+    /*private fun requestPermissions(s: String) {
         val permissions: Collection<String> =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 listOf(Manifest.permission.READ_MEDIA_IMAGES)
@@ -1970,9 +2021,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
             }
         }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
-    }
+    }*/
 
-    private fun isGrantedPermission(): Boolean {
+/*    private fun isGrantedPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Log.d("Version*", Build.VERSION.SDK_INT.toString())
             listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
@@ -2018,8 +2069,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             dialog.cancel()
         }
         builder.show()
-    }
-
+    }*/
 
     /*fun showLogoutBottomSheet() {
 

@@ -4,18 +4,34 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
-    <style name="TextInputEditText">
-        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    <style name="Theme.Recruiter" parent="Base.Theme.Recruiter" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/freshwost_regular</item>
+
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
-    <style name="Theme.Recruiter" parent= "Base.Theme.Recruiter" />
     <style name="cornerCut">
         <item name="cornerSize">30%</item>
+    </style>
+    <style name="cornerCut_1">
+        <item name="cornerSize">15%</item>
     </style>
 
     <style name="circle">
         <item name="cornerSize">50%</item>
     </style>
-
 
     <style name="custom_menu" parent="Widget.AppCompat.Light.ActionButton.Overflow" >
         <!--        <item name="android:textColor">@color/white</item>-->
@@ -31,8 +47,31 @@
     <style name="FabCustomStyle" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerSize">20%</item>
         <item name="cornerFamily">rounded</item>
+        <item name="elevation">0dp</item>
+        <item name="strokeColor">#00FFFFFF</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="borderWidth">0dp</item>
+
+    </style>
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
     </style>
 
-    
+
+    <style name="defaultViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Theme.SearchSpinnerDemo" parent="Base.Theme.Recruiter" />
+    <style name="spinnerStyle" parent="defaultViewStyle">
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/blue</item>
+        <item name="smsp_errorTextColor">@android:color/holo_red_dark</item>
+        <item name="smsp_floatingLabelColor">@android:color/primary_text_dark</item>
+        <item name="smsp_underlineColor">@android:color/darker_gray</item>
+        <item name="smsp_errorTextSize">13sp</item>
+        <item name="smsp_itemSize">14sp</item>
+        <item name="smsp_hintSize">14sp</item>
+    </style>
 
 </resources>

@@ -44,7 +44,7 @@ class AddJobPreferenceActivity : BaseActivity() {
     lateinit var binding: ActivityAddJobPreferenceBinding
     lateinit var expectedSalary: List<String>
     lateinit var string: List<Item>
-    var cityList: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
     var cityValidator = false
     var expected = String()
     lateinit var prefManager: SharedPreferences
@@ -74,14 +74,21 @@ class AddJobPreferenceActivity : BaseActivity() {
 
         }
         prefManager = PrefManager.prefManager(this)
-        getAllCity()
+        /*getAllCity()*/
         binding.textLayoutSalaryTitle.setOnClickListener {
             showDialog("Expected Salary")
         }
-       expectedSalary = resources.getStringArray(R.array.expected_salary).toList()
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
-        binding.cityTitle.setAdapter(adapter)
+        expectedSalary = resources.getStringArray(R.array.expected_salary).toList()
+
+        val cityList:ArrayList<String> = arrayListOf()
+        getAllCity(cityList){
+            if(cityList.isNotEmpty()){
+                val adapter: ArrayAdapter<String> =
+                    ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
+                binding.cityTitle.setAdapter(adapter)
+            }
+        }
+
 
         binding.cityTitle.validator = object : AutoCompleteTextView.Validator {
             override fun isValid(text: CharSequence): Boolean {
@@ -189,7 +196,7 @@ class AddJobPreferenceActivity : BaseActivity() {
             )
         }
     }
-    private fun getAllCity(){
+   /* private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
 
@@ -228,7 +235,7 @@ class AddJobPreferenceActivity : BaseActivity() {
             Utils.showNoInternetBottomSheet(this, this)
         }
 
-    }
+    }*/
     private fun callAddJobPreference() {
 
         if (Utils.isNetworkAvailable(this)){

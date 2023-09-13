@@ -29,6 +29,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,7 +43,7 @@ class UpdatePostActivity : BaseActivity() {
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
     lateinit var profilePicFile: File
-    var cityList: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
     lateinit var  jobLocationAdapter: ArrayAdapter<String>
     var selectedJobLocation = String()
     var cityValidator = false
@@ -53,7 +54,6 @@ class UpdatePostActivity : BaseActivity() {
         setContentView(binding.root)
         prefManager = PrefManager.prefManager(this)
 
-        getAllCity()
         selectedPost = intent.extras?.serializable("ARG_JOB_TITLE")!!
 
         binding.jobTitle.setText(selectedPost.vJobTitle)
@@ -76,9 +76,12 @@ class UpdatePostActivity : BaseActivity() {
             binding.radioBtnHybridpost.text -> binding.radioBtnHybridpost.isChecked = true
         }
         binding.noOfEmployeeNeed.setText(selectedPost.iNumberOfVacancy.toString())
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
-        binding.location.setAdapter(adapter)
+        val cityList:ArrayList<String> = arrayListOf()
+        getAllCity(cityList){
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
+            binding.location.setAdapter(adapter)
+        }
         binding.location.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 arg0: AdapterView<*>?, arg1: View?,
@@ -89,11 +92,37 @@ class UpdatePostActivity : BaseActivity() {
             }
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {
-                // TODO Auto-generated method stub
+
             }
         }
         binding.linearLayout2.setOnClickListener {
-            uploadImage()
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+            if(deniedPermissions.isEmpty()) {
+                uploadImage()
+            }
+            else{
+                requestPermissions(deniedPermissions){
+                    if(it){
+                        uploadImage()
+                    }
+                    else{
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you are not register, Please register first.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
+            }
         }
         binding.location.validator = object : AutoCompleteTextView.Validator {
             override fun isValid(text: CharSequence): Boolean {
@@ -300,7 +329,7 @@ class UpdatePostActivity : BaseActivity() {
         }
 
     }
-    private fun getAllCity(){
+    /*private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
 
@@ -339,5 +368,5 @@ class UpdatePostActivity : BaseActivity() {
             Utils.showNoInternetBottomSheet(this,this)
         }
 
-    }
+    }*/
 }

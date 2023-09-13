@@ -52,6 +52,14 @@ class ExperienceDataStore @Inject constructor(
                 experienceList.experiencesList.map { it.toExperience() }
             }
     }
+
+    suspend fun clearExperienceList() {
+        context.dataStore.updateData { currentList ->
+            currentList.toBuilder()
+                .clearExperiences()
+                .build()
+        }
+    }
 }
 
 private fun Experience.toProto(): Experiences.Experience {

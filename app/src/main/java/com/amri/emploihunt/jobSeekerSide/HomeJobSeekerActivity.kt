@@ -57,6 +57,7 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.Utils.toast
+import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -67,6 +68,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
     lateinit var binding : ActivityHomeJobSeekerBinding
     private lateinit var homeFragment: HomeJobSeekerFragment
+    private lateinit var settingFragment: SettingJobSeekerFragment
+    private lateinit var campuFragment: CampusListFragment
     private var doubleBackToExitPressedOnce = false
     lateinit var prefmanger: SharedPreferences
     private var userType:Int ?= null
@@ -87,8 +90,26 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         window.statusBarColor = ContextCompat.getColor(this@HomeJobSeekerActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        if (!isGrantedPermission()) {
-            requestPermissions()
+        val deniedPermissions:MutableList<String> = isGrantedPermission()
+        if(deniedPermissions.isNotEmpty()){
+            requestPermissions(deniedPermissions){
+                if(!it){
+                    val snackbar = Snackbar
+                        .make(
+                            binding.root,
+                            "Sorry! you are not register, Please register first.",
+                            Snackbar.LENGTH_LONG
+                        )
+                        .setAction(
+                            "Grant Permissions"
+                        )
+                        {
+                            showSettingsDialog()
+                        }
+
+                    snackbar.show()
+                }
+            }
         }
 
         prefmanger = prefManager(this)
@@ -106,17 +127,22 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         FilterParameterTransferClass.instance!!.setJobListener(this)
 
         homeFragment = HomeJobSeekerFragment()
+
+        settingFragment = SettingJobSeekerFragment()
+
+        campuFragment = CampusListFragment()
+
         replaceFragment(homeFragment)
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(HomeJobSeekerFragment())
+                    replaceFragment(homeFragment)
                 }
                 R.id.setting -> {
-                    replaceFragment(SettingJobSeekerFragment())
+                    replaceFragment(settingFragment)
                 }
                 R.id.campus -> {
-                    replaceFragment(CampusListFragment())
+                    replaceFragment(campuFragment)
                 }
             }
             true
@@ -373,7 +399,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
     }
 
-    private fun requestPermissions() {
+   /* private fun requestPermissions() {
         val permissions: Collection<String> =
             listOf(Manifest.permission.READ_MEDIA_IMAGES)
         Log.d("####", "requestPermissions: $permissions")
@@ -402,7 +428,8 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
             }
         }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
     }
-
+*/
+/*
     private fun isGrantedPermission(): Boolean {
         Log.d("Version*", Build.VERSION.SDK_INT.toString())
         listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
@@ -433,6 +460,7 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
         }
         builder.show()
     }
+*/
 
     private fun logoutUser() {
         showLogoutBottomSheet()

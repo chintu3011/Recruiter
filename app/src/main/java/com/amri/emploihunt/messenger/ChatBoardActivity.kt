@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
+import com.amri.emploihunt.authentication.AskActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityChatBoardBinding
 import com.amri.emploihunt.model.MessageData
@@ -41,6 +42,7 @@ import com.amri.emploihunt.util.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -205,7 +207,32 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         }
         val btnCamara = balloon.getContentView().findViewById<ShapeableImageView>(R.id.btnCamara)
         btnCamara.setOnClickListener {
-            selectImg()
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+            if(deniedPermissions.isEmpty()) {
+                selectImg()
+            }
+            else{
+                requestPermissions(deniedPermissions){
+                    if(it){
+                       selectImg()
+                    }
+                    else{
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you are not register, Please register first.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            ) {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
+            }
             balloon.dismiss()
         }
 

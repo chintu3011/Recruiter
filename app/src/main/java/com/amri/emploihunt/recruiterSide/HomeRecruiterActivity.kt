@@ -56,6 +56,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -67,6 +68,8 @@ class HomeRecruiterActivity : BaseActivity(),
     lateinit var binding: ActivityHomeRecruiterBinding
 
     private lateinit var homeRecruitFragment: HomeRecruitFragment
+    private lateinit var postRecruitFragment: PostRecruitFragment
+    private lateinit var settingRecruiterFragment: SettingRecruiterFragment
     private var doubleBackToExitPressedOnce = false
 
     private var userType: Int? = null
@@ -83,8 +86,26 @@ class HomeRecruiterActivity : BaseActivity(),
         binding = ActivityHomeRecruiterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!isGrantedPermission()) {
-            requestPermissions()
+        val deniedPermissions:MutableList<String> = isGrantedPermission()
+        if(deniedPermissions.isNotEmpty()){
+            requestPermissions(deniedPermissions){
+                if(!it) {
+                    val snackbar = Snackbar
+                        .make(
+                            binding.root,
+                            "Sorry! you are not register, Please register first.",
+                            Snackbar.LENGTH_LONG
+                        )
+                        .setAction(
+                            "Grant Permissions"
+                        )
+                        {
+                            showSettingsDialog()
+                        }
+
+                    snackbar.show()
+                }
+            }
         }
 
         prefmanger = prefManager(this)
@@ -103,19 +124,24 @@ class HomeRecruiterActivity : BaseActivity(),
 
         homeRecruitFragment = HomeRecruitFragment()
 
+        postRecruitFragment = PostRecruitFragment()
+
+        settingRecruiterFragment = SettingRecruiterFragment()
+
+
         replaceFragment(homeRecruitFragment)
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(HomeRecruitFragment())
+                    replaceFragment(homeRecruitFragment)
                 }
 
                 R.id.post -> {
-                    replaceFragment(PostRecruitFragment())
+                    replaceFragment(postRecruitFragment)
                 }
 
                 R.id.setting -> {
-                    replaceFragment(SettingRecruiterFragment())
+                    replaceFragment(settingRecruiterFragment)
                 }
                 /*R.id.chatR -> {
                     val intent = Intent(this@HomeRecruiterActivity, MessengerHomeActivity::class.java)
@@ -372,7 +398,7 @@ class HomeRecruiterActivity : BaseActivity(),
 
     }
 
-    private fun requestPermissions() {
+   /* private fun requestPermissions() {
         val permissions: Collection<String> =
             listOf(Manifest.permission.READ_MEDIA_IMAGES)
         Log.d("####", "requestPermissions: $permissions")
@@ -401,8 +427,8 @@ class HomeRecruiterActivity : BaseActivity(),
             }
         }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
     }
-
-    private fun isGrantedPermission(): Boolean {
+*/
+/*    private fun isGrantedPermission(): Boolean {
         Log.d("Version*", Build.VERSION.SDK_INT.toString())
         listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
         val isGranted1 =
@@ -430,7 +456,7 @@ class HomeRecruiterActivity : BaseActivity(),
             dialog.cancel()
         }
         builder.show()
-    }
+    }*/
 
 
     private fun logoutUser() {

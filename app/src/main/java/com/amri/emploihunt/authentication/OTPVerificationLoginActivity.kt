@@ -11,7 +11,9 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewModelScope
 import com.amri.emploihunt.R
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -20,11 +22,18 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpverificationLoginBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
+import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.SignInCheckModel
+import com.amri.emploihunt.model.UserExpModel
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.proto.Experiences.ExperienceList
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
+import com.amri.emploihunt.settings.ProfileActivity
+import com.amri.emploihunt.store.ExperienceDataStore
+import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
+import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
@@ -46,11 +55,13 @@ import com.amri.emploihunt.util.Utils.toast
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
+@AndroidEntryPoint
 class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
 
@@ -73,8 +84,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
         binding = ActivityOtpverificationLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         prefManager = prefManager(this)
-
-
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -234,7 +243,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     }
                 }
     }*/
-
+    private val experienceViewModel: ExperienceViewModel by viewModels()
     private fun callUSerLogin(uid: String?) {
 
         if (Utils.isNetworkAvailable(this)){
@@ -261,36 +270,32 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                     CoroutineScope(Dispatchers.IO).launch {
                                         when (response.data.user.iRole) {
                                             JOB_SEEKER -> {
-                                                val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
-                                                jobSeekerProfileInfo.storeBasicProfileData(
+                                                val userDataRepository =
+                                                    UserDataRepository(this@OTPVerificationLoginActivity)
+                                                userDataRepository.storeBasicInfo(
                                                     response.data.user.vFirstName,
                                                     response.data.user.vLastName,
                                                     response.data.user.vMobile,
                                                     response.data.user.vEmail,
                                                     response.data.user.tTagLine,
-                                                    response.data.user.vCurrentCompany
+                                                    response.data.user.vCity
                                                 )
-                                                jobSeekerProfileInfo.storeAboutData(
+                                                userDataRepository.storeAboutData(
                                                     response.data.user.tBio,
-                                                    /*response.data.user.vQualification*/
                                                 )
-                                                jobSeekerProfileInfo.storeQualificationData(
+                                                userDataRepository.storeQualificationData(
                                                     response.data.user.vQualification
                                                 )
-                                                /*jobSeekerProfileInfo.storeExperienceData(
-                                                    "",
-                                                    response.data.user.vDesignation,
-                                                    "",
-                                                    ""
-                                                )*/
-                                                jobSeekerProfileInfo.storeResumeData(
-                                                    "",
-                                                    response.data.user.tResumeUrl,
+                                                userDataRepository.storeJobPreferenceData(
+                                                    response.data.user.vPreferJobTitle,
+                                                    response.data.user.vPreferCity,
+                                                    response.data.user.vWorkingMode
                                                 )
-                                                jobSeekerProfileInfo.storeJobPreferenceData(
-                                                    "",
-                                                    "",
-                                                    response.data.user.vCity,
+                                                userDataRepository.storeProfileImg(
+                                                    response.data.user.tProfileUrl
+                                                )
+                                                userDataRepository.storeResumeData(
+                                                    response.data.user.tResumeUrl
                                                 )
                                                 prefManager[IS_LOGIN] = true
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
@@ -311,34 +316,33 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     R.anim.flip_in,
                                                     R.anim.flip_out
                                                 )
-
-
                                                 finish()
 
                                             }
                                             RECRUITER -> {
-                                                val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationLoginActivity)
-                                                recruiterProfileInfo.storeBasicProfileData(
+                                                val userDataRepository = UserDataRepository(this@OTPVerificationLoginActivity)
+                                                userDataRepository.storeBasicInfo(
                                                     response.data.user.vFirstName,
                                                     response.data.user.vLastName,
                                                     response.data.user.vMobile,
                                                     response.data.user.vEmail,
                                                     response.data.user.tTagLine,
-                                                    response.data.user.vCurrentCompany
+                                                    response.data.user.vCity
                                                 )
-                                                recruiterProfileInfo.storeAboutData(
-                                                    response.data.user.vDesignation,
-                                                    "",
-                                                    "",
+                                                userDataRepository.storeAboutData(
                                                     response.data.user.tBio,
+                                                )
+                                                userDataRepository.storeQualificationData(
+                                                    response.data.user.vQualification
+                                                )
+                                                userDataRepository.storeCurrentPositionData(
+                                                    response.data.user.vCurrentCompany,
                                                     response.data.user.vDesignation,
+                                                    response.data.user.vJobLocation,
                                                     response.data.user.vWorkingMode
                                                 )
-                                                recruiterProfileInfo.storeProfileImg(
+                                                userDataRepository.storeProfileImg(
                                                     response.data.user.tProfileUrl
-                                                )
-                                                recruiterProfileInfo.storeProfileBannerImg(
-                                                    ""
                                                 )
                                                 val intent = Intent(
                                                     this@OTPVerificationLoginActivity,
@@ -359,15 +363,10 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     R.anim.flip_in,
                                                     R.anim.flip_out
                                                 )
-
-
                                                 finish()
                                             }
                                             else -> {
-
                                                 Log.d(TAG, "onResponse: incorrect user type : ${response.data.user.iRole}")
-
-
                                             }
                                         }
                                     }
@@ -396,6 +395,50 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                             }
                         }
                     })
+
+            AndroidNetworking.get(NetworkUtils.GET_ALL_EXPERIENCE)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    UserExpModel::class.java,
+                    object : ParsedRequestListener<UserExpModel> {
+                        override fun onResponse(response: UserExpModel?) {
+                            try {
+                                if (response != null) {
+                                    Log.d(TAG, "onResponse: ${response.data}")
+                                    experienceViewModel.writeToLocal(response.data.toList())
+                                        .invokeOnCompletion {
+                                            Log.d(
+                                                TAG,
+                                                "experienceInfoDialogView: experienceList is updated in datastore"
+                                            )
+                                        }
+                                }
+
+                            }catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                                hideProgressDialog()
+                            }
+
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            try {
+
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                    /** errorCode == 404 means User number is not registered or New user */
+                                    hideProgressDialog()
+                                }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onError: ${e.message}")
+                            }
+                        }
+
+                    }
+                )
         }else{
             Utils.showNoInternetBottomSheet(this,this)
         }

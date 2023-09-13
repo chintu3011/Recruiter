@@ -145,5 +145,15 @@
     <string name="prefer_city">Prefer City</string>
     <string name="not_match_any_data_based_on_your_filter">Not match any data based on your filter</string>
     <string name="show_less">Show less</string>
+    <string name="are_you_experienced_or_fresher">Are you experienced or fresher?</string>
+    <string name="tell_about_your_self">Tell about your self</string>
+    <string name="current_position_details">Current Position Details</string>
+    <string name="your_job_preference">Your job Preference</string>
+    <string name="select_your_resume">Select Your Resume</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="select_your_prefer_working_mode">Select your prefer working mode</string>
+    <string name="choose_pdf_file">Choose Pdf File</string>
+    <string name="no_file_chosen">No File Chosen</string>
+    <string name="select_your_qualification">Select your Qualification</string>
 
 </resources>

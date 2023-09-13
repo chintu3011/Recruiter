@@ -87,8 +87,6 @@ data class UserDataRepository(val context: Context) {
         }
     }
 
-    
-
     suspend fun storeResumeData(
         resumeUrl:String
     ){

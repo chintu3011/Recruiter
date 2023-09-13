@@ -14,6 +14,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import com.amri.emploihunt.R
+import com.amri.emploihunt.authentication.AskActivity
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -29,6 +30,7 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -45,7 +47,7 @@ class PostRecruitFragment : BaseFragment() {
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
     lateinit var profilePicFile: File
-    var cityList: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
     var selectedJobLocation = String()
     lateinit var  jobLocationAdapter: ArrayAdapter<String>
     var cityValidator = false
@@ -57,13 +59,39 @@ class PostRecruitFragment : BaseFragment() {
         // Inflate the layout for this fragment
         binding = FragmentPostRecruitBinding.inflate(layoutInflater, container, false)
         prefManager = prefManager(requireActivity())
-        cityList.add("Select Job Location")
-        getAllCity()
+
 
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
         binding.linearLayout2.setOnClickListener {
-            uploadImage()
+
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+            if(deniedPermissions.isEmpty()) {
+                uploadImage()
+            }
+            else{
+                requestPermissions(deniedPermissions){
+                    if(it){
+                        uploadImage()
+                    }
+                    else{
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you are not register, Please register first.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                               showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
+            }
         }
         binding.btnpostjob.setOnClickListener {
 
@@ -80,9 +108,19 @@ class PostRecruitFragment : BaseFragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
-        binding.location.setAdapter(adapter)
+
+        val cityList:ArrayList<String> = arrayListOf()
+        getAllCity(cityList){
+            if (cityList.isNotEmpty()){
+                val adapter: ArrayAdapter<String> =
+                    ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
+                binding.location.setAdapter(adapter)
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
+            }
+        }
+
         binding.location.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 arg0: AdapterView<*>?, arg1: View?,
@@ -97,7 +135,33 @@ class PostRecruitFragment : BaseFragment() {
             }
         }
         binding.linearLayout2.setOnClickListener {
-            uploadImage()
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+            if(deniedPermissions.isEmpty()) {
+                uploadImage()
+            }
+            else{
+                requestPermissions(deniedPermissions){
+                    if(it){
+                        uploadImage()
+                    }
+                    else{
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you are not register, Please register first.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
+            }
         }
         binding.location.validator = object : AutoCompleteTextView.Validator {
             override fun isValid(text: CharSequence): Boolean {
@@ -379,7 +443,7 @@ class PostRecruitFragment : BaseFragment() {
                 }
         }*/
     }
-    private fun getAllCity(){
+    /*private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(requireContext())){
 
@@ -390,11 +454,7 @@ class PostRecruitFragment : BaseFragment() {
                     object : ParsedRequestListener<GetAllCity> {
                         override fun onResponse(response: GetAllCity?) {
                             try {
-
                                 cityList.addAll(response!!.data)
-
-
-
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
 
@@ -418,5 +478,5 @@ class PostRecruitFragment : BaseFragment() {
             Utils.showNoInternetBottomSheet(requireContext(), requireActivity())
         }
 
-    }
+    }*/
 }

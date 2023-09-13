@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -110,6 +111,7 @@
             android:scaleType="centerInside"
             android:visibility="gone"
             app:shapeAppearanceOverlay="@style/circle" />
+
     </LinearLayout>
 
     <ImageView
@@ -159,199 +161,234 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/inputLayoutJobSeeker"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:visibility="visible"
+                android:layout_margin="@dimen/_10sdp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-
-                <ViewFlipper
-                    android:id="@+id/jsViewFlipper"
+                <ScrollView
+                    android:id="@+id/jsScrollView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:fillViewport="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/jsAboutGrp"
+                    <ViewFlipper
+                        android:id="@+id/jsViewFlipper"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textLayoutBio"
-                            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:gravity="center"
-                            android:hint="Biography"
-                            android:paddingStart="0dp"
-                            android:paddingTop="0dp"
-                            android:paddingEnd="0dp"
-                            android:paddingBottom="0dp"
-                            app:boxBackgroundColor="#FFFFFF"
-                            app:boxBackgroundMode="outline"
-                            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                            app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                            app:boxStrokeColor="@color/blue"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="2000"
-                            app:endIconCheckable="true"
-                            app:endIconMode="clear_text"
-                            app:endIconTint="@color/gray"
-                            app:hintTextColor="@color/blue"
-                            app:layout_constraintBottom_toTopOf="@+id/spQualificationJ"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
-                            app:startIconDrawable="@drawable/ic_biography"
-                            app:startIconTint="@color/blue">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/bio"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:inputType="textMultiLine"
-                                android:lines="5"
-                                android:maxEms="2000"
-                                android:padding="@dimen/_10sdp"
-                                android:textSize="@dimen/_13sdp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/spQualificationJ"
-                            style="@style/spinnerStyle"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintBottom_toTopOf="@id/scrollView"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textLayoutBio"
-                            app:layout_constraintVertical_chainStyle="packed"
-                            app:smsp_hint="@string/qualification"
-                            app:smsp_hintColor="@color/blue"
-                            app:smsp_isOutlined="false"
-                            app:smsp_isSearchable="true"
-                            app:smsp_multilineError="true"
-                            app:smsp_outlinedBoxColor="@color/black"
-                            app:smsp_outlinedBoxRadius="@dimen/_4sdp"
-                            app:smsp_outlinedHintPadding="4dp"
-                            app:smsp_outlinedHintStartX="10dp"
-                            app:smsp_outlinedStrokeWidth="1dp"
-                            app:smsp_searchHeaderTextColor="#ffff"
-                            app:smsp_searchHintColor="@color/search_hint_color"
-                            app:smsp_searchTextColor="@color/search_text_color" />
-
-                        <ScrollView
-                            android:id="@+id/scrollView"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_100sdp"
-                            android:background="#22004A69"
-                            android:fadeScrollbars="false"
-                            android:paddingVertical="@dimen/_10sdp"
-                            android:scrollbars="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/spQualificationJ"
-                            app:layout_constraintVertical_bias="0.0">
-
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chipGroup"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fadeScrollbars="false"
-                                android:scrollbars="horizontal" />
-                        </ScrollView>
-
-
-                        <!--<androidx.constraintlayout.widget.Group
-                        android:id="@+id/jsAboutGrp"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        app:constraint_referenced_ids="spQualificationJ,scrollView,textLayoutBio" />-->
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/jsExperienceGrp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/exLayout1"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/jsAboutGrp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <Button
-                                android:id="@+id/btnFresher"
-                                android:layout_width="0dp"
-                                android:layout_height="200dp"
-                                android:layout_margin="@dimen/_10sdp"
-                                android:text="@string/fresher"
-                                android:textAllCaps="false"
-                                android:textColor="@color/blue"
-                                android:textSize="@dimen/_20sdp"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/btnExperienced"
-                                app:layout_constraintHorizontal_chainStyle="spread"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
 
-                            <Button
-                                android:id="@+id/btnExperienced"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/jsAboutGrpTitle"
                                 android:layout_width="0dp"
-                                android:layout_height="200dp"
-                                android:layout_margin="@dimen/_10sdp"
-                                android:text="@string/experienced"
-                                android:textAllCaps="false"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tell_about_your_self"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                android:fontFamily="@font/glitten_regular"
                                 android:textColor="@color/blue"
-                                android:textSize="@dimen/_20sdp"
+                                android:textSize="@dimen/_18sdp"
                                 android:textStyle="bold"
+
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <View
+                                android:id="@+id/titleDivider"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/jsAboutGrpTitle" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textLayoutBio"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:gravity="center"
+                                android:hint="@string/bio"
+                                android:paddingStart="0dp"
+                                android:paddingTop="0dp"
+                                android:paddingEnd="0dp"
+                                android:paddingBottom="0dp"
+                                app:boxBackgroundColor="#FFFFFF"
+                                app:boxBackgroundMode="outline"
+                                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                                app:boxStrokeColor="@color/blue"
+                                app:counterEnabled="true"
+                                app:counterMaxLength="2000"
+                                app:endIconCheckable="true"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/gray"
+                                app:hintTextColor="@color/blue"
+                                app:layout_constraintBottom_toTopOf="@+id/spQualificationJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
+                                app:startIconDrawable="@drawable/ic_biography"
+                                app:startIconTint="@color/blue"
+                                >
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/bio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="textMultiLine"
+                                    android:lines="5"
+                                    android:maxEms="2000"
+                                    android:padding="@dimen/_10sdp"
+                                    android:textSize="@dimen/_13sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                                android:id="@+id/spQualificationJ"
+                                style="@style/spinnerStyle"
+                                android:layout_marginVertical="@dimen/_5sdp"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                app:layout_constraintBottom_toTopOf="@id/txtExpFresh"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textLayoutBio"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:smsp_hint="@string/qualification"
+                                app:smsp_hintColor="@color/blue"
+                                app:smsp_isOutlined="false"
+                                app:smsp_isSearchable="true"
+                                app:smsp_multilineError="true"
+                                app:smsp_outlinedBoxColor="@color/black"
+                                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                                app:smsp_outlinedHintPadding="4dp"
+                                app:smsp_outlinedHintStartX="10dp"
+                                app:smsp_outlinedStrokeWidth="1dp"
+                                app:smsp_searchHeaderTextColor="#ffff"
+                                app:smsp_searchHintColor="@color/search_hint_color"
+                                app:smsp_searchTextColor="@color/search_text_color" />
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txtExpFresh"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:text="@string/are_you_experienced_or_fresher"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_12sdp"
+                                app:layout_constraintBottom_toTopOf="@id/tbFreshExpJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/spQualificationJ" />
+
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tbFreshExpJ"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:background="@drawable/tab_bg"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/btnFresher"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/txtExpFresh"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:tabBackground="@drawable/fresh_exp_bg"
+                                app:tabIndicatorColor="@color/transparent"
+                                app:tabIndicatorHeight="0dp"
+                                app:tabPadding="@dimen/_2sdp"
+                                app:tabSelectedTextAppearance="@color/white"
+                                app:tabSelectedTextColor="@color/white"
+                                app:tabTextAppearance="@style/TextAppearance.Material3.TitleSmall"
+                                app:tabTextColor="@color/black">
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:elevation="0dp"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:text="@string/fresher"
+                                    app:rippleColor="#370960A2" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:text="@string/experienced"
+                                    app:rippleColor="#370960A2" />
+
+                            </com.google.android.material.tabs.TabLayout>
+
 
                             <!--<androidx.constraintlayout.widget.Group
-                                android:id="@+id/jsFreshExpGrp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:visibility="visible"
-                                app:constraint_referenced_ids="btnFresher,btnExperienced" />-->
+                            android:id="@+id/jsAboutGrp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="spQualificationJ,scrollView,textLayoutBio" />-->
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/exLayout2"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:id="@+id/jsExperienceGrp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/jsExpGrpTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/current_position_details"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                android:fontFamily="@font/glitten_regular"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_18sdp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <View
+                                android:id="@+id/titleDivider2"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/jsExpGrpTitle" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/textLayoutCompanyName"
@@ -378,7 +415,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider2"
                                 app:layout_constraintVertical_chainStyle="packed"
                                 app:placeholderText="Microsoft corporation"
                                 app:startIconDrawable="@drawable/ic_company"
@@ -403,7 +440,7 @@
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
-                                app:smsp_hint="@string/job_location"
+                                app:smsp_hint="@string/designation"
                                 app:smsp_hintColor="@color/blue"
                                 app:smsp_isOutlined="false"
                                 app:smsp_isSearchable="true"
@@ -447,318 +484,362 @@
                                 android:layout_height="wrap_content"
                                 android:visibility="gone"
                                 app:constraint_referenced_ids="textLayoutCompanyName,spDesignationJ,spJobLocationJ" />-->
+
+                            <!--                        <androidx.constraintlayout.widget.ConstraintLayout
+                                                        android:id="@+id/exLayout2"
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="0dp"
+                                                        android:visibility="gone"
+                                                        app:layout_constraintBottom_toBottomOf="parent"
+                                                        app:layout_constraintEnd_toEndOf="parent"
+                                                        app:layout_constraintStart_toStartOf="parent"
+                                                        app:layout_constraintTop_toTopOf="parent">-->
+
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/jsPreferJobGrp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/spPrefJobTitleJ"
-                            style="@style/spinnerStyle"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintBottom_toTopOf="@+id/spPrefCityJ"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed"
-                            app:smsp_hint="@string/job_title"
-                            app:smsp_hintColor="@color/blue"
-                            app:smsp_isOutlined="false"
-                            app:smsp_isSearchable="true"
-                            app:smsp_multilineError="true"
-                            app:smsp_outlinedBoxColor="@color/black"
-                            app:smsp_outlinedBoxRadius="@dimen/_4sdp"
-                            app:smsp_outlinedHintPadding="4dp"
-                            app:smsp_outlinedHintStartX="10dp"
-                            app:smsp_outlinedStrokeWidth="1dp"
-                            app:smsp_searchHeaderTextColor="#ffff"
-                            app:smsp_searchHintColor="@color/search_hint_color"
-                            app:smsp_searchTextColor="@color/search_text_color" />
-
-
-                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                            android:id="@+id/spPrefCityJ"
-                            style="@style/spinnerStyle"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/spPrefJobTitleJ"
-                            app:smsp_hint="@string/designation"
-                            app:smsp_hintColor="@color/blue"
-                            app:smsp_isOutlined="false"
-                            app:smsp_isSearchable="true"
-                            app:smsp_multilineError="true"
-                            app:smsp_outlinedBoxColor="@color/black"
-                            app:smsp_outlinedBoxRadius="@dimen/_4sdp"
-                            app:smsp_outlinedHintPadding="4dp"
-                            app:smsp_outlinedHintStartX="10dp"
-                            app:smsp_outlinedStrokeWidth="1dp"
-                            app:smsp_searchHeaderTextColor="#ffff"
-                            app:smsp_searchHintColor="@color/search_hint_color"
-                            app:smsp_searchTextColor="@color/search_text_color" />
-
-                        <RadioGroup
-                            android:id="@+id/radioGrpWorkingMode"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:background="@drawable/border_radio_grp"
-                            android:orientation="vertical"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:paddingBottom="@dimen/_5sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/spPrefCityJ">
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnOnsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
-                                android:text="On-Site"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_13sdp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnRemote"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
-                                android:text="Remote"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_13sdp" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnHybrid"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
-                                android:text="Hybrid"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_13sdp" />
-                        </RadioGroup>
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/textWorkingModeJ"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:text="Working Mode"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/blue"
-                            android:textSize="@dimen/_9sdp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
-                            app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingMode"
-                            app:layout_constraintHorizontal_bias="0.10"
-                            app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingMode"
-                            app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingMode" />
-
-                        <!--<androidx.constraintlayout.widget.Group
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/jsPreferJobGrp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:constraint_referenced_ids="spPrefJobTitleJ,spPrefCityJ,radioGrpWorkingMode,textWorkingModeJ" />-->
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/jsResumeGrp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:id="@+id/layoutCV"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-                            <!--                    upload CV-->
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/textUploadCV"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                            android:layout_height="match_parent">
 
-                                android:background="#190960A2"
-                                android:text="Upload CV"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/jsPrefGrpTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/your_job_preference"
                                 android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                android:fontFamily="@font/glitten_regular"
                                 android:textColor="@color/blue"
-                                android:textSize="30sp"
-                                android:textStyle="bold" />
+                                android:textSize="@dimen/_18sdp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:orientation="horizontal">
+                            <View
+                                android:id="@+id/titleDivider3"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/jsPrefGrpTitle" />
 
-                                <ImageView
-                                    android:id="@+id/btnSelectPdf"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/uploadfile"
-                                    app:tint="@color/blue" />
+                            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                                android:id="@+id/spPrefJobTitleJ"
+                                style="@style/spinnerStyle"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                app:layout_constraintBottom_toTopOf="@+id/spPrefCityJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider3"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:smsp_hint="@string/job_title"
+                                app:smsp_hintColor="@color/blue"
+                                app:smsp_isOutlined="false"
+                                app:smsp_isSearchable="true"
+                                app:smsp_multilineError="true"
+                                app:smsp_outlinedBoxColor="@color/black"
+                                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                                app:smsp_outlinedHintPadding="4dp"
+                                app:smsp_outlinedHintStartX="10dp"
+                                app:smsp_outlinedStrokeWidth="1dp"
+                                app:smsp_searchHeaderTextColor="#ffff"
+                                app:smsp_searchHintColor="@color/search_hint_color"
+                                app:smsp_searchTextColor="@color/search_text_color" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
 
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:id="@+id/textUploadFile"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="15dp"
-
-                                        android:text="Choose File"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:id="@+id/textUploadSize"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="15dp"
-
-                                        android:text="Add Upto 15 MB"
-                                        android:textColor="@color/grey"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
+                            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                                android:id="@+id/spPrefCityJ"
+                                style="@style/spinnerStyle"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                app:layout_constraintBottom_toTopOf="@+id/textWorkingModeJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/spPrefJobTitleJ"
+                                app:smsp_hint="@string/prefer_city"
+                                app:smsp_hintColor="@color/blue"
+                                app:smsp_isOutlined="false"
+                                app:smsp_isSearchable="true"
+                                app:smsp_multilineError="true"
+                                app:smsp_outlinedBoxColor="@color/black"
+                                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                                app:smsp_outlinedHintPadding="4dp"
+                                app:smsp_outlinedHintStartX="10dp"
+                                app:smsp_outlinedStrokeWidth="1dp"
+                                app:smsp_searchHeaderTextColor="#ffff"
+                                app:smsp_searchHintColor="@color/search_hint_color"
+                                app:smsp_searchTextColor="@color/search_text_color" />
 
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/textPdfName"
+                                android:id="@+id/textWorkingModeJ"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:text="@string/select_your_prefer_working_mode"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_25sdp"
+                                app:layout_constraintBottom_toTopOf="@id/tbWorkingModeJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.10"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/spPrefCityJ" />
+
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tbWorkingModeJ"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_15sdp"
+                                android:background="@drawable/tab_bg"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textWorkingModeJ"
+                                app:tabBackground="@drawable/fresh_exp_bg"
+                                app:tabIndicatorColor="@color/transparent"
+                                app:tabIndicatorHeight="0dp"
+                                app:tabPadding="@dimen/_2sdp"
+                                app:tabSelectedTextAppearance="@color/white"
+                                app:tabSelectedTextColor="@color/white"
+                                app:tabTextAppearance="@style/TextAppearance.Material3.BodySmall"
+                                app:tabTextColor="@color/black">
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:elevation="0dp"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:text="@string/on_site"
+                                    app:rippleColor="#370960A2" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:text="@string/remote"
+                                    app:rippleColor="#370960A2" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppinsregular"
+                                    android:text="@string/hybrid"
+                                    app:rippleColor="#370960A2" />
+
+                            </com.google.android.material.tabs.TabLayout>
+
+
+                            <!--<androidx.constraintlayout.widget.Group
+                                android:id="@+id/jsPreferJobGrp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                app:constraint_referenced_ids="spPrefJobTitleJ,spPrefCityJ,radioGrpWorkingMode,textWorkingModeJ" />-->
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/jsResumeGrp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/jsResumeGrpTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/resume"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                android:fontFamily="@font/glitten_regular"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_18sdp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <View
+                                android:id="@+id/titleDivider4"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/jsResumeGrpTitle" />
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layoutCV"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="25dp"
-                                android:text="No File Chosen"
-                                android:textColor="@color/black"
-                                android:textStyle="bold" />
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:padding="@dimen/_10sdp"
+                                android:background="@drawable/tab_bg"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider4"
+                                app:layout_constraintVertical_bias="0.0">
 
-                            <ProgressBar
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/btnSelectPdf"
+                                    android:layout_width="@dimen/_50sdp"
+                                    android:layout_height="@dimen/_50sdp"
+                                    android:src="@drawable/uploadfile"
+                                    app:tint="@color/blue"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textPdfName"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:text="@string/choose_pdf_file"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    android:layout_marginStart="15dp"
+                                    app:layout_constraintTop_toTopOf="@id/btnSelectPdf"
+                                    app:layout_constraintBottom_toBottomOf="@id/btnSelectPdf"
+                                    app:layout_constraintStart_toEndOf="@id/btnSelectPdf"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                            <!--<ProgressBar
                                 android:id="@+id/uploadProgressBar"
                                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:progressBackgroundTint="#971B5AB1"
                                 android:progressTint="@color/blue"
-                                android:visibility="gone" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/uploadBtn"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="@dimen/_45sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginEnd="@dimen/_45sdp"
-                                android:backgroundTint="@color/blue"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:text="Upload"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_16sdp"
-                                android:textStyle="bold"
                                 android:visibility="visible"
-                                app:cornerRadius="@dimen/_30sdp"
-                                app:rippleColor="@color/glass_color" />
-                        </LinearLayout>
+                                app:layout_constraintTop_toBottomOf="@id/textPdfName"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>-->
 
-                        <!--<androidx.constraintlayout.widget.Group
-                        android:id="@+id/jsResumeGrp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        app:constraint_referenced_ids="layoutCV" />-->
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/profileImgLayoutJ"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/profileImgJ"
-                            android:layout_width="@dimen/_200sdp"
-                            android:layout_height="@dimen/_200sdp"
-                            android:elevation="@dimen/_6sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:scaleType="centerInside"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.51"
-                            app:shapeAppearanceOverlay="@style/circle"
-                            app:srcCompat="@drawable/profile_default_image"
-                            app:strokeColor="@color/white"
-                            app:strokeWidth="@dimen/_5sdp" />
-
-                        <LinearLayout
-                            android:id="@+id/linearLayoutJ"
-                            android:layout_width="@dimen/_35sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:background="@drawable/view_back"
-                            android:elevation="@dimen/_6sdp"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/profileImgJ"
-                            app:layout_constraintEnd_toEndOf="@+id/profileImgJ"
-                            app:layout_constraintHorizontal_bias="0.836"
-                            app:layout_constraintStart_toStartOf="@+id/profileImgJ"
-                            app:layout_constraintTop_toTopOf="@+id/profileImgJ"
-                            app:layout_constraintVertical_bias="0.863">
-
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/addProfileImgJ"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                app:shapeAppearanceOverlay="@style/circle"
-                                app:srcCompat="@drawable/add_circle" />
-                        </LinearLayout>
-
-                        <!--<androidx.constraintlayout.widget.Group
-                            android:id="@+id/profilImgGrp"
+                            <!--<androidx.constraintlayout.widget.Group
+                            android:id="@+id/jsResumeGrp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="visible"
-                            app:constraint_referenced_ids="profileImg,linearLayout" />-->
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:visibility="gone"
+                            app:constraint_referenced_ids="layoutCV" />-->
 
-                </ViewFlipper>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/profileImgLayoutJ"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/jsProfileGrpTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/profile_image"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                android:fontFamily="@font/glitten_regular"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_18sdp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <View
+                                android:id="@+id/titleDivider5"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/blue"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/jsProfileGrpTitle" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/profileImgJ"
+                                android:layout_width="@dimen/_200sdp"
+                                android:layout_height="@dimen/_200sdp"
+                                android:elevation="@dimen/_6sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:scaleType="centerInside"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider5"
+                                app:layout_constraintVertical_bias="0.51"
+                                app:shapeAppearanceOverlay="@style/circle"
+                                app:srcCompat="@drawable/profile_default_image"
+                                app:strokeColor="@color/white"
+                                app:strokeWidth="@dimen/_5sdp" />
+
+                            <LinearLayout
+                                android:id="@+id/linearLayoutJ"
+                                android:layout_width="@dimen/_35sdp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/view_back"
+                                android:elevation="@dimen/_6sdp"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="@+id/profileImgJ"
+                                app:layout_constraintEnd_toEndOf="@+id/profileImgJ"
+                                app:layout_constraintHorizontal_bias="0.836"
+                                app:layout_constraintStart_toStartOf="@+id/profileImgJ"
+                                app:layout_constraintTop_toTopOf="@+id/profileImgJ"
+                                app:layout_constraintVertical_bias="0.863">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/addProfileImgJ"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    app:shapeAppearanceOverlay="@style/circle"
+                                    app:srcCompat="@drawable/add_circle" />
+                            </LinearLayout>
+
+                            <!--<androidx.constraintlayout.widget.Group
+                                android:id="@+id/profilImgGrp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                app:constraint_referenced_ids="profileImg,linearLayout" />-->
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </ViewFlipper>
+                </ScrollView>
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -766,15 +847,15 @@
                 android:id="@+id/inputLayoutRecruiter"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/bottomBtnLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ViewFlipper
-                    android:id="@+id/rViewFlipper"
+                <ScrollView
+                    android:id="@+id/rScrollView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -782,16 +863,99 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+                    <ViewFlipper
+                    android:id="@+id/rViewFlipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/rAboutGrp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/rAboutGrpTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tell_about_your_self"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/glitten_regular"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_18sdp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <View
+                            android:id="@+id/titleDivider6"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/blue"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rAboutGrpTitle" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textLayoutBioR"
+                            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:gravity="center"
+                            android:hint="@string/bio"
+                            android:paddingStart="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingEnd="0dp"
+                            android:paddingBottom="0dp"
+
+                            app:boxBackgroundColor="#FFFFFF"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                            app:boxStrokeColor="@color/blue"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="2000"
+                            app:endIconCheckable="true"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/gray"
+                            app:hintTextColor="@color/blue"
+                            app:layout_constraintBottom_toTopOf="@+id/spQualificationR"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDivider6"
+                            app:layout_constraintVertical_bias="0.0"
+                            app:layout_constraintVertical_chainStyle="packed"
+                            app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
+                            app:startIconDrawable="@drawable/ic_biography"
+                            app:startIconTint="@color/blue">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/bioR"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="textMultiLine"
+                                android:lines="4"
+                                android:maxEms="2000"
+                                android:maxLines="4"
+                                android:padding="@dimen/_10sdp"
+                                android:textSize="@dimen/_13sdp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/spQualificationR"
                             style="@style/spinnerStyle"
                             android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintBottom_toTopOf="@id/scrollViewR"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -811,76 +975,8 @@
                             app:smsp_searchHintColor="@color/search_hint_color"
                             app:smsp_searchTextColor="@color/search_text_color" />
 
-                        <ScrollView
-                            android:id="@+id/scrollViewR"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_90sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:background="#22004A69"
-                            android:fadeScrollbars="false"
-                            android:paddingVertical="@dimen/_10sdp"
-                            android:scrollbars="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/spQualificationR"
-                            app:layout_constraintVertical_bias="0.0">
-
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chipGroupR"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fadeScrollbars="false"
-                                android:scrollbars="horizontal" />
-                        </ScrollView>
 
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textLayoutBioR"
-                            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_5sdp"
-                            android:gravity="center"
-                            android:hint="Biography"
-                            android:paddingStart="0dp"
-                            android:paddingTop="0dp"
-                            android:paddingEnd="0dp"
-                            android:paddingBottom="0dp"
-                            app:boxBackgroundColor="#FFFFFF"
-                            app:boxBackgroundMode="outline"
-                            app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                            app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                            app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                            app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                            app:boxStrokeColor="@color/blue"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="2000"
-                            app:endIconCheckable="true"
-                            app:endIconMode="clear_text"
-                            app:endIconTint="@color/gray"
-                            app:hintTextColor="@color/blue"
-                            app:layout_constraintBottom_toTopOf="@+id/spQualificationR"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed"
-                            app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
-                            app:startIconDrawable="@drawable/ic_biography"
-                            app:startIconTint="@color/blue">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/bioR"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:inputType="textMultiLine"
-                                android:lines="4"
-                                android:maxEms="2000"
-                                android:maxLines="4"
-                                android:padding="@dimen/_10sdp"
-                                android:textSize="@dimen/_13sdp" />
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <!--<androidx.constraintlayout.widget.Group
                             android:id="@+id/rAboutGrp"
@@ -895,6 +991,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/rCurrPosTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_position"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_18sdp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <View
+                            android:id="@+id/titleDivider7"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_2sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:background="@color/blue"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rCurrPosTitle" />
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textLayoutCompanyNameR"
                             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
@@ -903,6 +1025,9 @@
                             android:gravity="center"
                             android:hint="@string/company_name"
                             android:paddingTop="0dp"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:layout_marginTop="@dimen/_10sdp"
                             app:boxBackgroundColor="#FFFFFF"
                             app:boxBackgroundMode="outline"
                             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -917,11 +1042,11 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDivider7"
                             app:layout_constraintVertical_chainStyle="packed"
                             app:placeholderText="Ahmedabad"
                             app:startIconDrawable="@drawable/ic_company"
-                            app:startIconTint="@color/ed_theme_color">
+                            app:startIconTint="@color/blue">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/companyNameR"
@@ -935,7 +1060,8 @@
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/spDesignationR"
                             style="@style/spinnerStyle"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
+
+                            android:layout_marginVertical="@dimen/_10sdp"
                             android:paddingHorizontal="@dimen/_5sdp"
                             app:hintTextColor="@color/ed_theme_color"
                             app:layout_constraintBottom_toTopOf="@+id/spJobLocationR"
@@ -960,9 +1086,8 @@
                         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/spJobLocationR"
                             style="@style/spinnerStyle"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
                             android:paddingHorizontal="@dimen/_5sdp"
-                            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingModeR"
+                            app:layout_constraintBottom_toTopOf="@+id/textWorkingModeR"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -981,73 +1106,67 @@
                             app:smsp_searchHintColor="@color/search_hint_color"
                             app:smsp_searchTextColor="@color/search_text_color" />
 
-                        <RadioGroup
-                            android:id="@+id/radioGrpWorkingModeR"
-                            android:layout_width="match_parent"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textWorkingModeR"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_12sdp"
-                            android:background="@drawable/border_radio_grp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:orientation="vertical"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:paddingBottom="@dimen/_5sdp"
+                            android:background="@color/white"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:text="@string/select_your_prefer_working_mode"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_25sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tbWorkingModeR"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.10"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/spJobLocationR" />
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tbWorkingModeR"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_15sdp"
+                            android:background="@drawable/tab_bg"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/spJobLocationR">
+                            app:layout_constraintTop_toBottomOf="@+id/textWorkingModeR"
+                            app:tabBackground="@drawable/fresh_exp_bg"
+                            app:tabIndicatorColor="@color/transparent"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabPadding="@dimen/_2sdp"
+                            app:tabSelectedTextAppearance="@color/white"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextAppearance="@style/TextAppearance.Material3.BodySmall"
+                            app:tabTextColor="@color/black">
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnOnsiteR"
+                            <com.google.android.material.tabs.TabItem
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
+                                android:elevation="0dp"
                                 android:fontFamily="@font/poppinsregular"
-                                android:text="On-Site"
-                                android:textColor="@color/black" />
+                                android:text="@string/on_site"
+                                app:rippleColor="#370960A2" />
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnRemoteR"
+                            <com.google.android.material.tabs.TabItem
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
                                 android:fontFamily="@font/poppinsregular"
-                                android:text="Remote"
-                                android:textColor="@color/black" />
+                                android:text="@string/remote"
+                                app:rippleColor="#370960A2" />
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/radioBtnHybridR"
+                            <com.google.android.material.tabs.TabItem
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/blue"
                                 android:fontFamily="@font/poppinsregular"
-                                android:text="Hybrid"
-                                android:textColor="@color/black" />
-                        </RadioGroup>
+                                android:text="@string/hybrid"
+                                app:rippleColor="#370960A2" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/textWorkingModeR"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:fontFamily="@font/poppinsregular"
-                            android:text="Working Mode"
-                            android:textAlignment="textStart"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="@color/ed_theme_color"
-                            android:textStyle="bold"
-                            app:fontFamily="serif"
-                            app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingModeR"
-                            app:layout_constraintEnd_toEndOf="@+id/radioGrpWorkingModeR"
-                            app:layout_constraintHorizontal_bias="0.09"
-                            app:layout_constraintStart_toStartOf="@+id/radioGrpWorkingModeR"
-                            app:layout_constraintTop_toTopOf="@+id/radioGrpWorkingModeR" />
+                        </com.google.android.material.tabs.TabLayout>
 
                         <!--<androidx.constraintlayout.widget.Group
                             android:id="@+id/rCurrPosGrp"
@@ -1067,6 +1186,34 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/rProfileGrpTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/profile_image"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_18sdp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/glitten_regular"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <View
+                            android:id="@+id/titleDivider8"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/blue"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rProfileGrpTitle" />
+
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/profileImgR"
@@ -1119,46 +1266,92 @@
 
                 </ViewFlipper>
 
+                </ScrollView>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottomBtnLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/btnBack"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.button.MaterialButton
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:backgroundTint="@color/blue"
+                    android:contentDescription="@string/app_name"
+                    android:elevation="7dp"
+                    android:src="@drawable/ic_right"
+                    android:visibility="gone"
+                    app:fabCustomSize="65dp"
+                    style="@style/FloatingActionButtonStyle"
+                    app:borderWidth="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/white" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@color/white"
+                    android:backgroundTint="@color/blue"
+                    style="@style/FloatingActionButtonStyle"
+                    android:elevation="7dp"
+                    android:src="@drawable/ic_left"
+                    android:visibility="gone"
+                    app:fabCustomSize="65dp"
+                    app:borderWidth="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:tint="@color/white" />
+
+<!--                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSubmit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="70dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/btn_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:padding="15dp"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textAllCaps="false"
-                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:visibility="visible"
-                    app:backgroundTint="@null"
-                    app:cornerRadius="30dp"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/_35sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:contentDescription="@string/app_name"
+                    android:elevation="7dp"
+                    android:src="@drawable/ic_check"
+                    android:visibility="visible"
+                    app:fabCustomSize="65dp"
+                    style="@style/FloatingActionButtonStyle"
+                    app:borderWidth="0dp"
+                    android:layout_margin="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -1181,35 +1374,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btnNext"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_margin="@dimen/_5sdp"
-                android:backgroundTint="@color/blue"
-                android:contentDescription="@string/app_name"
-                android:elevation="7dp"
-                android:src="@drawable/ic_right"
-                android:visibility="gone"
-                app:fabCustomSize="65dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:tint="@color/white" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btnBack"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_margin="@dimen/_5sdp"
-                android:background="@color/white"
-                android:backgroundTint="@color/blue"
-                android:elevation="7dp"
-                android:src="@drawable/ic_left"
-                android:visibility="gone"
-                app:fabCustomSize="65dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:tint="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

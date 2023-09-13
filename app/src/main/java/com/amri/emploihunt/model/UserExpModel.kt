@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.time.Duration
 
 data class UserExpModel(
-    val data: Experience,
+    val data: ArrayList<Experience>,
     val message: String,
     val status: Int
 ):Serializable

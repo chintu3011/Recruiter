@@ -93,7 +93,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
     private var userType: Int ?= null
     private lateinit var termsConditionsAcceptance:String
 
-    var cityList: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
 
     private lateinit var decorView: View
     private lateinit var copyCredential : PhoneAuthCredential
@@ -114,10 +114,19 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             PlayIntegrityAppCheckProviderFactory.getInstance(),
         )
         binding.cpp.registerCarrierNumberEditText(binding.phoneNo)
-        getAllCity()
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
-        binding.city.setAdapter(adapter)
+        val cityList:ArrayList<String> = arrayListOf()
+        getAllCity(cityList){
+            if(cityList.isNotEmpty()){
+                val adapter: ArrayAdapter<String> =
+                    ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, cityList)
+                binding.city.setAdapter(adapter)
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
+            }
+        }
+
+
 
     }
 
@@ -257,12 +266,34 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         if (!correct) return
         else{
 
+            val deniedPermissions:MutableList<String> = isGrantedPermission()
+
             if (!isGPSEnabled(this)) {
                 turnGPSOn()
-            } else if (isGrantedPermission()) {
+            } else if (deniedPermissions.isEmpty()) {
                 getLatLng()
             } else {
-                requestPermissions()
+                requestPermissions(deniedPermissions){
+                    if(it) {
+                        getLatLng()
+                    }
+                    else{
+                        val snackbar = Snackbar
+                            .make(
+                                binding.root,
+                                "Sorry! you aren't given required permissions.",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .setAction(
+                                "Grant Permissions"
+                            )
+                            {
+                                showSettingsDialog()
+                            }
+
+                        snackbar.show()
+                    }
+                }
             }
         }
     }
@@ -396,7 +427,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         finish()
     }
     // Permission Code Started
-    private fun requestPermissions() {
+/*    private fun requestPermissions() {
         Dexter.withContext(this).withPermissions(
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
         ).withListener(object : MultiplePermissionsListener {
@@ -419,17 +450,17 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 Log.e("#####", "onPermissionRationaleShouldBeShown ${permissions.toString()}")
             }
         }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
-    }
+    }*/
 
-    private fun isGrantedPermission(): Boolean {
+/*    private fun isGrantedPermission(): Boolean {
         val isGranted1 =
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         val isGranted2 =
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
         return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
-    }
+    }*/
 
-    private fun showSettingsDialog() {
+/*    private fun showSettingsDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle(resources.getString(R.string.permission_title))
         builder.setMessage(resources.getString(R.string.permission_message))
@@ -444,7 +475,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             dialog.cancel()
         }
         builder.show()
-    }
+    }*/
     // Permission Code Ended
 
     private fun getLatLng() {
@@ -482,7 +513,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 intent.putExtra("phoneNo",phoneNo)
                 intent.putExtra("email",email)
                 intent.putExtra("city",city)
-                intent.putExtra("userType",userType)
+                intent.putExtra("role",userType)
                 intent.putExtra("termsConditions",termsConditionsAcceptance)
                 intent.putExtra("storedVerificationId",storedVerificationId)
                 startActivity(intent)
@@ -684,10 +715,32 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         if (requestCode == 123) {
             if (resultCode == RESULT_OK) {
                 Log.e("#####", "GPS active, ask permission, get Lat-Lng & pass to API")
-                if (isGrantedPermission()) {
+
+                val deniedPermissions:MutableList<String> = isGrantedPermission()
+                if (deniedPermissions.isEmpty()) {
                     getLatLng()
                 } else {
-                    requestPermissions()
+                    requestPermissions(deniedPermissions){
+                        if(it) {
+                            getLatLng()
+                        }
+                        else{
+                            val snackbar = Snackbar
+                                .make(
+                                    binding.root,
+                                    "Sorry! you are not register, Please register first.",
+                                    Snackbar.LENGTH_LONG
+                                )
+                                .setAction(
+                                    "REGISTER"
+                                )
+                                {
+                                    showSettingsDialog()
+                                }
+
+                            snackbar.show()
+                        }
+                    }
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 makeToast(resources.getString(R.string.plz_enable_gps),0)
@@ -695,7 +748,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         }
     }
 
-    fun getAllCity(){
+    /*fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
             showProgressDialog("Please wait....")
@@ -733,5 +786,5 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             showNoInternetBottomSheet(this,this)
         }
 
-    }
+    }*/
 }

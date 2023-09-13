@@ -17,17 +17,21 @@ import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityInformationBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
+import com.amri.emploihunt.model.CommonMessageModel
 import com.amri.emploihunt.model.Experience
-import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
+import com.amri.emploihunt.settings.ProfileActivity
+import com.amri.emploihunt.store.ExperienceDataStore
+import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.DEVICE_ID
@@ -55,17 +59,30 @@ import com.androidnetworking.BuildConfig
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.io.File
 import java.util.Stack
 
 
+@AndroidEntryPoint
 class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemSelectedListener{
 
 
+    companion object{
+        const val TAG = "InformationActivity"
+    }
 
     private lateinit var binding: ActivityInformationBinding
     private lateinit var prefManager: SharedPreferences
@@ -112,8 +129,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     lateinit  var  qualifications:kotlin.Array<String>
     lateinit  var  jobs:kotlin.Array<String>
-    var cityList: ArrayList<String> = ArrayList()
-    var prefLocations: ArrayList<String> = ArrayList()
+    /*var cityList: ArrayList<String> = ArrayList()*/
+//    var prefLocations: ArrayList<String> = ArrayList()
 
 
     private var selectedQualification = String()
@@ -129,6 +146,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private var isSkip: Boolean = false
     private lateinit var resumePdf: File
+    private lateinit var profileImg: File
 
 
     /*private lateinit var nextStack:Stack<View>
@@ -149,15 +167,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         /*nextStack = Stack()
         backStack = Stack()*/
         checkStack = Stack()
-        /*jGroupArray = arrayListOf(binding.jsAboutGrp,binding.jsFreshExpGrp,binding.jsCurPosGrp,binding.jsPreferJobGrp,binding.jsResumeGrp,binding.profilImgGrp)*/
-
-        /*rGroupArray = arrayListOf(binding.rAboutGrp,binding.rCurrPosGrp,binding.profilImgGrp)*/
-
-        binding.check1.visibility = VISIBLE
-        binding.check1.setBackgroundResource(R.color.blue)
-        binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
-
-        checkStack.push(binding.check1)
 
         val inn: Animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
         val out: Animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right)
@@ -171,13 +180,16 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         binding.rViewFlipper.inAnimation = inn
         binding.rViewFlipper.outAnimation = out
 
-        setOnClickListener()
+
         userType = intent.getIntExtra("role",0)
         setLayout(userType!!)
 
-        getAllCity()
+        setOnClickListener()
+        setTabSelectedListener()
+
+        /*getAllCity()
         cityList.add("City")
-        prefLocations.add("City")
+        prefLocations.add("City")*/
         /*setAdapters()*/
 
 
@@ -220,50 +232,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         when (userType) {
             RECRUITER -> {
                 binding.inputLayoutRecruiter.visibility = VISIBLE
-                /*binding.inputLayoutJobSeeker.visibility = GONE*/
-                layoutID = 0
-                binding.rAboutGrp.visibility = VISIBLE
-                grpPointer++
-                /*binding.recruiterLayout2.visibility = GONE*/
-
-                binding.btnNext.visibility = VISIBLE
-                binding.btnBack.visibility = GONE
-
-                binding.check2.visibility = VISIBLE
-                binding.check2.setBackgroundResource(R.color.blue)
-
-
-                binding.check3.visibility = VISIBLE
-                binding.check4.visibility = VISIBLE
-
-           /*     binding.check3.setBackgroundResource(R.color.check_def_color)
-                binding.check4.visibility = GONE
-
-                binding.check4.setBackgroundResource(R.color.check_def_color)*/
+                changeLayout(false)
             }
             JOB_SEEKER -> {
                 binding.inputLayoutJobSeeker.visibility = VISIBLE
-                /*binding.inputLayoutRecruiter.visibility = GONE*/
-                layoutID = 1
-                /*binding.jsLayout1.visibility = VISIBLE
-                binding.jsSubLayout.visibility = GONE
-                binding.jsLayout2.visibility = GONE
-                binding.jsLayout3.visibility = GONE*/
-                /*jGroupArray[grpPointer].visibility = VISIBLE*/
-                grpPointer++
-                binding.btnNext.visibility = VISIBLE
-                binding.btnBack.visibility = GONE
-
-
-                binding.check2.visibility = VISIBLE
-                binding.check2.setBackgroundResource(R.color.blue)
-
-                binding.check3.visibility = VISIBLE
-                /*binding.check3.setBackgroundResource(R.color.check_def_color)*/
-                binding.check4.visibility = VISIBLE
-                /*binding.check4.setBackgroundResource(R.color.check_def_color)*/
-                binding.check5.visibility = VISIBLE
-
+                changeLayout(false)
             }
             else -> {
                 makeToast(getString(R.string.something_error),1)
@@ -279,18 +252,74 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         termsConditionsAcceptance = intent.getStringExtra("termsConditions").toString().trim()
 
     }
+    var experienced = false
+    private fun setTabSelectedListener(){
+
+
+        binding.tbWorkingModeJ.addOnTabSelectedListener(object :OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                prefWorkingMode = tab?.text.toString()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+              
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                prefWorkingMode = tab?.text.toString()
+            }
+
+        })
+        binding.tbWorkingModeR.addOnTabSelectedListener(object :OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                workingMode = tab?.text.toString()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                workingMode = tab?.text.toString()
+            }
+
+        })
+        binding.tbFreshExpJ.addOnTabSelectedListener( object : OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if(tab?.position == 0){
+                    experienced = false
+
+                }
+                else if (tab?.position == 1){
+                    experienced = true
+                }
+
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                if(tab?.position == 0){
+                    experienced = false
+                }
+                else if (tab?.position == 1){
+                    experienced = true
+                }
+            }
+
+        })
+    }
 
     private fun setOnClickListener() {
-        binding.btnSelectPdf.setOnClickListener(this)
-        binding.uploadBtn.setOnClickListener(this)
+        binding.layoutCV.setOnClickListener(this)
+       /* binding.uploadBtn.setOnClickListener(this)*/
         binding.addProfileImgJ.setOnClickListener(this)
         binding.addProfileImgR.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnNext.setOnClickListener(this)
         binding.btnSkip.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
-        binding.btnExperienced.setOnClickListener(this)
-        binding.btnFresher.setOnClickListener(this)
 
         //job Seeker cur designation
         binding.spDesignationJ.setSearchDialogGravity(Gravity.TOP)
@@ -307,20 +336,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
 
-        binding.spJobLocationJ.setSearchDialogGravity(Gravity.TOP)
-        binding.spJobLocationJ.arrowPaddingRight = 19
-        binding.spJobLocationJ.item = resources.getStringArray(R.array.indian_designations).toList()
-        binding.spJobLocationJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                binding.spJobLocationJ.isOutlined = true
-                selectedJobLocation = binding.spJobLocationJ.item[position].toString()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
-            }
-        }
-
         binding.spQualificationJ.setSearchDialogGravity(Gravity.TOP)
         binding.spQualificationJ.arrowPaddingRight = 19
         binding.spQualificationJ.item = resources.getStringArray(R.array.degree_array).toList()
@@ -328,20 +343,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 binding.spQualificationJ.isOutlined = true
                 selectedQualification = binding.spQualificationJ.item[position].toString()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
-            }
-        }
-
-        binding.spPrefCityJ.setSearchDialogGravity(Gravity.TOP)
-        binding.spPrefCityJ.arrowPaddingRight = 19
-        binding.spPrefCityJ.item = resources.getStringArray(R.array.degree_array).toList()
-        binding.spPrefCityJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                binding.spPrefCityJ.isOutlined = true
-                selectedPrefCity = binding.spPrefCityJ.item[position].toString()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -377,20 +378,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
 
-        binding.spJobLocationR.setSearchDialogGravity(Gravity.TOP)
-        binding.spJobLocationR.arrowPaddingRight = 19
-        binding.spJobLocationR.item = resources.getStringArray(R.array.degree_array).toList()
-        binding.spJobLocationR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                binding.spJobLocationR.isOutlined = true
-                selectedPrefJobTitle = binding.spJobLocationR.item[position].toString()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
-            }
-        }
-
         binding.spDesignationR.setSearchDialogGravity(Gravity.TOP)
         binding.spDesignationR.arrowPaddingRight = 19
         binding.spDesignationR.item = resources.getStringArray(R.array.indian_designations).toList()
@@ -402,6 +389,80 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
+            }
+        }
+
+
+        val cityList:ArrayList<String> = arrayListOf()
+
+        getAllCity(cityList) {
+
+            if(cityList.isNotEmpty()) {
+                binding.spJobLocationJ.setSearchDialogGravity(Gravity.TOP)
+                binding.spJobLocationJ.arrowPaddingRight = 19
+                binding.spJobLocationJ.item = cityList.toList()
+                    /*resources.getStringArray(R.array.indian_designations).toList()*/
+                binding.spJobLocationJ.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            adapterView: AdapterView<*>?,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            binding.spJobLocationJ.isOutlined = true
+                            selectedJobLocation = binding.spJobLocationJ.item[position].toString()
+                        }
+
+                        override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+                        }
+                    }
+
+                binding.spJobLocationR.setSearchDialogGravity(Gravity.TOP)
+                binding.spJobLocationR.arrowPaddingRight = 19
+                binding.spJobLocationR.item =  cityList.toList()
+                   /* resources.getStringArray(R.array.degree_array).toList()*/
+                binding.spJobLocationR.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            adapterView: AdapterView<*>?,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            binding.spJobLocationR.isOutlined = true
+                            selectedPrefCity = binding.spJobLocationR.item[position].toString()
+                        }
+
+                        override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+                        }
+                    }
+
+                binding.spPrefCityJ.setSearchDialogGravity(Gravity.TOP)
+                binding.spPrefCityJ.arrowPaddingRight = 19
+                binding.spPrefCityJ.item = cityList.toList()
+                    /*resources.getStringArray(R.array.degree_array).toList()*/
+                binding.spPrefCityJ.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            adapterView: AdapterView<*>?,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            binding.spPrefCityJ.isOutlined = true
+                            selectedPrefCity = binding.spPrefCityJ.item[position].toString()
+                        }
+
+                        override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+                        }
+                    }
+            }
+            else{
+                makeToast(getString(R.string.something_error),0)
             }
         }
         /*binding.JobLocationSpinnerR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -482,185 +543,88 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
 
     }
-    var profilLayoutStatusNext = false
+
     var profilLayoutStatusBack = false
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.uploadBtn -> {
-                /*uploadProgressBar.visibility = VISIBLE
-                uploadProgressBar.progress = 70
-                val mStorage = FirebaseStorage.getInstance().getReference("pdfs")
-                val pdfRef = mStorage.child(pdfName)
-                pdfUri?.let {
-                    pdfRef.putFile(it).addOnSuccessListener {
-                        pdfRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                            uploadProgressBar.progress = 100
-                            resume = downloadUrl.toString()
+            R.id.layoutCV -> {
+                selectpdf()
+            }
+            R.id.addProfileImgJ ->{
+
+                val deniedPermission:MutableList<String> = isGrantedPermission()
+                if(deniedPermission.isEmpty()) {
+                    selectImg()
+                }
+                else{
+                    requestPermissions(deniedPermission){
+                        if(it){
+                            selectImg()
+                        }
+                        else{
+                            val snackbar = Snackbar
+                                .make(
+                                    binding.root,
+                                    "Sorry! you aren't given required permissions.",
+                                    Snackbar.LENGTH_LONG
+                                )
+                                .setAction(
+                                    "Grant Permissions"
+                                )
+                                {
+                                    showSettingsDialog()
+                                }
+
+                            snackbar.show()
                         }
                     }
-                }*/
-                binding.uploadBtn.visibility = GONE
-                binding.btnNext.visibility = VISIBLE
-
-
-                /*binding.btnSubmit.visibility = VISIBLE*/
+                }
             }
-            R.id.btnSelectPdf -> {
-                  selectpdf()
+            R.id.addProfileImgR ->{
+                selectImg()
             }
-
-
             R.id.btnSubmit -> {
                 if(userType == RECRUITER) storeInfoR()
                 if (userType == JOB_SEEKER) storeInfoJ()
             }
-            R.id.btnExperienced -> {
-                binding.exLayout2.visibility = VISIBLE
-                binding.exLayout1.visibility = GONE
-                binding.btnNext.visibility = VISIBLE
-                binding.btnBack.visibility = VISIBLE
-            }
-            R.id.btnFresher -> {
-                if(userType == JOB_SEEKER) {
-                    binding.jsViewFlipper.showNext()
-                    setLayoutJ()
-                }
-                /*
-                else{
-                    binding.rViewFlipper.showNext()
-                    binding.btnBack.visibility = VISIBLE
-                    binding.btnNext.visibility = VISIBLE
-                }*/
-            }
             R.id.btnNext -> {
-               /* makeToast(grpPointer.toString(),0)*/
-                /*btnPointer += 1*/
-                /*changeLayout(layoutID,btnPointer)*/
-                /*
-                if(userType == JOB_SEEKER){
-                    if(grpPointer < jGroupArray.size) {
-                        binding.btnNext.visibility = VISIBLE
-                        binding.btnBack.visibility = VISIBLE
-                        jGroupArray[grpPointer - 1].visibility = GONE
-                        jGroupArray[grpPointer++].visibility = VISIBLE
-                        if(grpPointer == jGroupArray.size-1){
-                            binding.btnNext.visibility = GONE
-                        }
-                        if(grpPointer == jGroupArray.size){
-                            binding.btnNext.visibility = GONE
-                            binding.btnBack.visibility = VISIBLE
-                            grpPointer -= 2
-                        }
-                        /*if(grpPointer == 1){
-                            binding.btnNext.visibility = GONE
-                        }*/
-                    }
-                    if(grpPointer == jGroupArray.size){
-                        binding.btnNext.visibility = GONE
-                        binding.btnBack.visibility = VISIBLE
-                        grpPointer -= 2
-                    }
-                }
-                else if (userType == RECRUITER){
-                    if(grpPointer < rGroupArray.size){
-                        binding.btnNext.visibility = VISIBLE
-                        binding.btnBack.visibility = VISIBLE
-                        rGroupArray[grpPointer-1].visibility = GONE
-                        rGroupArray[grpPointer++].visibility = VISIBLE
-                        if(grpPointer == rGroupArray.size-1){
-                            binding.btnNext.visibility = GONE
-                            grpPointer--
-                        }
-                    }
-                    else if(grpPointer == rGroupArray.size){
-                        binding.btnNext.visibility = GONE
-                        grpPointer--
-                    }
-                }
-                else{
-                    makeToast(getString(R.string.something_error),0)
-                }
-            }
-            R.id.btnBack -> {
-                makeToast(grpPointer.toString(),0)
-                /*btnPointer -= 1*/
-               /* changeLayout(layoutID,btnPointer)*/
-                if(userType == JOB_SEEKER){
-                    if(grpPointer > 0) {
-                        binding.btnNext.visibility = VISIBLE
-                        binding.btnBack.visibility = VISIBLE
-                        jGroupArray[grpPointer + 1].visibility = GONE
-                        jGroupArray[grpPointer--].visibility = VISIBLE
-                        if(grpPointer == 0){
-                            binding.btnBack.visibility = GONE
-                        }
-                    }
-                    if(grpPointer == 0){
-                        binding.btnNext.visibility = VISIBLE
-                        binding.btnBack.visibility = GONE
-                        grpPointer += 2
-                    }
-                }
-                else if (userType == RECRUITER){
-                    if(grpPointer >= 0){
-                        binding.btnNext.visibility = VISIBLE
-                        binding.btnBack.visibility = VISIBLE
-                        rGroupArray[grpPointer + 1].visibility = GONE
-                        rGroupArray[grpPointer--].visibility = VISIBLE
-                        if(grpPointer == 0){
-                            binding.btnBack.visibility = GONE
-                            grpPointer++
-                        }
-                    }
-                }
-                else{
-                    makeToast(getString(R.string.something_error),0)
-                }
-
-                 */
 
                 if(userType == JOB_SEEKER){
-                    binding.jsViewFlipper.showNext()
-
-                    setLayoutJ()
-                    /*if(binding.jsViewFlipper.currentView ==  binding.jsExperienceGrp){
-                        binding.btnBack.visibility = VISIBLE
-                        binding.btnNext.visibility = GONE
+                    if(binding.jsViewFlipper.currentView == binding.jsAboutGrp){
+                        if(!experienced){
+                            binding.jsViewFlipper.showNext()
+                            binding.jsViewFlipper.showNext()
+                            changeLayout(false)
+                        }
+                        else{
+                            binding.jsViewFlipper.showNext()
+                            changeLayout(false)
+                        }
                     }
-                    if(binding.jsViewFlipper.currentView == binding.profileImgLayoutJ){
-                        binding.btnNext.visibility = GONE
-                        binding.btnBack.visibility = VISIBLE
-                    }*/
+                    else{
+                        binding.jsViewFlipper.showNext()
+                        changeLayout(false)
+                    }
 
                 }
                 else{
                     binding.rViewFlipper.showNext()
+                    changeLayout(true)
                 }
             }
             R.id.btnBack -> {
                 if(userType == JOB_SEEKER){
                     binding.jsViewFlipper.showPrevious()
-                    setLayoutJ()
-                    /*if(binding.jsViewFlipper.currentView == binding.jsAboutGrp) {
-                        binding.btnBack.visibility = GONE
-                    }
-                    if(binding.jsViewFlipper.currentView ==  binding.jsExperienceGrp){
-                        binding.btnBack.visibility = VISIBLE
-                        binding.btnNext.visibility = GONE
-                    }
-                    if(binding.rViewFlipper.currentView ==  binding.jsResumeGrp){
-                        binding.btnNext.visibility = VISIBLE
-                    }*/
-
+                    changeLayout(true)
                 }
                 else{
                     binding.rViewFlipper.showPrevious()
+                    changeLayout(true)
                 }
             }
             R.id.btnSkip -> {
 
                 if (userType == JOB_SEEKER){
-
                     storeInfoJBySkip()
                 }
                 if(userType == RECRUITER){
@@ -670,28 +634,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
     }
-
-    private fun setLayoutJ() {
-        if(binding.jsViewFlipper.currentView == binding.jsAboutGrp){
-            binding.btnNext.visibility = VISIBLE
-            binding.btnBack.visibility = GONE
-        }
-        else if(binding.jsViewFlipper.currentView == binding.jsExperienceGrp){
-            binding.btnNext.visibility = GONE
-            binding.exLayout2.visibility = GONE
-            binding.exLayout1.visibility = VISIBLE
-            binding.btnBack.visibility = VISIBLE
-        }
-        else if(binding.jsViewFlipper.currentView == binding.jsPreferJobGrp || binding.jsViewFlipper.currentView == binding.jsResumeGrp){
-            binding.btnBack.visibility = VISIBLE
-            binding.btnNext.visibility = VISIBLE
-        }
-        else if(binding.jsViewFlipper.currentView == binding.profileImgLayoutJ){
-            binding.btnBack.visibility = VISIBLE
-            binding.btnNext.visibility = GONE
-            
-        }
-
+    private fun selectImg() {
+        val imgIntent = Intent(Intent.ACTION_GET_CONTENT)
+        imgIntent.type = "image/*"
+        imgIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(imgIntent, 22)
     }
 
     private fun selectpdf() {
@@ -732,10 +679,287 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         }
                     }
                 }
+                22 -> if (resultCode == RESULT_OK) {
+                    val photoUri = data?.data!!
+
+                    if(userType == JOB_SEEKER){
+                        profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                        Glide.with(this@InformationActivity)
+                            .load(photoUri)
+                            .apply(
+                                RequestOptions
+                                    .placeholderOf(R.drawable.profile_default_image)
+                                    .error(R.drawable.profile_default_image)
+                                    .circleCrop()
+                            )
+                            .into(binding.profileImgJ)
+                    }
+                    else{
+                        profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                        Glide.with(this@InformationActivity)
+                            .load(photoUri)
+                            .apply(
+                                RequestOptions
+                                    .placeholderOf(R.drawable.profile_default_image)
+                                    .error(R.drawable.profile_default_image)
+                                    .circleCrop()
+                            )
+                            .into(binding.profileImgR)
+                    }
+                    binding.submitBtnLayout.visibility = VISIBLE
+                    /*
+                    if (photoUri.toString().startsWith("content://")) {
+                        var myCursor: Cursor? = null
+                        try {
+                            myCursor = this.contentResolver.query(
+                                photoUri,
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                            if (myCursor != null && myCursor.moveToFirst()) {
+                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                val storageRef = Firebase.storage.reference
+                                val path = "images/userImages/$userId/profileImg"
+                                val imageRef = storageRef.child(path)
+
+                                imageRef.putFile(photoUri)
+                                    .addOnProgressListener {
+                                        *//*binding.uploadProgressLayout.visibility = VISIBLE*//*
+                                        *//*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
+                                        binding.uploadProgressBar.progress = progress*//*
+                                    }
+                                    .addOnSuccessListener {
+
+                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                            *//*binding.uploadProgressLayout.visibility = GONE*//*
+                                            profileImgUri = downloadUri.toString()
+                                            Glide.with(this@InformationActivity)
+                                                .load(profileImgUri)
+                                                .apply(
+                                                    RequestOptions
+                                                        .placeholderOf(R.drawable.profile_default_image)
+                                                        .error(R.drawable.profile_default_image)
+                                                        .circleCrop()
+                                                )
+                                                .into(binding.profileImgJ)
+                                            *//*val contentResolver: ContentResolver = contentResolver
+                                            val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
+                                            photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
+                                            profileImgDia.setImageBitmap(photoBitmap)*//*
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        *//*binding.uploadProgressLayout.visibility = GONE*//*
+                                        makeToast("Img is not stored successfully",0)
+                                        Log.e(ProfileActivity.TAG, "onActivityResult: error while storing Img $exception" )
+                                    }
+                                *//*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                                }
+                                else{
+                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
+                                }*//*
+                            }
+                        } finally {
+                            myCursor?.close()
+                        }
+                    }
+                    */
+                }
             }
         }
 
     }
+
+    private fun changeLayout(isBackPress:Boolean) {
+        when(userType) {
+
+            JOB_SEEKER -> {
+                binding.jsScrollView.scrollTo(0,0)
+                when (binding.jsViewFlipper.currentView) {
+                      binding.jsAboutGrp -> {
+                          experienced = false
+                          binding.btnNext.visibility = VISIBLE
+                          binding.btnBack.visibility = GONE
+                          binding.submitBtnLayout.visibility = GONE
+                          setChecks(binding.jsAboutGrp)
+                      }
+
+                      binding.jsExperienceGrp -> {
+                          if(isBackPress && !experienced){
+                              binding.jsViewFlipper.showPrevious()
+                              binding.submitBtnLayout.visibility = GONE
+                              changeLayout(true)
+                          }
+                          else{
+                              binding.btnNext.visibility = VISIBLE
+                              binding.btnBack.visibility = VISIBLE
+                              binding.submitBtnLayout.visibility = GONE
+                              setChecks(binding.jsExperienceGrp)
+                          }
+
+                      }
+
+                      binding.jsPreferJobGrp ->{
+                          binding.btnBack.visibility = VISIBLE
+                          binding.btnNext.visibility = VISIBLE
+                          binding.submitBtnLayout.visibility = GONE
+                          setChecks(binding.jsPreferJobGrp)
+                      }
+                      binding.jsResumeGrp-> {
+                          binding.btnBack.visibility = VISIBLE
+                          binding.btnNext.visibility = VISIBLE
+                          binding.submitBtnLayout.visibility = GONE
+                          setChecks(binding.jsResumeGrp)
+                      }
+
+                      binding.profileImgLayoutJ -> {
+                          binding.btnBack.visibility = VISIBLE
+                          binding.btnNext.visibility = GONE
+                          binding.submitBtnLayout.visibility = GONE
+                          setChecks(binding.profileImgLayoutJ)
+                      }
+
+                  }
+              }
+
+            RECRUITER ->{
+                binding.rScrollView.scrollTo(0,0)
+                when (binding.rViewFlipper.currentView) {
+                    binding.rAboutGrp -> {
+                        binding.btnNext.visibility = VISIBLE
+                        binding.btnBack.visibility = GONE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.rAboutGrp)
+                    }
+                    binding.rCurrPosGrp -> {
+                        binding.btnNext.visibility = VISIBLE
+                        binding.btnBack.visibility = VISIBLE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.rCurrPosGrp)
+                    }
+                    binding.profileImgLayoutR -> {
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = GONE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.profileImgLayoutR)
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    private fun setChecks(view: View){
+        binding.check1.visibility = VISIBLE
+        binding.check1.setBackgroundResource(R.color.blue)
+        binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+
+        when(userType){
+
+            JOB_SEEKER -> {
+                binding.check2.visibility = VISIBLE
+                binding.check3.visibility = VISIBLE
+                binding.check4.visibility = VISIBLE
+                binding.check5.visibility = VISIBLE
+
+                when (view) {
+                    binding.jsAboutGrp -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(null)
+                        binding.check3.setBackgroundResource(R.color.check_def_color)
+                        binding.check3.setImageDrawable(null)
+                        binding.check4.setBackgroundResource(R.color.check_def_color)
+                        binding.check4.setImageDrawable(null)
+                        binding.check5.setBackgroundResource(R.color.check_def_color)
+                        binding.check5.setImageDrawable(null)
+
+                    }
+                    binding.jsExperienceGrp -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(null)
+                        binding.check3.setBackgroundResource(R.color.check_def_color)
+                        binding.check3.setImageDrawable(null)
+                        binding.check4.setBackgroundResource(R.color.check_def_color)
+                        binding.check4.setImageDrawable(null)
+                        binding.check5.setBackgroundResource(R.color.check_def_color)
+                        binding.check5.setImageDrawable(null)
+                    }
+                    binding.jsPreferJobGrp -> {
+                        Log.d("____", "setChecks: $experienced")
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check3.setBackgroundResource(R.color.blue)
+                        binding.check3.setImageDrawable(null)
+                        binding.check4.setBackgroundResource(R.color.check_def_color)
+                        binding.check4.setImageDrawable(null)
+                        binding.check5.setBackgroundResource(R.color.check_def_color)
+                        binding.check5.setImageDrawable(null)
+
+                    }
+                    binding.jsResumeGrp -> {
+                        Log.d("____", "setChecks: $experienced")
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check3.setBackgroundResource(R.color.blue)
+                        binding.check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check4.setBackgroundResource(R.color.blue)
+                        binding.check4.setImageDrawable(null)
+                        binding.check5.setBackgroundResource(R.color.check_def_color)
+                        binding.check5.setImageDrawable(null)
+                    }
+                    binding.profileImgLayoutJ -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check3.setBackgroundResource(R.color.blue)
+                        binding.check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check4.setBackgroundResource(R.color.blue)
+                        binding.check4.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check5.setBackgroundResource(R.color.blue)
+                        binding.check5.setImageDrawable(null)
+
+                    }
+                }
+            }
+            RECRUITER -> {
+                binding.check2.visibility = VISIBLE
+                binding.check3.visibility = VISIBLE
+                binding.check4.visibility = VISIBLE
+                when (view) {
+                    binding.rAboutGrp -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(null)
+                        binding.check3.setBackgroundResource(R.color.check_def_color)
+                        binding.check3.setImageDrawable(null)
+                        binding.check4.setBackgroundResource(R.color.check_def_color)
+                        binding.check4.setImageDrawable(null)
+                    }
+                    binding.rCurrPosGrp -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check3.setBackgroundResource(R.color.blue)
+                        binding.check3.setImageDrawable(null)
+                        binding.check4.setBackgroundResource(R.color.check_def_color)
+                        binding.check4.setImageDrawable(null)
+                    }
+                    binding.profileImgLayoutR -> {
+                        binding.check2.setBackgroundResource(R.color.blue)
+                        binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check3.setBackgroundResource(R.color.blue)
+                        binding.check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check))
+                        binding.check4.setBackgroundResource(R.color.blue)
+                        binding.check4.setImageDrawable(null)
+                    }
+                }
+            }
+        }
+
+
+    }
+
 
     private fun storeInfoJ() {
 
@@ -745,20 +969,20 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         designation = selectedDesignation.trim()
         jobLocation = selectedJobLocation.trim()
 
-        prefWorkingMode = getSelectedRadioItem(binding.radioGrpWorkingMode)
-        prefJobTitle = selectedPrefJobTitle.toString().trim()
-        prefJobLocation = selectedPreJobLocation.toString().trim()
+        prefJobTitle = selectedPrefJobTitle.trim()
+        prefJobLocation = selectedPrefCity.trim()
 
         val correct = inputFieldConformationJ(bio!!)
         if (!correct) return
         else{
             if (Utils.isNetworkAvailable(this)){
+                Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation $prefJobLocation")
+
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
                 AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
                     .addQueryParameter("vFirebaseId",userId)
                     .addQueryParameter("iRole","0")
-                    .addQueryParameter(MOB_NO,phoneNumber)
                     .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
                     .addQueryParameter(DEVICE_TYPE,"0")
                     .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
@@ -766,26 +990,26 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
                     .addQueryParameter("vFirstName",fName)
                     .addQueryParameter("vLastName",lName)
+                    .addQueryParameter(MOB_NO,phoneNumber)
+                    .addQueryParameter("vcity",residentialCity)
                     .addQueryParameter("vEmail",emailId)
                     .addQueryParameter("tBio",bio)
                     .addQueryParameter("vQualification",qualification)
-                    .addQueryParameter("vcity",residentialCity)
                     .addQueryParameter("vCurrentCompany",currentCompany)
                     .addQueryParameter("vDesignation",designation)
                     .addQueryParameter("vJobLocation",jobLocation)
-                    /*.addQueryParameter("vDuration",duration)*/
                     .addQueryParameter("vPreferCity",prefJobLocation)
                     .addQueryParameter("vPreferJobTitle",prefJobTitle)
                     .addQueryParameter("vWorkingMode",prefWorkingMode)
-                    /*.addQueryParameter("vExpectedSalary",salary)*/
                     .addQueryParameter("tTagLine",designation)
+                    .addMultipartFile("profilePic",profileImg)
+                    .addMultipartFile("resume",resumePdf)
                     .addQueryParameter("fbid","")
                     .addQueryParameter("googleid","")
                     .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
                     .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
                     .addQueryParameter("tAppVersion",versionCodeAndName)
-                    .addQueryParameter("profilePic",profileImgUri)/***/
-                    .addMultipartFile("resume",resumePdf)
+
                     .setPriority(Priority.MEDIUM).build().getAsObject(
                         RegisterUserModel::class.java,
                         object : ParsedRequestListener<RegisterUserModel> {
@@ -806,20 +1030,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 response.data.user.vCity
                                             )
                                             userDataRepository.storeAboutData(
-                                                response.data.user.tBio,
-                                                /*response.data.user.vQualification*/
+                                                response.data.user.tBio
                                             )
                                             userDataRepository.storeQualificationData(
                                                 response.data.user.vQualification
-                                            )
-                                            /*userDataRepository.storeExperienceData(
-                                                experience,
-                                                response.data.user.vDesignation,
-                                                "",
-                                                ""
-                                            )*/
-                                            userDataRepository.storeResumeData(
-                                                resumeUri!!
                                             )
                                             userDataRepository.storeJobPreferenceData(
                                                 response.data.user.vPreferJobTitle,
@@ -827,6 +1041,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 response.data.user.vWorkingMode
                                             )
 
+                                            userDataRepository.storeResumeData(
+                                                response.data.user.tResumeUrl
+                                            )
+                                            userDataRepository.storeProfileImg(
+                                                response.data.user.tProfileUrl
+                                            )
                                         }
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
@@ -835,6 +1055,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[USER_ID] = response.data.user.id
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
+
+                                        storeExperienceData(response.data.tAuthToken)
                                         navigateToHomeActivity()
 
                                     }
@@ -860,6 +1082,60 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
         }
     }
+
+    private val experienceViewModel: ExperienceViewModel by viewModels()
+
+    private fun storeExperienceData(tAuthToken: String) {
+
+        val jsonObject = JSONObject()
+        jsonObject.put("vDesignation", designation)
+        jsonObject.put("vCompany",currentCompany)
+        jsonObject.put("vJobLocation",jobLocation)
+        jsonObject.put("vDuration", "")
+
+        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation!!,currentCompany!!,jobLocation!!,""))
+
+        AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
+            .addHeaders("Authorization", "Bearer $tAuthToken")
+            .addJSONObjectBody(
+                jsonObject
+            )
+            .setPriority(Priority.MEDIUM).build()
+            .getAsObject(
+                CommonMessageModel::class.java,
+                object : ParsedRequestListener<CommonMessageModel>{
+                    override fun onResponse(response: CommonMessageModel?) {
+                        try {
+                            response?.let {
+                                Log.d(TAG, "onResponse: $jsonObject added in experience list")
+                                experienceViewModel.writeToLocal(experienceList.toList())
+                                    .invokeOnCompletion {
+                                        Log.d(
+                                            TAG,
+                                            "experienceInfoDialogView: experienceList is updated in datastore"
+                                        )
+                                    }
+                            }
+                        }
+                        catch (e: Exception) {
+                            Log.e("#####", "onResponse Exception: ${e.message}")
+                        }
+
+                    }
+
+                    override fun onError(anError: ANError?) {
+                        anError?.let {
+                            Log.e(
+                                "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                            )
+                        }
+                    }
+
+                }
+            )
+
+    }
+
     private fun storeInfoJBySkip() {
 
             if (Utils.isNetworkAvailable(this)){
@@ -944,21 +1220,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             binding.bio.error = "bio length should not be exited to 5000"
             return false
         }
-        /*if (!isNumeric(expectedSalary)){
-            binding.salary.error = "Invalid Salary"
-        }*/
         return true
 
     }
 
-    private fun isNumeric(input: String): Boolean {
-        return try {
-            input.toInt()
-            true
-        } catch (e: NumberFormatException) {
-            false
-        }
-    }
+
 
     private fun storeInfoR() {
         qualification = selectedQualification.trim()
@@ -967,11 +1233,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         currentCompany = binding.companyNameR.text.toString().trim()
         designation = selectedDesignation.trim()
         jobLocation = selectedJobLocation.trim()
-        workingMode = getSelectedRadioItem(binding.radioGrpWorkingModeR)
+
+        /*workingMode = getSelectedRadioItem(binding.radioGrpWorkingModeR)*/
         val correct = inputFieldConformationR(bio!!)
         if (!correct) return
         else{
             if (Utils.isNetworkAvailable(this)){
+                Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation")
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
                 AndroidNetworking.post(NetworkUtils.REGISTER_USER)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
@@ -987,14 +1255,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vLastName",lName)
                     .addQueryParameter("vEmail",emailId)
                     .addQueryParameter("tBio",bio)
-                    /*.addQueryParameter("vPreferCity","")*/
                     .addQueryParameter("vcity",residentialCity)
                     .addQueryParameter("vCurrentCompany",currentCompany)
                     .addQueryParameter("vDesignation",designation)
                     .addQueryParameter("vQualification",qualification)
                     .addQueryParameter("vJobLocation",jobLocation)
                     .addQueryParameter("vWorkingMode",workingMode)
-                    .addQueryParameter("tTagLine",designation)
+                    .addQueryParameter("tTagLine","")
                     .addQueryParameter("fbid","")
                     .addQueryParameter("googleid","")
                     .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
@@ -1053,8 +1320,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                     Log.e(
                                         "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                     )
-
-
                                 }
                             }
                         })
@@ -1312,8 +1577,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         }
         return "not Selected"
     }
-
-
     @SuppressLint("GestureBackNavigation")
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -1340,7 +1603,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         }
         return super.onKeyDown(keyCode, event)
     }
-    private fun getAllCity(){
+    /*private fun getAllCity(){
 
         if (Utils.isNetworkAvailable(this)){
             showProgressDialog("Please wait....")
@@ -1379,6 +1642,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             showNoInternetBottomSheet(this,this)
         }
 
-    }
+    }*/
 
 }
