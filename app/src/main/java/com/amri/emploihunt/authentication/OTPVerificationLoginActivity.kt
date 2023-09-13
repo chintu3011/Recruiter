@@ -11,6 +11,7 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
@@ -52,14 +53,18 @@ import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
+import com.google.firebase.FirebaseException
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
@@ -71,7 +76,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
     private lateinit var mAuth: FirebaseAuth
 
     lateinit var storedVerificationId:String
-    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    var resendToken: PhoneAuthProvider.ForceResendingToken ?= null
     lateinit var prefManager: SharedPreferences
     lateinit var phoneNo: String
 
@@ -125,6 +130,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
     private fun setOnClickListener() {
         binding.btnVerify.setOnClickListener(this)
         binding.btnChange.setOnClickListener(this)
+        binding.btnResendOtp.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -137,8 +143,54 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             R.id.btnVerify -> {
                 verifyOtp()
             }
+            R.id.btnResendOtp -> {
+                resendOtp()
+            }
         }
     }
+
+    private fun resendOtp() {
+
+        if(phoneNo.isNotEmpty()) {
+            Log.d("##", "sentOtp: correct")
+            val mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                    hideProgressDialog()
+                }
+
+                override fun onVerificationFailed(e: FirebaseException) {
+                    Toast.makeText(
+                        this@OTPVerificationLoginActivity,
+                        e.localizedMessage,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    hideProgressDialog()
+                }
+
+                override fun onCodeSent(
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken
+                ) {
+                    storedVerificationId = verificationId
+                    hideProgressDialog()
+                    resendToken = token
+                    verifyOtp()
+                }
+            }
+            val options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(
+                    phoneNo
+                ) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this) // Activity (for callback binding)
+                .setCallbacks(mCallback)
+                .setForceResendingToken(resendToken!!)// OnVerificationStateChangedCallbacks
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
+        }
+    }
+
     private fun verifyOtp() {
         showProgressDialog("Please wait....")
         val credential = PhoneAuthProvider.getCredential(storedVerificationId,binding.inputOTP.text.toString())

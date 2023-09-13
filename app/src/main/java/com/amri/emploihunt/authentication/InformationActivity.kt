@@ -29,8 +29,6 @@ import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
-import com.amri.emploihunt.settings.ProfileActivity
-import com.amri.emploihunt.store.ExperienceDataStore
 import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
@@ -65,8 +63,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -972,110 +968,210 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         prefJobTitle = selectedPrefJobTitle.trim()
         prefJobLocation = selectedPrefCity.trim()
 
-        val correct = inputFieldConformationJ(bio!!)
+        val correct = inputFieldConformationJ(qualification!!,bio!!,currentCompany!!,designation!!,jobLocation!!,prefJobTitle!!,prefJobLocation!!,prefWorkingMode!!)
         if (!correct) return
         else{
             if (Utils.isNetworkAvailable(this)){
                 Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation $prefJobLocation")
+                val versionCodeAndName =
+                    "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+                if(experienced) {
+                    AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
+                        .setOkHttpClient(NetworkUtils.okHttpClient)
+                        .addQueryParameter("vFirebaseId", userId)
+                        .addQueryParameter("iRole", "0")
+                        .addQueryParameter(DEVICE_ID, prefManager.get(DEVICE_ID))
+                        .addQueryParameter(DEVICE_TYPE, "0")
+                        .addQueryParameter(OS_VERSION, prefManager.get(OS_VERSION))
+                        .addQueryParameter(FCM_TOKEN, prefManager.get(FCM_TOKEN))
+                        .addQueryParameter(DEVICE_NAME, prefManager.get(DEVICE_NAME))
+                        .addQueryParameter("vFirstName", fName)
+                        .addQueryParameter("vLastName", lName)
+                        .addQueryParameter(MOB_NO, phoneNumber)
+                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vEmail", emailId)
+                        .addQueryParameter("tBio", bio)
+                        .addQueryParameter("vQualification", qualification)
+                        .addQueryParameter("vCurrentCompany", currentCompany)
+                        .addQueryParameter("vDesignation", designation)
+                        .addQueryParameter("vJobLocation", jobLocation)
+                        .addQueryParameter("vPreferCity", prefJobLocation)
+                        .addQueryParameter("vPreferJobTitle", prefJobTitle)
+                        .addQueryParameter("vWorkingMode", prefWorkingMode)
+                        .addQueryParameter("tTagLine", "")
+                        .addMultipartFile("profilePic", profileImg)
+                        .addMultipartFile("resume", resumePdf)
+                        .addQueryParameter("fbid", "")
+                        .addQueryParameter("googleid", "")
+                        .addQueryParameter("tLongitude", prefManager.get(LONGITUDE))
+                        .addQueryParameter("tLatitude", prefManager.get(LATITUDE))
+                        .addQueryParameter("tAppVersion", versionCodeAndName)
 
-                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-                AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
-                    .setOkHttpClient(NetworkUtils.okHttpClient)
-                    .addQueryParameter("vFirebaseId",userId)
-                    .addQueryParameter("iRole","0")
-                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
-                    .addQueryParameter(DEVICE_TYPE,"0")
-                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
-                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
-                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
-                    .addQueryParameter("vFirstName",fName)
-                    .addQueryParameter("vLastName",lName)
-                    .addQueryParameter(MOB_NO,phoneNumber)
-                    .addQueryParameter("vcity",residentialCity)
-                    .addQueryParameter("vEmail",emailId)
-                    .addQueryParameter("tBio",bio)
-                    .addQueryParameter("vQualification",qualification)
-                    .addQueryParameter("vCurrentCompany",currentCompany)
-                    .addQueryParameter("vDesignation",designation)
-                    .addQueryParameter("vJobLocation",jobLocation)
-                    .addQueryParameter("vPreferCity",prefJobLocation)
-                    .addQueryParameter("vPreferJobTitle",prefJobTitle)
-                    .addQueryParameter("vWorkingMode",prefWorkingMode)
-                    .addQueryParameter("tTagLine",designation)
-                    .addMultipartFile("profilePic",profileImg)
-                    .addMultipartFile("resume",resumePdf)
-                    .addQueryParameter("fbid","")
-                    .addQueryParameter("googleid","")
-                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
-                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
-                    .addQueryParameter("tAppVersion",versionCodeAndName)
+                        .setPriority(Priority.MEDIUM).build().getAsObject(
+                            RegisterUserModel::class.java,
+                            object : ParsedRequestListener<RegisterUserModel> {
+                                override fun onResponse(response: RegisterUserModel?) {
+                                    try {
+                                        response?.let {
+                                            hideProgressDialog()
+                                            CoroutineScope(Dispatchers.IO).launch {
 
-                    .setPriority(Priority.MEDIUM).build().getAsObject(
-                        RegisterUserModel::class.java,
-                        object : ParsedRequestListener<RegisterUserModel> {
-                            override fun onResponse(response: RegisterUserModel?) {
-                                try {
-                                    response?.let {
-                                        hideProgressDialog()
-                                        CoroutineScope(Dispatchers.IO).launch {
+                                                val userDataRepository =
+                                                    UserDataRepository(this@InformationActivity)
+                                                userDataRepository.storeBasicInfo(
+                                                    response.data.user.vFirstName,
+                                                    response.data.user.vLastName,
+                                                    response.data.user.vMobile,
+                                                    response.data.user.vEmail,
+                                                    response.data.user.tTagLine,
+                                                    response.data.user.vCity
+                                                )
+                                                userDataRepository.storeAboutData(
+                                                    response.data.user.tBio
+                                                )
+                                                userDataRepository.storeQualificationData(
+                                                    response.data.user.vQualification
+                                                )
+                                                userDataRepository.storeJobPreferenceData(
+                                                    response.data.user.vPreferJobTitle,
+                                                    response.data.user.vPreferCity,
+                                                    response.data.user.vWorkingMode
+                                                )
 
-                                            val userDataRepository =
-                                                UserDataRepository(this@InformationActivity)
-                                            userDataRepository.storeBasicInfo(
-                                                response.data.user.vFirstName,
-                                                response.data.user.vLastName,
-                                                response.data.user.vMobile,
-                                                response.data.user.vEmail,
-                                                response.data.user.tTagLine,
-                                                response.data.user.vCity
-                                            )
-                                            userDataRepository.storeAboutData(
-                                                response.data.user.tBio
-                                            )
-                                            userDataRepository.storeQualificationData(
-                                                response.data.user.vQualification
-                                            )
-                                            userDataRepository.storeJobPreferenceData(
-                                                response.data.user.vPreferJobTitle,
-                                                response.data.user.vPreferCity,
-                                                response.data.user.vWorkingMode
-                                            )
+                                                userDataRepository.storeResumeData(
+                                                    response.data.user.tResumeUrl
+                                                )
+                                                userDataRepository.storeProfileImg(
+                                                    response.data.user.tProfileUrl
+                                                )
+                                            }
+                                            binding.btnSubmit.visibility = GONE
+                                            binding.btnBack.visibility = GONE
+                                            prefManager[IS_LOGIN] = true
+                                            prefManager[ROLE] = 0
+                                            prefManager[USER_ID] = response.data.user.id
+                                            prefManager[FIREBASE_ID] =
+                                                response.data.user.vFirebaseId
+                                            prefManager[AUTH_TOKEN] = response.data.tAuthToken
 
-                                            userDataRepository.storeResumeData(
-                                                response.data.user.tResumeUrl
-                                            )
-                                            userDataRepository.storeProfileImg(
-                                                response.data.user.tProfileUrl
-                                            )
+                                            storeExperienceData(response.data.tAuthToken)
+                                            navigateToHomeActivity()
+
                                         }
-                                        binding.btnSubmit.visibility = GONE
-                                        binding.btnBack.visibility = GONE
-                                        prefManager[IS_LOGIN] = true
-                                        prefManager[ROLE] = 0
-                                        prefManager[USER_ID] = response.data.user.id
-                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
-                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse Exception: ${e.message}")
+                                    }
+                                }
 
-                                        storeExperienceData(response.data.tAuthToken)
-                                        navigateToHomeActivity()
+                                override fun onError(anError: ANError?) {
+                                    hideProgressDialog()
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                        )
+
 
                                     }
-                                } catch (e: Exception) {
-                                    Log.e("#####", "onResponse Exception: ${e.message}")
                                 }
-                            }
+                            })
+                }
+                else{
+                    AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
+                        .setOkHttpClient(NetworkUtils.okHttpClient)
+                        .addQueryParameter("vFirebaseId", userId)
+                        .addQueryParameter("iRole", "0")
+                        .addQueryParameter(DEVICE_ID, prefManager.get(DEVICE_ID))
+                        .addQueryParameter(DEVICE_TYPE, "0")
+                        .addQueryParameter(OS_VERSION, prefManager.get(OS_VERSION))
+                        .addQueryParameter(FCM_TOKEN, prefManager.get(FCM_TOKEN))
+                        .addQueryParameter(DEVICE_NAME, prefManager.get(DEVICE_NAME))
+                        .addQueryParameter("vFirstName", fName)
+                        .addQueryParameter("vLastName", lName)
+                        .addQueryParameter(MOB_NO, phoneNumber)
+                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vEmail", emailId)
+                        .addQueryParameter("tBio", bio)
+                        .addQueryParameter("vQualification", qualification)
+                        .addQueryParameter("vPreferCity", prefJobLocation)
+                        .addQueryParameter("vPreferJobTitle", prefJobTitle)
+                        .addQueryParameter("vWorkingMode", prefWorkingMode)
+                        .addMultipartFile("profilePic", profileImg)
+                        .addMultipartFile("resume", resumePdf)
+                        .addQueryParameter("fbid", "")
+                        .addQueryParameter("googleid", "")
+                        .addQueryParameter("tLongitude", prefManager.get(LONGITUDE))
+                        .addQueryParameter("tLatitude", prefManager.get(LATITUDE))
+                        .addQueryParameter("tAppVersion", versionCodeAndName)
 
-                            override fun onError(anError: ANError?) {
-                                hideProgressDialog()
-                                anError?.let {
-                                    Log.e(
-                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                    )
+                        .setPriority(Priority.MEDIUM).build().getAsObject(
+                            RegisterUserModel::class.java,
+                            object : ParsedRequestListener<RegisterUserModel> {
+                                override fun onResponse(response: RegisterUserModel?) {
+                                    try {
+                                        response?.let {
+                                            hideProgressDialog()
+                                            CoroutineScope(Dispatchers.IO).launch {
 
+                                                val userDataRepository =
+                                                    UserDataRepository(this@InformationActivity)
+                                                userDataRepository.storeBasicInfo(
+                                                    response.data.user.vFirstName,
+                                                    response.data.user.vLastName,
+                                                    response.data.user.vMobile,
+                                                    response.data.user.vEmail,
+                                                    response.data.user.tTagLine,
+                                                    response.data.user.vCity
+                                                )
+                                                userDataRepository.storeAboutData(
+                                                    response.data.user.tBio
+                                                )
+                                                userDataRepository.storeQualificationData(
+                                                    response.data.user.vQualification
+                                                )
+                                                userDataRepository.storeJobPreferenceData(
+                                                    response.data.user.vPreferJobTitle,
+                                                    response.data.user.vPreferCity,
+                                                    response.data.user.vWorkingMode
+                                                )
 
+                                                userDataRepository.storeResumeData(
+                                                    response.data.user.tResumeUrl
+                                                )
+                                                userDataRepository.storeProfileImg(
+                                                    response.data.user.tProfileUrl
+                                                )
+                                            }
+                                            binding.btnSubmit.visibility = GONE
+                                            binding.btnBack.visibility = GONE
+                                            prefManager[IS_LOGIN] = true
+                                            prefManager[ROLE] = 0
+                                            prefManager[USER_ID] = response.data.user.id
+                                            prefManager[FIREBASE_ID] =
+                                                response.data.user.vFirebaseId
+                                            prefManager[AUTH_TOKEN] = response.data.tAuthToken
+
+                                            navigateToHomeActivity()
+
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse Exception: ${e.message}")
+                                    }
                                 }
-                            }
-                        })
+
+                                override fun onError(anError: ANError?) {
+                                    hideProgressDialog()
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                        )
+
+
+                                    }
+                                }
+                            })
+                }
             }else{
                 showNoInternetBottomSheet(this,this)
             }
@@ -1213,13 +1309,72 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     }
     private fun inputFieldConformationJ(
+        qualification: String,
         bio: String,
+        currentCompany: String,
+        designation: String,
+        jobLocation: String,
+        prefJobTitle: String,
+        prefJobLocation: String,
+        prefWorkingMode: String,
     ): Boolean {
 
-        if (bio.length > 5000 ) {
+        if (qualification.isEmpty()){
+            binding.spQualificationJ.errorText = "Select your Qualification"
+            binding.jsViewFlipper.displayedChild =
+                binding.jsViewFlipper.indexOfChild(binding.jsAboutGrp)
+            changeLayout(false)
+            return  false
+        }
+        if (bio.length > 5000) {
             binding.bio.error = "bio length should not be exited to 5000"
+            binding.jsViewFlipper.displayedChild =
+                binding.jsViewFlipper.indexOfChild(binding.jsAboutGrp)
+            changeLayout(false)
             return false
         }
+
+        if(experienced) {
+            if (currentCompany.isEmpty()){
+                binding.companyName.error = "Enter your current company name"
+                binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsExperienceGrp)
+                changeLayout(false)
+                return false
+            }
+            if(designation.isEmpty()){
+                binding.spDesignationJ.errorText = "Select your designation"
+                binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsExperienceGrp)
+                changeLayout(false)
+                return false
+            }
+            if(jobLocation.isEmpty()){
+                binding.spDesignationJ.errorText = "Enter your job location"
+                binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsExperienceGrp)
+                changeLayout(false)
+                return false
+            }
+        }
+
+        if(prefJobTitle.isEmpty()) {
+            binding.spPrefJobTitleJ.errorText = "Select your prefer job title"
+            binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsPreferJobGrp)
+            changeLayout(false)
+            return false
+        }
+        if(prefJobLocation.isEmpty()){
+            binding.spPrefCityJ.errorText = "Select your prefer job location"
+            binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsPreferJobGrp)
+            changeLayout(false)
+            return false
+        }
+
+        if(prefWorkingMode.isEmpty()){
+            makeToast("select one working mode",0)
+            binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsPreferJobGrp)
+            changeLayout(false)
+            return false
+        }
+
         return true
 
     }
@@ -1235,7 +1390,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         jobLocation = selectedJobLocation.trim()
 
         /*workingMode = getSelectedRadioItem(binding.radioGrpWorkingModeR)*/
-        val correct = inputFieldConformationR(bio!!)
+        val correct = inputFieldConformationR(qualification!!,bio!!,currentCompany!!,designation!!,jobLocation!!,workingMode!!)
         if (!correct) return
         else{
             if (Utils.isNetworkAvailable(this)){
@@ -1403,9 +1558,49 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
 
     }
-    private fun inputFieldConformationR(jobDes: String): Boolean {
-        if (jobDes.length > 5000){
+    private fun inputFieldConformationR(
+        qualification: String,
+        bio: String,
+        currentCompany: String,
+        designation: String,
+        jobLocation: String,
+        workingMode: String
+    ): Boolean {
+
+        if(qualification.isEmpty()){
+            binding.spQualificationR.errorText = "Select a qualification"
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rAboutGrp)
+            changeLayout(false)
+        }
+        if (bio.length > 5000){
             binding.bioR.error = "Job Description Length Should not exited to 5000"
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rAboutGrp)
+            changeLayout(false)
+            return false
+        }
+        if(currentCompany.isEmpty()) {
+            binding.companyName.error = "Enter current company data"
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rCurrPosGrp)
+            changeLayout(false)
+            return false
+        }
+        if(designation.isEmpty()) {
+            binding.spDesignationR.errorText = "Select your designation"
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rCurrPosGrp)
+            changeLayout(false)
+            return false
+        }
+        if(jobLocation.isEmpty()){
+            binding.spJobLocationR.errorText = "Select your job location"
+            binding.rViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.rCurrPosGrp)
+            changeLayout(false)
+            return false
+        }
+        if(workingMode.isEmpty()){
+
+            makeToast("Select a working mode",0)
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rCurrPosGrp)
+            changeLayout(false)
             return false
         }
        return true

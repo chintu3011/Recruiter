@@ -211,6 +211,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
 //        intent.putExtra("jobType",jobType)
         intent.putExtra("phoneNo",phoneNo)
         intent.putExtra("storedVerificationId",storedVerificationId)
+        intent.putExtra("resendToken",resendToken)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }

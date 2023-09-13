@@ -11,6 +11,7 @@ import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.amri.emploihunt.R
@@ -20,13 +21,16 @@ import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
 import com.amri.emploihunt.store.UserDataRepository
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -106,6 +110,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
     private fun setOnClickListener() {
         binding.btnVerify.setOnClickListener(this)
         binding.btnChange.setOnClickListener(this)
+        binding.btnResendOtp.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -119,6 +124,50 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
             R.id.btnVerify -> {
                 verifyOtp()
             }
+            R.id.btnResendOtp -> {
+                resendOtp()
+            }
+        }
+    }
+    private fun resendOtp() {
+
+        if(phoneNo.isNotEmpty()) {
+            Log.d("##", "sentOtp: correct")
+            val mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                    hideProgressDialog()
+                }
+
+                override fun onVerificationFailed(e: FirebaseException) {
+                    Toast.makeText(
+                        this@OTPVerificationRegistrationActivity,
+                        e.localizedMessage,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    hideProgressDialog()
+                }
+
+                override fun onCodeSent(
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken
+                ) {
+                    storedVerificationId = verificationId
+                    hideProgressDialog()
+                    resendToken = token
+                    verifyOtp()
+                }
+            }
+            val options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(
+                    phoneNo
+                ) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this) // Activity (for callback binding)
+                .setCallbacks(mCallback)
+                .setForceResendingToken(resendToken!!)// OnVerificationStateChangedCallbacks
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
         }
     }
 
