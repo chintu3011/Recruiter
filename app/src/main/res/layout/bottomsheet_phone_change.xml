@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_3sdp">
+
+      
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:textAlignment="center"
+            android:padding="@dimen/_3sdp"
+            android:text="@string/msg_edit_no"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_14sdp" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:orientation="horizontal">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/cpp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:ccpDialog_keyboardAutoPopup="false"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_autoFormatNumber="true"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:ccp_contentColor="@color/black"
+                app:ccp_defaultNameCode="IND"
+                app:ccp_showArrow="true"
+                app:ccp_showFlag="false"
+                app:ccp_showFullName="false"
+                app:ccp_textSize="@dimen/_13sdp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textResidentialCity"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:padding="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/blue"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                android:maxLength="10"
+                app:endIconTint="@color/gray"
+                app:hintTextColor="@color/blue"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutEmployeeNeed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
+                app:placeholderText="98257*****"
+                app:startIconDrawable="@drawable/baseline_phone_24"
+                app:startIconTint="@color/blue">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:textSize="@dimen/_13sdp"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginTop="@dimen/_25sdp">
+
+            <LinearLayout
+                android:id="@+id/layEdit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/layCancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    android:text="@string/edit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/layEdit"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_31sdp"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_negative_drawble"
+                    android:textColor="@color/blue"
+                   
+                    android:gravity="center"
+                    android:text="@android:string/cancel"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</layout>

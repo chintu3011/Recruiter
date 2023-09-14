@@ -52,11 +52,12 @@ class LoginActivity : BaseActivity(),OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.cpp.registerCarrierNumberEditText(binding.phoneNo)
 
         mAuth = FirebaseAuth.getInstance()
 
         setOnClickListener()
-        binding.cpp.registerCarrierNumberEditText(binding.phoneNo)
+
 
         binding.phoneNo.setOnFocusChangeListener { view, b ->
             binding.phoneNo.background = ContextCompat.getDrawable(this, R.drawable.borderr)
@@ -168,6 +169,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
 
     private fun navigateToNextActivity() {
 
+        binding.phoneNo.text!!.clear()
         val intent = Intent(this@LoginActivity, OTPVerificationLoginActivity::class.java)
         intent.putExtra("phoneNo",phoneNo)
         startActivity(intent)

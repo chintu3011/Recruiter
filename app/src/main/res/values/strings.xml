@@ -156,5 +156,8 @@
     <string name="no_file_chosen">No File Chosen</string>
     <string name="select_your_qualification">Select your Qualification</string>
     <string name="server_is_under_maintenance">Server is under maintenance</string>
-
+    <string name="msg_edit_no">Are you sure change the phone number?</string>
+    <string name="edit">Edit</string>
+    <string name="_1_00">00:30</string>
+    <string name="otp_timer">Resend OTP in %d seconds</string>
 </resources>

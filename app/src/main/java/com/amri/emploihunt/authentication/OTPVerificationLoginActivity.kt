@@ -3,18 +3,15 @@ package com.amri.emploihunt.authentication
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.amri.emploihunt.R
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -22,18 +19,13 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityOtpverificationLoginBinding
+import com.amri.emploihunt.databinding.BottomsheetPhoneChangeBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
-import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.SignInCheckModel
 import com.amri.emploihunt.model.UserExpModel
 import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.proto.Experiences.ExperienceList
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
-import com.amri.emploihunt.settings.ProfileActivity
-import com.amri.emploihunt.store.ExperienceDataStore
 import com.amri.emploihunt.store.ExperienceViewModel
-import com.amri.emploihunt.store.JobSeekerProfileInfo
-import com.amri.emploihunt.store.RecruiterProfileInfo
 import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.DEVICE_ID
@@ -52,7 +44,7 @@ import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
-import com.amri.emploihunt.util.Utils.toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.FirebaseException
 
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +73,19 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
     lateinit var prefManager: SharedPreferences
 
+    val timer = object : CountDownTimer(30000, 1000) {
+        override fun onTick(millisUntilFinished: Long) {
+            //binding.tvTimer.text = resources.getString(R.string.app_name) + millisUntilFinished / 1000
+            binding.tvTimer.text =
+                resources.getString(R.string.otp_timer, millisUntilFinished / 1000L)
+        }
 
+        override fun onFinish() {
+            binding.tvTimer.text = ""
+            binding.tvTimer.visibility = View.GONE
+            binding.layResend.visibility = View.VISIBLE
+        }
+    }
     companion object{
         private const val TAG = "OTPVerificationLoginActivity"
     }
@@ -93,25 +97,26 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
         prefManager = prefManager(this)
 
         mAuth = FirebaseAuth.getInstance()
-
-        sentOtp()
+        phoneNo = intent.getStringExtra("phoneNo").toString()
+        sentOtp(phoneNo)
         setOnClickListener()
 
 
         setPinViewSize()
 
+
     }
 
-    private fun sentOtp() {
+    private fun sentOtp(phoneNo: String) {
 
-        phoneNo = intent.getStringExtra("phoneNo").toString()
+        timer.start()
         binding.txtPhoneNo.text = phoneNo
         showProgressDialog("Please wait...")
-        Log.d("##", "sentOtp: correct")
+        Log.d("##$", "sentOtp: correct")
 
         val options = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber(phoneNo)
-            .setTimeout(60L, TimeUnit.SECONDS)
+            .setTimeout(15, TimeUnit.SECONDS)
             .setActivity(this)
             .setCallbacks(
                 object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -136,7 +141,8 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                             }
                     }
                     override fun onVerificationFailed(e: FirebaseException) {
-                        
+
+
                         Toast.makeText(
                             this@OTPVerificationLoginActivity,
                             e.localizedMessage,
@@ -153,13 +159,14 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     ) {
                         storedVerificationId = verificationId
                         resendToken = token
-                        makeToast("code sent to :$phoneNo",0)
+                        makeToast("code sent to :${this@OTPVerificationLoginActivity.phoneNo}",0)
                         hideProgressDialog()
                     }
                 }
             )
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+
     }
 
     private fun setPinViewSize() {
@@ -196,9 +203,42 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnChange -> {
-                startActivity(Intent(this@OTPVerificationLoginActivity, LoginActivity::class.java))
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
-                finish()
+                val bottomSheetDialog = BottomSheetDialog(this@OTPVerificationLoginActivity)
+                val dialogBinding = BottomsheetPhoneChangeBinding.inflate(layoutInflater)
+                bottomSheetDialog.show()
+                bottomSheetDialog.setContentView(dialogBinding.root)
+
+                dialogBinding.cpp.registerCarrierNumberEditText(dialogBinding.phoneNo)
+                dialogBinding.cpp.setTalkBackTextProvider { country ->
+                    if (country != null) {
+
+                        country.phoneCode
+                    } else {
+                        ""
+                    }
+                }
+                dialogBinding.cpp.fullNumber = phoneNo
+                dialogBinding.btnEdit.setOnClickListener {
+                    when {
+                        dialogBinding.phoneNo.text?.trim()?.isEmpty()!! -> {
+                            Toast.makeText(this@OTPVerificationLoginActivity,"Enter Mobile No",Toast.LENGTH_SHORT).show()
+                        }
+                        dialogBinding.phoneNo.text?.trim()?.length!! < 10 -> {
+                            Toast.makeText(this@OTPVerificationLoginActivity,"Enter Valid Mobile No",Toast.LENGTH_SHORT).show()
+                        }
+                        dialogBinding.cpp.fullNumber?.toString()!!.trim() == phoneNo -> {
+                        Toast.makeText(this@OTPVerificationLoginActivity,"Please change existing change mobile number",Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            bottomSheetDialog.dismiss()
+                            timer.cancel()
+                            sentOtp(dialogBinding.cpp.fullNumber)
+                            //sendVerificationCode(fetchedMobNo)
+
+                        }
+                    }
+                }
+                dialogBinding.btnCancel.setOnClickListener { bottomSheetDialog.dismiss() }
             }
             R.id.btnVerify -> {
                 verifyOtp()
@@ -213,6 +253,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
         if(phoneNo.isNotEmpty()) {
             Log.d("##", "sentOtp: correct")
+            timer.start()
             showProgressDialog("Please wait...")
             val options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(phoneNo)

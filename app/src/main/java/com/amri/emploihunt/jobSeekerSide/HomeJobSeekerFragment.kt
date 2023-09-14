@@ -354,6 +354,7 @@ FilterParameterTransferClass.FilterJobListListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 dataList.clear()
+                filteredDataList.clear()
                 currentPage = 1
                 retrieveJobData(0)
                 isFilter = false
