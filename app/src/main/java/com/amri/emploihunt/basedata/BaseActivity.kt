@@ -196,7 +196,11 @@ open class BaseActivity : AppCompatActivity() {
                             anError?.let {
                                 Log.e(
                                     "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.message}"
+                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 callback()
                                 hideProgressDialog()

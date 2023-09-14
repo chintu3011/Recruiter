@@ -61,15 +61,15 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         binding = ActivityOtpVerificationRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
-
         mAuth = FirebaseAuth.getInstance()
-
+        sentOtp()
         setOnClickListener()
         setPinViewSize()
 
+
+    }
+
+    private fun sentOtp() {
         firstName = intent.getStringExtra("fName").toString()
         phoneNo = intent.getStringExtra("phoneNo").toString()
         email = intent.getStringExtra("email").toString()
@@ -80,32 +80,48 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         termsConditions = intent.getStringExtra("termsConditions").toString()
 
         binding.txtPhoneNo.text = phoneNo
-    }
-    private fun setPinViewSize() {
-        binding.cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // This callback will be triggered when the layout has been measured and has dimensions
 
-                // Get the measured width of the layout
-                val layoutWidth = binding.inputOTP.width
+        showProgressDialog("Please wait...")
+        Log.d("##", "sentOtp: correct")
 
-                if (layoutWidth == 0) {
-                    return
+        val options = PhoneAuthOptions.newBuilder(mAuth)
+            .setPhoneNumber(phoneNo)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(this)
+            .setCallbacks(
+                object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                        hideProgressDialog()
+                        makeToast("verification completed",0)
+                        signInWithPhoneAuthCredential(credential)
+                    }
+                    override fun onVerificationFailed(e: FirebaseException) {
+
+                        Toast.makeText(
+                            this@OTPVerificationRegistrationActivity,
+                            e.localizedMessage,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        hideProgressDialog()
+                        finish()
+                    }
+
+                    override fun onCodeSent(
+                        verificationId: String,
+                        token: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        storedVerificationId = verificationId
+                        resendToken = token
+                        makeToast("code sent to :$phoneNo",0)
+                        hideProgressDialog()
+                    }
                 }
-
-                // Remove the listener to avoid multiple callbacks
-                binding.inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                val space = binding.inputOTP.itemSpacing * 6
-                // Perform the division
-                val division = (layoutWidth - space)/ 6
-                binding.inputOTP.itemWidth = division
-                binding.inputOTP.itemHeight = division
-
-                // Use the division as needed
-                // ...
-            }
-        })
+            )
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
     }
+
 
     private fun setOnClickListener() {
         binding.btnVerify.setOnClickListener(this)
@@ -133,39 +149,42 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
 
         if(phoneNo.isNotEmpty()) {
             Log.d("##", "sentOtp: correct")
-            val mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    hideProgressDialog()
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                    Toast.makeText(
-                        this@OTPVerificationRegistrationActivity,
-                        e.localizedMessage,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    hideProgressDialog()
-                }
-
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    storedVerificationId = verificationId
-                    hideProgressDialog()
-                    resendToken = token
-                    verifyOtp()
-                }
-            }
+            showProgressDialog("Please wait...")
             val options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(
-                    phoneNo
-                ) // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this) // Activity (for callback binding)
-                .setCallbacks(mCallback)
-                .setForceResendingToken(resendToken!!)// OnVerificationStateChangedCallbacks
+                .setPhoneNumber(phoneNo)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(
+                    object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                            hideProgressDialog()
+                            makeToast("verification completed",0)
+                            signInWithPhoneAuthCredential(credential)
+                        }
+                        override fun onVerificationFailed(e: FirebaseException) {
+                            Toast.makeText(
+                                this@OTPVerificationRegistrationActivity,
+                                e.localizedMessage,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            hideProgressDialog()
+                            finish()
+                        }
+
+                        override fun onCodeSent(
+                            verificationId: String,
+                            token: PhoneAuthProvider.ForceResendingToken
+                        ) {
+                            hideProgressDialog()
+                            storedVerificationId = verificationId
+                            resendToken = token
+                            makeToast("code sent to :$phoneNo",0)
+
+                        }
+                    }
+                )
+                .setForceResendingToken(resendToken)
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
         }
@@ -222,6 +241,30 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
     }
 
 
+    private fun setPinViewSize() {
+        binding.cardView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // This callback will be triggered when the layout has been measured and has dimensions
 
+                // Get the measured width of the layout
+                val layoutWidth = binding.inputOTP.width
+
+                if (layoutWidth == 0) {
+                    return
+                }
+
+                // Remove the listener to avoid multiple callbacks
+                binding.inputOTP.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val space = binding.inputOTP.itemSpacing * 6
+                // Perform the division
+                val division = (layoutWidth - space)/ 6
+                binding.inputOTP.itemWidth = division
+                binding.inputOTP.itemHeight = division
+
+                // Use the division as needed
+                // ...
+            }
+        })
+    }
 
 }

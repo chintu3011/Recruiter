@@ -100,38 +100,34 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private var termsConditionsAcceptance: String? = null
     private var residentialCity:String? = null
 
-    private var profileImgUri: String? = null
-    private var profileBannerImgUri: String? = null
+    private var profileImgUri= String()
+    private var profileBannerImgUri= String()
 
     //User Data
-    private var bio: String? = null
-    private var qualification: String? = null
+    private var bio= String()
+    private var qualification= String()
 
-    private var currentCompany: String? = null
-    private var designation: String? = null
-    private var jobLocation: String? = null
-    private var workingMode:String? = null
+    private var currentCompany= String()
+    private var designation= String()
+    private var jobLocation= String()
+    private var workingMode= String()
 
     private lateinit var experienceList:MutableList<Experience>
 
-    private var prefJobTitle: String? = null
-    private var prefJobLocation: String? = null
-    private var prefWorkingMode:String? = null
+    private var prefJobTitle= String()
+    private var prefJobLocation= String()
+    private var prefWorkingMode= String()
 
-    private var resumeUri: String? = null
-    private var resumeFileName: String? = null
+    private var resumeUri= String()
+    private var resumeFileName= String()
 
 
 
     lateinit  var  qualifications:kotlin.Array<String>
     lateinit  var  jobs:kotlin.Array<String>
-    /*var cityList: ArrayList<String> = ArrayList()*/
-//    var prefLocations: ArrayList<String> = ArrayList()
-
 
     private var selectedQualification = String()
     private var selectedJobLocation = String()
-    private var selectedPreJobLocation = String()
     private var selectedDesignation = String()
     private var selectedPrefJobTitle = String()
     private var selectedPrefCity = String()
@@ -317,7 +313,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         binding.btnSkip.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
 
-        //job Seeker cur designation
+
         binding.spDesignationJ.setSearchDialogGravity(Gravity.TOP)
         binding.spDesignationJ.arrowPaddingRight = 19
         binding.spDesignationJ.item = resources.getStringArray(R.array.indian_designations).toList()
@@ -366,7 +362,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         binding.spQualificationR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 binding.spQualificationR.isOutlined = true
-                selectedPrefJobTitle = binding.spQualificationR.item[position].toString()
+                selectedQualification = binding.spQualificationR.item[position].toString()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -380,7 +376,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         binding.spDesignationR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 binding.spDesignationR.isOutlined = true
-                selectedPrefJobTitle = binding.spDesignationR.item[position].toString()
+                selectedDesignation = binding.spDesignationR.item[position].toString()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -428,7 +424,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                             id: Long
                         ) {
                             binding.spJobLocationR.isOutlined = true
-                            selectedPrefCity = binding.spJobLocationR.item[position].toString()
+                            selectedJobLocation = binding.spJobLocationR.item[position].toString()
                         }
 
                         override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -439,7 +435,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 binding.spPrefCityJ.setSearchDialogGravity(Gravity.TOP)
                 binding.spPrefCityJ.arrowPaddingRight = 19
                 binding.spPrefCityJ.item = cityList.toList()
-                    /*resources.getStringArray(R.array.degree_array).toList()*/
                 binding.spPrefCityJ.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
@@ -540,7 +535,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     }
 
-    var profilLayoutStatusBack = false
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.layoutCV -> {
@@ -644,6 +638,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         startActivityForResult(pdfIntent, 12)
     }
 
+    private var isImgSelected = false
     @SuppressLint("Range")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -703,66 +698,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                             .into(binding.profileImgR)
                     }
                     binding.submitBtnLayout.visibility = VISIBLE
-                    /*
-                    if (photoUri.toString().startsWith("content://")) {
-                        var myCursor: Cursor? = null
-                        try {
-                            myCursor = this.contentResolver.query(
-                                photoUri,
-                                null,
-                                null,
-                                null,
-                                null
-                            )
-                            if (myCursor != null && myCursor.moveToFirst()) {
-                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                val storageRef = Firebase.storage.reference
-                                val path = "images/userImages/$userId/profileImg"
-                                val imageRef = storageRef.child(path)
-
-                                imageRef.putFile(photoUri)
-                                    .addOnProgressListener {
-                                        *//*binding.uploadProgressLayout.visibility = VISIBLE*//*
-                                        *//*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
-                                        binding.uploadProgressBar.progress = progress*//*
-                                    }
-                                    .addOnSuccessListener {
-
-                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                            *//*binding.uploadProgressLayout.visibility = GONE*//*
-                                            profileImgUri = downloadUri.toString()
-                                            Glide.with(this@InformationActivity)
-                                                .load(profileImgUri)
-                                                .apply(
-                                                    RequestOptions
-                                                        .placeholderOf(R.drawable.profile_default_image)
-                                                        .error(R.drawable.profile_default_image)
-                                                        .circleCrop()
-                                                )
-                                                .into(binding.profileImgJ)
-                                            *//*val contentResolver: ContentResolver = contentResolver
-                                            val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
-                                            photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
-                                            profileImgDia.setImageBitmap(photoBitmap)*//*
-                                        }
-                                    }
-                                    .addOnFailureListener { exception ->
-                                        *//*binding.uploadProgressLayout.visibility = GONE*//*
-                                        makeToast("Img is not stored successfully",0)
-                                        Log.e(ProfileActivity.TAG, "onActivityResult: error while storing Img $exception" )
-                                    }
-                                *//*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                                }
-                                else{
-                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
-                                }*//*
-                            }
-                        } finally {
-                            myCursor?.close()
-                        }
-                    }
-                    */
+                    isImgSelected = true
                 }
             }
         }
@@ -814,7 +750,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                       binding.profileImgLayoutJ -> {
                           binding.btnBack.visibility = VISIBLE
                           binding.btnNext.visibility = GONE
-                          binding.submitBtnLayout.visibility = GONE
+                          if(isImgSelected){
+                              binding.submitBtnLayout.visibility = VISIBLE
+                          }
+                          else{
+                              binding.submitBtnLayout.visibility = GONE
+                          }
                           setChecks(binding.profileImgLayoutJ)
                       }
 
@@ -968,9 +909,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         prefJobTitle = selectedPrefJobTitle.trim()
         prefJobLocation = selectedPrefCity.trim()
 
-        val correct = inputFieldConformationJ(qualification!!,bio!!,currentCompany!!,designation!!,jobLocation!!,prefJobTitle!!,prefJobLocation!!,prefWorkingMode!!)
+
+        val correct = inputFieldConformationJ(qualification,bio,currentCompany,designation,jobLocation,prefJobTitle,prefJobLocation,prefWorkingMode)
         if (!correct) return
         else{
+            showProgressDialog("Please wait")
             if (Utils.isNetworkAvailable(this)){
                 Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation $prefJobLocation")
                 val versionCodeAndName =
@@ -1013,7 +956,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                 override fun onResponse(response: RegisterUserModel?) {
                                     try {
                                         response?.let {
-                                            hideProgressDialog()
+
                                             CoroutineScope(Dispatchers.IO).launch {
 
                                                 val userDataRepository =
@@ -1055,10 +998,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             prefManager[AUTH_TOKEN] = response.data.tAuthToken
 
                                             storeExperienceData(response.data.tAuthToken)
+                                            hideProgressDialog()
                                             navigateToHomeActivity()
 
                                         }
                                     } catch (e: Exception) {
+                                        hideProgressDialog()
                                         Log.e("#####", "onResponse Exception: ${e.message}")
                                     }
                                 }
@@ -1110,7 +1055,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                 override fun onResponse(response: RegisterUserModel?) {
                                     try {
                                         response?.let {
-                                            hideProgressDialog()
+
                                             CoroutineScope(Dispatchers.IO).launch {
 
                                                 val userDataRepository =
@@ -1150,12 +1095,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             prefManager[FIREBASE_ID] =
                                                 response.data.user.vFirebaseId
                                             prefManager[AUTH_TOKEN] = response.data.tAuthToken
-
+                                            hideProgressDialog()
                                             navigateToHomeActivity()
 
                                         }
                                     } catch (e: Exception) {
                                         Log.e("#####", "onResponse Exception: ${e.message}")
+                                        makeToast(getString(R.string.server_is_under_maintenance),0)
+                                        hideProgressDialog()
                                     }
                                 }
 
@@ -1166,7 +1113,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             "#####",
                                             "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                         )
-
+                                        hideProgressDialog()
 
                                     }
                                 }
@@ -1174,6 +1121,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 }
             }else{
                 showNoInternetBottomSheet(this,this)
+                hideProgressDialog()
             }
 
         }
@@ -1233,7 +1181,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     }
 
     private fun storeInfoJBySkip() {
-
+            showProgressDialog("Please wait")
             if (Utils.isNetworkAvailable(this)){
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
                 AndroidNetworking.post(NetworkUtils.REGISTER_USER)
@@ -1260,7 +1208,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                             override fun onResponse(response: RegisterUserModel?) {
                                 try {
                                     response?.let {
-                                        hideProgressDialog()
+
                                         CoroutineScope(Dispatchers.IO).launch {
 
                                             val userDataRepository =
@@ -1283,11 +1231,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[USER_ID] = response.data.user.id
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        hideProgressDialog()
                                         navigateToHomeActivity()
 
                                     }
                                 } catch (e: Exception) {
                                     Log.e("#####", "onResponse Exception: ${e.message}")
+                                    makeToast(getString(R.string.server_is_under_maintenance),0)
+                                    hideProgressDialog()
                                 }
                             }
 
@@ -1304,6 +1255,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         })
             }else{
                 showNoInternetBottomSheet(this,this)
+                hideProgressDialog()
             }
 
 
@@ -1318,6 +1270,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         prefJobLocation: String,
         prefWorkingMode: String,
     ): Boolean {
+        if (bio.length > 5000  || bio.isEmpty()) {
+            binding.bio.error = "bio length should not be exited to 5000"
+            binding.jsViewFlipper.displayedChild =
+                binding.jsViewFlipper.indexOfChild(binding.jsAboutGrp)
+            changeLayout(false)
+            return false
+        }
 
         if (qualification.isEmpty()){
             binding.spQualificationJ.errorText = "Select your Qualification"
@@ -1325,13 +1284,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 binding.jsViewFlipper.indexOfChild(binding.jsAboutGrp)
             changeLayout(false)
             return  false
-        }
-        if (bio.length > 5000) {
-            binding.bio.error = "bio length should not be exited to 5000"
-            binding.jsViewFlipper.displayedChild =
-                binding.jsViewFlipper.indexOfChild(binding.jsAboutGrp)
-            changeLayout(false)
-            return false
         }
 
         if(experienced) {
@@ -1382,6 +1334,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
 
     private fun storeInfoR() {
+
         qualification = selectedQualification.trim()
         bio = binding.bioR.text.toString().trim()
 
@@ -1390,9 +1343,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         jobLocation = selectedJobLocation.trim()
 
         /*workingMode = getSelectedRadioItem(binding.radioGrpWorkingModeR)*/
-        val correct = inputFieldConformationR(qualification!!,bio!!,currentCompany!!,designation!!,jobLocation!!,workingMode!!)
+        val correct = inputFieldConformationR(qualification,bio,currentCompany,designation,jobLocation,workingMode)
         if (!correct) return
         else{
+            showProgressDialog("Please wait")
             if (Utils.isNetworkAvailable(this)){
                 Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation")
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
@@ -1461,10 +1415,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[USER_ID] = response.data.user.id
                                         prefManager[ROLE] = 1
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        hideProgressDialog()
                                         navigateToHomeActivity()
+
 
                                     }
                                 } catch (e: Exception) {
+                                    hideProgressDialog()
+                                    makeToast(getString(R.string.server_is_under_maintenance),0)
                                     Log.e("#####", "onResponse Exception: ${e.message}")
                                 }
                             }
@@ -1479,14 +1437,15 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                             }
                         })
             }else{
+                hideProgressDialog()
                 showNoInternetBottomSheet(this,this)
             }
 
         }
     }
     private fun storeInfoRSkip() {
-
-            if (Utils.isNetworkAvailable(this)){
+        showProgressDialog("Please wait")
+        if (Utils.isNetworkAvailable(this)){
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
                 AndroidNetworking.post(NetworkUtils.REGISTER_USER)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
@@ -1514,7 +1473,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                             override fun onResponse(response: RegisterUserModel?) {
                                 try {
                                     response?.let {
-                                        hideProgressDialog()
+
                                         CoroutineScope(Dispatchers.IO).launch {
                                             val userDataRepository = UserDataRepository(this@InformationActivity)
                                             userDataRepository.storeBasicInfo(
@@ -1533,11 +1492,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         prefManager[ROLE] = 1
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                        hideProgressDialog()
                                         navigateToHomeActivity()
 
                                     }
                                 } catch (e: Exception) {
+                                    makeToast(getString(R.string.server_is_under_maintenance),0)
                                     Log.e("#####", "onResponse Exception: ${e.message}")
+                                    hideProgressDialog()
                                 }
                             }
 
@@ -1547,13 +1509,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                     Log.e(
                                         "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                     )
-
-
                                 }
                             }
                         })
             }else{
                 showNoInternetBottomSheet(this,this)
+                hideProgressDialog()
             }
 
 
@@ -1566,18 +1527,19 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         jobLocation: String,
         workingMode: String
     ): Boolean {
-
-        if(qualification.isEmpty()){
-            binding.spQualificationR.errorText = "Select a qualification"
-            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rAboutGrp)
-            changeLayout(false)
-        }
-        if (bio.length > 5000){
+        if (bio.length > 5000 || bio.isEmpty()){
             binding.bioR.error = "Job Description Length Should not exited to 5000"
             binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rAboutGrp)
             changeLayout(false)
             return false
         }
+        if(qualification.isEmpty()){
+            binding.spQualificationR.errorText = "Select a qualification"
+            binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rAboutGrp)
+            changeLayout(false)
+            return false
+        }
+
         if(currentCompany.isEmpty()) {
             binding.companyName.error = "Enter current company data"
             binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rCurrPosGrp)
@@ -1633,145 +1595,6 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         }
     }
 
-    /*private fun changeLayout(layoutID: Int, btnPointer: Int) {
-        if (layoutID == 0){
-            if(btnPointer == 0){
-                binding.recruiterLayout1.visibility = VISIBLE
-                binding.recruiterLayout2.visibility = GONE
-                binding.btnNext.visibility = VISIBLE
-                binding.btnBack.visibility = GONE
-                binding.btnSubmit.visibility = GONE
-
-                binding.check1.setBackgroundResource(R.color.check_color)
-                binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check2.setBackgroundResource(R.color.check_def_color)
-                binding.check3.setBackgroundResource(R.color.check_def_color)
-                binding.check4.setBackgroundResource(R.color.check_def_color)
-            }
-            if (btnPointer == 1){
-                binding.recruiterLayout2.visibility = VISIBLE
-                binding.recruiterLayout1.visibility = GONE
-                binding.btnNext.visibility = GONE
-                binding.btnBack.visibility = VISIBLE
-                binding.btnSubmit.visibility = VISIBLE
-
-                binding.check1.setBackgroundResource(R.color.check_color)
-                binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check2.setBackgroundResource(R.color.check_color)
-                binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check3.setBackgroundResource(R.color.check_def_color)
-                binding.check4.setBackgroundResource(R.color.check_def_color)
-            }
-        }
-        if (layoutID == 1){
-            if (btnPointer == 0){
-                binding.jsLayout1.visibility = VISIBLE
-                binding.jsLayout2.visibility = GONE
-                binding.jsLayout3.visibility = GONE
-                binding.jsSubLayout.visibility = GONE
-                binding.btnBack.visibility = GONE
-                binding.btnNext.visibility = VISIBLE
-                binding.btnSubmit.visibility = GONE
-
-                binding.check1.setBackgroundResource(R.color.check_color)
-                binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check2.setBackgroundResource(R.color.check_def_color)
-                binding.check3.setBackgroundResource(R.color.check_def_color)
-                binding.check4.setBackgroundResource(R.color.check_def_color)
-            }
-            else if (btnPointer == 1 ) {
-
-                experience = getSelectedRadioItem(binding.radioGrpFreshExp)
-                if(experience == "Experienced") {
-//                    makeToast("You Selected $experience",0)
-//                    makeToast("press next for further step",0)
-                    binding.jsLayout1.visibility = GONE
-                    binding.jsLayout2.visibility = GONE
-                    binding.jsSubLayout.visibility = VISIBLE
-                    //                    jsSubLayout2.visibility = GONE
-                    binding.jsLayout3.visibility = GONE
-                    binding.btnBack.visibility = VISIBLE
-                    binding.btnNext.visibility = VISIBLE
-                    binding.btnSubmit.visibility = GONE
-                    binding.check1.setBackgroundResource(R.color.check_color)
-                    binding.check1.setImageDrawable(ContextCompat.getDrawable(this,
-                        R.drawable.ic_check
-                    ));
-                    binding.check2.setBackgroundResource(R.color.check_def_color)
-                    binding.check3.setBackgroundResource(R.color.check_def_color)
-                    binding.check4.setBackgroundResource(R.color.check_def_color)
-                }
-                if (experience == "Fresher"){
-                    binding.jsLayout1.visibility = GONE
-                    binding.jsSubLayout.visibility = GONE
-//                    jsSubLayout2.visibility = GONE
-                    binding.jsLayout2.visibility = VISIBLE
-                    binding.jsLayout3.visibility = GONE
-                    binding.btnBack.visibility = VISIBLE
-                    binding.btnNext.visibility = VISIBLE
-                    binding.btnSubmit.visibility = GONE
-                    binding.check1.setBackgroundResource(R.color.check_color)
-                    binding.check1.setImageDrawable(ContextCompat.getDrawable(this,
-                        R.drawable.ic_check
-                    ));
-                    binding.check2.setBackgroundResource(R.color.check_color)
-                    binding.check2.setImageDrawable(ContextCompat.getDrawable(this,
-                        R.drawable.ic_check
-                    ));
-                    binding.check3.setBackgroundResource(R.color.check_def_color)
-                    binding.check4.setBackgroundResource(R.color.check_def_color)
-                }
-            }
-
-            else if (btnPointer == 2){
-                binding.jsLayout1.visibility = GONE
-                binding.jsSubLayout.visibility = GONE
-//                    jsSubLayout2.visibility = GONE
-                binding.jsLayout2.visibility = VISIBLE
-                binding.jsLayout3.visibility = GONE
-                binding.btnBack.visibility = VISIBLE
-                binding.btnNext.visibility = VISIBLE
-                binding.btnSubmit.visibility = GONE
-
-                binding.check1.setBackgroundResource(R.color.check_color)
-                binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check2.setBackgroundResource(R.color.check_color)
-                binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check3.setBackgroundResource(R.color.check_def_color)
-                binding.check4.setBackgroundResource(R.color.check_def_color)
-            }
-            else if (btnPointer == 3){
-                binding.jsLayout1.visibility = GONE
-                binding.jsSubLayout.visibility = GONE
-//                    jsSubLayout2.visibility = GONE
-                binding.jsLayout2.visibility = GONE
-                binding.jsLayout3.visibility = VISIBLE
-                binding.btnBack.visibility = VISIBLE
-                binding.btnNext.visibility = GONE
-                binding.btnSubmit.visibility = GONE
-                binding.uploadBtn.visibility = VISIBLE
-                binding.uploadProgressBar.visibility = GONE
-
-                binding.check1.setBackgroundResource(R.color.check_color)
-                binding.check1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check2.setBackgroundResource(R.color.check_color)
-                binding.check2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check3.setBackgroundResource(R.color.check_color)
-                binding.check3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                binding.check4.setBackgroundResource(R.color.check_def_color)
-            }
-        }
-    }*/
-
-    private fun getSelectedRadioItem(radioGroup: RadioGroup): String {
-        val selectedItemId = radioGroup.checkedRadioButtonId
-        if (selectedItemId != -1) {
-            val radioButton = findViewById<View>(selectedItemId) as RadioButton
-//            makeToast(radioButton.text.toString(),0)
-            return radioButton.text.toString().trim()
-        }
-        return "not Selected"
-    }
     @SuppressLint("GestureBackNavigation")
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

@@ -75,10 +75,12 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
     private lateinit var mAuth: FirebaseAuth
 
-    lateinit var storedVerificationId:String
-    var resendToken: PhoneAuthProvider.ForceResendingToken ?= null
-    lateinit var prefManager: SharedPreferences
     lateinit var phoneNo: String
+    lateinit var storedVerificationId:String
+    lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+
+    lateinit var prefManager: SharedPreferences
+
 
     companion object{
         private const val TAG = "OTPVerificationLoginActivity"
@@ -92,14 +94,72 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
         mAuth = FirebaseAuth.getInstance()
 
+        sentOtp()
         setOnClickListener()
 
-        phoneNo = intent.getStringExtra("phoneNo").toString()
-        storedVerificationId = intent.getStringExtra("storedVerificationId").toString()
 
-        binding.txtPhoneNo.text = phoneNo
         setPinViewSize()
 
+    }
+
+    private fun sentOtp() {
+
+        phoneNo = intent.getStringExtra("phoneNo").toString()
+        binding.txtPhoneNo.text = phoneNo
+        showProgressDialog("Please wait...")
+        Log.d("##", "sentOtp: correct")
+
+        val options = PhoneAuthOptions.newBuilder(mAuth)
+            .setPhoneNumber(phoneNo)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(this)
+            .setCallbacks(
+                object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                        hideProgressDialog()
+
+                        mAuth.signInWithCredential(credential)
+                            .addOnCompleteListener{ task ->
+                                if (task.isSuccessful) {
+                                    val user = task.result?.user
+                                    val uid = user?.uid
+                                    Log.d(TAG, "userId: $uid")
+                                    callUSerLogin(uid)
+
+                                } else {
+                                    Log.d(TAG, "Login failed: ${task.exception}")
+                                    makeToast("Login failed: ${task.exception}", 0)
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        makeToast("Try again", 0)
+                                    }, 100)
+                                }
+                            }
+                    }
+                    override fun onVerificationFailed(e: FirebaseException) {
+                        
+                        Toast.makeText(
+                            this@OTPVerificationLoginActivity,
+                            e.localizedMessage,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        hideProgressDialog()
+                        finish()
+                    }
+
+                    override fun onCodeSent(
+                        verificationId: String,
+                        token: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        storedVerificationId = verificationId
+                        resendToken = token
+                        makeToast("code sent to :$phoneNo",0)
+                        hideProgressDialog()
+                    }
+                }
+            )
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
     private fun setPinViewSize() {
@@ -153,39 +213,56 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
         if(phoneNo.isNotEmpty()) {
             Log.d("##", "sentOtp: correct")
-            val mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    hideProgressDialog()
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                    Toast.makeText(
-                        this@OTPVerificationLoginActivity,
-                        e.localizedMessage,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    hideProgressDialog()
-                }
-
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    storedVerificationId = verificationId
-                    hideProgressDialog()
-                    resendToken = token
-                    verifyOtp()
-                }
-            }
+            showProgressDialog("Please wait...")
             val options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(
-                    phoneNo
-                ) // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this) // Activity (for callback binding)
-                .setCallbacks(mCallback)
-                .setForceResendingToken(resendToken!!)// OnVerificationStateChangedCallbacks
+                .setPhoneNumber(phoneNo)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(
+                    object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                            hideProgressDialog()
+                            makeToast("verification completed",0)
+                            mAuth.signInWithCredential(credential)
+                                .addOnCompleteListener{ task ->
+                                    if (task.isSuccessful) {
+                                        val user = task.result?.user
+                                        val uid = user?.uid
+                                        Log.d(TAG, "userId: $uid")
+                                        callUSerLogin(uid)
+
+                                    } else {
+                                        Log.d(TAG, "Login failed: ${task.exception}")
+                                        makeToast("Login failed: ${task.exception}", 0)
+                                        Handler(Looper.getMainLooper()).postDelayed({
+                                            makeToast("Try again", 0)
+                                        }, 100)
+                                    }
+                                }
+                        }
+                        override fun onVerificationFailed(e: FirebaseException) {
+                            Toast.makeText(
+                                this@OTPVerificationLoginActivity,
+                                e.localizedMessage,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            hideProgressDialog()
+                            finish()
+                        }
+
+                        override fun onCodeSent(
+                            verificationId: String,
+                            token: PhoneAuthProvider.ForceResendingToken
+                        ) {
+                            storedVerificationId = verificationId
+                            resendToken = token
+                            makeToast("code sent to :$phoneNo",0)
+                            hideProgressDialog()
+                        }
+                    }
+                )
+                .setForceResendingToken(resendToken)
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
         }
@@ -201,39 +278,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     val user = task.result?.user
                     val uid = user?.uid
                     Log.d(TAG, "userId: $uid")
-                    /*updateDataStore(uid)*/
                     callUSerLogin(uid)
-                    /*when (userType) {
-                        "Job Seeker" -> {
-                            makeToast("Login successful!", 0)
-                            val intent = Intent(
-                                this@OTPVerificationLoginActivity,
-                                HomeJobActivity::class.java
-                            )
-                            intent.putExtra("phoneNo", txtPhoneNo.text.toString())
-                            intent.putExtra("userType", userType)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
-                            finish()
-                        }
-
-                        "Recruiter" -> {
-                            makeToast("Login successful!", 0)
-                            val intent = Intent(
-                                this@OTPVerificationLoginActivity,
-                                HomeRecruiterActivity::class.java
-                            )
-                            intent.putExtra("phoneNo", txtPhoneNo.text.toString())
-                            intent.putExtra("userType", userType)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
-                            finish()
-                        }
-                        else -> {
-                            Log.d(TAG, "navigateToNextActivity :: User not found.")
-                            makeToast("User not found.", 0)
-                        }
-                    }*/
 
                 } else {
                     Log.d(TAG, "Login failed: ${task.exception}")
@@ -245,56 +290,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             }
 
     }
-    /*private fun navigateToNextActivity(credential: PhoneAuthCredential) {
-            mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val user = task.result?.user
-                        val uid = user?.uid
-                        Log.d(TAG, "userId: $uid")
-                        *//*updateDataStore(uid)*//*
-                        callUSerLogin(uid)
-                        *//*when (userType) {
-                            "Job Seeker" -> {
-                                makeToast("Login successful!", 0)
-                                val intent = Intent(
-                                    this@OTPVerificationLoginActivity,
-                                    HomeJobActivity::class.java
-                                )
-                                intent.putExtra("phoneNo", txtPhoneNo.text.toString())
-                                intent.putExtra("userType", userType)
-                                startActivity(intent)
-                                overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
-                                finish()
-                            }
 
-                            "Recruiter" -> {
-                                makeToast("Login successful!", 0)
-                                val intent = Intent(
-                                    this@OTPVerificationLoginActivity,
-                                    HomeRecruiterActivity::class.java
-                                )
-                                intent.putExtra("phoneNo", txtPhoneNo.text.toString())
-                                intent.putExtra("userType", userType)
-                                startActivity(intent)
-                                overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
-                                finish()
-                            }
-                            else -> {
-                                Log.d(TAG, "navigateToNextActivity :: User not found.")
-                                makeToast("User not found.", 0)
-                            }
-                        }*//*
-
-                    } else {
-                        Log.d(TAG, "Login failed: ${task.exception}")
-                        makeToast("Login failed: ${task.exception}", 0)
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            makeToast("Try again", 0)
-                        }, 1000)
-                    }
-                }
-    }*/
     private val experienceViewModel: ExperienceViewModel by viewModels()
     private fun callUSerLogin(uid: String?) {
 
@@ -495,98 +491,5 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             Utils.showNoInternetBottomSheet(this,this)
         }
     }
-    /*private fun updateDataStore(uid: String?) {
-
-        if(userType == "Job Seeker"){
-            FirebaseDatabase.getInstance().getReference("Users").child("Job Seeker")
-                .child(uid.toString())
-                .addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val userData = snapshot.getValue(UsersJobSeeker::class.java)
-                            if (userData != null){
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    val jobSeekerProfileInfo = JobSeekerProfileInfo(this@OTPVerificationLoginActivity)
-                                    jobSeekerProfileInfo.storeBasicProfileData(
-                                        userData.userFName,
-                                        userData.userLName,
-                                        userData.userPhoneNumber,
-                                        userData.userEmailId,
-                                        userData.userTagLine,
-                                        userData.userCurrentCompany
-                                    )
-                                    jobSeekerProfileInfo.storeAboutData(
-                                        userData.userBio,
-                                        userData.userQualification
-                                    )
-                                    jobSeekerProfileInfo.storeExperienceData(
-                                        userData.userExperienceState,
-                                        userData.userDesignation,
-                                        userData.userPrevCompany,
-                                        userData.userPrevJobDuration
-                                    )
-                                    jobSeekerProfileInfo.storeResumeData(
-                                        userData.userResumeFileName,
-                                        userData.userResumeUri
-                                    )
-                                    jobSeekerProfileInfo.storeJobPreferenceData(
-                                        userData.userPerfJobTitle,
-                                        userData.userExpectedSalary,
-                                        userData.userPrefJobLocation,
-                                        userData.userWorkingMode
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        makeToast("User Not Found",0)
-                    }
-
-                })
-        }
-        if(userType == "Recruiter"){
-            FirebaseDatabase.getInstance().getReference("Users").child("Recruiter")
-                .child(uid.toString())
-                .addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val userData = snapshot.getValue(UsersRecruiter::class.java)
-                            if (userData != null){
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    val recruiterProfileInfo = RecruiterProfileInfo(this@OTPVerificationLoginActivity)
-                                    recruiterProfileInfo.storeBasicProfileData(
-                                        userData.userFName,
-                                        userData.userLName,
-                                        userData.userPhoneNumber,
-                                        userData.userEmailId,
-                                        userData.userTagLine,
-                                        userData.userCurrentCompany
-                                    )
-                                    recruiterProfileInfo.storeAboutData(
-                                        userData.userJobTitle,
-                                        userData.userSalary,
-                                        userData.userJobLocation,
-                                        userData.userBio,
-                                        userData.userDesignation,
-                                        userData.userWorkingMode
-                                    )
-                                    recruiterProfileInfo.storeProfileImg(
-                                        userData.userProfileImg
-                                    )
-                                    recruiterProfileInfo.storeProfileBannerImg(
-                                        userData.userProfileBannerImg
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        makeToast("User Not Found",0)
-                    }
-                })
-        }
-    }*/
     
 }

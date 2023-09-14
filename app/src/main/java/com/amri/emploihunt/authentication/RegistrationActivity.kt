@@ -74,16 +74,11 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
 
 
     lateinit var mCallback : PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    //    lateinit var btnTerms:TextView
-//    lateinit var btnConditions:TextView
 
     private lateinit var prefmanger: SharedPreferences
 
 
     private lateinit var mAuth: FirebaseAuth
-
-    private lateinit var storedVerificationId:String
-    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 
     private lateinit var firstName: String
     private lateinit var lastName: String
@@ -125,9 +120,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 makeToast(getString(R.string.something_error),0)
             }
         }
-
-
-
     }
 
     private fun setOnClickListener() {
@@ -162,82 +154,53 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         if (!correct) return
         else{
 
-
             Log.d("test", "registerUser: $phoneNo")
-//            val options = PhoneAuthOptions.newBuilder(mAuth)
-//                .setPhoneNumber(phoneNo)
-//                .setTimeout(60L, TimeUnit.SECONDS)
-//                .setActivity(this)
-//                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-//                        progressBar.visibility = GONE
-//                        btnRegistration.visibility = VISIBLE
-//                        copyCredential = credential
-//                        makeToast("onVerificationCompleted:$credential",1)
-//                        passInfoToNextActivity()
-//                    }
-//                    override fun onVerificationFailed(e: FirebaseException) {
-//                        progressBar.visibility = GONE
-//                        btnRegistration.visibility = VISIBLE
-//                        makeToast("Verification failed: ${e.message}",1)
-//                        Log.d("test", "onVerificationFailed: ${e.message}")
-//                    }
-//                    override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-//                        progressBar.visibility = GONE
-//                        btnRegistration.visibility = VISIBLE
-//                        Log.d("test", "onCodeSent: $verificationId")
-//                        makeToast("code sent",0)
-//                        storedVerificationId = verificationId
-//                        resendToken = token
-//                        passInfoToNextActivity()
-//                    }
-//                })
-//                .build()
-//            PhoneAuthProvider.verifyPhoneNumber(options)
 
-            getUserTypeIfNotSignIn(phoneNo) { userType ->
+            checkUserExistingOrNot(phoneNo) { userType ->
 
                 Log.d("###", "registerUser: $userType")
                 if (userType.isNotEmpty()) {
-                    mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                            binding.progressBar.visibility = GONE
-                            binding.btnRegistration.visibility = VISIBLE
-                            copyCredential = credential
-                            hideProgressDialog()
-                            makeToast("onVerificationCompleted:$credential",1)
-                            passInfoToNextActivity()
-                        }
-                        override fun onVerificationFailed(e: FirebaseException) {
-                            binding.progressBar.visibility = GONE
-                            binding.btnRegistration.visibility = VISIBLE
-                            hideProgressDialog()
-                            makeToast("Verification failed: ${e.message}",1)
-                            Log.d("test", "onVerificationFailed: ${e.message}")
-                        }
-
-                        override fun onCodeSent(
-                            verificationId: String,
-                            token: PhoneAuthProvider.ForceResendingToken
-                        ) {
-                            hideProgressDialog()
-                            Log.d("test", "onCodeSent: $verificationId")
-                            makeToast("code sent",0)
-                            storedVerificationId = verificationId
-                            resendToken = token
-                            passInfoToNextActivity()
-
-                        }
-                    }
-                    val options = PhoneAuthOptions.newBuilder(mAuth)
+                    passInfoToNextActivity()
+                    /*val options = PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(
                             phoneNo
                         ) // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(this) // Activity (for callback binding)
-                        .setCallbacks(mCallback) // OnVerificationStateChangedCallbacks
+                        .setCallbacks(
+                            object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                                    hideProgressDialog()
+                                    binding.progressBar.visibility = GONE
+                                    binding.btnRegistration.visibility = VISIBLE
+                                    copyCredential = credential
+                                    makeToast("onVerificationCompleted:$credential",1)
+                                    passInfoToNextActivity()
+                                }
+                                override fun onVerificationFailed(e: FirebaseException) {
+                                    hideProgressDialog()
+                                    binding.progressBar.visibility = GONE
+                                    binding.btnRegistration.visibility = VISIBLE
+                                    makeToast("Verification failed: ${e.message}",1)
+                                    Log.d("test", "onVerificationFailed: ${e.message}")
+                                }
+
+                                override fun onCodeSent(
+                                    verificationId: String,
+                                    token: PhoneAuthProvider.ForceResendingToken
+                                ) {
+                                    hideProgressDialog()
+                                    Log.d("test", "onCodeSent: $verificationId")
+                                    makeToast("code sent",0)
+                                    storedVerificationId = verificationId
+                                    resendToken = token
+
+
+                                }
+                            }
+                        )
                         .build()
-                    PhoneAuthProvider.verifyPhoneNumber(options)
+                    PhoneAuthProvider.verifyPhoneNumber(options)*/
                 }
 
             }
@@ -337,7 +300,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             )) {
             toast(resources.getString(R.string.enter_another_last_name))
         }
-
 
 
         if (firstName == lastName)  {
@@ -480,7 +442,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
 
     private fun getLatLng() {
         // Show progress here, because get Lat Lng takes 2-3 seconds to fetch
-        showProgressDialog(resources.getString(R.string.please_wait))
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(
@@ -515,10 +476,11 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 intent.putExtra("city",city)
                 intent.putExtra("role",userType)
                 intent.putExtra("termsConditions",termsConditionsAcceptance)
-                intent.putExtra("storedVerificationId",storedVerificationId)
+                hideProgressDialog()
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                 finish()
+
             } else {
                 Log.e("#####", "lastLocation exception ${task.exception?.message}")
                 // Get current location here, if last location not found
@@ -566,7 +528,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 intent.putExtra("email",email)
                 intent.putExtra("role",userType)
                 intent.putExtra("termsConditions",termsConditionsAcceptance)
-                intent.putExtra("storedVerificationId",storedVerificationId)
+                hideProgressDialog()
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                 finish()
@@ -618,7 +580,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             }
         }
     }
-    private fun getUserTypeIfNotSignIn(mobileNo: String, callback: (String) -> Unit){
+    private fun checkUserExistingOrNot(mobileNo: String, callback: (String) -> Unit){
 
         if (Utils.isNetworkAvailable(this)){
             showProgressDialog("Please wait....")
@@ -639,9 +601,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                                     )
                                     .setAction(
                                         "LOGIN"
-                                    )  // If the Undo button
-// is pressed, show
-// the message using Toast
+                                    )
                                     {
                                         startActivity(Intent(this@RegistrationActivity,
                                             LoginActivity::class.java))
@@ -649,14 +609,13 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                                             R.anim.slide_in_left,
                                             R.anim.slide_out_right
                                         )
+                                        finish()
                                     }
 
                                 snackbar.show()
-
                                 hideProgressDialog()
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
-
                             }
                         }
 
@@ -667,47 +626,16 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                                     "onError: code: ${it.errorCode} & message: ${it.message}"
                                 )
                                 if (it.errorCode == 404){
-                                    callback(it!!.errorBody!!)
+                                    callback(it.errorBody!!)
                                 }
 
                             }
-
-
                         }
                     })
         }else{
             showNoInternetBottomSheet(this,this)
         }
 
-        /* val database = FirebaseDatabase.getInstance()
-         val usersRef = database.reference.child("Users")
-
-         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-             override fun onDataChange(snapshot: DataSnapshot) {
-                 var grandParentKey = String()
-                 Log.d(TAG,"Finding User for :${mobileNo}")
-                 for (userTypeSnapshot in snapshot.children) {
-                     for (userSnapshot in userTypeSnapshot.children) {
-                         val userMobileNo = userSnapshot.child("userPhoneNumber").getValue(String::class.java)
-                         if (userMobileNo.equals(mobileNo)) {
-                             grandParentKey =
-                                 userTypeSnapshot.key.toString() // Key of the grandparent ("Job Seeker" or "Recruiter")
-                             Log.d(TAG,"userPhoneNumber: $userMobileNo => userType: $grandParentKey")
-                             userType = grandParentKey
-                             callback(grandParentKey)
-                             break
-                         }
-                         else{
-                             Log.d(TAG,"$userMobileNo : Not match")
-                         }
-                     }
-                 }
-             }
-             override fun onCancelled(error: DatabaseError) {
-                 Log.d(TAG,"error: ${error.message}")
-                 makeToast("error: ${error.message}",0)
-             }
-         })*/
     }
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

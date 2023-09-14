@@ -53,8 +53,6 @@ class LoginActivity : BaseActivity(),OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         mAuth = FirebaseAuth.getInstance()
 
         setOnClickListener()
@@ -72,7 +70,18 @@ class LoginActivity : BaseActivity(),OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnLogin -> {
-                sentOtp()
+                phoneNo = "+" + binding.cpp.fullNumber.toString().trim{it <= ' '}
+                getPhoneNoStatus(phoneNo){
+                    if(it.isNotEmpty()) {
+                        val correct = checkInputData(phoneNo)
+                        if (correct) {
+                            navigateToNextActivity()
+                        } else {
+                            Log.d("##", "Input data is incorrect")
+                            binding.phoneNo.error = "Please enter valid phone number"
+                        }
+                    }
+                }
             }
             R.id.btnRegistration -> {
                 startActivity(Intent(this@LoginActivity, AskActivity::class.java))
@@ -82,55 +91,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
         }
     }
 
-    private fun sentOtp() {
-        phoneNo = "+" + binding.cpp.fullNumber.toString().trim{it <= ' '}
 
-        getPhoneNoStatus(phoneNo) { responseMsg ->
-
-            if (responseMsg.isNotEmpty()) {
-                val correct = checkInputData(phoneNo)
-                if (correct) {
-//
-                    Log.d("##", "sentOtp: correct")
-                    mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
-                        override fun onVerificationFailed(e: FirebaseException) {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                e.localizedMessage,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            hideProgressDialog()
-                        }
-
-                        override fun onCodeSent(
-                            verificationId: String,
-                            token: PhoneAuthProvider.ForceResendingToken
-                        ) {
-                            storedVerificationId = verificationId
-                            resendToken = token
-                            binding.btnLogin.visibility = VISIBLE
-                            hideProgressDialog()
-                            navigateToNextActivity()
-                        }
-                    }
-                    val options = PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(
-                            phoneNo
-                        ) // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this) // Activity (for callback binding)
-                        .setCallbacks(mCallback) // OnVerificationStateChangedCallbacks
-                        .build()
-                    PhoneAuthProvider.verifyPhoneNumber(options)
-                } else {
-                    Log.d("##", "Input data is incorrect")
-                    makeToast("Input data is incorrect", 0)
-                }
-            }
-        }
-    }
 
     private fun getPhoneNoStatus(mobileNo: String, callback: (String) -> Unit){
 
@@ -145,7 +106,9 @@ class LoginActivity : BaseActivity(),OnClickListener {
                             try {
 
                                 Log.d(TAG, "onResponse: User type = ${response!!.message}")
+                                hideProgressDialog()
                                 callback(response.message)
+
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
 
@@ -166,9 +129,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
                                     )
                                     .setAction(
                                         "REGISTER"
-                                    )  // If the Undo button
-// is pressed, show
-// the message using Toast
+                                    )
                                     {
                                         startActivity(Intent(this@LoginActivity, AskActivity::class.java))
                                         overridePendingTransition(
@@ -208,10 +169,7 @@ class LoginActivity : BaseActivity(),OnClickListener {
     private fun navigateToNextActivity() {
 
         val intent = Intent(this@LoginActivity, OTPVerificationLoginActivity::class.java)
-//        intent.putExtra("jobType",jobType)
         intent.putExtra("phoneNo",phoneNo)
-        intent.putExtra("storedVerificationId",storedVerificationId)
-        intent.putExtra("resendToken",resendToken)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }

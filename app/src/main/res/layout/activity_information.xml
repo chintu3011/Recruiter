@@ -1044,7 +1044,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titleDivider7"
                             app:layout_constraintVertical_chainStyle="packed"
-                            app:placeholderText="Ahmedabad"
+                            app:placeholderText="MicroSoft"
                             app:startIconDrawable="@drawable/ic_company"
                             app:startIconTint="@color/blue">
 
