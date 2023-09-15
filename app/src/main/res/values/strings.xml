@@ -160,4 +160,5 @@
     <string name="edit">Edit</string>
     <string name="_1_00">00:30</string>
     <string name="otp_timer">Resend OTP in %d seconds</string>
+    <string name="lpa">%1$s LPA +</string>
 </resources>

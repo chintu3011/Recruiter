@@ -109,14 +109,14 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
     private fun sentOtp(phoneNo: String) {
 
-        timer.start()
+
         binding.txtPhoneNo.text = phoneNo
         showProgressDialog("Please wait...")
         Log.d("##$", "sentOtp: correct")
 
         val options = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber(phoneNo)
-            .setTimeout(15, TimeUnit.SECONDS)
+            .setTimeout(15L, TimeUnit.SECONDS)
             .setActivity(this)
             .setCallbacks(
                 object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -129,7 +129,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                     val user = task.result?.user
                                     val uid = user?.uid
                                     Log.d(TAG, "userId: $uid")
-                                    callUSerLogin(uid)
+                                    callUSerLogin(uid, user?.phoneNumber)
 
                                 } else {
                                     Log.d(TAG, "Login failed: ${task.exception}")
@@ -157,6 +157,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         verificationId: String,
                         token: PhoneAuthProvider.ForceResendingToken
                     ) {
+                        timer.start()
                         storedVerificationId = verificationId
                         resendToken = token
                         makeToast("code sent to :${this@OTPVerificationLoginActivity.phoneNo}",0)
@@ -226,13 +227,15 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         dialogBinding.phoneNo.text?.trim()?.length!! < 10 -> {
                             Toast.makeText(this@OTPVerificationLoginActivity,"Enter Valid Mobile No",Toast.LENGTH_SHORT).show()
                         }
-                        dialogBinding.cpp.fullNumber?.toString()!!.trim() == phoneNo -> {
+                        "+${dialogBinding.cpp.fullNumber?.toString()!!.trim()}" == phoneNo -> {
+                            Log.d("####", "onClick: ${dialogBinding.cpp.fullNumber?.toString()!!.trim()} $phoneNo")
                         Toast.makeText(this@OTPVerificationLoginActivity,"Please change existing change mobile number",Toast.LENGTH_SHORT).show()
                         }
                         else -> {
+                            Log.d("####", "else: ${dialogBinding.cpp.fullNumber?.toString()!!.trim()} $phoneNo")
                             bottomSheetDialog.dismiss()
                             timer.cancel()
-                            sentOtp(dialogBinding.cpp.fullNumber)
+                            sentOtp("+${dialogBinding.cpp.fullNumber?.toString()!!.trim()}")
                             //sendVerificationCode(fetchedMobNo)
 
                         }
@@ -257,7 +260,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             showProgressDialog("Please wait...")
             val options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(phoneNo)
-                .setTimeout(60L, TimeUnit.SECONDS)
+                .setTimeout(15L, TimeUnit.SECONDS)
                 .setActivity(this)
                 .setCallbacks(
                     object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -270,7 +273,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                         val user = task.result?.user
                                         val uid = user?.uid
                                         Log.d(TAG, "userId: $uid")
-                                        callUSerLogin(uid)
+                                        callUSerLogin(uid, user?.phoneNumber)
 
                                     } else {
                                         Log.d(TAG, "Login failed: ${task.exception}")
@@ -299,6 +302,9 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                             storedVerificationId = verificationId
                             resendToken = token
                             makeToast("code sent to :$phoneNo",0)
+                            binding.layResend.visibility = View.GONE
+                            binding.tvTimer.visibility = View.VISIBLE
+                            timer.start()
                             hideProgressDialog()
                         }
                     }
@@ -319,7 +325,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     val user = task.result?.user
                     val uid = user?.uid
                     Log.d(TAG, "userId: $uid")
-                    callUSerLogin(uid)
+                    callUSerLogin(uid, user?.phoneNumber)
 
                 } else {
                     Log.d(TAG, "Login failed: ${task.exception}")
@@ -333,11 +339,11 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
     }
 
     private val experienceViewModel: ExperienceViewModel by viewModels()
-    private fun callUSerLogin(uid: String?) {
+    private fun callUSerLogin(uid: String?, phoneNumber: String?) {
 
         if (Utils.isNetworkAvailable(this)){
             val jsonObject = JSONObject()
-            jsonObject.put(MOB_NO, phoneNo)
+            jsonObject.put(MOB_NO, phoneNumber)
             //jsonObject.put(FCM_TOKEN, prefManager[FCM_TOKEN, ""])
 
             jsonObject.put(DEVICE_ID, prefManager.get(DEVICE_ID,""))

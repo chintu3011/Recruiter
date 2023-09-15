@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -54,7 +53,6 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
-import java.util.Locale
 
 class HomeJobSeekerFragment : BaseFragment(),JobListUpdateListener,
 FilterParameterTransferClass.FilterJobListListener {
@@ -121,8 +119,9 @@ FilterParameterTransferClass.FilterJobListListener {
                 filteredDataList.clear()
                 currentPage = 1
                 binding.jobRvList.visibility = GONE
+                binding.layEmptyView.root.visibility = GONE
                 isFilter = false
-                retrieveJobData(pref.id)
+                retrieveJobData(pref.id, "")
 
             }
 
@@ -169,7 +168,7 @@ FilterParameterTransferClass.FilterJobListListener {
                     if (isFilter){
                         filterJobsApi(domain, location, workingMode, packageRange)
                     }else{
-                        retrieveJobData(0)
+                        retrieveJobData(0, "")
                         isFilter = false
                     }
 
@@ -192,6 +191,7 @@ FilterParameterTransferClass.FilterJobListListener {
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
             binding.jobRvList.visibility = GONE
+            binding.layEmptyView.root.visibility = GONE
             /*val query = binding.search.query?.trim()
             if (query!!.isEmpty()) {
 //                callGetAllTemplateCategoriesAPI(state_name = stateName)
@@ -210,7 +210,7 @@ FilterParameterTransferClass.FilterJobListListener {
 
             filteredDataList.clear()
             currentPage = 1
-            retrieveJobData(0)
+            retrieveJobData(0, "")
             isFilter = false
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -273,7 +273,7 @@ FilterParameterTransferClass.FilterJobListListener {
             }
         })
     }
-    private fun retrieveJobData(jobPreferenceId: Int) {
+    private fun retrieveJobData(jobPreferenceId: Int, tag: String) {
         Log.d("###", "retrieveJobData: ")
 
         if (Utils.isNetworkAvailable(requireContext())) {
@@ -287,6 +287,7 @@ FilterParameterTransferClass.FilterJobListListener {
             AndroidNetworking.get(NetworkUtils.GET_ALL_JOB)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                 .addQueryParameter("iJobPreferenceId",jobPreferenceId.toString())
+                .addQueryParameter("tag",tag)
                 .addQueryParameter("current_page",currentPage.toString())
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(GetAllJob::class.java,
@@ -317,7 +318,7 @@ FilterParameterTransferClass.FilterJobListListener {
                             anError?.let {
                                 Log.e(
                                     "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                 )
                                 if (it.errorCode >= 500) {
                                     binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
@@ -345,7 +346,7 @@ FilterParameterTransferClass.FilterJobListListener {
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
-                retrieveJobData(0)
+                retrieveJobData(0, "")
                 isFilter = false
             }
         }
@@ -356,7 +357,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 dataList.clear()
                 filteredDataList.clear()
                 currentPage = 1
-                retrieveJobData(0)
+                retrieveJobData(0, "")
                 isFilter = false
             }
         }
@@ -454,7 +455,7 @@ FilterParameterTransferClass.FilterJobListListener {
                                 )
 
                             }
-                            retrieveJobData(0)
+                            retrieveJobData(0, "")
                             isFilter = false
                         }
                     })
@@ -712,7 +713,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(GetAllJob::class.java,
                     object : ParsedRequestListener<GetAllJob> {
-                        @SuppressLint("NotifyDataSetChanged")
+                           @SuppressLint("NotifyDataSetChanged")
                         override fun onResponse(response: GetAllJob?) {
                             try {
                                 response?.let {
@@ -753,7 +754,7 @@ FilterParameterTransferClass.FilterJobListListener {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun updateJobList(query: String) {
-        filteredDataList.clear()
+       /* filteredDataList.clear()
         if (!TextUtils.isEmpty(query)){
             for (user in dataList) {
                 if (user.vJobTitle!!.lowercase(Locale.ROOT)
@@ -766,6 +767,21 @@ FilterParameterTransferClass.FilterJobListListener {
         else{
             filteredDataList.addAll(dataList)
         }
-        binding.jobsAdapter!!.notifyDataSetChanged()
+        binding.jobsAdapter!!.notifyDataSetChanged()*/
+        filteredDataList.clear()
+        currentPage = 1
+        binding.jobRvList.visibility = GONE
+        binding.layEmptyView.root.visibility = GONE
+        isFilter = false
+        retrieveJobData(0,query)
+    }
+
+    override fun backToSearchView() {
+        filteredDataList.clear()
+        currentPage = 1
+        binding.jobRvList.visibility = GONE
+        binding.layEmptyView.root.visibility = GONE
+        isFilter = false
+        retrieveJobData(0,"")
     }
 }

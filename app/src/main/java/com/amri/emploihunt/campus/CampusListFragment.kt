@@ -2,16 +2,13 @@ package com.amri.emploihunt.campus
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
@@ -35,7 +32,6 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.Calendar
 import java.util.GregorianCalendar
-import java.util.Locale
 
 class CampusListFragment : BaseFragment(), JobListUpdateListener {
 
@@ -47,7 +43,6 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
     private var totalPages = 1
     private lateinit var layoutManager: LinearLayoutManager
     lateinit var  bottomSheetDialog : BottomSheetDialog
-    private lateinit var dataList: MutableList<DataCampus>
     private lateinit var filteredDataList: MutableList<DataCampus>
     lateinit var binding:FragmentCampusListBinding
     lateinit var prefManager : SharedPreferences
@@ -58,7 +53,6 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         // Inflate the layout for this fragment
         binding = FragmentCampusListBinding.inflate(layoutInflater)
         prefManager = prefManager(requireContext())
-        dataList = mutableListOf()
         filteredDataList = mutableListOf()
         binding.campusListRv.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(requireContext(),  RecyclerView.VERTICAL, false)
@@ -70,7 +64,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                 }
             })
 
-        retrieveCampusData()
+        retrieveCampusData("")
 
         binding.campusListRv.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -92,7 +86,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                     isScrolling = false
                     currentPage++
 
-                    retrieveCampusData()
+                    retrieveCampusData("")
                 }
             }
         })
@@ -101,16 +95,17 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
 
-
+            binding.campusListRv.visibility = View.GONE
+            binding.layEmptyView.root.visibility  = View.GONE
             filteredDataList.clear()
             currentPage = 1
-            retrieveCampusData()
+            retrieveCampusData("")
             binding.swipeRefreshLayout.isRefreshing = false
         }
         return binding.root
     }
 
-    private fun retrieveCampusData() {
+    private fun retrieveCampusData(tag: String) {
         if (Utils.isNetworkAvailable(requireContext())) {
             if (currentPage != 1 && currentPage > totalPages) {
                 return
@@ -122,6 +117,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
             AndroidNetworking.get(NetworkUtils.GET_ALL_CAMPUS)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                 .addQueryParameter("current_page",currentPage.toString())
+                .addQueryParameter("tag",tag)
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(
                     GetAllCampus::class.java,
@@ -131,10 +127,9 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                             try {
                                 response?.let {
                                     hideProgressDialog()
-                                    Log.d("###", "onResponse: ${it.data}")
+                                    Log.d("#####", "onResponse: ${it.data}")
                                     filteredDataList.addAll(it.data)
-                                    dataList.addAll(it.data)
-                                    if (dataList.isNotEmpty()) {
+                                    if (filteredDataList.isNotEmpty()) {
                                         totalPages = it.total_pages
                                         binding.campusAdapter!!.notifyDataSetChanged()
                                         hideShowEmptyView(true)
@@ -180,7 +175,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
-                retrieveCampusData()
+                retrieveCampusData("")
             }
         }
     }
@@ -333,7 +328,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
     }
 
     override fun updateJobList(query: String) {
-        filteredDataList.clear()
+        /*filteredDataList.clear()
         if (!TextUtils.isEmpty(query)){
             for (user in dataList) {
                 if (user.tVacancy!!.lowercase(Locale.ROOT)
@@ -346,6 +341,20 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         else{
             filteredDataList.addAll(dataList)
         }
-        binding.campusAdapter!!.notifyDataSetChanged()
+        binding.campusAdapter!!.notifyDataSetChanged()*/
+        binding.campusListRv.visibility = View.GONE
+        binding.layEmptyView.root.visibility  = View.GONE
+        filteredDataList.clear()
+        Log.d("#####", "updateJobList: ${filteredDataList.count()}")
+        currentPage = 1
+        retrieveCampusData(query)
+    }
+
+    override fun backToSearchView() {
+        binding.campusListRv.visibility = View.GONE
+        binding.layEmptyView.root.visibility  = View.GONE
+        filteredDataList.clear()
+        currentPage = 1
+        retrieveCampusData("")
     }
 }

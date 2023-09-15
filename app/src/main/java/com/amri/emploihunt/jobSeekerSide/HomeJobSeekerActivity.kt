@@ -21,6 +21,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -197,21 +198,36 @@ class HomeJobSeekerActivity : BaseActivity(), FilterParameterTransferClass.Filte
 
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?): Boolean {
-                            return true
-                        }
-
-                        override fun onQueryTextChange(newText: String?): Boolean {
                             val currentFragment =
                                 supportFragmentManager.findFragmentById(R.id.frameLayout)
 
                             if (currentFragment is JobListUpdateListener) {
-                                currentFragment.updateJobList(newText.orEmpty())
+                                currentFragment.updateJobList(query.orEmpty())
                             }else if (currentFragment is CampusListFragment) {
-                                currentFragment.updateJobList(newText.orEmpty())
+                                currentFragment.updateJobList(query.orEmpty())
                             }
                             return true
                         }
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+
+                            return true
+                        }
                     })
+                    searchView.setOnCloseListener {
+                        val currentFragment =
+                            supportFragmentManager.findFragmentById(R.id.frameLayout)
+
+                        if (currentFragment is JobListUpdateListener) {
+                            currentFragment.backToSearchView()
+                        }else if (currentFragment is CampusListFragment) {
+                            currentFragment.backToSearchView()
+                        }
+
+                        return@setOnCloseListener false
+                    }
+                    searchView.isIconifiedByDefault = true;
+
                     true
                 }
 

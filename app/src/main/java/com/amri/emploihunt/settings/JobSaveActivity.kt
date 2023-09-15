@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
@@ -59,7 +60,7 @@ class JobSaveActivity : BaseActivity() {
                         val intent = Intent(this@JobSaveActivity, JobPostActivity::class.java)
                         intent.putExtra("ARG_JOB_TITLE", templateModel.job)
                         intent.putExtra("applyList", 1)
-                        startActivity(intent)
+                        changePostLauncher.launch(intent)
                     }
 
                 })
@@ -152,6 +153,15 @@ class JobSaveActivity : BaseActivity() {
             Utils.showNoInternetBottomSheet(this,this)
         }
     }
+    var changePostLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                saveList.clear()
+                currentPage = 1
+                retrieveSaveData()
+
+            }
+        }
     private fun hideShowEmptyView(
         isShow: Boolean,  isInternetAvailable: Boolean = true
     ) {

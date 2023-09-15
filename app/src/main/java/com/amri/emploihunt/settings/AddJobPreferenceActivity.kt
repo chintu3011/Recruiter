@@ -59,7 +59,7 @@ class AddJobPreferenceActivity : BaseActivity() {
             selectedjobPreference = intent.extras?.serializable("jobPref")!!
             binding.jobTitle.setText(selectedjobPreference.vJobTitle)
             binding.cityTitle.setText(selectedjobPreference.vJobLocation)
-            binding.tvSalary.setText(selectedjobPreference.vExpectedSalary+" LPA +")
+            binding.tvSalary.setText(getString(R.string.lpa, selectedjobPreference.vExpectedSalary))
             expected = selectedjobPreference.vExpectedSalary
 
             when(selectedjobPreference.vWorkingMode){
@@ -181,7 +181,7 @@ class AddJobPreferenceActivity : BaseActivity() {
                 it.show()
             }
             dialog!!.setOnCancelListener {
-                binding.tvSalary.text = expected
+                binding.tvSalary.text = getString(R.string.lpa, expected)
             }
         } catch (e: Exception) {
             Log.e("#####", "showProgressDialog exception: ${e.message}")
