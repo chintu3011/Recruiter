@@ -18,7 +18,7 @@ import com.amri.emploihunt.databinding.RowPostDesignBinding
 import com.amri.emploihunt.model.DataSaveList
 import com.amri.emploihunt.model.SaveListModel
 import com.amri.emploihunt.networking.NetworkUtils
-import com.amri.emploihunt.recruiterSide.JobPostActivity
+import com.amri.emploihunt.jobSeekerSide.JobPostActivity
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get

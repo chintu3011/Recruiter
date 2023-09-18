@@ -23,12 +23,6 @@ class ExperienceDataStore @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-
-
-    /*companion object {
-        private val ExperienceListSerializer = ExperienceListSerializer()
-    }*/
-
     suspend fun saveExperienceList(experienceList: List<Experience>) {
         context.dataStore.updateData { currentList ->
             currentList.toBuilder()

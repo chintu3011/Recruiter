@@ -665,7 +665,6 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:textColor="@color/white"
             android:textSize="15sp"
-            
             app:cornerRadius="@dimen/_5sdp"
             android:layout_gravity="bottom"
             android:clickable="true"

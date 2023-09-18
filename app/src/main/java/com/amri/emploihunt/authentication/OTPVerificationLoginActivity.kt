@@ -121,8 +121,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             .setCallbacks(
                 object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                        hideProgressDialog()
-
                         mAuth.signInWithCredential(credential)
                             .addOnCompleteListener{ task ->
                                 if (task.isSuccessful) {
@@ -328,6 +326,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     callUSerLogin(uid, user?.phoneNumber)
 
                 } else {
+                    hideProgressDialog()
                     Log.d(TAG, "Login failed: ${task.exception}")
                     makeToast("Login failed: ${task.exception}", 0)
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -392,6 +391,11 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 userDataRepository.storeResumeData(
                                                     response.data.user.tResumeUrl
                                                 )
+
+                                                Log.d(
+                                                    TAG,
+                                                    "onResponse: Recieved Data : ${response.data.user}"
+                                                )
                                                 prefManager[IS_LOGIN] = true
                                                 prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                                 prefManager[ROLE] = response.data.user.iRole
@@ -402,7 +406,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     this@OTPVerificationLoginActivity,
                                                     HomeJobSeekerActivity::class.java
                                                 )
-                                                /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
+
                                                 intent.putExtra("userId",response.data.user.vFirebaseId)
                                                 intent.putExtra("role",response.data.user.iRole)
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -439,6 +443,10 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 userDataRepository.storeProfileImg(
                                                     response.data.user.tProfileUrl
                                                 )
+                                                Log.d(
+                                                    TAG,
+                                                    "onResponse: Recieved Data : ${response.data.user}"
+                                                )
                                                 val intent = Intent(
                                                     this@OTPVerificationLoginActivity,
                                                     HomeRecruiterActivity::class.java
@@ -449,7 +457,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[ROLE] = response.data.user.iRole
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                                 prefManager[IS_BLOCKED] = response.data.user.isBlock
-                                                /*intent.putExtra("phoneNo", binding.txtPhoneNo.text.toString())*/
+
                                                 intent.putExtra("userId",response.data.user.vFirebaseId)
                                                 intent.putExtra("role", response.data.user.iRole)
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -467,7 +475,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                     }
                                     hideProgressDialog()
                                 }
-                                //hideProgressDialog()
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
                                 hideProgressDialog()
@@ -499,7 +506,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         override fun onResponse(response: UserExpModel?) {
                             try {
                                 if (response != null) {
-                                    Log.d(TAG, "onResponse: ${response.data}")
+                                    Log.d(TAG, "onResponse: Experience data received: ${response.data}")
                                     experienceViewModel.writeToLocal(response.data.toList())
                                         .invokeOnCompletion {
                                             Log.d(

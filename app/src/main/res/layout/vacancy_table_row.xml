@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/row1"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<com.google.android.material.textview.MaterialTextView
+    android:id="@+id/role"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/blueLight"
+    android:paddingHorizontal="@dimen/_5sdp"
+    android:paddingVertical="@dimen/_5sdp"
+    android:text="Android Developer"
+    android:textAlignment="textStart"
+    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+    android:textColor="@color/blue" />
+
+<com.google.android.material.textview.MaterialTextView
+    android:id="@+id/vacancyCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#2060C3AD"
+    android:paddingHorizontal="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_5sdp"
+    android:text="10"
+    android:textAlignment="center"
+    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+    android:textColor="@color/blue" />
+
+</TableRow>

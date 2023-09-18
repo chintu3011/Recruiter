@@ -48,6 +48,8 @@ import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.SELECT_PROFILE_IMG
+import com.amri.emploihunt.util.SELECT_RESUME_FILE
 import com.amri.emploihunt.util.USER_ID
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.convertUriToPdfFile
@@ -538,18 +540,18 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.layoutCV -> {
-                selectpdf()
+                selectpdf(SELECT_RESUME_FILE)
             }
             R.id.addProfileImgJ ->{
 
                 val deniedPermission:MutableList<String> = isGrantedPermission()
                 if(deniedPermission.isEmpty()) {
-                    selectImg()
+                    selectImg(SELECT_PROFILE_IMG)
                 }
                 else{
                     requestPermissions(deniedPermission){
                         if(it){
-                            selectImg()
+                            selectImg(SELECT_PROFILE_IMG)
                         }
                         else{
                             val snackbar = Snackbar
@@ -571,7 +573,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 }
             }
             R.id.addProfileImgR ->{
-                selectImg()
+                selectImg(SELECT_PROFILE_IMG)
             }
             R.id.btnSubmit -> {
                 if(userType == RECRUITER) storeInfoR()
@@ -624,18 +626,18 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
     }
-    private fun selectImg() {
+    private fun selectImg(code:Int) {
         val imgIntent = Intent(Intent.ACTION_GET_CONTENT)
         imgIntent.type = "image/*"
         imgIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(imgIntent, 22)
+        startActivityForResult(imgIntent, code)
     }
 
-    private fun selectpdf() {
+    private fun selectpdf(code:Int) {
         val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
         pdfIntent.type = "application/pdf"
         pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(pdfIntent, 12)
+        startActivityForResult(pdfIntent, code)
     }
 
     private var isImgSelected = false
@@ -644,9 +646,9 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
-                12 -> if (resultCode == RESULT_OK) {
-                    val pdfUri = data?.data!!
-                    val uri: Uri = data.data!!
+                SELECT_RESUME_FILE -> if (resultCode == RESULT_OK) {
+
+                    val uri: Uri = data?.data!!
                     val uriString: String = uri.toString()
                     resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
 
@@ -670,7 +672,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         }
                     }
                 }
-                22 -> if (resultCode == RESULT_OK) {
+                SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
 
                     if(userType == JOB_SEEKER){
@@ -988,6 +990,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                     response.data.user.tProfileUrl
                                                 )
                                             }
+
+                                            Log.d(
+                                                TAG,
+                                                "setProfileData: Received Data : ${response.data.user}"
+                                            )
                                             binding.btnSubmit.visibility = GONE
                                             binding.btnBack.visibility = GONE
                                             prefManager[IS_LOGIN] = true
@@ -1087,6 +1094,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                     response.data.user.tProfileUrl
                                                 )
                                             }
+
+                                            Log.d(
+                                                TAG,
+                                                "onResponse: Received Data : ${response.data.user}"
+                                            )
                                             binding.btnSubmit.visibility = GONE
                                             binding.btnBack.visibility = GONE
                                             prefManager[IS_LOGIN] = true
@@ -1137,7 +1149,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         jsonObject.put("vJobLocation",jobLocation)
         jsonObject.put("vDuration", "")
 
-        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation!!,currentCompany!!,jobLocation!!,""))
+        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation,currentCompany,jobLocation,""))
 
         AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
             .addHeaders("Authorization", "Bearer $tAuthToken")
@@ -1223,7 +1235,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             )
 
                                         }
-
+                                        Log.d(
+                                            TAG,
+                                            "onResponse: Received Data : ${response.data.user}"
+                                        )
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -1397,6 +1412,9 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             userDataRepository.storeAboutData(
                                                 response.data.user.tBio,
                                             )
+                                            userDataRepository.storeQualificationData(
+                                                response.data.user.vQualification,
+                                            )
                                             userDataRepository.storeCurrentPositionData(
                                                 response.data.user.vCurrentCompany,
                                                 response.data.user.vDesignation,
@@ -1408,6 +1426,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                             )
 
                                         }
+
+                                        Log.d(
+                                            TAG,
+                                            "onResponse: Received Data : ${response.data.user}"
+                                        )
                                         prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
@@ -1485,6 +1508,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 response.data.user.vCity
                                             )
                                         }
+                                        Log.d(
+                                            TAG,
+                                            "onResponse: Received Data : ${response.data.user}"
+                                        )
                                         binding.btnSubmit.visibility = GONE
                                         binding.btnBack.visibility = GONE
                                         prefManager[IS_LOGIN] = true
@@ -1494,6 +1521,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                         prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                         hideProgressDialog()
                                         navigateToHomeActivity()
+
+
 
                                     }
                                 } catch (e: Exception) {
@@ -1572,7 +1601,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         if (userType == JOB_SEEKER) {
             val intent = Intent(this@InformationActivity, HomeJobSeekerActivity::class.java)
             intent.putExtra("role", userType)
-            val fullName = fName + lName
+            val fullName = fName.plus(" ").plus(lName)
             makeToast("Welcome $fullName", 0)
             intent.putExtra("name", fullName)
             intent.putExtra("userId",userId)
@@ -1584,7 +1613,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         if (userType == RECRUITER){
             val intent = Intent(this@InformationActivity, HomeRecruiterActivity::class.java)/** need **/
             intent.putExtra("role", userType)
-            val fullName = fName + lName
+            val fullName = fName.plus(" ").plus(lName)
             makeToast("Welcome $fullName", 0)
             intent.putExtra("name", fullName)
             intent.putExtra("userId",userId)

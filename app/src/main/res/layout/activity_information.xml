@@ -1022,7 +1022,7 @@
                             style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:gravity="start"
                             android:hint="@string/company_name"
                             android:paddingTop="0dp"
                             android:paddingStart="0dp"
@@ -1037,7 +1037,6 @@
                             app:boxStrokeColor="@color/edit_text_color"
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/gray"
-                            app:hintTextColor="@color/ed_theme_color"
                             app:layout_constraintBottom_toTopOf="@+id/spDesignationR"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
@@ -1373,7 +1372,6 @@
                     app:constraint_referenced_ids="btnSubmit,progressBar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

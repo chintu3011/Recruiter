@@ -4,8 +4,8 @@ import okhttp3.OkHttpClient
 
 object NetworkUtils {
 
-    private const val BASE_URL = "http://172.190.170.96:5000/api"
-    /*private const val BASE_URL = "http://192.168.148.196:5000/api"*/
+    private const val BASE_URL = "https://api.emploihunt.com/api"
+//    private const val BASE_URL = "http://192.168.163.196:5000/api"
   /*  private const val BASE_URL = "http://192.168.119.196:5000/api"*/
 
 

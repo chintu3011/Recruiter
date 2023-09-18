@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -49,7 +51,12 @@ class PostRecruitFragment : BaseFragment() {
     lateinit var profilePicFile: File
     /*var cityList: ArrayList<String> = ArrayList()*/
     var selectedJobLocation = String()
+    var selectedJobTitle = String()
+    var selectedEducation = String()
     lateinit var  jobLocationAdapter: ArrayAdapter<String>
+
+    private lateinit var techSkillList:MutableList<String>
+    private lateinit var softSkillList:MutableList<String>
     var cityValidator = false
 
     override fun onCreateView(
@@ -63,6 +70,34 @@ class PostRecruitFragment : BaseFragment() {
 
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
+
+        binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
+        binding.spJobTitle.arrowPaddingRight = 19
+        binding.spJobTitle.item = resources.getStringArray(R.array.indian_designations).toList()
+        binding.spJobTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                binding.spJobTitle.isOutlined = true
+                selectedJobTitle = binding.spJobTitle.item[position].toString()
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+        binding.spEducation.setSearchDialogGravity(Gravity.TOP)
+        binding.spEducation.arrowPaddingRight = 19
+        binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
+        binding.spEducation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                binding.spEducation.isOutlined = true
+                selectedEducation = binding.spEducation.item[position].toString()
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+
         binding.linearLayout2.setOnClickListener {
 
             val deniedPermissions:MutableList<String> = isGrantedPermission()
@@ -93,13 +128,31 @@ class PostRecruitFragment : BaseFragment() {
                 }
             }
         }
-        binding.btnpostjob.setOnClickListener {
 
+        techSkillList = mutableListOf()
+        binding.btnAddTechSkills.setOnClickListener{
+            val chip = LayoutInflater.from(requireContext()).inflate(R.layout.single_chip_qualification,null) as Chip
+            chip.text = binding.technicalSkills.text.toString().trim()
+            techSkillList.add(binding.technicalSkills.text.toString().trim())
+            binding.technicalSkills.setText("")
+            binding.techSkillsChipGrp.addView(chip)
+        }
+        softSkillList = mutableListOf()
+        binding.btnAddSoftSkills.setOnClickListener{
+            val chip = LayoutInflater.from(requireContext()).inflate(R.layout.single_chip_qualification,null) as Chip
+            chip.text = binding.softSkills.text.toString().trim()
+            softSkillList.add(binding.softSkills.text.toString().trim())
+            binding.softSkills.setText("")
+            binding.softSkillsChipGrp.addView(chip)
+        }
+        binding.btnpostjob.setOnClickListener {
+            showProgressDialog("Please wait")
             if (checkValidation()){
                 adddata()
             }
-
-
+            else{
+               hideProgressDialog()
+            }
         }
         binding.btnCancelPost.setOnClickListener {
             val homeFragment = HomeRecruitFragment()
@@ -109,31 +162,30 @@ class PostRecruitFragment : BaseFragment() {
             transaction.commit()
         }
 
+
         val cityList:ArrayList<String> = arrayListOf()
         getAllCity(cityList){
             if (cityList.isNotEmpty()){
-                val adapter: ArrayAdapter<String> =
-                    ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
-                binding.location.setAdapter(adapter)
+                binding.spJobLocation.setSearchDialogGravity(Gravity.TOP)
+                binding.spJobLocation.arrowPaddingRight = 19
+                binding.spJobLocation.item = cityList.toList()
+                binding.spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                        binding.spJobLocation.isOutlined = true
+                        selectedJobLocation = binding.spJobLocation.item[position].toString()
+                    }
+
+                    override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+                    }
+                }
             }
             else{
                 makeToast(getString(R.string.something_error),0)
             }
         }
 
-        binding.location.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                arg0: AdapterView<*>?, arg1: View?,
-                arg2: Int, arg3: Long
-            ) {
-                binding.location.clearFocus()
-                Log.d("###", "onItemSelected: ")
-            }
 
-            override fun onNothingSelected(arg0: AdapterView<*>?) {
-                // TODO Auto-generated method stub
-            }
-        }
         binding.linearLayout2.setOnClickListener {
             val deniedPermissions:MutableList<String> = isGrantedPermission()
             if(deniedPermissions.isEmpty()) {
@@ -163,7 +215,21 @@ class PostRecruitFragment : BaseFragment() {
                 }
             }
         }
-        binding.location.validator = object : AutoCompleteTextView.Validator {
+
+        /*binding.location.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+           override fun onItemSelected(
+               arg0: AdapterView<*>?, arg1: View?,
+               arg2: Int, arg3: Long
+           ) {
+               binding.location.clearFocus()
+               Log.d("###", "onItemSelected: ")
+           }
+
+           override fun onNothingSelected(arg0: AdapterView<*>?) {
+               // TODO Auto-generated method stub
+           }
+       }*/
+        /*binding.location.validator = object : AutoCompleteTextView.Validator {
             override fun isValid(text: CharSequence): Boolean {
                 Log.v("Test", "Checking if valid: $text ${cityList.contains(text.toString())}")
 
@@ -188,7 +254,7 @@ class PostRecruitFragment : BaseFragment() {
                 (view as AutoCompleteTextView).performValidation()
 
             }
-        }
+        }*/
         return binding.root
     }
 
@@ -223,7 +289,7 @@ class PostRecruitFragment : BaseFragment() {
         val uploadTask = imagesRef.putFile(imageUri)
         uploadTask.addOnProgressListener {snapshot ->
             val progress = (100.0 * snapshot.bytesTransferred/snapshot.totalByteCount).toInt()
-            binding.uploadProgress.progress = progress
+            /*binding.uploadProgress.progress = progress*/
         }
         uploadTask
             .continueWithTask { task ->
@@ -243,9 +309,9 @@ class PostRecruitFragment : BaseFragment() {
             }
     }
     private fun checkValidation(): Boolean {
-        if (binding.jobTitle.text.toString().isBlank()){
-            binding.jobTitle.requestFocus()
-            binding.jobTitle.error = "Please enter job title"
+        if (selectedJobTitle.isEmpty()){
+            binding.spJobTitle.requestFocus()
+            binding.spJobTitle.errorText = "Please enter job title"
             return  false
 
         }else if (binding.currentCompany.text.toString().isBlank()){
@@ -268,29 +334,29 @@ class PostRecruitFragment : BaseFragment() {
             binding.jobroleadd.error = "Please enter job role"
             return  false
 
-        }else if (binding.jobLevel.text.toString().isBlank()){
+        }/*else if (binding.jobLevel.text.toString().isBlank()){
             binding.jobLevel.requestFocus()
             binding.jobLevel.error = "Please enter job level"
             return  false
 
-        }else if (binding.technicalSkills.text.toString().isBlank()){
+        }*/else if (techSkillList.isEmpty()){
             binding.technicalSkills.requestFocus()
             binding.technicalSkills.error = "Please enter technical skill"
             return  false
 
-        }else if (binding.softSkills.text.toString().isBlank()){
+        }else if (softSkillList.isEmpty()){
             binding.softSkills.requestFocus()
             binding.softSkills.error = "Please enter soft skill"
             return  false
 
-        }else if (binding.eduadd.text.toString().isBlank()){
-            binding.eduadd.requestFocus()
-            binding.eduadd.error = "Please enter education"
+        }else if (selectedEducation.isEmpty()){
+            binding.spEducation.requestFocus()
+            binding.spEducation.errorText = "Please enter education"
             return  false
 
-        }else if (binding.location.text.toString().isNullOrBlank()){
-            binding.location.requestFocus()
-            binding.location.error = "Please select job location"
+        }else if (selectedJobLocation.isEmpty()){
+            binding.spJobLocation.requestFocus()
+            binding.spJobLocation.errorText = "Please select job location"
             return  false
         }else if (binding.salary.text.toString().isBlank()){
             binding.salary.requestFocus()
@@ -313,16 +379,17 @@ class PostRecruitFragment : BaseFragment() {
     }
     private fun adddata() {
 
-        val title : String = binding.jobTitle.text.toString().trim()
+        val title : String = selectedJobTitle
         val compname : String = binding.currentCompany.text.toString().trim()
         val desc : String = binding.descadd.text.toString().trim()
-        val jobLevel : String = binding.jobLevel.text.toString().trim()
+        /*val jobLevel : String = binding.jobLevel.text.toString().trim()*/
         val role : String = binding.jobroleadd.text.toString().trim()
         val exp : String = binding.experiencedDuration.text.toString().trim()
-        val techskill : String = binding.technicalSkills.text.toString().trim()
-        val softskill : String = binding.softSkills.text.toString().trim()
-        val edu : String = binding.eduadd.text.toString().trim()
-        val city : String = binding.location.text.toString().trim()
+
+        val techskill : String = techSkillList.joinToString(" || ")
+        val softskill : String = softSkillList.joinToString(" || ")
+        val edu : String = selectedEducation
+        val city : String = selectedJobLocation
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
         when (workmodeid)
@@ -344,7 +411,7 @@ class PostRecruitFragment : BaseFragment() {
                 .addQueryParameter("vJobTitle",title)
                 .addQueryParameter("vCompanyName",compname)
                 .addQueryParameter("tDes",desc)
-                .addQueryParameter("vJobLevel",jobLevel)
+                .addQueryParameter("vJobLevel","")
                 .addQueryParameter("vExperience",exp)
                 .addQueryParameter("tTechnicalSkill",techskill)
                 .addQueryParameter("tSoftSkill",softskill)
@@ -362,18 +429,20 @@ class PostRecruitFragment : BaseFragment() {
                         override fun onResponse(response: RegisterUserModel?) {
                             try {
                                 response?.let {
-                                    hideProgressDialog()
 
-                                    binding.jobTitle.text!!.clear()
+
+                                    binding.spJobTitle.clearSelection()
                                     binding.currentCompany.text!!.clear()
                                     binding.descadd.text!!.clear()
-                                    binding.jobLevel.text!!.clear()
+                                    /*binding.jobLevel.text!!.clear()*/
                                     binding.jobroleadd.text!!.clear()
                                     binding.experiencedDuration.text!!.clear()
                                     binding.technicalSkills.text!!.clear()
+                                    binding.techSkillsChipGrp.removeAllViews()
                                     binding.softSkills.text!!.clear()
-                                    binding.eduadd.text!!.clear()
-                                    binding.location.text.clear()
+                                    binding.softSkillsChipGrp.removeAllViews()
+                                    binding.spEducation.clearSelection()
+                                    binding.spJobLocation.clearSelection()
                                     binding.textLayoutWorkingMode.clearCheck()
                                     binding.salary.text!!.clear()
                                     binding.noOfEmployeeNeed.text!!.clear()
@@ -385,6 +454,9 @@ class PostRecruitFragment : BaseFragment() {
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
                             }
+                            finally {
+                                hideProgressDialog()
+                            }
                         }
 
                         override fun onError(anError: ANError?) {
@@ -393,14 +465,12 @@ class PostRecruitFragment : BaseFragment() {
                                 Log.e(
                                     "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                 )
-
-
                             }
                         }
                     })
         }else{
-
             Utils.showNoInternetBottomSheet(requireContext(),requireActivity())
+            hideProgressDialog()
         }
 
 
@@ -443,40 +513,4 @@ class PostRecruitFragment : BaseFragment() {
                 }
         }*/
     }
-    /*private fun getAllCity(){
-
-        if (Utils.isNetworkAvailable(requireContext())){
-
-            AndroidNetworking.get(NetworkUtils.GET_CITIES)
-                .setPriority(Priority.MEDIUM).build()
-                .getAsObject(
-                    GetAllCity::class.java,
-                    object : ParsedRequestListener<GetAllCity> {
-                        override fun onResponse(response: GetAllCity?) {
-                            try {
-                                cityList.addAll(response!!.data)
-                            } catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
-
-                            }
-                        }
-
-                        override fun onError(anError: ANError?) {
-                            anError?.let {
-                                Log.e(
-                                    "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.message}"
-                                )
-
-
-                            }
-
-
-                        }
-                    })
-        }else{
-            Utils.showNoInternetBottomSheet(requireContext(), requireActivity())
-        }
-
-    }*/
 }

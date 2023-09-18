@@ -106,21 +106,22 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/tvAddress"
                     android:textSize="@dimen/_12sdp"/>
+
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvQulication"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BE(Computer),\nBTECH,\nBCA,\nMCA"
-                    android:textColor="@color/black"
-                    android:id="@+id/tvQulication"
+                    android:layout_below="@+id/tvAddress"
+                    android:layout_alignEnd="@+id/tvVacancy"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:drawableStart="@drawable/ic_qualification"
                     android:drawablePadding="@dimen/_2sdp"
                     android:drawableTint="@color/blue"
-                    android:drawableStart="@drawable/ic_qualification"
-                    android:layout_marginEnd="@dimen/_2sdp"
-                    android:layout_alignEnd="@+id/tvVacancy"
                     android:padding="@dimen/_2sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/tvAddress"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:text="BE(Computer),\nBTECH,\nBCA,\nMCA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
 
 
 

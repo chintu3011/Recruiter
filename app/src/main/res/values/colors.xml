@@ -6,6 +6,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#004A69</color>
+    <color name="disable_blue">#A5CEDF</color>
     <color name="grey">#BCBEC0</color>
     <color name="dark_grey">#939598</color>
     <color name="theme_blue">#00377B</color>
@@ -21,7 +22,7 @@
     <color name="card_ripple_color">#3C0073FF</color>
     <color name="transparent">#007C7575</color>
     <color name="ed_theme_color">#FF0960A2</color>
-    <color name="disable_blue">#6B9DB1</color>
     <color name="search_hint_color">#C73126</color>
     <color name="search_text_color">#755653</color>
+    <color name="blueLight">#1B415F6C</color>
 </resources>

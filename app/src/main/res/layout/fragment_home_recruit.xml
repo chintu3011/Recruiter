@@ -96,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine" />
+
                 <include
                     android:id="@+id/layEmptyView"
                     layout="@layout/layout_empty_view"

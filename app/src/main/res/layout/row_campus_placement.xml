@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardBackgroundColor="#F1F8F6"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/DetailLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/topView"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/collegeName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/college_name"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/campusAddress"
+                    app:layout_constraintEnd_toStartOf="@+id/txtRemainTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/topView" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtRemainTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tv_bg_1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:text="@string/_18_hours_remaining"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textColor="@color/blue"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/collegeName"
+                    app:layout_constraintTop_toBottomOf="@id/topView" />
+
+
+                <io.github.glailton.expandabletextview.ExpandableTextView
+                    android:id="@+id/campusAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/short_lorem_ipsum"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:collapsedLines="2"
+                    app:ellipsizeTextColor="@color/gray"
+                    app:expandType="layout"
+                    app:isExpanded="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/collegeName"
+                    app:readLessText="Read less"
+                    app:readMoreText="Read more"
+                    app:textMode="line" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/DetailLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+
+                <View
+                    android:id="@+id/middleView"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@color/blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/campusDriveDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tv_bg_1"
+                    android:backgroundTint="@color/blue"
+                    android:padding="@dimen/_5sdp"
+                    android:text="22-12-2003"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/middleView" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtJobRole"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:text="@string/required_job_role"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toStartOf="@+id/btnShowRows"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/campusDriveDate" />
+
+                <TableLayout
+                    android:id="@+id/vacancyTable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/table_bg"
+                    android:elevation="@dimen/_3sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:stretchColumns="0"
+                    app:layout_constraintBottom_toTopOf="@+id/txtQualification"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtJobRole"
+                    app:layout_constraintVertical_bias="1.0">
+
+                    <TableRow
+                        android:id="@+id/titleRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#88004A69"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:text="@string/job_role"
+                            android:textAlignment="center"
+
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/blue"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#8560C3AD"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:text="@string/vacancy"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/blue"
+                            android:textStyle="bold" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnShowRows"
+                    style="@style/FloatingActionButtonStyle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_down"
+                    app:backgroundTint="@color/white"
+                    app:borderWidth="0dp"
+                    app:fabCustomSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtJobRole"
+                    app:layout_constraintEnd_toEndOf="@id/vacancyTable"
+                    app:layout_constraintStart_toEndOf="@+id/txtJobRole"
+                    app:layout_constraintTop_toTopOf="@+id/txtJobRole"
+                    app:maxImageSize="@dimen/_10sdp"
+                    app:tint="@color/black" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtQualification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:text="@string/required_qualifications"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vacancyTable" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:scrollbarSize="@dimen/_2sdp"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtQualification">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/qualificationChipGrp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleLine="true">
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:backgroundTint="@color/blue"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    android:text="@string/register"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

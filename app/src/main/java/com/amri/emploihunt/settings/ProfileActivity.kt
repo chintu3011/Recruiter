@@ -1,21 +1,15 @@
 package com.amri.emploihunt.settings
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Typeface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.OpenableColumns
-import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -43,14 +37,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.AskActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityProfileBinding
 import com.amri.emploihunt.model.CommonMessageModel
 import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.GetUserById
 import com.amri.emploihunt.model.User
-import com.amri.emploihunt.model.UserExpModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.UserDataRepository
@@ -59,6 +51,9 @@ import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.SELECT_PROFILE_BANNER_IMG
+import com.amri.emploihunt.util.SELECT_PROFILE_IMG
+import com.amri.emploihunt.util.SELECT_RESUME_FILE
 import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -73,14 +68,9 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -92,7 +82,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.io.Serializable
+import java.io.File
 
 
 @AndroidEntryPoint
@@ -122,9 +112,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     private var callBalloon: Balloon ?= null
     private var emailBalloon: Balloon ?= null
-
-    /*private lateinit var userDataRepository: userDataRepository
-    private lateinit var userDataRepository: userDataRepository*/
+    
     private lateinit var userDataRepository: UserDataRepository
     private val experienceViewModel: ExperienceViewModel by viewModels()
 
@@ -144,8 +132,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private var residentialCity:String? = null
 
     private var profileImgUri: String? = null
+    private lateinit var profileImgFile: File
     private var profileBannerImgUri: String? = null
-
+    private lateinit var profileBannerFile: File
     //User Data
     private var bio: String? = null
     private var qualification: String? = null
@@ -158,11 +147,13 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private lateinit var experienceList:MutableList<Experience>
     
     private var resumeUri: String? = null
+    private lateinit var resumeFile:File
     private var resumeFileName: String? = null
     
     @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         _binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(_binding!!.root)
 
@@ -170,10 +161,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         userId = prefmanger.get(FIREBASE_ID)
         userType = prefmanger.get(ROLE,0)
         Log.d("$userId", "$userType")
-        
-        
-       /* userDataRepository = userDataRepository(this)
-        userDataRepository = userDataRepository(this)*/
+
         userDataRepository = UserDataRepository(this)
 
         UpdateSeverHelperClass.instance!!.setListener(this)
@@ -186,7 +174,34 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
-                val user = User(-1,"",userType!!,fName!!,lName!!,phoneNumber!!,emailId!!,qualification!!,"","",currentCompany!!,designation!!,jobLocation!!,"",workingMode!!,bio!!,tagLine!!,residentialCity!!,"","","","",-1,"","")
+                val user = User(
+                    -1,
+                    "",
+                    userType!!,
+                    fName!!,
+                    lName!!,
+                    phoneNumber!!,
+                    emailId!!,
+                    qualification!!,
+                    "",
+                    "",
+                    currentCompany!!,
+                    designation!!,
+                    jobLocation!!,
+                    "",
+                    workingMode!!,
+                    bio!!,
+                    tagLine!!,
+                    residentialCity!!,
+                    "",
+                    "",
+                    "",
+                    "",
+                    -1,
+                    "",
+                    ""
+                )
+
                 val updateDataServiceIntent = Intent(this@ProfileActivity, UpdateProfileDataService::class.java)
                 updateDataServiceIntent.putExtra("userObject",user)
                 startService(updateDataServiceIntent)
@@ -198,11 +213,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     private fun setProfileData() {
 
-        Log.d("isPermissionToShowImg", isGrantedPermission().toString())
+
         /** profile banner */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserProfileBannerUrl().collect {
-
+                Log.d(TAG, "setProfileData: trying to update profile banner data $it")
                 profileBannerImgUri = it
                 Glide.with(this@ProfileActivity)
                     .load(profileBannerImgUri)
@@ -214,13 +229,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                     )
                     .into(binding.profileBackImg)
-
-                /*val previouslyEncodedImage: String = it
-                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                    binding.profileBackImg.setImageBitmap(bitmap)
-                }*/
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: profile banner data is updated")
@@ -228,7 +236,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** profile Img */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserProfileImgUrl().collect {
-
+                Log.d(TAG, "setProfileData: trying to update profile img data $it")
                 profileImgUri = it
                 Glide.with(this@ProfileActivity)
                     .load(profileImgUri)
@@ -239,12 +247,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                             .circleCrop()
                     )
                     .into(binding.profileImg)
-                /*val previouslyEncodedImage: String = it
-                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                    binding.profileImg.setImageBitmap(bitmap)
-                }*/
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: profile img data is updated")
@@ -252,6 +254,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** FName */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserFName().collect {
+                Log.d(TAG, "setProfileData: trying to update fName data $it")
                 fName = it
             }
         }.invokeOnCompletion {
@@ -260,11 +263,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** LName */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserLName().collect {
-                /*binding.userName.visibility = VISIBLE*/
+                Log.d(TAG, "setProfileData: trying to update LName data $it")
                 lName = it
-                /*fullName = fName.plus(" $lName")
-                binding.userName.text = fullName!!*/
-
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: Last name data is updated")
@@ -272,16 +272,18 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** full Name */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserFullName().collect{
+                Log.d(TAG, "setProfileData: trying to update fullName data $it")
                 showViewIfNotEmpty(it,binding.userName)
                 fullName = it
                 binding.userName.text = fullName
             }
         }.invokeOnCompletion {
-            Log.d(TAG, "setProfileData: Full name:$fullName data is updated")
+            Log.d(TAG, "setProfileData: Full name data is updated")
         }
         /** phone number */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserPhoneNumber().collect { phoneNo ->
+                Log.d(TAG, "setProfileData: trying to update phone no data $phoneNo")
                 phoneNumber = phoneNo
                 if (phoneNo.isNotEmpty()) {
                     callBalloon = createMsgBalloon(phoneNo, R.drawable.ic_call, baseContext)
@@ -320,6 +322,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** email id*/
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserEmailId().collect { email ->
+                Log.d(TAG, "setProfileData: trying to update email data $email")
                 emailId = email
                 if (email.isNotEmpty()) {
                     emailBalloon = createMsgBalloon(email, R.drawable.ic_email, baseContext)
@@ -354,6 +357,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** tagLine */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserTageLine().collect {
+                Log.d(TAG, "setProfileData: trying to update tagline data $it")
                 showViewIfNotEmpty(it, binding.expertise)
                 tagLine = it
                 binding.expertise.text = tagLine
@@ -364,6 +368,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** current company */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserCurrentCompany().collect {
+                Log.d(TAG, "setProfileData: trying to update current company data $it")
                 showViewIfNotEmpty(it,binding.currentCompany)
                 currentCompany = it
                 binding.currentCompany.text = currentCompany
@@ -373,23 +378,26 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 }
             }
         }.invokeOnCompletion {
-            Log.d(TAG, "setProfileData: current Company:$currentCompany data is updated")
+            Log.d(TAG, "setProfileData: current Company: data is updated")
         }
         /** residential City*/
         lifecycle.coroutineScope.launch {
             userDataRepository.getResidentialCity().collect{
+                Log.d(TAG, "setProfileData: trying to update residential city data $it")
                 showViewIfNotEmpty(it,binding.residentialCity)
                 residentialCity = it
                 binding.residentialCity.text = residentialCity
             }
         }.invokeOnCompletion {
-            Log.d(TAG, "setProfileData: residential:$residentialCity data is updated")
+            Log.d(TAG, "setProfileData: residential city data is updated")
         }
         /** Bio */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserBio().collect {
+                Log.d(TAG, "setProfileData: trying to update bio data $it")
                 bio = it
                 if(userType == 0) {
+                    showViewIfNotEmpty(it,binding.bioJ)
                     binding.bioJ.setText(bio)
                     addAboutImg = createAddDataImg(binding.aboutInfoLayoutJ, R.id.txtAboutJ)
 
@@ -401,6 +409,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     }
                 }
                 else{
+                    showViewIfNotEmpty(it,binding.bioR)
                     binding.bioR.setText(bio)
                     addAboutImg = createAddDataImg(binding.aboutInfoLayoutR, R.id.txtAboutR)
 
@@ -419,9 +428,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** qualification */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserQualification().collect {
-                /*showViewIfNotEmpty(it,binding.qualificationJ)*/
+                Log.d(TAG, "setProfileData: trying to update qualification data $it")
                 qualification = it
                 if(userType == 0) {
+                    showViewIfNotEmpty(it,binding.qualificationJ)
+
                     binding.qualificationJ.text = qualification
                     addQualificationImg =
                         createAddDataImg(binding.qualificationLayoutJ, R.id.txtQualificationJ)
@@ -438,6 +449,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     }
                 }
                 else{
+                    showViewIfNotEmpty(it,binding.qualificationJ)
+
                     binding.qualificationR.text = qualification
                     addQualificationImg =
                         createAddDataImg(binding.qualificationLayoutR, R.id.txtQualificationR)
@@ -457,55 +470,43 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         } .invokeOnCompletion {
             Log.d(TAG, "setProfileData: Qualification data is updated")
         }
+        
         /** Designation */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserDesignation().collect {
-
+                Log.d(TAG, "setProfileData: trying to update designation data $it")
                 designation = it
-                if(userType == 1){
-                    showViewIfNotEmpty(it,binding.designationR)
-                    binding.designationR.text = designation
-                   /* addCurrentPosImg =
-                        createAddDataImg(binding.qualificationLayoutR, R.id.txtQualificationR)
-
-                    if (addQualificationImg != null) {
-                        decideAddImgToVisibility(
-                            qualification.isNullOrEmpty(),
-                            binding.qualificationR,
-                            addQualificationImg!!
-                        )
-                    } else {
-                        makeToast(getString(R.string.something_error), 0)
-                        Log.d(TAG, "setProfileData: addQualificationImg is null")
-                    }*/
-                }
+                showViewIfNotEmpty(it, binding.designationR)
+                binding.designationR.text = designation
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: Designation data is updated")
         }
         /** Job Location */
         lifecycle.coroutineScope.launch {
-            userDataRepository.getUserJobLocation().collect{
+            userDataRepository.getUserJobLocation().collect {
+                Log.d(TAG, "setProfileData: trying to update job location data $it")
                 jobLocation = it
-                if(userType == 1){
-                    showViewIfNotEmpty(it,binding.jobLocation)
-                    binding.jobLocation.text = jobLocation
-                }
+                showViewIfNotEmpty(it, binding.jobLocation)
+                binding.jobLocation.text = jobLocation
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: JobLocation data is updated")
         }
         /** working mode */
         lifecycle.coroutineScope.launch {
-            userDataRepository.getUserPrefWorkingMode().collect{
+            userDataRepository.getUserWorkingMode().collect {
+                Log.d(TAG, "setProfileData: trying to update working mode data $it")
                 workingMode = it
-                if(userType == 1){
-                    showViewIfNotEmpty(it,binding.workingModeR)
+                if (userType == 1) {
+                    showViewIfNotEmpty(it, binding.workingModeR)
                     binding.workingModeR.text = workingMode
-                    addCurrentPosImg = createAddDataImg(binding.currPosLayoutR,R.id.txtCurrentPositionR)
-                    if(addCurrentPosImg != null){
-                        val b = (currentCompany.isNullOrEmpty() && designation.isNullOrEmpty() && jobLocation.isNullOrEmpty() && workingMode.isNullOrEmpty())
-                        decideAddImgToVisibility(b,binding.positionLayoutR,addCurrentPosImg!!)
+                    addCurrentPosImg =
+                        createAddDataImg(binding.currPosLayoutR, R.id.txtCurrentPositionR)
+                    if (addCurrentPosImg != null) {
+                        val b =
+                            (currentCompany.isNullOrEmpty() && designation.isNullOrEmpty() && jobLocation.isNullOrEmpty() && workingMode.isNullOrEmpty())
+                        decideAddImgToVisibility(b, binding.positionLayoutR, addCurrentPosImg!!)
                     } else {
                         makeToast(getString(R.string.something_error), 0)
                         Log.d(TAG, "setProfileData: addAboutImg is null")
@@ -517,57 +518,63 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             Log.d(TAG, "setProfileData: Working mode R data is updated")
         }
         /** Experience */
-        lifecycle.coroutineScope.launch {
-            Log.d(TAG, "setProfileData: trying to update experience data")
-            addExperienceImg = createAddDataImg(binding.experienceLayout,R.id.txtExperienceJ)
-            experienceViewModel.readFromLocal().collect{ list ->
+        if(userType == 0) {
+            lifecycle.coroutineScope.launch {
+                Log.d(TAG, "setProfileData: trying to update experience data")
+                addExperienceImg = createAddDataImg(binding.experienceLayout, R.id.txtExperienceJ)
                 experienceList.clear()
-                if(!designation.isNullOrEmpty() && ! currentCompany.isNullOrEmpty() && !jobLocation.isNullOrEmpty()) {
-                    experienceList.add(
-                        Experience(
-                            designation!!,
-                            currentCompany!!,
-                            jobLocation!!,
-                            ""
+                experienceViewModel.readFromLocal().collect { list ->
+                    Log.d(TAG, "setProfileData: Experience $list")
+
+                    for (experience in list.toMutableList()) {
+                        experienceList.add(experience)
+                    }
+
+                    if (addExperienceImg != null) {
+                        decideAddImgToVisibility(
+                            experienceList.isEmpty(),
+                            binding.dataLayout,
+                            addExperienceImg!!
                         )
-                    )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addExperienceImg is null")
+                    }
+                    Log.d(TAG, "setProfileData: Experience data \n $experienceList")
+                    setExperiences()
                 }
-                for (experience in list.toMutableList()) {
-                    experienceList.add(experience)
-                }
-
-                if (addExperienceImg != null) {
-
-                    decideAddImgToVisibility(
-                        experienceList.isEmpty(),
-                        binding.dataLayout,
-                        addExperienceImg!!
-                    )
-                } else {
-                    makeToast(getString(R.string.something_error), 0)
-                    Log.d(TAG, "setProfileData: addExperienceImg is null")
-                }
-                Log.d(TAG, "setProfileData: Experience data \n $experienceList")
-                setExperiences()
+            }.invokeOnCompletion {
+                Log.d(TAG, "setProfileData: experience data is updated")
             }
-        } .invokeOnCompletion {
-            Log.d(TAG, "setProfileData: experience data is updated")
         }
         /** Resume file */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserResumeUri().collect {
-                resumeUri = it
-                resumeFileName = fName!!.plus("'s ").plus("Resume")
-                binding.resumeFileNameJ.text = resumeFileName
-                addResumeImg = createAddDataImg(binding.resumeLayout,R.id.txtResumeJ)
+                Log.d(TAG, "setProfileData: trying to update resume data $it")
+                if(userType == 0) {
+                    resumeUri = it
+                    showViewIfNotEmpty(it,binding.resumeFileNameJ)
+                    addResumeImg = createAddDataImg(binding.resumeLayout, R.id.txtResumeJ)
+                    Log.d(TAG, "setProfileData: $fName")
+                    if (fName != null) {
+                        resumeFileName = fName!!.plus("'s ").plus("Resume")
+                        binding.resumeFileNameJ.text = resumeFileName
+                    }
+                    else{
+                        resumeFileName = "Resume"
+                        binding.resumeFileNameJ.text = resumeFileName
+                    }
+                    if (addResumeImg != null) {
 
-                if(addResumeImg != null){
-
-                    decideAddImgToVisibility(resumeUri.isNullOrEmpty(), binding.resumeFileNameJ, addResumeImg!!)
-                }
-                else{
-                    makeToast(getString(R.string.something_error),0)
-                    Log.d(TAG, "setProfileData: addResumeImg is null")
+                        decideAddImgToVisibility(
+                            resumeUri.isNullOrEmpty(),
+                            binding.resumeFileNameJ,
+                            addResumeImg!!
+                        )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addResumeImg is null")
+                    }
                 }
             }
         }.invokeOnCompletion {
@@ -591,17 +598,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         binding.dataLayout.removeAllViews()
         binding.btnShowMore.isActivated = false
         binding.btnShowMore.text = getString(R.string.show_more)
-        /*addExperienceImg = createAddDataImg(binding.experienceLayout,R.id.txtExperienceJ)*/
         if (experienceList.isEmpty()){
             binding.dataLayout.visibility = GONE
-            /*if (addExperienceImg != null){
-             addExperienceImg!!.visibility = VISIBLE
-            }*/
+
         }
         else{
-/*            if (addExperienceImg != null){
-                addExperienceImg!!.visibility = GONE
-            }*/
+
             binding.dataLayout.visibility = VISIBLE
 
             for (index in 0 until 3) {
@@ -611,15 +613,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                     val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
                     val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
-                    /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                    val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
                     val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
                     val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
                     btnDelete.visibility = GONE
                     designationTextView.text = experience.vDesignation
                     companyNameTextView.text = experience.vCompanyName
-                    /*jobLocationTextView.text = experience.vJobLocation*/
-                    durationTextView.text = experience.vDuration.toString().plus(" Years")
-
+                    jobLocationTextView.text = experience.vJobLocation
+                    if(experience.vDuration.isNotEmpty()){
+                        durationTextView.text = experience.vDuration.plus(" Years")
+                    }
                     binding.dataLayout.addView(experienceRow)
                 }
                 else{
@@ -642,7 +645,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         addImg: ShapeableImageView
     ) {
         if(dataState){
-            Log.d(TAG, "decideAddImgToVisibility: all data is null or empty : ${true}")
+            Log.d(TAG, "decideAddImgToVisibility: ${true}")
             view.visibility = GONE
             addImg.visibility = VISIBLE
 
@@ -785,21 +788,24 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                 if (!binding.btnShowMore.isActivated) {
                     if(experienceList.size > 3){
-                        for (index in 3 until experienceList.size) {
+                        for (index in 3 until experienceList.size)  {
                             val experience = experienceList[index]
                             val experienceRow = layoutInflater.inflate(R.layout.row_experience, null)
 
                             val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
                             val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
-                            /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                            val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
                             val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
                             val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
                             btnDelete.visibility = GONE
 
                             designationTextView.text = experience.vDesignation
                             companyNameTextView.text = experience.vCompanyName
-                            /*jobLocationTextView.text = experience.vJobLocation*/
-                            durationTextView.text = experience.vDuration.plus(" Years")
+                            jobLocationTextView.text = experience.vJobLocation
+                            if(experience.vDuration.isNotEmpty()) {
+                                durationTextView.text =
+                                    experience.vDuration.plus(" Years")
+                            }
 
                             binding.dataLayout.addView(experienceRow)
                         }
@@ -815,15 +821,18 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                             val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
                             val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
-                            /*val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)*/
+                            val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
                             val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
                             val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
                             btnDelete.visibility = GONE
 
                             designationTextView.text = experience.vDesignation
                             companyNameTextView.text = experience.vCompanyName
-                            /*jobLocationTextView.text = experience.vJobLocation*/
-                            durationTextView.text = experience.vDuration.toString().plus(" Years")
+                            jobLocationTextView.text = experience.vJobLocation
+                            if(experience.vDuration.isNotEmpty()) {
+                                durationTextView.text =
+                                    experience.vDuration.plus(" Years")
+                            }
 
                             binding.dataLayout.addView(experienceRow)
                         }
@@ -868,6 +877,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         val currentPositionDialog = layoutInflater.inflate(R.layout.dialog_current_position_info, null)
 
         var selectedJobLocation = String()
+        var selectedWorkingMode = String()
 
         val edCompanyName = currentPositionDialog.findViewById<EditText>(R.id.companyName)
         val edJobTitle = currentPositionDialog.findViewById<EditText>(R.id.designation)
@@ -885,7 +895,22 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
             }
         }
-        val radioGrpWorkingMode = currentPositionDialog.findViewById<RadioGroup>(R.id.radioGrpWorkingMode)
+        val tbWorkingMode = currentPositionDialog.findViewById<TabLayout>(R.id.tbWorkingMode)
+        tbWorkingMode.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                selectedWorkingMode = tab?.text.toString()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                selectedWorkingMode = tab?.text.toString()
+            }
+
+        })
+
 
         alertDialogRecruiterInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(currentPositionDialog)
@@ -894,7 +919,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 currentCompany = edCompanyName.text.toString().trim()
                 designation = edJobTitle.text.toString().trim()
                 jobLocation = selectedJobLocation.trim()
-                workingMode = getSelectedRadioItem(radioGrpWorkingMode, currentPositionDialog)
+                workingMode = selectedWorkingMode.trim()
 
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -930,14 +955,14 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         val btnUpload = resumeDialogView.findViewById<ShapeableImageView>(R.id.btnUpload)
 
-        tvResumeFileName = resumeDialogView.findViewById<TextView>(R.id.resumeFileName)
+        tvResumeFileName = resumeDialogView.findViewById(R.id.resumeFileName)
         tvResumeFileName.text = resumeFileName!!
         btnUpload.setOnClickListener{
-            selectPdf()
+            selectPdf(SELECT_RESUME_FILE)
         }
 
-        uploadProgressBar = resumeDialogView.findViewById<ProgressBar>(R.id.uploadProgressBar)
-        uploadProgressBar.visibility = View.GONE
+        uploadProgressBar = resumeDialogView.findViewById(R.id.uploadProgressBar)
+        uploadProgressBar.visibility = GONE
 
         alertDialogResumeInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(resumeDialogView)
@@ -988,27 +1013,18 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 )
                 .into(profileBackImg)
         }
-       /* lifecycle.coroutineScope.launch {
-            userDataRepository.getUserProfileBannerUrl().collect {
-                val previouslyEncodedImage: String = it
-                if (!previouslyEncodedImage.equals("", ignoreCase = true)) {
-                    val b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
-                    profileBackImg.setImageBitmap(bitmap)
-                }
-            }
-        }*/
+
         btnSelectImg = profileBannerDialogView.findViewById(R.id.btnChangeImg)
         btnSelectImg.setOnClickListener {
 
             val deniedPermissions:MutableList<String> = isGrantedPermission()
 
             if (deniedPermissions.isEmpty()) {
-                selectImg("bannerImg")
+                selectImg(SELECT_PROFILE_BANNER_IMG)
             } else {
                 requestPermissions(deniedPermissions) {
                     if (it) {
-                        selectImg("bannerImg")
+                        selectImg(SELECT_PROFILE_BANNER_IMG)
                     } else {
                         alertDialogProfileBanner.dismiss()
                         val snackbar = Snackbar
@@ -1034,12 +1050,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setTitle("Change Banner Image")
             .setView(profileBannerDialogView)
             .setPositiveButton("Done") { dialog, _ ->
-                /*val baos = ByteArrayOutputStream()
-                photoBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val b = baos.toByteArray()
-                val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
-                profileBannerImg = encodedImage
-                Log.d("Img Encoded String..", profileBannerImg!!)*/
+
                 CoroutineScope(Dispatchers.IO).launch {
                     userDataRepository.storeProfileBannerImg(
                         profileBannerImgUri!!
@@ -1084,11 +1095,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             val deniedPermissions:MutableList<String> = isGrantedPermission()
 
             if (deniedPermissions.isEmpty()) {
-                selectImg("profileImg")
+                selectImg(SELECT_PROFILE_IMG)
             } else {
                 requestPermissions(deniedPermissions){
                     if (it) {
-                        selectImg("profileImg")
+                        selectImg(SELECT_PROFILE_IMG)
                     }
                     else{
                         alertDialogProfileImg.dismiss()
@@ -1112,16 +1123,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }
 
         alertDialogProfileImg = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
-            .setTitle("Change Banner Image")
+            .setTitle("Change Image")
             .setView(profileImgDialogView)
             .setPositiveButton("Done") { dialog, _ ->
-               /* val baos = ByteArrayOutputStream()
-                photoBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val b = baos.toByteArray()
-                val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
-                profileImg = encodedImage
-                Log.d("Img Encoded String..", profileImg!!)*/
-
                 CoroutineScope(Dispatchers.IO).launch {
                     userDataRepository.storeProfileImg(
                         profileImgUri!!,
@@ -1679,23 +1683,19 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     }
 
 
-    private fun selectImg(s: String) {
+    private fun selectImg(code: Int) {
         val imgIntent = Intent(Intent.ACTION_GET_CONTENT)
         imgIntent.type = "image/*"
         imgIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        if (s == "bannerImg") {
-            startActivityForResult(imgIntent, 24)
-        }
-        if (s == "profileImg") {
-            startActivityForResult(imgIntent, 44)
-        }
+        startActivityForResult(imgIntent, code)
+
     }
 
-    private fun selectPdf() {
+    private fun selectPdf(code: Int) {
         val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
         pdfIntent.type = "application/pdf"
         pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(pdfIntent, 12)
+        startActivityForResult(pdfIntent, code)
     }
 
 
@@ -1705,15 +1705,17 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
-                12 -> if (resultCode == RESULT_OK) {
+                SELECT_RESUME_FILE -> if (resultCode == RESULT_OK) {
                     uploadProgressBar.visibility = View.VISIBLE
                     uploadProgressBar.progress = 10
                     val pdfUri = data?.data!!
-                    resumeFileName = null.toString()
+
+                    resumeFile = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
+
                     if (pdfUri.toString().startsWith("content://")) {
                         var myCursor: Cursor? = null
                         try {
-                            myCursor = contentResolver?.query(
+                            myCursor = this.contentResolver.query(
                                 pdfUri,
                                 null,
                                 null,
@@ -1730,139 +1732,38 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                             myCursor?.close()
                         }
                     }
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        uploadProgressBar.progress = 95
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            uploadProgressBar.progress = 100
-                            uploadProgressBar.visibility = View.GONE
-                        }, 100)
-                    }, 1000)
+                    resumeUri = pdfUri.toString()
 
                 }
 
-                24 -> if (resultCode == RESULT_OK) {
+                SELECT_PROFILE_BANNER_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-                    if (photoUri.toString().startsWith("content://")) {
-                        var myCursor: Cursor? = null
-                        try {
-                            myCursor = this.contentResolver.query(
-                                photoUri,
-                                null,
-                                null,
-                                null,
-                                null
-                            )
-                            if (myCursor != null && myCursor.moveToFirst()) {
-                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                val storageRef = Firebase.storage.reference
-                                val path = "images/userImages/$userId/profileBannerImg"
-                                val imageRef = storageRef.child(path)
-
-                                imageRef.putFile(photoUri)
-                                    .addOnProgressListener {
-                                        /*binding.uploadProgressLayout.visibility = VISIBLE*/
-                                        /*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
-                                        binding.uploadProgressBar.progress = progress*/
-                                    }
-                                    .addOnSuccessListener {
-
-                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                            /*binding.uploadProgressLayout.visibility = GONE*/
-                                            profileBannerImgUri = downloadUri.toString()
-                                            if(profileBannerImgUri != null) {
-                                                Glide.with(this@ProfileActivity)
-                                                    .load(profileBannerImgUri)
-                                                    .apply(
-                                                        RequestOptions
-                                                            .placeholderOf(R.drawable.profile_default_back_img)
-                                                            .error(R.drawable.profile_default_back_img)
-                                                            .fitCenter()
-                                                    )
-                                                    .into(profileBackImg)
-                                            }
-                                        }
-                                    }
-                                    .addOnFailureListener { exception ->
-
-                                        /*binding.uploadProgressLayout.visibility = GONE*/
-                                        makeToast("Img is not stored successfully",0)
-                                        Log.e(TAG, "onActivityResult: error while storing Img $exception" )
-                                    }
-
-                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                                }
-                                else{
-                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
-                                }*/
-                            }
-                        } finally {
-                            myCursor?.close()
-                        }
-                    }
+                    profileBannerFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                    Glide.with(this@ProfileActivity)
+                        .load(photoUri)
+                        .apply(
+                            RequestOptions
+                                .placeholderOf(R.drawable.profile_default_back_img)
+                                .error(R.drawable.profile_default_back_img)
+                                .fitCenter()
+                        )
+                        .into(profileBackImg)
+                    profileBannerImgUri = photoUri.toString()
                 }
 
-                44 -> if (resultCode == RESULT_OK) {
+                SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-
-                    if (photoUri.toString().startsWith("content://")) {
-                        var myCursor: Cursor? = null
-                        try {
-                            myCursor = this.contentResolver.query(
-                                photoUri,
-                                null,
-                                null,
-                                null,
-                                null
-                            )
-                            if (myCursor != null && myCursor.moveToFirst()) {
-                                val imgName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                val storageRef = Firebase.storage.reference
-                                val path = "images/userImages/$userId/profileImg"
-                                val imageRef = storageRef.child(path)
-
-                                imageRef.putFile(photoUri)
-                                    .addOnProgressListener {
-                                        /*binding.uploadProgressLayout.visibility = VISIBLE*/
-                                        /*val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
-                                        binding.uploadProgressBar.progress = progress*/
-                                    }
-                                    .addOnSuccessListener {
-
-                                        imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                            /*binding.uploadProgressLayout.visibility = GONE*/
-                                            profileImgUri = downloadUri.toString()
-                                            Glide.with(this@ProfileActivity)
-                                                .load(profileImgUri)
-                                                .apply(
-                                                    RequestOptions
-                                                        .placeholderOf(R.drawable.profile_default_image)
-                                                        .error(R.drawable.profile_default_image)
-                                                        .circleCrop()
-                                                )
-                                                .into(profileImgDia)
-                                            /*val contentResolver: ContentResolver = contentResolver
-                                            val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
-                                            photoBitmap = Bitmap.createScaledBitmap(bitmap, profileImgDia.width, profileImgDia.height, false)
-                                            profileImgDia.setImageBitmap(photoBitmap)*/
-                                        }
-                                    }
-                                    .addOnFailureListener { exception ->
-                                        /*binding.uploadProgressLayout.visibility = GONE*/
-                                        makeToast("Img is not stored successfully",0)
-                                        Log.e(TAG, "onActivityResult: error while storing Img $exception" )
-                                    }
-                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                                }
-                                else{
-                                    Log.d(TAG, "onActivityResult: ${Build.VERSION.SDK_INT} in not capable.")
-                                }*/
-                            }
-                        } finally {
-                            myCursor?.close()
-                        }
-                    }
+                    profileImgFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                    Glide.with(this@ProfileActivity)
+                        .load(photoUri)
+                        .apply(
+                            RequestOptions
+                                .placeholderOf(R.drawable.profile_default_image)
+                                .error(R.drawable.profile_default_image)
+                                .fitCenter()
+                        )
+                        .into(profileImgDia)
+                    profileImgUri = photoUri.toString()
                 }
             }
         }

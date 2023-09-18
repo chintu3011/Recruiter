@@ -26,7 +26,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.AskActivity
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityChatBoardBinding
 import com.amri.emploihunt.model.MessageData

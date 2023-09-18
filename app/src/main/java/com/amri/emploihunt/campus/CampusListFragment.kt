@@ -3,19 +3,23 @@ package com.amri.emploihunt.campus
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.TableLayout
+import android.widget.TableRow
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.ApplyBottomsheetBinding
 import com.amri.emploihunt.databinding.FragmentCampusListBinding
-import com.amri.emploihunt.databinding.RowCampusBinding
+import com.amri.emploihunt.databinding.RowCampusPlacementBinding
 import com.amri.emploihunt.jobSeekerSide.JobListUpdateListener
 import com.amri.emploihunt.model.ApplyModel
 import com.amri.emploihunt.model.DataCampus
@@ -30,6 +34,9 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textview.MaterialTextView
 import java.util.Calendar
 import java.util.GregorianCalendar
 
@@ -49,8 +56,8 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
+
         binding = FragmentCampusListBinding.inflate(layoutInflater)
         prefManager = prefManager(requireContext())
         filteredDataList = mutableListOf()
@@ -104,6 +111,8 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         }
         return binding.root
     }
+
+
 
     private fun retrieveCampusData(tag: String) {
         if (Utils.isNetworkAvailable(requireContext())) {
@@ -186,9 +195,10 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
     ) : RecyclerView.Adapter<CampusAdapter.CategoriesHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesHolder {
             return CategoriesHolder(
-                RowCampusBinding.inflate(
+                RowCampusPlacementBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ),
+                mActivity
             )
         }
 
@@ -196,54 +206,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
             val campusModel = dataList[position]
 
-            if (campusModel.iIsApplied ==1 ){
-                holder.binding.btnRegistration.text = mActivity.resources.getString(R.string.already_applied)
-                holder.binding.btnRegistration.setBackgroundDrawable(mActivity.resources.getDrawable(R.drawable.btn_campus_shape_disble))
-
-            }else{
-                holder.binding.btnRegistration.text = mActivity.resources.getString(R.string.register)
-                holder.binding.btnRegistration.setBackgroundDrawable(mActivity.resources.getDrawable(R.drawable.btn_campus_shape))
-
-            }
-            holder.binding.tvName.text = campusModel.vCampusName
-            holder.binding.tvAddress.text = campusModel.tCampusAddress
-            var vacancy = ""
-            for (str in campusModel.tVacancy.split(",")){
-                vacancy += "$str\n"
-            }
-            var qualification = ""
-            for (str in campusModel.vQulification.split(",")){
-                qualification += "$str\n"
-            }
-            holder.binding.tvVacancy.text = vacancy
-            holder.binding.tvQulication.text = qualification
-
-            val calendar: Calendar = GregorianCalendar()
-            val time = (calendar.timeInMillis / 1000).toString()
-            val differenceSec =(campusModel.tRegistrationEndDate.toInt() - time.toInt())
-            val days =  differenceSec / (60 * 60 * 24)
-            val remainder1 = differenceSec % 86400
-            val hour =  remainder1 / (60 * 60)
-            val remainder = differenceSec % 3600
-            val minutes =  remainder / 60
-            Log.d("###", "onBindViewHolder: $differenceSec")
-            if (days!=0){
-
-               holder.binding.remingTime.text = mActivity!!.getString(R.string.expire1,days,hour,minutes)
-            }else if (hour != 0){
-               holder.binding.remingTime.text = mActivity!!.getString(R.string.expire2,hour,minutes)
-            }else if (minutes != 0){
-               holder.binding.remingTime.text = mActivity.getString(R.string.expire3,minutes)
-
-            }
-
-
-//            onCategoryClick.onCategoryClicked(it, templateModel)
-            holder.binding.executePendingBindings()
-            holder.binding.btnRegistration.setOnClickListener {
-                notifyDataSetChanged()
-                onCategoryClick.onCategoryClicked(it, campusModel,position)
-            }
+            holder.onBind(campusModel)
         }
 
         override fun getItemCount(): Int {
@@ -251,8 +214,144 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
             return dataList.size
         }
 
-        inner class CategoriesHolder(val binding: RowCampusBinding) :
-            RecyclerView.ViewHolder(binding.root)
+        inner class CategoriesHolder(val binding: RowCampusPlacementBinding, mActivity: Activity): RecyclerView.ViewHolder(binding.root){
+
+
+            private val rowList:MutableList<TableRow> = mutableListOf()
+            private var showFullList:Boolean = false
+            @SuppressLint("NotifyDataSetChanged")
+            fun onBind(campusModel: DataCampus) {
+                if (campusModel.iIsApplied ==1 ){
+                    binding.btnRegister.text = mActivity.resources.getString(R.string.already_applied)
+                    binding.btnRegister.setTextColor(ContextCompat.getColor(mActivity, R.color.blue))
+                    binding.btnRegister.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(mActivity, R.color.disable_blue))
+                }else{
+                    binding.btnRegister.text = mActivity.resources.getString(R.string.register)
+                    binding.btnRegister.setTextColor(ContextCompat.getColor(mActivity, R.color.white))
+                    binding.btnRegister.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(mActivity, R.color.blue))
+
+                }
+                binding.collegeName.text = campusModel.vCampusName
+                binding.campusAddress.text = campusModel.tCampusAddress
+
+                val vacancyList = splitVacancy(campusModel.tVacancy)
+
+                createTableRow(binding.vacancyTable,vacancyList)
+                createQualificationChips(binding.qualificationChipGrp,campusModel.vQulification.split(","))
+
+                val calendar: Calendar = GregorianCalendar()
+                val time = (calendar.timeInMillis / 1000).toString()
+                val differenceSec =(campusModel.tRegistrationEndDate.toInt() - time.toInt())
+                val days =  differenceSec / (60 * 60 * 24)
+                val remainder1 = differenceSec % 86400
+                val hour =  remainder1 / (60 * 60)
+                val remainder = differenceSec % 3600
+                val minutes =  remainder / 60
+                Log.d("###", "onBindViewHolder: $differenceSec")
+                if (days!=0){
+                    binding.txtRemainTime.text = mActivity.getString(R.string.expire1,days,hour,minutes)
+                }else if (hour != 0){
+                    binding.txtRemainTime.text = mActivity.getString(R.string.expire2,hour,minutes)
+                }else if (minutes != 0){
+                    binding.txtRemainTime.text = mActivity.getString(R.string.expire3,minutes)
+                }
+                
+                binding.btnShowRows.setOnClickListener{
+                    showFullList = !showFullList
+                    createTableRow(binding.vacancyTable,vacancyList)
+                }
+                /*binding.executePendingBindings()*/
+                binding.btnRegister.setOnClickListener {
+                    notifyDataSetChanged()
+                    onCategoryClick.onCategoryClicked(it, campusModel,position)
+                }
+            }
+
+            private fun createQualificationChips(
+                qualificationChipGrp: ChipGroup,
+                list: List<String>
+            ) {
+                qualificationChipGrp.removeAllViews()
+                for(qualification in list){
+                    val chip = LayoutInflater.from(mActivity).inflate(R.layout.single_chip_qualification,null) as Chip
+
+                    chip.text = qualification
+
+                    chip.isCheckable = false
+                    chip.isClickable = false
+
+                    qualificationChipGrp.addView(chip)
+                }
+            }
+
+            private fun splitVacancy(vacancy:String): MutableMap<String, String> {
+                val map:MutableMap<String,String>  = mutableMapOf()
+                for(str in vacancy.split(","))
+                {
+                    val list = str.split("-")
+                    val vacCount:String = list[1].trim().subSequence(0,list[1].trim().indexOf(" ")).toString()
+                    map[list[0].trim()] = vacCount
+                }
+                return map
+            }
+
+            private fun createTableRow(table:TableLayout,tableData:MutableMap<String,String>){
+
+                table.removeAllViews()
+                if (tableData.size > 3){
+                    binding.btnShowRows.visibility = View.VISIBLE
+                }
+                else{
+                    binding.btnShowRows.visibility = View.GONE
+                }
+                val tileRow = LayoutInflater.from(mActivity).inflate(R.layout.vacancy_table_title_row, null) as TableRow
+
+                table.addView(tileRow)
+
+                val entryList = tableData.entries.toList()
+
+                if(entryList.isNotEmpty()) {
+                    if (showFullList) {
+                        binding.btnShowRows.setImageResource(R.drawable.ic_up)
+
+                        for (entry in entryList) {
+                            val row = LayoutInflater.from(mActivity)
+                                .inflate(R.layout.vacancy_table_row, null) as TableRow
+
+                            val role = row.findViewById<MaterialTextView>(R.id.role)
+                            val vacancyCount = row.findViewById<MaterialTextView>(R.id.vacancyCount)
+
+                            role.text = entry.key.trim()
+                            vacancyCount.text = entry.value.trim()
+
+                            table.addView(row)
+                        }
+
+                    } else {
+                        binding.btnShowRows.setImageResource(R.drawable.ic_down)
+
+                        for (index in 0 until 3) {
+                            if (index < entryList.size) {
+                                val row = LayoutInflater.from(mActivity)
+                                    .inflate(R.layout.vacancy_table_row, null) as TableRow
+
+                                val role = row.findViewById<MaterialTextView>(R.id.role)
+                                val vacancyCount =
+                                    row.findViewById<MaterialTextView>(R.id.vacancyCount)
+
+                                role.text = entryList[index].key.trim()
+                                vacancyCount.text = entryList[index].value.trim()
+
+                                table.addView(row)
+                            } else {
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
         interface OnCategoryClick {
             fun onCategoryClicked(view: View, templateModel: DataCampus, position: Int)
@@ -289,15 +388,12 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                         override fun onResponse(response: ApplyModel?) {
                             try {
                                 response?.let {
-                                    //hideProgressDialog()
-
                                     filteredDataList[position].iIsApplied = 1
                                     binding.campusAdapter!!.notifyItemChanged(position)
                                     hideProgressDialog()
                                     bottomSheetDialog.dismiss()
 
                                 }
-                                //hideProgressDialog()
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
                                 hideProgressDialog()
@@ -331,7 +427,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         /*filteredDataList.clear()
         if (!TextUtils.isEmpty(query)){
             for (user in dataList) {
-                if (user.tVacancy!!.lowercase(Locale.ROOT)
+                if (user.tVacancy.lowercase(Locale.ROOT)
                         .contains(query.lowercase(Locale.ROOT))
                 ) {
                     filteredDataList.add(user)

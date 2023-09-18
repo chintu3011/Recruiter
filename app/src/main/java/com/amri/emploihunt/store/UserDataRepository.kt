@@ -29,6 +29,7 @@ data class UserDataRepository(val context: Context) {
         val vCurrentCompany = stringPreferencesKey("userCurrentCompany")
         val vDesignation = stringPreferencesKey("userDesignation")
         val vJobLocation = stringPreferencesKey("userJobLocation")
+        val vWorkingMode = stringPreferencesKey("userWorkingMode")
 
 
         val vPreferCity = stringPreferencesKey("userPrefCity")
@@ -83,7 +84,7 @@ data class UserDataRepository(val context: Context) {
             it[vCurrentCompany] = currentCompany
             it[vDesignation] = designation
             it[vJobLocation] = jobLocation
-            it[vPreferWorkingMode] = workingMode
+            it[vWorkingMode] = workingMode
         }
     }
 
@@ -193,6 +194,9 @@ data class UserDataRepository(val context: Context) {
 
     fun getUserJobLocation() = context.datastore.data.map {
         it[vJobLocation]?:""
+    }
+    fun getUserWorkingMode() = context.datastore.data.map {
+        it[vWorkingMode]?:""
     }
     fun getUserResumeUri() = context.datastore.data.map {
         it[tResumeUrl]?:""

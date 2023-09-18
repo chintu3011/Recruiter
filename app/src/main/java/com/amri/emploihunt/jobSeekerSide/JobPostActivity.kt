@@ -1,4 +1,4 @@
-package com.amri.emploihunt.recruiterSide
+package com.amri.emploihunt.jobSeekerSide
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -180,7 +180,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         }else{
             binding.btnApply.isEnabled = true
             binding.btnApply.text = getString(R.string.apply)
-            binding.btnApply.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+            binding.btnApply.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue))
 
         }
         if (selectedPost.iIsSaved == 1){
@@ -225,7 +225,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
                                     selectedPost.vCompanyName?.let { it1 -> showApplyBottomSheet(it1) }
                                     binding.btnApply.isEnabled = false
                                     binding.btnApply.text = getString(R.string.already_applied)
-                                    binding.btnApply.setBackgroundColor( resources.getColor(R.color.check_def_color))
+                                    binding.btnApply.setBackgroundColor( resources.getColor(R.color.colorPrimaryLight))
                                     selectedPost.iIsApplied = 1
                                     val intent = Intent()
                                     setResult(RESULT_OK, intent)

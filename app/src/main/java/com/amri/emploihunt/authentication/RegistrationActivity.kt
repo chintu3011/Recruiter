@@ -161,46 +161,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 Log.d("###", "registerUser: $userType")
                 if (userType.isNotEmpty()) {
                     passInfoToNextActivity()
-                    /*val options = PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(
-                            phoneNo
-                        ) // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this) // Activity (for callback binding)
-                        .setCallbacks(
-                            object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                                    hideProgressDialog()
-                                    binding.progressBar.visibility = GONE
-                                    binding.btnRegistration.visibility = VISIBLE
-                                    copyCredential = credential
-                                    makeToast("onVerificationCompleted:$credential",1)
-                                    passInfoToNextActivity()
-                                }
-                                override fun onVerificationFailed(e: FirebaseException) {
-                                    hideProgressDialog()
-                                    binding.progressBar.visibility = GONE
-                                    binding.btnRegistration.visibility = VISIBLE
-                                    makeToast("Verification failed: ${e.message}",1)
-                                    Log.d("test", "onVerificationFailed: ${e.message}")
-                                }
-
-                                override fun onCodeSent(
-                                    verificationId: String,
-                                    token: PhoneAuthProvider.ForceResendingToken
-                                ) {
-                                    hideProgressDialog()
-                                    Log.d("test", "onCodeSent: $verificationId")
-                                    makeToast("code sent",0)
-                                    storedVerificationId = verificationId
-                                    resendToken = token
-
-
-                                }
-                            }
-                        )
-                        .build()
-                    PhoneAuthProvider.verifyPhoneNumber(options)*/
                 }
 
             }
@@ -388,57 +348,6 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         finish()
     }
-    // Permission Code Started
-/*    private fun requestPermissions() {
-        Dexter.withContext(this).withPermissions(
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-        ).withListener(object : MultiplePermissionsListener {
-            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                //Log.e("#####", "onPermissionsChecked ${report?.deniedPermissionResponses}")
-                // Called when all permissions are granted
-                if (report?.areAllPermissionsGranted()!!) {
-                    getLatLng()
-                }
-                if (report.isAnyPermissionPermanentlyDenied) {
-                    // Show dialog when user denied permission permanently, show dialog message.
-                    showSettingsDialog()
-                }
-            }
-
-            override fun onPermissionRationaleShouldBeShown(
-                permissions: MutableList<PermissionRequest>?, token: PermissionToken?
-            ) {
-                token?.continuePermissionRequest()
-                Log.e("#####", "onPermissionRationaleShouldBeShown ${permissions.toString()}")
-            }
-        }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
-    }*/
-
-/*    private fun isGrantedPermission(): Boolean {
-        val isGranted1 =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val isGranted2 =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-        return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
-    }*/
-
-/*    private fun showSettingsDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(resources.getString(R.string.permission_title))
-        builder.setMessage(resources.getString(R.string.permission_message))
-        builder.setPositiveButton(resources.getString(R.string.permission_go_to_settings)) { dialog, which ->
-            dialog.cancel()
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri: Uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-        }
-        builder.setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
-            dialog.cancel()
-        }
-        builder.show()
-    }*/
-    // Permission Code Ended
 
     private fun getLatLng() {
         // Show progress here, because get Lat Lng takes 2-3 seconds to fetch

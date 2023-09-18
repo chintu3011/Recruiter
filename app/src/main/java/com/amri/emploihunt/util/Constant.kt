@@ -54,7 +54,9 @@ const val ADDRESS = "vAddress"
 const val WORKING_MODE = "vWrokingMode"
 const val SALARY_PACKAGE = "vSalaryPackage"
 
-
+const val SELECT_PROFILE_IMG = 12
+const val SELECT_PROFILE_BANNER_IMG = 24
+const val SELECT_RESUME_FILE = 36
 
 /*var IS_CHALLENGE_UPLOADED = false
 var IS_CHALLENGE_COMMENT_LIKE = false*/

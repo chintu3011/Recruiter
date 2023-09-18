@@ -2,17 +2,21 @@ package com.amri.emploihunt.recruiterSide
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -26,9 +30,8 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
 import com.amri.emploihunt.databinding.RowAppicationsBinding
-import com.amri.emploihunt.databinding.SinglerowjsBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
-import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
+import com.amri.emploihunt.jobSeekerSide.JobPostActivity
 import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.Jobs
@@ -42,7 +45,12 @@ import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.lang.NullPointerException
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignTop
 import java.util.Locale
 
 class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
@@ -210,29 +218,6 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         })
     }
     private fun retrieveJsData() {
-       /* val userRef = database.child("Users")
-        val jobRef = userRef.child("Job Seeker")
-
-        jobRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataList.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val job: UsersJobSeeker? = snapshot.getValue(UsersJobSeeker::class.java)
-                    job?.let {
-                        dataList.add(job)
-                    }
-                }
-
-                // Notify the adapter that the data has changed
-                JSListAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.e("MainActivity", "Failed to retrieve job data from Firebase: ${error.message}")
-            }
-        })*/
 
         if (Utils.isNetworkAvailable(requireContext())) {
             if (currentPage != 1 && currentPage > totalPages) {
@@ -583,23 +568,117 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
 
             val job: User = applicationList[position]
-            holder.binding.applicantName.text = job.vFirstName + " " + job.vLastName
+            holder.binding.applicantName.text = job.vFirstName.plus(" ").plus(job.vLastName)
             holder.binding.applicantQualification.text = job.vQualification
             holder.binding.applicantPrefCity.text = job. vPreferCity
             holder.binding.applicantWorkingMode.text = job.vWorkingMode
             holder.binding.applicantDesignation.text = job.vDesignation
-            holder.binding.btnPhone.setOnClickListener {
-                val num: String =  job.vMobile
-                makePhoneCall(num)
+
+            var callBalloon: Balloon ?= null
+            var emailBalloon: Balloon ?= null
+            val phoneNo: String =  job.vMobile
+            if (phoneNo.isNotEmpty()) {
+                callBalloon = createMsgBalloon(phoneNo, R.drawable.ic_call, mActivity)
+                if (callBalloon != null) {
+                    callBalloon.setOnBalloonClickListener {
+                        makePhoneCall(phoneNo)
+                        callBalloon!!.dismiss()
+                    }
+                    callBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        callBalloon!!.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+
+                callBalloon = createMsgBalloon(
+                    "Phone no. Not Found",
+                    R.drawable.ic_call,
+                    mActivity
+                )
+                if (callBalloon != null) {
+                    callBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        callBalloon.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
             }
-            holder.binding.btnEmail.setOnClickListener {
-                val emailsend = job.vEmail
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
-                intent.type = "message/rfc822"
-                holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+            holder.binding.btnPhone.setOnClickListener {
+
+                if(callBalloon != null){
+                    holder.binding.btnPhone.showAlignTop(callBalloon)
+                }
+
             }
 
+            val email = job.vEmail
+            if (email.isNotEmpty()) {
+                emailBalloon = createMsgBalloon(email, R.drawable.ic_email, mActivity)
+
+                if (emailBalloon != null) {
+                    emailBalloon.setOnBalloonClickListener {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                        intent.type = "message/rfc822"
+                        holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+                        emailBalloon!!.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                emailBalloon = createMsgBalloon(
+                    "Email Id Not Found",
+                    R.drawable.ic_email,
+                    mActivity
+                )
+                if (emailBalloon != null) {
+                    emailBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        emailBalloon.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            holder.binding.btnEmail.setOnClickListener {
+                if(emailBalloon != null){
+                    holder.binding.btnEmail.showAlignTop(emailBalloon)
+                }
+
+            }
+
+        }
+
+        private fun createMsgBalloon(msg: String, icon: Int, baseContext: Context): Balloon {
+            val balloon = createBalloon(baseContext){
+                setWidth(BalloonSizeSpec.WRAP)
+                setHeight(BalloonSizeSpec.WRAP)
+                setText(msg)
+                setText(msg)
+                setTextSize(8f)
+                setTextTypeface(Typeface.BOLD)
+                setTextColorResource(R.color.black)
+                setTextGravity(Gravity.CENTER)
+                setIconDrawableResource(icon)
+                setIconHeight(12)
+                setIconWidth(12)
+                setIconColorResource(R.color.black)
+                setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                setArrowSize(8)
+                setArrowPosition(0.5f)
+                setPadding(12)
+                setCornerRadius(8f)
+                setBackgroundColorResource(R.color.white)
+                setElevation(3)
+                setBalloonAnimation(BalloonAnimation.ELASTIC)
+                setLifecycleOwner(lifecycleOwner)
+                build()
+            }
+
+            return balloon
         }
         private fun makePhoneCall(num: String) {
             val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))

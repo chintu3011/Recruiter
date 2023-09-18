@@ -243,8 +243,10 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
         signInWithPhoneAuthCredential(credential)
     }
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        showProgressDialog("Please wait")
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
+                hideProgressDialog()
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     val uid = user?.uid
@@ -259,6 +261,7 @@ class OTPVerificationRegistrationActivity : BaseActivity(),OnClickListener {
                         makeToast("Try again",1)
                     },2000)
                 }
+
             }
     }
     private val experienceViewModel: ExperienceViewModel by viewModels()
