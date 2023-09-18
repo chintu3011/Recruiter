@@ -6,8 +6,9 @@ package com.amri.emploihunt.proto;
 message Experience {
   string vDesignation = 1;
   string vCompanyName = 2;
-  string vJobLocation = 4;
-  string vDuration = 3;
+  string vJobLocation = 3;
+  int32 bIsCurrentCompany = 4;
+  string vDuration = 5;
 }
 
 message ExperienceList {

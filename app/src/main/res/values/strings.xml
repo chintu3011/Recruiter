@@ -175,5 +175,6 @@
     <string name="education">Education</string>
     <string name="job_description">Job description</string>
     <string name="required_education">Required Education</string>
+    <string name="present">Present</string>
 
 </resources>

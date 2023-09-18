@@ -396,7 +396,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:hint="Company Name"
+                                android:hint="@string/company_name"
                                 android:paddingStart="0dp"
                                 android:paddingTop="0dp"
                                 android:paddingEnd="0dp"

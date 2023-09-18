@@ -21,8 +21,10 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -70,6 +72,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -121,6 +124,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private var userType: Int? = null
     private var userId: String? = null
 
+    lateinit var cityList:ArrayList<String>
+
    //common data
     private var fName: String? = null
     private var lName: String? = null
@@ -170,6 +175,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         setProfileData()
         setOnClickListener()
+
+
+        cityList = arrayListOf()
+        getAllCity(cityList){
+            makeToast("cityList filled",0)
+        }
 
         onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -369,8 +380,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserCurrentCompany().collect {
                 Log.d(TAG, "setProfileData: trying to update current company data $it")
-                showViewIfNotEmpty(it,binding.currentCompany)
                 currentCompany = it
+                showViewIfNotEmpty(it,binding.currentCompany)
                 binding.currentCompany.text = currentCompany
                 if(userType == 1){
                     showViewIfNotEmpty(it,binding.companyNameR)
@@ -476,8 +487,10 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             userDataRepository.getUserDesignation().collect {
                 Log.d(TAG, "setProfileData: trying to update designation data $it")
                 designation = it
-                showViewIfNotEmpty(it, binding.designationR)
-                binding.designationR.text = designation
+                if(userType == 1) {
+                    showViewIfNotEmpty(it, binding.designationR)
+                    binding.designationR.text = designation
+                }
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: Designation data is updated")
@@ -487,8 +500,10 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             userDataRepository.getUserJobLocation().collect {
                 Log.d(TAG, "setProfileData: trying to update job location data $it")
                 jobLocation = it
-                showViewIfNotEmpty(it, binding.jobLocation)
-                binding.jobLocation.text = jobLocation
+                if(userType == 1) {
+                    showViewIfNotEmpty(it, binding.jobLocation)
+                    binding.jobLocation.text = jobLocation
+                }
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: JobLocation data is updated")
@@ -523,26 +538,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 Log.d(TAG, "setProfileData: trying to update experience data")
                 addExperienceImg = createAddDataImg(binding.experienceLayout, R.id.txtExperienceJ)
                 experienceList.clear()
-                experienceViewModel.readFromLocal().collect { list ->
-                    Log.d(TAG, "setProfileData: Experience $list")
 
-                    for (experience in list.toMutableList()) {
-                        experienceList.add(experience)
-                    }
-
-                    if (addExperienceImg != null) {
-                        decideAddImgToVisibility(
-                            experienceList.isEmpty(),
-                            binding.dataLayout,
-                            addExperienceImg!!
-                        )
-                    } else {
-                        makeToast(getString(R.string.something_error), 0)
-                        Log.d(TAG, "setProfileData: addExperienceImg is null")
-                    }
-                    Log.d(TAG, "setProfileData: Experience data \n $experienceList")
-                    setExperiences()
-                }
+                setExperiences()
             }.invokeOnCompletion {
                 Log.d(TAG, "setProfileData: experience data is updated")
             }
@@ -594,46 +591,136 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         Log.d(TAG, "setProfileData: profile data updated")
     }
 
+    private var isShowMore = false
     private fun setExperiences(){
+
         binding.dataLayout.removeAllViews()
+        Log.d(TAG, "setExperiences: removeView : ${binding.dataLayout.childCount}")
         binding.btnShowMore.isActivated = false
         binding.btnShowMore.text = getString(R.string.show_more)
-        if (experienceList.isEmpty()){
-            binding.dataLayout.visibility = GONE
 
-        }
-        else{
 
-            binding.dataLayout.visibility = VISIBLE
+        getExperienceList{  experienceList->
+            Log.d("#####", "setProfileData: Experience data \n ${experienceList.size}")
 
-            for (index in 0 until 3) {
-                if(index < experienceList.size){
-                    val experience = experienceList[index]
-                    val experienceRow = layoutInflater.inflate(R.layout.row_experience, null)
-
-                    val designationTextView = experienceRow.findViewById<TextView>(R.id.designation)
-                    val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
-                    val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
-                    val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
-                    val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
-                    btnDelete.visibility = GONE
-                    designationTextView.text = experience.vDesignation
-                    companyNameTextView.text = experience.vCompanyName
-                    jobLocationTextView.text = experience.vJobLocation
-                    if(experience.vDuration.isNotEmpty()){
-                        durationTextView.text = experience.vDuration.plus(" Years")
-                    }
-                    binding.dataLayout.addView(experienceRow)
+            if (experienceList.isEmpty()){
+                binding.dataLayout.visibility = GONE
+                if (addExperienceImg != null) {
+                    decideAddImgToVisibility(
+                        true,
+                        binding.dataLayout,
+                        addExperienceImg!!
+                    )
+                } else {
+                    makeToast(getString(R.string.something_error), 0)
+                    Log.d(TAG, "setProfileData: addExperienceImg is null")
                 }
-                else{
-                    break
-                }
-            }
-            if(experienceList.size > 3){
-                binding.btnShowMore.visibility = VISIBLE
             }
             else{
-                binding.btnShowMore.visibility = GONE
+
+                binding.dataLayout.visibility = VISIBLE
+                if(experienceList.size > 3){
+                    binding.btnShowMore.visibility = VISIBLE
+                }
+                else{
+                    binding.btnShowMore.visibility = GONE
+                }
+                if(isShowMore) {
+                    Log.d("#####", "setExperiences: ")
+                    for (index in 0 until experienceList.size) {
+                        if (index < experienceList.size) {
+                            val experience = experienceList[index]
+                            val experienceRow =
+                                layoutInflater.inflate(R.layout.row_experience, null)
+
+                            val designationTextView =
+                                experienceRow.findViewById<TextView>(R.id.designation)
+                            val companyNameTextView =
+                                experienceRow.findViewById<TextView>(R.id.companyName)
+                            val jobLocationTextView =
+                                experienceRow.findViewById<TextView>(R.id.jobLocation)
+
+                            val durationTextView =
+                                experienceRow.findViewById<TextView>(R.id.duration)
+                            val btnDelete = experienceRow.findViewById<LinearLayout>(R.id.btnDelete)
+                            btnDelete.visibility = GONE
+                            designationTextView.text = experience.vDesignation
+                            companyNameTextView.text = experience.vCompanyName
+                            jobLocationTextView.text = experience.vJobLocation
+                            val txtPresent = experienceRow.findViewById<TextView>(R.id.txtPresent)
+                            if (experience.bIsCurrentCompany == 1) {
+                                durationTextView.visibility = GONE
+                                txtPresent.visibility = VISIBLE
+                            } else {
+                                txtPresent.visibility = GONE
+                                if (experience.vDuration.isNotEmpty()) {
+                                    durationTextView.visibility = VISIBLE
+                                    durationTextView.text = experience.vDuration.plus(" Years")
+                                }
+                            }
+                            binding.dataLayout.addView(experienceRow)
+                            Log.d("#####", "setExperiences: ${binding.dataLayout.childCount}")
+                        } else {
+                            break
+                        }
+                    }
+                }
+                else{
+
+                    Log.d("#####", "setExperiences: else")
+                    for (index in 0 until 3) {
+                        if (index < experienceList.size) {
+                            val experience = experienceList[index]
+                            val experienceRow =
+                                layoutInflater.inflate(R.layout.row_experience, null)
+
+                            val designationTextView =
+                                experienceRow.findViewById<TextView>(R.id.designation)
+                            val companyNameTextView =
+                                experienceRow.findViewById<TextView>(R.id.companyName)
+                            val jobLocationTextView =
+                                experienceRow.findViewById<TextView>(R.id.jobLocation)
+
+                            val durationTextView =
+                                experienceRow.findViewById<TextView>(R.id.duration)
+                            val btnDelete = experienceRow.findViewById<LinearLayout>(R.id.btnDelete)
+                            btnDelete.visibility = GONE
+                            designationTextView.text = experience.vDesignation
+                            companyNameTextView.text = experience.vCompanyName
+                            jobLocationTextView.text = experience.vJobLocation
+                            val txtPresent = experienceRow.findViewById<TextView>(R.id.txtPresent)
+                            if (experience.bIsCurrentCompany == 1) {
+                                durationTextView.visibility = GONE
+                                txtPresent.visibility = VISIBLE
+                            } else {
+                                txtPresent.visibility = GONE
+                                if (experience.vDuration.isNotEmpty()) {
+                                    durationTextView.visibility = VISIBLE
+                                    durationTextView.text = experience.vDuration.plus(" Years")
+                                }
+                            }
+                            binding.dataLayout.addView(experienceRow)
+                            Log.d("#####", "setExperiences: ${binding.dataLayout.childCount}")
+                        } else {
+                            break
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun getExperienceList(callback:(MutableList<Experience>) -> Unit) {
+        val experiences:MutableList<Experience> = mutableListOf()
+        lifecycle.coroutineScope.launch {
+            experienceViewModel.readFromLocal().collect { list ->
+                Log.d(TAG, "setProfileData: Experience $list")
+
+                for (experience in list.toMutableList()) {
+                    experiences.add(experience)
+                }
+                callback(experiences)
             }
         }
 
@@ -786,7 +873,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             }
             R.id.btnShowMore -> {
 
-                if (!binding.btnShowMore.isActivated) {
+                isShowMore = !isShowMore
+                setExperiences()
+                /*if (!binding.btnShowMore.isActivated) {
                     if(experienceList.size > 3){
                         for (index in 3 until experienceList.size)  {
                             val experience = experienceList[index]
@@ -796,15 +885,23 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                             val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
                             val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
                             val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
-                            val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
+                            val btnDelete = experienceRow.findViewById<LinearLayout>(R.id.btnDelete)
                             btnDelete.visibility = GONE
 
                             designationTextView.text = experience.vDesignation
                             companyNameTextView.text = experience.vCompanyName
                             jobLocationTextView.text = experience.vJobLocation
-                            if(experience.vDuration.isNotEmpty()) {
-                                durationTextView.text =
-                                    experience.vDuration.plus(" Years")
+                            val txtPresent = experienceRow.findViewById<TextView>(R.id.txtPresent)
+                            if(experience.bIsCurrentCompany == 1){
+                                durationTextView.visibility = GONE
+                                txtPresent.visibility = VISIBLE
+                            }
+                            else {
+                                txtPresent.visibility = GONE
+                                if (experience.vDuration.isNotEmpty()) {
+                                    durationTextView.visibility = VISIBLE
+                                    durationTextView.text = experience.vDuration.plus(" Years")
+                                }
                             }
 
                             binding.dataLayout.addView(experienceRow)
@@ -823,15 +920,23 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                             val companyNameTextView = experienceRow.findViewById<TextView>(R.id.companyName)
                             val jobLocationTextView = experienceRow.findViewById<TextView>(R.id.jobLocation)
                             val durationTextView = experienceRow.findViewById<TextView>(R.id.duration)
-                            val btnDelete = experienceRow.findViewById<FloatingActionButton>(R.id.btnDelete)
+                            val btnDelete = experienceRow.findViewById<LinearLayout>(R.id.btnDelete)
                             btnDelete.visibility = GONE
 
                             designationTextView.text = experience.vDesignation
                             companyNameTextView.text = experience.vCompanyName
                             jobLocationTextView.text = experience.vJobLocation
-                            if(experience.vDuration.isNotEmpty()) {
-                                durationTextView.text =
-                                    experience.vDuration.plus(" Years")
+                            val txtPresent = experienceRow.findViewById<TextView>(R.id.txtPresent)
+                            if(experience.bIsCurrentCompany == 1){
+                                durationTextView.visibility = GONE
+                                txtPresent.visibility = VISIBLE
+                            }
+                            else {
+                                txtPresent.visibility = GONE
+                                if (experience.vDuration.isNotEmpty()) {
+                                    durationTextView.visibility = VISIBLE
+                                    durationTextView.text = experience.vDuration.plus(" Years")
+                                }
                             }
 
                             binding.dataLayout.addView(experienceRow)
@@ -839,7 +944,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     }
                     binding.btnShowMore.text = getString(R.string.show_more)
                 }
-                binding.btnShowMore.isActivated = !binding.btnShowMore.isActivated
+                binding.btnShowMore.isActivated = !binding.btnShowMore.isActivated*/
 
             }
 
@@ -1173,7 +1278,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         val spJobLocation = expDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
         spJobLocation.setSearchDialogGravity(Gravity.TOP)
         spJobLocation.arrowPaddingRight = 19
-        spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
+        spJobLocation.item = cityList.toList()
         spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 spJobLocation.isOutlined = true
@@ -1184,8 +1289,20 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
             }
         }
-        val edDuration = expDialogView.findViewById<TextInputEditText>(R.id.duration)
+        val checkBox = expDialogView.findViewById<CheckBox>(R.id.checkBox)
 
+
+
+        val edDuration = expDialogView.findViewById<TextInputEditText>(R.id.duration)
+        val edDurationLayout = expDialogView.findViewById<TextInputLayout>(R.id.textLayoutDuration)
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked) {
+                edDurationLayout.visibility = GONE
+            }
+            else{
+                edDurationLayout.visibility = VISIBLE
+            }
+        }
         val btnAddExperience = expDialogView.findViewById<MaterialButton>(R.id.btnAddExperience)
 
 
@@ -1207,42 +1324,88 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 edDuration.error = "Enter Valid Number"
             }*/
 
-            if(selectedDesignation.isNotEmpty() && selectedJobLocation.isNotEmpty() && enteredCompanyName.isNotEmpty() && enteredDuration.isNotEmpty()){
-                val jsonObject = JSONObject()
-                jsonObject.put("vDesignation", selectedDesignation)
-                jsonObject.put("vCompany",enteredCompanyName)
-                jsonObject.put("vJobLocation",selectedJobLocation)
-                jsonObject.put("vDuration", enteredDuration)
+            if(selectedDesignation.isNotEmpty() && selectedJobLocation.isNotEmpty() && enteredCompanyName.isNotEmpty()){
 
-                if(Utils.isNetworkAvailable(this)){
-                      AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
-                          .addHeaders("Authorization", "Bearer " + prefmanger[AUTH_TOKEN, ""])
-                          .addJSONObjectBody(
-                              jsonObject
-                          )
-                          .setPriority(Priority.MEDIUM).build()
-                          .getAsObject(
-                              CommonMessageModel::class.java,
-                                object : ParsedRequestListener<CommonMessageModel>{
+                    val jsonObject = JSONObject()
+                    if (checkBox.isChecked) {
+                        jsonObject.put("vDesignation", selectedDesignation)
+                        jsonObject.put("vCompany", enteredCompanyName)
+                        jsonObject.put("vJobLocation", selectedJobLocation)
+                        jsonObject.put("bIsCurrentCompany", 1)
+                    } else {
+                        if (enteredDuration.isNotEmpty()){
+                            jsonObject.put("vDesignation", selectedDesignation)
+                            jsonObject.put("vCompany", enteredCompanyName)
+                            jsonObject.put("vJobLocation", selectedJobLocation)
+                            jsonObject.put("bIsCurrentCompany", 0)
+                            jsonObject.put("vDuration", enteredDuration)
+                        }else{
+                            edDuration.error = "Enter Duration"
+                            return@setOnClickListener
+                        }
+
+                    }
+
+                    if (Utils.isNetworkAvailable(this)) {
+                        AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
+                            .addHeaders("Authorization", "Bearer " + prefmanger[AUTH_TOKEN, ""])
+                            .addJSONObjectBody(
+                                jsonObject
+                            )
+                            .setPriority(Priority.MEDIUM).build()
+                            .getAsObject(
+                                CommonMessageModel::class.java,
+                                object : ParsedRequestListener<CommonMessageModel> {
                                     override fun onResponse(response: CommonMessageModel?) {
                                         try {
                                             response?.let {
-                                                Log.d(TAG, "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
+                                                Log.d(
+                                                    TAG,
+                                                    "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
                                                 )
-                                                experienceList.add(Experience(
-                                                    selectedDesignation,
-                                                    enteredCompanyName,
-                                                    selectedJobLocation,
-                                                    enteredDuration
-                                                ))
+                                                if (checkBox.isChecked) {
+
+                                                    currentCompany = enteredCompanyName
+                                                    designation = selectedDesignation
+                                                    jobLocation = selectedJobLocation
+                                                    binding.currentCompany.text = currentCompany
+                                                    val userDataRepository =
+                                                        UserDataRepository(this@ProfileActivity)
+                                                    CoroutineScope(Dispatchers.IO).launch {
+                                                        userDataRepository.storeCurrentPositionData(
+                                                            enteredCompanyName,
+                                                            selectedDesignation,
+                                                            selectedJobLocation,
+                                                            ""
+                                                        )
+                                                    }
+                                                    experienceList.add(
+                                                        Experience(
+                                                            selectedDesignation,
+                                                            enteredCompanyName,
+                                                            selectedJobLocation,
+                                                            1,
+                                                            enteredDuration
+                                                        )
+                                                    )
+                                                } else {
+                                                    experienceList.add(
+                                                        Experience(
+                                                            selectedDesignation,
+                                                            enteredCompanyName,
+                                                            selectedJobLocation,
+                                                            0,
+                                                            enteredDuration
+                                                        )
+                                                    )
+                                                }
+
                                                 recyclerView.scrollToPosition(adapter.itemCount - 1)
                                                 adapter.notifyDataSetChanged()
                                             }
-                                        }
-                                        catch (e: Exception) {
+                                        } catch (e: Exception) {
                                             Log.e("#####", "onResponse Exception: ${e.message}")
-                                        }
-                                        finally {
+                                        } finally {
                                             spDesignation.clearFocus()
                                             spDesignation.clearSelection()
                                             spJobLocation.clearFocus()
@@ -1255,6 +1418,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                             enteredCompanyName = ""
                                             selectedJobLocation = ""
                                             enteredDuration = ""
+                                            checkBox.isChecked = false
                                         }
 
                                     }
@@ -1262,41 +1426,32 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                     override fun onError(anError: ANError?) {
                                         anError?.let {
                                             Log.e(
-                                                "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                                "#####",
+                                                "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                             )
                                         }
-                                        spDesignation.clearFocus()
-                                        spDesignation.clearSelection()
-                                        spJobLocation.clearFocus()
-                                        spJobLocation.clearSelection()
-                                        edCompanyName.text?.clear()
-                                        edCompanyName.clearFocus()
-                                        edDuration.text?.clear()
-                                        edDuration.clearFocus()
-                                        selectedDesignation = ""
-                                        enteredCompanyName = ""
-                                        selectedJobLocation = ""
-                                        enteredDuration = ""
                                     }
 
                                 }
-                              )
+                            )
 
-                } else {
-                    Utils.showNoInternetBottomSheet(this,this@ProfileActivity)
-                    spDesignation.clearFocus()
-                    spDesignation.clearSelection()
-                    spJobLocation.clearFocus()
-                    spJobLocation.clearSelection()
-                    edCompanyName.text?.clear()
-                    edCompanyName.clearFocus()
-                    edDuration.text?.clear()
-                    edDuration.clearFocus()
-                    selectedDesignation = ""
-                    enteredCompanyName = ""
-                    selectedJobLocation = ""
-                    enteredDuration = ""
-                }
+                    } else {
+                        Utils.showNoInternetBottomSheet(this, this@ProfileActivity)
+                        spDesignation.clearFocus()
+                        spDesignation.clearSelection()
+                        spJobLocation.clearFocus()
+                        spJobLocation.clearSelection()
+                        edCompanyName.text?.clear()
+                        edCompanyName.clearFocus()
+                        edDuration.text?.clear()
+                        edDuration.clearFocus()
+                        selectedDesignation = ""
+                        enteredCompanyName = ""
+                        selectedJobLocation = ""
+                        enteredDuration = ""
+                    }
+
+
 
 
             }
@@ -1311,9 +1466,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 if (selectedJobLocation.isEmpty()) {
                     spJobLocation.errorText = "Select A Job Location"
                 }
-                if (enteredDuration.isEmpty()) {
-                    edDuration.error = "Enter Duration"
-                }
             }
 
         }
@@ -1321,10 +1473,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setView(expDialogView)
             .setTitle("Change Info")
             .setNeutralButton("OK"){ dialog,_ ->
-                experienceViewModel.writeToLocal(experienceList.toList()).invokeOnCompletion {
-                    Log.d(TAG, "experienceInfoDialogView: experienceList is updated in datastore")
-                }
-                adapter.notifyDataSetChanged()
                 dialog.dismiss()
             }
             /*
@@ -1359,6 +1507,10 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 dialog.dismiss()
             } */
             .setOnDismissListener {
+                experienceViewModel.writeToLocal(experienceList.toList()).invokeOnCompletion {
+                    Log.d(TAG, "experienceInfoDialogView: experienceList is updated in datastore")
+                }
+                adapter.notifyDataSetChanged()
                 setExperiences()
                 if(addExperienceImg != null){
                     decideAddImgToVisibility(experienceList.isEmpty(),binding.dataLayout,addExperienceImg!!)
@@ -1366,6 +1518,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 else{
                     makeToast(getString(R.string.something_error),0)
                 }
+
 
             }
             .create()
@@ -1399,26 +1552,34 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             private val designation = itemView.findViewById<MaterialTextView>(R.id.designation)
             private val companyName = itemView.findViewById<MaterialTextView>(R.id.companyName)
             private val jobLocation = itemView.findViewById<MaterialTextView>(R.id.jobLocation)
+
+            private val txtPresent = itemView.findViewById<MaterialTextView>(R.id.txtPresent)
             private val duration = itemView.findViewById<MaterialTextView>(R.id.duration)
 
             private val cardView = itemView.findViewById<CardView>(R.id.cardView)
-            private val btnDelete = itemView.findViewById<FloatingActionButton>(R.id.btnDelete)
+            private val btnDelete = itemView.findViewById<LinearLayout>(R.id.btnDelete)
 
             @SuppressLint("NotifyDataSetChanged")
             fun bind(experience: Experience){
                 designation.text = experience.vDesignation
                 companyName.text = experience.vCompanyName
                 jobLocation.text = experience.vJobLocation
-                duration.text = experience.vDuration.plus(" Years")
-                btnDelete.visibility = GONE
+                if(experience.bIsCurrentCompany == 1){
+                    duration.visibility = GONE
+                    txtPresent.visibility = VISIBLE
+                }
+                else {
+                    txtPresent.visibility = GONE
+                    if (experience.vDuration.isNotEmpty()) {
+                        duration.visibility = VISIBLE
+                        duration.text = experience.vDuration.plus(" Years")
+                    }
+                }
+
                 btnDelete.setOnClickListener {
                     btnDelete.visibility = GONE
                     experienceList.removeAt(absoluteAdapterPosition)
                     notifyDataSetChanged()
-                }
-                cardView.setOnLongClickListener {
-                    btnDelete.visibility = VISIBLE
-                    return@setOnLongClickListener true
                 }
             }
         }
@@ -1598,14 +1759,14 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             edExpertise.requestFocus()
         }
 
-        val spJobLocation = basicDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
-        spJobLocation.setSearchDialogGravity(Gravity.TOP)
-        spJobLocation.arrowPaddingRight = 19
-        spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
-        spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val spResidentialCity = basicDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.spResidentialCity)
+        spResidentialCity.setSearchDialogGravity(Gravity.TOP)
+        spResidentialCity.arrowPaddingRight = 19
+        spResidentialCity.item = cityList.toList()
+        spResidentialCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                spJobLocation.isOutlined = true
-                selectedJobLocation = spJobLocation.item[position]
+                spResidentialCity.isOutlined = true
+                selectedJobLocation = spResidentialCity.item[position]
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -1780,14 +1941,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         startActivity(dialIntent)
     }
 
-    private fun getSelectedRadioItem(radioGroup: RadioGroup, dialogView: View): String {
-        val selectedItemId = radioGroup.checkedRadioButtonId
-        val radioButton = dialogView.findViewById<View>(selectedItemId) as RadioButton?
-        if (selectedItemId != -1 && radioButton != null) {
-            return radioButton.text.toString()
-        }
-        return ""
-    }
+
 
 
   /*  override fun onDestroy() {

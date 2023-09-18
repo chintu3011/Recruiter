@@ -782,7 +782,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     binding.profileImgLayoutR -> {
                         binding.btnBack.visibility = VISIBLE
                         binding.btnNext.visibility = GONE
-                        binding.submitBtnLayout.visibility = GONE
+
+                        if(isImgSelected){
+                            binding.submitBtnLayout.visibility = VISIBLE
+                        }
+                        else{
+                            binding.submitBtnLayout.visibility = GONE
+                        }
                         setChecks(binding.profileImgLayoutR)
                     }
 
@@ -933,7 +939,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         .addQueryParameter("vFirstName", fName)
                         .addQueryParameter("vLastName", lName)
                         .addQueryParameter(MOB_NO, phoneNumber)
-                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vCity", residentialCity)
                         .addQueryParameter("vEmail", emailId)
                         .addQueryParameter("tBio", bio)
                         .addQueryParameter("vQualification", qualification)
@@ -977,6 +983,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 userDataRepository.storeQualificationData(
                                                     response.data.user.vQualification
                                                 )
+
+                                                userDataRepository.storeCurrentPositionData(
+                                                        response.data.user.vCurrentCompany,
+                                                        response.data.user.vDesignation,
+                                                        response.data.user.vJobLocation,
+                                                        ""
+                                                )
+
                                                 userDataRepository.storeJobPreferenceData(
                                                     response.data.user.vPreferJobTitle,
                                                     response.data.user.vPreferCity,
@@ -1017,6 +1031,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
                                 override fun onError(anError: ANError?) {
                                     hideProgressDialog()
+
                                     anError?.let {
                                         Log.e(
                                             "#####",
@@ -1041,7 +1056,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         .addQueryParameter("vFirstName", fName)
                         .addQueryParameter("vLastName", lName)
                         .addQueryParameter(MOB_NO, phoneNumber)
-                        .addQueryParameter("vcity", residentialCity)
+                        .addQueryParameter("vCity", residentialCity)
+
                         .addQueryParameter("vEmail", emailId)
                         .addQueryParameter("tBio", bio)
                         .addQueryParameter("vQualification", qualification)
@@ -1094,6 +1110,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                     response.data.user.tProfileUrl
                                                 )
                                             }
+
+                                            Log.d(TAG, "onResponse: Recived data ${response.data.user.vCity}")
 
                                             Log.d(
                                                 TAG,
@@ -1146,10 +1164,11 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         val jsonObject = JSONObject()
         jsonObject.put("vDesignation", designation)
         jsonObject.put("vCompany",currentCompany)
+        jsonObject.put("bIsCurrentCompany",1)
         jsonObject.put("vJobLocation",jobLocation)
         jsonObject.put("vDuration", "")
 
-        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation,currentCompany,jobLocation,""))
+        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation,currentCompany,jobLocation,1,""))
 
         AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
             .addHeaders("Authorization", "Bearer $tAuthToken")
@@ -1209,7 +1228,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vFirstName",fName)
                     .addQueryParameter("vLastName",lName)
                     .addQueryParameter("vEmail",emailId)
-                    .addQueryParameter("vcity",residentialCity)
+                    .addQueryParameter("vCity",residentialCity)
                     .addQueryParameter("tTagLine",designation)
                     .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
                     .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
@@ -1379,7 +1398,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vLastName",lName)
                     .addQueryParameter("vEmail",emailId)
                     .addQueryParameter("tBio",bio)
-                    .addQueryParameter("vcity",residentialCity)
+                    .addQueryParameter("vCity",residentialCity)
                     .addQueryParameter("vCurrentCompany",currentCompany)
                     .addQueryParameter("vDesignation",designation)
                     .addQueryParameter("vQualification",qualification)
@@ -1484,7 +1503,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("vLastName",lName)
                     .addQueryParameter("vEmail",emailId)
                     .addQueryParameter("tBio",bio)
-                    .addQueryParameter("vcity",residentialCity)
+                    .addQueryParameter("vCity",residentialCity)
                     .addQueryParameter("fbid","")
                     .addQueryParameter("googleid","")
                     .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))

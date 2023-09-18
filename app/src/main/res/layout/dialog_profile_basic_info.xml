@@ -155,7 +155,7 @@
             android:paddingVertical="@dimen/_10sdp"
             android:paddingHorizontal="@dimen/_5sdp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+            app:layout_constraintBottom_toTopOf="@+id/spResidentialCity"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textLayoutTechSkills"
@@ -171,7 +171,7 @@
         </ScrollView>
 
         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-            android:id="@+id/jobLocation"
+            android:id="@+id/spResidentialCity"
             style="@style/spinnerStyle"
             android:layout_margin="@dimen/_12sdp"
             android:paddingHorizontal="@dimen/_5sdp"
@@ -180,7 +180,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scrollView"
-            app:smsp_hint="@string/job_location"
+            app:smsp_hint="@string/residential_city"
             app:smsp_hintColor="@color/blue"
             app:smsp_isOutlined="false"
             app:smsp_isSearchable="true"
@@ -216,7 +216,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jobLocation"
+            app:layout_constraintTop_toBottomOf="@+id/spResidentialCity"
             app:placeholderText="xyz@gmail.com"
             app:startIconDrawable="@drawable/ic_email"
             app:startIconTint="@color/ed_theme_color">

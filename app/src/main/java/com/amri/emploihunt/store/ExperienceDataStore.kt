@@ -61,6 +61,7 @@ private fun Experience.toProto(): Experiences.Experience {
         .setVDesignation(vDesignation)
         .setVCompanyName(vCompanyName)
         .setVJobLocation(vJobLocation)
+        .setBIsCurrentCompany(bIsCurrentCompany)
         .setVDuration(vDuration)
         .build()
 }
@@ -70,6 +71,7 @@ private fun Experiences.Experience.toExperience(): Experience {
         vDesignation = vDesignation,
         vCompanyName = vCompanyName,
         vJobLocation = vJobLocation,
+        bIsCurrentCompany = bIsCurrentCompany,
         vDuration = vDuration
     )
 }

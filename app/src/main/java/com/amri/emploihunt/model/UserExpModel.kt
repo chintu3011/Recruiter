@@ -13,5 +13,6 @@ data class Experience(
     val vDesignation: String,
     val vCompanyName: String,
     val vJobLocation: String,
+    val bIsCurrentCompany:Int,
     val vDuration: String
 )

@@ -377,6 +377,12 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 userDataRepository.storeAboutData(
                                                     response.data.user.tBio,
                                                 )
+                                                userDataRepository.storeCurrentPositionData(
+                                                    response.data.user.vCurrentCompany,
+                                                    response.data.user.vDesignation,
+                                                    response.data.user.vJobLocation,
+                                                    ""
+                                                )
                                                 userDataRepository.storeQualificationData(
                                                     response.data.user.vQualification
                                                 )

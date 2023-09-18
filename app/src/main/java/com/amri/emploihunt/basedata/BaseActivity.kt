@@ -17,6 +17,8 @@ import android.view.View
 import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -129,6 +131,15 @@ open class BaseActivity : AppCompatActivity() {
         animate.duration = 500
         animate.fillAfter = false
         view.startAnimation(animate)
+    }
+
+    fun getSelectedRadioItem(radioGroup: RadioGroup, dialogView: View): String {
+        val selectedItemId = radioGroup.checkedRadioButtonId
+        val radioButton = dialogView.findViewById<View>(selectedItemId) as RadioButton?
+        if (selectedItemId != -1 && radioButton != null) {
+            return radioButton.text.toString()
+        }
+        return ""
     }
 
     fun showCommonDialog(

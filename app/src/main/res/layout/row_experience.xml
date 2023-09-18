@@ -8,23 +8,27 @@
     android:layout_height="wrap_content"
     android:visibility="visible" >
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnDelete"
+    <LinearLayout
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
-        android:src="@drawable/ic_delete"
-        android:visibility="visible"
-        app:backgroundTint="@color/white"
-        app:elevation="@dimen/_4sdp"
-        app:fabCustomSize="@dimen/_20sdp"
+        android:drawableTint="@color/white"
+        android:id="@+id/btnDelete"
+        android:background="@drawable/circle_bg"
+        android:elevation="@dimen/_4sdp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView"
-        app:maxImageSize="@dimen/_10sdp"
-        app:tint="@color/blue"
-        app:useCompatPadding="false" />
+        app:layout_constraintTop_toTopOf="@+id/cardView">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_delete_18"
+            android:tint="@color/white"
+            android:scaleType="center"
+            android:padding="@dimen/_2sdp"/>
+
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
@@ -40,6 +44,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:contentPadding="@dimen/_10sdp"
         android:layout_margin="@dimen/_5sdp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -48,14 +53,14 @@
                 android:id="@+id/designation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/designation"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text=""
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="#FF02397C"
                 android:textStyle="bold"
                 android:visibility="visible"
-                android:lines="1"
-                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,12 +69,12 @@
                 android:id="@+id/companyName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/company_name"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text=""
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:visibility="visible"
-                android:lines="1"
-                android:ellipsize="end"
                 app:layout_constraintEnd_toStartOf="@id/duration"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,12 +84,12 @@
                 android:id="@+id/duration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/duration"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:visibility="visible"
-                android:lines="1"
-                android:ellipsize="end"
+                android:visibility="gone"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/companyName"
@@ -100,27 +105,53 @@
                 app:flow_horizontalStyle="spread_inside"
                 app:flow_verticalStyle="packed"
                 app:flow_wrapMode="chain"
+                app:layout_constraintBottom_toTopOf="@+id/jobLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/designation"
-                app:layout_constraintBottom_toTopOf="@+id/jobLocation"/>
+                app:layout_constraintTop_toBottomOf="@id/designation" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/jobLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/job_location"
-                android:textColor="@color/gray"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text=""
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textColor="@color/gray"
                 android:visibility="visible"
-                android:lines="1"
-                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="@id/companyName"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@id/companyName"
                 app:layout_constraintTop_toBottomOf="@id/flow" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPresent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/present"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPrimary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:visibility="gone"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/jobLocation"
+                app:layout_constraintTop_toTopOf="@+id/jobLocation"
+                app:layout_constraintWidth_default="wrap" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="jobLocation,txtPresent"
+                app:layout_constraintTop_toBottomOf="@+id/flow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
