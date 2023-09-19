@@ -19,6 +19,7 @@ import com.amri.emploihunt.recruiterSide.HomeRecruitFragment
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.store.JobSeekerProfileInfo
 import com.amri.emploihunt.store.RecruiterProfileInfo
+import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.ROLE
 import kotlinx.coroutines.launch
@@ -92,94 +93,45 @@ class SettingJobSeekerFragment : BaseFragment() {
     }
 
     private fun setUserData() {
+        Log.d("###", "setUserData: ROLE")
 
-            if (prefmanger.getInt(ROLE,0) == 0) {
-                Log.d("###", "setUserData: ROLE")
-                lifecycle.coroutineScope.launch {
-                    jobSeekerProfileInfo.getUserProfileImg().collect {
+        val  userDataRepository = UserDataRepository(requireContext())
+        /** profile Img */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserProfileImgUrl().collect {
+                Log.d(ProfileActivity.TAG, "setProfileData: trying to update profile img data $it")
 
-                        Glide.with(requireContext())
-                            .load(it)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                                    .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                            )
-                            .into(binding.profileIv)
-                    }
-                }
-                lifecycle.coroutineScope.launch {
-                    jobSeekerProfileInfo.getUserFName().collect {
-
-                        binding.userName.text = it
-
-                    }
-                }
-                lifecycle.coroutineScope.launch {
-                    jobSeekerProfileInfo.getUserLName().collect {
-                        val fullName = "${binding.userName.text} $it"
-                        binding.userName.text = fullName
-                        Log.d("###", "setUserData: ROLE")
-
-                    }
-                }
-                lifecycle.coroutineScope.launch {
-                    jobSeekerProfileInfo.getUserCurrentCompany().collect {
-                        binding.tvCompany.text = it
-                    }
-                }
-
-
-
-
-
-
-            }else{
-                lifecycle.coroutineScope.launch {
-                    recruiterProfileInfo.getUserProfileImg().collect {
-                        Log.d("###", "setUserData:getUserProfileImg $it")
-//                        val imageUri: Uri? = if (it.isNotEmpty()) Uri.parse(it) else null
-//                        binding.profileBackImg.setImageURI(imageUri)
-                        Glide.with(requireContext())
-                            .load(it)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                                    .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                            )
-                            .into(binding.profileIv)
-                    }
-                }
-                lifecycle.coroutineScope.launch {
-                    recruiterProfileInfo.getUserFName().collect {
-                        binding.userName.text = it
-
-                    }
-                }
-                lifecycle.coroutineScope.launch {
-                    recruiterProfileInfo.getUserLName().collect {
-                        val fullName = "${binding.userName.text} $it"
-                        binding.userName.text = fullName
-
-                    }
-                }
-
-                lifecycle.coroutineScope.launch {
-
-                    recruiterProfileInfo.getUserCurrentCompany().collect {
-                        Log.d("###", "setUserData:getUserCurrentCompany $it")
-                        binding.tvCompany.text = it
-                    }
-                }
-
+                Glide.with(requireContext())
+                    .load(it)
+                    .apply(
+                        RequestOptions
+                            .placeholderOf(R.drawable.profile_default_image)
+                            .error(R.drawable.profile_default_image)
+                            .circleCrop()
+                    )
+                    .into(binding.profileIv)
             }
+        }.invokeOnCompletion {
+            Log.d(ProfileActivity.TAG, "setProfileData: profile img data is updated")
+        }
 
-
-
-
-
-
-
+        /** full Name */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserFullName().collect{
+                Log.d(ProfileActivity.TAG, "setProfileData: trying to update fullName data $it")
+                binding.userName.text = it
+            }
+        }.invokeOnCompletion {
+            Log.d(ProfileActivity.TAG, "setProfileData: Full name data is updated")
+        }
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserCurrentCompany().collect {
+                Log.d(ProfileActivity.TAG, "setProfileData: trying to update current company data $it")
+                binding.tvCompany.text = it
+            }
+        }.invokeOnCompletion {
+            Log.d(ProfileActivity.TAG, "setProfileData: current Company: data is updated")
+        }
     }
 
 

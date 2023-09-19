@@ -29,6 +29,7 @@ import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeJobSeekerBinding
 import com.amri.emploihunt.databinding.RowPostDesignBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
+import com.amri.emploihunt.messenger.MessaengerHomesActivity_2
 import com.amri.emploihunt.messenger.MessengerHomeActivity
 import com.amri.emploihunt.model.DataJobPreferenceList
 import com.amri.emploihunt.model.GetAllJob
@@ -217,7 +218,7 @@ FilterParameterTransferClass.FilterJobListListener {
             binding.drawerLayout.openDrawer(GravityCompat.END)
         }
         binding.btnMessenger.setOnClickListener {
-            val intent = Intent(requireContext(), MessengerHomeActivity::class.java)
+            val intent = Intent(requireContext(), MessaengerHomesActivity_2::class.java)
             intent.putExtra("userType", userType!!)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)

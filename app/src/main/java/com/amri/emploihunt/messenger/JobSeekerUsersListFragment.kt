@@ -77,6 +77,10 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
     }
     private lateinit var adapter: LatestMessageAdapterJ
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,15 +198,18 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
-
+                        binding.progressCircular.visibility = GONE
+                        hideProgressDialog()
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
+                        binding.progressCircular.visibility = GONE
+                        hideProgressDialog()
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-
+                        binding.progressCircular.visibility = GONE
+                        hideProgressDialog()
                     }
 
                 })
@@ -248,6 +255,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
 
                                     adapter.notifyDataSetChanged()
                                     binding.progressCircular.visibility = GONE
+
 
                                     /*if (latestMessageList.isNotEmpty()) {
                                         totalPages = it.total_pages
@@ -421,6 +429,7 @@ class JobSeekerUsersListFragment : BaseFragment(), UserListUpdateListener,
             R.anim.slide_in_left,
             R.anim.slide_out_left
         )
+        
     }
 
     override fun onChatJLongClick(position: Int, user: User) {

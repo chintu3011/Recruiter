@@ -57,9 +57,7 @@ class MessengerHomeActivity : BaseActivity() {
         userType = prefManager.get(ROLE,0)
         userId = prefManager.get(FIREBASE_ID)
         Log.d("####","$userId :: $userType")
-
-
-
+        
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Messenger"

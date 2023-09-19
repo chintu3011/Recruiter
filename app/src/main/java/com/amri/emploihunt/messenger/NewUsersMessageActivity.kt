@@ -18,7 +18,7 @@ import android.widget.AbsListView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
@@ -108,12 +108,12 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
             }
         }
 
-        binding.recyclerView.addItemDecoration(
+        /*binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 baseContext,
                 layoutManager.orientation
             )
-        )
+        )*/
 
         binding.recyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -124,19 +124,21 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                 }
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 currentItems = layoutManager.childCount
                 totalItems = layoutManager.itemCount
                 firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
+                Log.d("###", "onScrolled: ${isScrolling} && ${totalItems} == $currentItems + $firstVisibleItemPosition")
                 if (isScrolling && (totalItems == currentItems + firstVisibleItemPosition)) {
                     isScrolling = false
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
-                    /*listenerForLatestMsg{
-                        adapter.notifyDataSetChanged()
-                    }*/
+
+                    getUsersList(userType!!){
+                        newUserMessageAdapter.notifyDataSetChanged()
+                    }
                 }
             }
         })

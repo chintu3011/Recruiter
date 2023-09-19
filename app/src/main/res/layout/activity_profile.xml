@@ -597,24 +597,29 @@
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/editExperienceJ" />
+                        app:layout_constraintTop_toBottomOf="@id/editExperienceJ"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnShowMoreLayout"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/btnShowMore"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="#97DACB"
-                        android:text="@string/show_more"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                        android:textColor="@color/blue"
-                        android:textStyle="normal"
-                        android:visibility="gone"
+
+                    <LinearLayout
+                        android:id="@+id/btnShowMoreLayout"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:drawableTint="@color/white"
+                        android:elevation="@dimen/_5sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dataLayout"
-                        app:layout_goneMarginBottom="@dimen/_10sdp" />
+                        app:layout_constraintTop_toBottomOf="@id/dataLayout">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnShowMore"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_down"
+                            android:tint="@color/blue"
+                            android:scaleType="center"
+                            android:padding="@dimen/_2sdp"/>
+
+                    </LinearLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

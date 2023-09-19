@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".messenger.NewUsersMessageActivity">
+    android:background="#20C6E1F6"
+    tools:context=".messenger.MessaengerHomesActivity_2">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuildLine"
@@ -57,62 +58,79 @@
             app:menu="@menu/messenger_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
-<!--        android:id="@+id/toggleGrp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:singleSelection="true"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/appBar"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/startGuildLine"-->
-<!--        android:layout_marginTop="@dimen/_10sdp"-->
-<!--        android:layout_marginBottom="@dimen/_10sdp">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnShowJobSeekers"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:insetTop="0dp"-->
-<!--            android:insetBottom="0sp"-->
-<!--            android:text="@string/job_seeker"-->
-<!--            app:rippleColor="#370960A2"-->
-<!--            android:fontFamily="@font/poppinsregular"-->
-<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--            android:textAllCaps="false"/>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnShowRecruiters"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:insetTop="0dp"-->
-<!--            android:insetBottom="0sp"-->
-<!--            android:text="@string/recruiter"-->
-<!--            android:fontFamily="@font/poppinsregular"-->
-<!--            app:rippleColor="#370960A2"-->
-<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--            android:textAllCaps="false"/>-->
-
-<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
-
-
-    <ProgressBar
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.legacy.widget.Space
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_20sdp"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
-        app:layout_constraintStart_toStartOf="@+id/startGuildLine"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/wrapper"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:orientation="vertical"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/space">-->
+
+    <!--        <com.google.android.material.tabs.TabLayout-->
+    <!--            android:id="@+id/tabLayout"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="#20C6E1F6"-->
+    <!--            app:tabGravity="center"-->
+    <!--            app:tabIndicator="@drawable/tab_indicator"-->
+    <!--            app:tabIndicatorAnimationMode="elastic"-->
+    <!--            app:tabIndicatorColor="@null"-->
+    <!--            app:tabIndicatorGravity="stretch"-->
+    <!--            app:tabMode="fixed"-->
+    <!--            app:tabSelectedTextColor="@color/white"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent"/>-->
+
+
+    <!--        <androidx.viewpager2.widget.ViewPager2-->
+    <!--            android:id="@+id/viewPager"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/tabLayout" />-->
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/layProgressPagination"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        android:layout_marginVertical="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
+        app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/startGuildLine"
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCreateNewChat"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:backgroundTint="@color/blue"
+        app:tint="@color/white"
+        android:src="@drawable/ic_add_people"
+
+        app:fabCustomSize="@dimen/_50sdp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.94"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
-        app:layout_constraintTop_toBottomOf="@+id/appBar"/>
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintVertical_bias="0.93" />
 
     <include
         android:id="@+id/layProgressPagination"
@@ -126,6 +144,7 @@
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/recyclerView"
         app:layout_constraintBottom_toBottomOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"

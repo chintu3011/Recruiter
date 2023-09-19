@@ -74,7 +74,7 @@
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:text="Johan Macvan"
-                android:textSize="@dimen/_16sdp"
+                android:textSize="@dimen/_18sdp"
                 android:textAlignment="textStart"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
@@ -89,7 +89,7 @@
                 android:scrollHorizontally="true"
                 android:text="Hi good morning"
                 android:textAlignment="textStart"
-                android:textColor="@color/black"
+                android:textColor="#5E5E5E"
                 android:textStyle="normal" />
 
         </LinearLayout>

@@ -149,7 +149,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
             adapter = ChatAdapter(this,messageList,fromId)
             binding.recyclerView.adapter = adapter
             binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
-            adapter.notifyDataSetChanged()
+
         }
 
         /*popupWindow = PopupWindow(this@ChatBoardActivity)
@@ -295,7 +295,8 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
-
+                        val messageData = snapshot.getValue(MessageData::class.java)
+                        messageList.remove(messageData)
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
@@ -303,7 +304,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-
+                        Log.e(TAG, "onCancelled: $error", ) 
                     }
                 })
         }
@@ -617,6 +618,8 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                 .child(toId!!)
                 .child(fromId!!)
                 .setValue(messageData)
+
+            /*adapter.notifyDataSetChanged()*/
 
         }
 

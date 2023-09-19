@@ -1164,7 +1164,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         val jsonObject = JSONObject()
         jsonObject.put("vDesignation", designation)
         jsonObject.put("vCompany",currentCompany)
-        jsonObject.put("bIsCurrentCompany",1)
+        jsonObject.put("bIsCurrentCompany",0)
         jsonObject.put("vJobLocation",jobLocation)
         jsonObject.put("vDuration", "")
 

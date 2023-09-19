@@ -301,7 +301,7 @@ class YourJosPostListActivity : BaseActivity() {
             holder.binding.employees.text =  "${job.iNumberOfVacancy} Vacancy"
             holder.binding.createTimeTV.text = Utils.getTimeAgo(
                 holder.itemView.context,
-               job.tCreatedAt!!.toLong()
+               job.tUpadatedAt!!.toLong()
             )
 
 //            onCategoryClick.onCategoryClicked(it, templateModel)

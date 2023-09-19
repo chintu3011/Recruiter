@@ -196,6 +196,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     qualification!!,
                     "",
                     "",
+                    "",
                     currentCompany!!,
                     designation!!,
                     jobLocation!!,
@@ -596,10 +597,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         binding.dataLayout.removeAllViews()
         Log.d(TAG, "setExperiences: removeView : ${binding.dataLayout.childCount}")
-        binding.btnShowMore.isActivated = false
-        binding.btnShowMore.text = getString(R.string.show_more)
-
-
+        binding.btnShowMoreLayout.visibility = GONE
         getExperienceList{  experienceList->
             Log.d("#####", "setProfileData: Experience data \n ${experienceList.size}")
 
@@ -620,12 +618,13 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                 binding.dataLayout.visibility = VISIBLE
                 if(experienceList.size > 3){
-                    binding.btnShowMore.visibility = VISIBLE
+                    binding.btnShowMoreLayout.visibility = VISIBLE
                 }
                 else{
-                    binding.btnShowMore.visibility = GONE
+                    binding.btnShowMoreLayout.visibility = GONE
                 }
                 if(isShowMore) {
+                    binding.btnShowMore.setImageResource(R.drawable.ic_up)
                     Log.d("#####", "setExperiences: ")
                     for (index in 0 until experienceList.size) {
                         if (index < experienceList.size) {
@@ -666,8 +665,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     }
                 }
                 else{
-
                     Log.d("#####", "setExperiences: else")
+                    binding.btnShowMore.setImageResource(R.drawable.ic_down)
                     for (index in 0 until 3) {
                         if (index < experienceList.size) {
                             val experience = experienceList[index]
@@ -1250,7 +1249,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         alertDialogProfileImg.show()
 
     }
-    
+
+    lateinit var adapter:ExperienceAdapter
     @SuppressLint("NotifyDataSetChanged")
     private fun experienceInfoDialogView() {
         Log.d(TAG, "experienceInfoDialogView: experience list \n $experienceList")
@@ -1308,10 +1308,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         val recyclerView = expDialogView.findViewById<RecyclerView>(R.id.recyclerView)
 
-        val adapter = ExperienceAdapter(this,experienceList)
-        recyclerView.adapter = adapter
-        recyclerView.scrollToPosition(adapter.itemCount - 1)
-        adapter.notifyDataSetChanged()
+
+
+
+        getExperienceList {
+            adapter = ExperienceAdapter(this,it)
+            recyclerView.adapter = adapter
+            recyclerView.scrollToPosition(adapter.itemCount - 1)
+            adapter.notifyDataSetChanged()
+        }
+
 
         btnAddExperience.setOnClickListener {
             enteredCompanyName = edCompanyName.text.toString().trim()

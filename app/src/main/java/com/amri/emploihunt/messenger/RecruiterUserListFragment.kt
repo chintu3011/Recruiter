@@ -142,6 +142,7 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
     }
     /***/
     private fun listenerForLatestMsg(completion: () -> Unit) {
+        showProgressDialog("Please wait")
         binding.progressCircular.visibility = VISIBLE
         latestMessageList.clear()
         filterLatestMessageList.clear()
@@ -175,14 +176,20 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
+                        hideProgressDialog()
+                        binding.progressCircular.visibility = GONE
                         Log.d("###", "onChildRemoved: ")
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                        hideProgressDialog()
+                        binding.progressCircular.visibility = GONE
                         Log.d("###", "onChildMoved: ")
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        hideProgressDialog()
+                        binding.progressCircular.visibility = GONE
                         Log.d("###", "onCancelled: ")
                     }
 
@@ -190,6 +197,8 @@ class RecruiterUserListFragment : BaseFragment(), UserListUpdateListener,
                 })
         }
         else{
+            hideProgressDialog()
+            binding.progressCircular.visibility = GONE
             makeToast("Didn't get user-Id",0)
             Log.d(TAG,"$fromId :: $userType")
             completion()

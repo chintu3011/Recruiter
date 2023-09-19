@@ -35,16 +35,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recruiter"
         android:usesCleartextTraffic="true"
-
         tools:targetApi="tiramisu">
+        <activity
+            android:name=".messenger.MessaengerHomesActivity_2"
+            android:exported="false" />
 
         <service
             android:name=".settings.UpdateProfileDataService"
-            android:exported="false"/>
-
-<!--        <activity
+            android:exported="false" />
+        <!--
+        <activity
             android:name=".campus.ApplyForCampusActivity"
-            android:exported="false" />-->
+            android:exported="false" />
+        -->
         <activity
             android:name=".settings.TermsPrivacyActivity"
             android:exported="false" />
@@ -56,13 +59,15 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
-<!--            <intent-filter>
+            android:exported="true">
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
         <activity
             android:name=".messenger.FullImageViewActivity"
             android:exported="false" />
@@ -92,30 +97,36 @@
             android:exported="false" />
         <activity
             android:name=".settings.ProfileActivity"
-            android:exported="true" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".jobSeekerSide.JobPostActivity"
-            android:exported="false" >
-            <!--<intent-filter>
+            android:exported="false">
+
+            <!--
+             <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
+             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".jobSeekerSide.HomeJobSeekerActivity"
             android:exported="true">
 
-            <!-- <intent-filter>
+            <!--
+             <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter> -->
+             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".filterFeature.FilterDataActivity"
@@ -169,14 +180,17 @@
             android:exported="false" />
         <activity
             android:name=".authentication.InformationActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:exported="true" >
-            <!--<intent-filter>
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".authentication.OTPVerificationRegistrationActivity"
@@ -188,12 +202,14 @@
             android:name=".recruiterSide.HomeRecruiterActivity"
             android:exported="true">
 
-            <!-- <intent-filter>
+            <!--
+             <intent-filter>
              <action android:name="android.intent.action.MAIN" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter> -->
+             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".appIntroduction.IntroductionActivity"

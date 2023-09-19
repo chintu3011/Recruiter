@@ -47,6 +47,9 @@ object NetworkUtils {
     const val TERMS_PRIVACY = "$BASE_URL/terms-privacy-policy/get_terms_policy_by_id"
     const val GET_ALL_CAMPUS = "$BASE_URL/campus_placement/campus"
     const val CAMPUS_APPLY = "$BASE_URL/campus_placement/apply"
+    const val UPDATE_PROFILE_PIC = "$BASE_URL/user/update_profile_pic"
+    const val UPDATE_BANNER_PIC = "$BASE_URL/user/update_banner_pic"
+    const val UPDATE_RESUME = "$BASE_URL/user/update_resume"
 
 
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder().build()

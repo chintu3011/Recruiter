@@ -35,42 +35,31 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutCompanyName"
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Job Title"
-                    app:boxBackgroundColor="#FFFFFF"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
-                    app:endIconCheckable="true"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/blue"
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spJobTitle"
+                    style="@style/spinnerStyle"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     app:layout_constraintBottom_toTopOf="@+id/companynameadd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
-                    app:placeholderText="Android Developer"
-                    app:startIconDrawable="@drawable/ic_job_title"
-                    app:startIconTint="@color/blue">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/jobTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textAutoComplete"
-                       
-                        android:padding="@dimen/_10sdp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:smsp_hint="@string/job_title"
+                    app:smsp_hintColor="@color/blue"
+                    app:smsp_isOutlined="false"
+                    app:smsp_isSearchable="true"
+                    app:smsp_multilineError="true"
+                    app:smsp_outlinedBoxColor="@color/black"
+                    app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                    app:smsp_outlinedHintPadding="4dp"
+                    app:smsp_outlinedHintStartX="10dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderTextColor="#ffff"
+                    app:smsp_searchHintColor="@color/search_hint_color"
+                    app:smsp_searchTextColor="@color/search_text_color" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/companynameadd"
@@ -85,7 +74,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -93,7 +82,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
+                    app:layout_constraintTop_toBottomOf="@+id/spJobTitle"
                     app:placeholderText="Tellva Still Texus."
                     app:startIconDrawable="@drawable/ic_company"
                     app:startIconTint="@color/blue">
@@ -103,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                       
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,19 +102,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_13sdp"
                     android:layout_marginEnd="@dimen/_13sdp"
-                    android:background="@drawable/linear_bg"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/border_radio_grp"
+                    android:backgroundTint="@color/blueLight"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/uploadProgress"
+                    android:paddingVertical="@dimen/_20sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/textLayoutdesc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/companynameadd">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/companyLogoIv"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_10sdp"
                         android:src="@drawable/ic_upload" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -133,17 +125,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:layout_marginStart="@dimen/_5sdp"
                         android:maxLines="1"
-                       
-                        android:text="File_Name.jpg"
+                        android:text="@string/select_your_organization_logo"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textColor="@color/black"
+                        android:textColor="#5E5E5E"
                         android:textStyle="normal" />
                 </LinearLayout>
 
-                <ProgressBar
+                <!--<ProgressBar
                     android:id="@+id/uploadProgress"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="0dp"
@@ -155,14 +145,14 @@
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutdesc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutdesc"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Description"
+                    android:hint="@string/job_description"
                     android:paddingTop="0dp"
                     app:boxBackgroundColor="#FFFFFF"
                     app:boxBackgroundMode="outline"
@@ -170,7 +160,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -178,7 +168,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutJobRole"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/uploadProgress"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
                     app:placeholderText="Job Description Here"
                     app:startIconDrawable="@drawable/ic_biography"
                     app:startIconTint="@color/blue">
@@ -187,8 +177,9 @@
                         android:id="@+id/descadd"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:lines="5"
                         android:inputType="textMultiLine"
+                        android:lines="5"
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,7 +196,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -214,7 +205,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textLayoutExpDuration"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutdesc"
-                    app:placeholderText="Senior Software Developer"
+                    app:placeholderText="Job role and responsibilities"
                     app:startIconDrawable="@drawable/baseline_playlist_add_check_circle_24"
                     app:startIconTint="@color/blue">
 
@@ -222,13 +213,13 @@
                         android:id="@+id/jobroleadd"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:lines="5"
                         android:inputType="textMultiLine"
-                       
+                        android:lines="5"
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--<com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutJobLevel"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
@@ -241,7 +232,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -259,16 +250,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="text"
-                       
+
                         android:padding="@dimen/_10sdp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutExpDuration"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Experience Required"
+                    android:hint="@string/required_experience"
                     android:paddingTop="0dp"
                     app:boxBackgroundColor="#FFFFFF"
                     app:boxBackgroundMode="outline"
@@ -276,7 +267,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -284,7 +275,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutJobLevel"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutJobRole"
                     app:placeholderText="2 Years"
                     app:startIconDrawable="@drawable/ic_star"
                     app:startIconTint="@color/blue">
@@ -294,7 +285,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="datetime"
-                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -303,26 +293,25 @@
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Required Technical Skills"
+                    android:elevation="@dimen/_1sdp"
+                    android:hint="@string/required_technical_skills"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
                     android:paddingTop="0dp"
-                    app:boxBackgroundColor="#FFFFFF"
+                    android:paddingBottom="0dp"
+                    app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:helperText="Include || after each Skill"
                     app:helperTextTextColor="@color/blue"
                     app:hintTextColor="@color/blue"
-                    app:layout_constraintBottom_toTopOf="@+id/textLayoutSoftSkills"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutExpDuration"
-                    app:placeholderText="Skill1 || Skill2.."
+                    app:placeholderText="Developer"
                     app:startIconDrawable="@drawable/ic_skills"
                     app:startIconTint="@color/blue">
 
@@ -331,35 +320,85 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                       
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnAddTechSkills"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/_2sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:tint="@color/blue"
+                        android:src="@drawable/ic_add"/>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow19"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:flow_horizontalGap="@dimen/_5sdp"
+                    app:flow_horizontalAlign="center"
+                    app:flow_verticalAlign="center"
+                    app:flow_verticalStyle="packed"
+                    android:background="@color/blueLight"
+                    app:constraint_referenced_ids="textLayoutTechSkills,btnAddTechSkills"
+                    app:layout_constraintBottom_toTopOf="@+id/techSkillsChipGrp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutExpDuration" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/techSkillsChipGrp"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@color/blueLight"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/flow20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flow19" />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutSoftSkills"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Required Soft Skills"
+                    android:hint="@string/required_soft_skills"
                     android:paddingTop="0dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    android:elevation="@dimen/_1sdp"
                     app:boxBackgroundColor="#FFFFFF"
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
-                    app:helperText="Include || after each Skill"
                     app:helperTextTextColor="@color/blue"
                     app:hintTextColor="@color/blue"
-                    app:layout_constraintBottom_toTopOf="@+id/textLayoutedu"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutTechSkills"
-                    app:placeholderText="Skill1 || Skill2.."
+                    app:placeholderText="Communication"
                     app:startIconDrawable="@drawable/ic_skills"
                     app:startIconTint="@color/blue">
 
@@ -368,81 +407,108 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textAutoComplete"
-                       
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutedu"
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnAddSoftSkills"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/_2sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:tint="@color/blue"
+                        android:src="@drawable/ic_add"/>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow20"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Education"
-                    android:paddingTop="0dp"
-                    app:boxBackgroundColor="#FFFFFF"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
-                    app:endIconCheckable="true"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/blue"
-                    app:layout_constraintBottom_toTopOf="@+id/textLayoutlocation"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    app:flow_horizontalGap="@dimen/_5sdp"
+                    app:flow_horizontalAlign="center"
+                    app:flow_verticalAlign="center"
+                    app:flow_verticalStyle="packed"
+                    android:background="@color/blueLight"
+                    app:constraint_referenced_ids="textLayoutSoftSkills,btnAddSoftSkills"
+                    app:layout_constraintBottom_toTopOf="@+id/softSkillsChipGrp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutSoftSkills"
-                    app:placeholderText="Education Requirements"
-                    app:startIconDrawable="@drawable/ic_experties"
-                    app:startIconTint="@color/blue">
+                    app:layout_constraintTop_toBottomOf="@+id/techSkillsChipGrp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/eduadd"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textAutoComplete"
-                       
-                        android:padding="@dimen/_10sdp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutlocation"
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/softSkillsChipGrp"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/job_location"
-                    android:paddingTop="0dp"
-                    app:boxBackgroundColor="#FFFFFF"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_5sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
-                    app:endIconCheckable="true"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
-                    app:hintTextColor="@color/blue"
+                    android:layout_height="100dp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@color/blueLight"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/spEducation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flow20" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spEducation"
+                    style="@style/spinnerStyle"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/spJobLocation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/softSkillsChipGrp"
+                    app:smsp_hint="@string/required_education"
+                    app:smsp_hintColor="@color/blue"
+                    app:smsp_isOutlined="false"
+                    app:smsp_isSearchable="true"
+                    app:smsp_multilineError="true"
+                    app:smsp_outlinedBoxColor="@color/black"
+                    app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                    app:smsp_outlinedHintPadding="4dp"
+                    app:smsp_outlinedHintStartX="10dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderTextColor="#ffff"
+                    app:smsp_searchHintColor="@color/search_hint_color"
+                    app:smsp_searchTextColor="@color/search_text_color" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spJobLocation"
+                    style="@style/spinnerStyle"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutedu"
-                    app:placeholderText="Ahmedabad"
-                    app:startIconDrawable="@drawable/ic_job_location"
-                    app:startIconTint="@color/blue">
-
-                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/location"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textAutoComplete"
-                       
-                        android:padding="@dimen/_10sdp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
+                    app:layout_constraintTop_toBottomOf="@+id/spEducation"
+                    app:smsp_hint="@string/job_location"
+                    app:smsp_hintColor="@color/blue"
+                    app:smsp_isOutlined="false"
+                    app:smsp_isSearchable="true"
+                    app:smsp_multilineError="true"
+                    app:smsp_outlinedBoxColor="@color/black"
+                    app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                    app:smsp_outlinedHintPadding="4dp"
+                    app:smsp_outlinedHintStartX="10dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderTextColor="#ffff"
+                    app:smsp_searchHintColor="@color/search_hint_color"
+                    app:smsp_searchTextColor="@color/search_text_color" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutSalary"
@@ -457,7 +523,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -465,7 +531,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutlocation"
+                    app:layout_constraintTop_toBottomOf="@+id/spJobLocation"
                     app:placeholderText="12 LPA"
                     app:startIconDrawable="@drawable/ic_salary"
                     app:startIconTint="@color/blue">
@@ -475,7 +541,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
-                       
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -483,13 +549,13 @@
                     android:id="@+id/textLayoutWorkingMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="@dimen/_12sdp"
                     android:background="@drawable/border_radio_grp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:orientation="vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_5sdp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:paddingBottom="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -502,8 +568,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
-                        android:text="@string/on_site"
-                       
+                        android:text="On-Site"
+
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -512,8 +578,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
-                        android:text="@string/remote"
-                       
+                        android:text="Remote"
+
                         android:textColor="@color/black" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
@@ -522,8 +588,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/blue"
-                        android:text="@string/hybrid"
-                       
+                        android:text="Hybrid"
+
                         android:textColor="@color/black" />
                 </RadioGroup>
 
@@ -534,13 +600,13 @@
                     android:background="@color/white"
                     android:text="Working Mode"
                     android:textAlignment="textStart"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                     android:textColor="@color/blue"
-                    android:textStyle="bold"
-                   
+                    android:textStyle="normal"
+
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintEnd_toEndOf="@+id/textLayoutWorkingMode"
-                    app:layout_constraintHorizontal_bias="0.09"
+                    app:layout_constraintHorizontal_bias="0.05"
                     app:layout_constraintStart_toStartOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintTop_toTopOf="@+id/textLayoutWorkingMode" />
 
@@ -557,7 +623,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/_5sdp"
                     app:boxCornerRadiusTopEnd="@dimen/_5sdp"
                     app:boxCornerRadiusTopStart="@dimen/_5sdp"
-                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/gray"
@@ -575,7 +641,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
-                       
+
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -583,14 +649,12 @@
                     android:id="@+id/btnUpdate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_background"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="Update Job"
-                   
+                    android:text="@string/update"
                     android:textAllCaps="false"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:backgroundTint="@null"
@@ -605,20 +669,17 @@
                     android:id="@+id/btnCancelPost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_background"
                     android:clickable="true"
                     android:focusable="true"
-                   
-                    android:text="@string/cancel_update"
+                    android:text="@string/cancel_post"
                     android:textAllCaps="false"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:backgroundTint="@null"
-                    app:cornerRadius="30dp"
                     app:layout_constraintBottom_toBottomOf="@+id/btnUpdate"
-                    app:layout_constraintEnd_toStartOf="@+id/textLayoutCompanyName"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/btnUpdate"
                     app:layout_constraintTop_toTopOf="@+id/btnUpdate"
@@ -628,6 +689,10 @@
                     android:id="@+id/flow9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     app:constraint_referenced_ids="btnUpdate,btnCancelPost"
                     app:flow_horizontalAlign="center"
                     app:flow_horizontalGap="@dimen/_10sdp"
@@ -635,16 +700,12 @@
                     app:flow_verticalAlign="center"
                     app:flow_verticalStyle="packed"
                     app:flow_wrapMode="chain"
-                    tools:layout_editor_absoluteX="17dp"
-                    tools:layout_editor_absoluteY="1035dp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@id/textLayoutEmployeeNeed"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/textLayoutEmployeeNeed"
+                    tools:layout_editor_absoluteX="17dp"
+                    tools:layout_editor_absoluteY="1035dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
