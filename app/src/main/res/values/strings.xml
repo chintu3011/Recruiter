@@ -176,5 +176,7 @@
     <string name="job_description">Job description</string>
     <string name="required_education">Required Education</string>
     <string name="present">Present</string>
+    <string name="opps_can_t_find_user">Opps! Can\'t find user</string>
+    <string name="opps_no_any_jos_post">Opps! No Any jos post</string>
 
 </resources>

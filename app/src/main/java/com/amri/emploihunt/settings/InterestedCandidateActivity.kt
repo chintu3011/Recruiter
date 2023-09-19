@@ -145,7 +145,7 @@ class InterestedCandidateActivity : BaseActivity() {
                                     Log.d("###", "onResponse: ${it.data}")
                                     postList.addAll(it.data)
                                     adapter!!.notifyDataSetChanged()
-
+                                    binding.progressCircular.visibility = View.GONE
 
                                 }
                             } catch (e: Exception) {
@@ -154,14 +154,20 @@ class InterestedCandidateActivity : BaseActivity() {
                         }
 
                         override fun onError(anError: ANError?) {
+                            hideShowEmptyView(false)
                             anError?.let {
                                 Log.e(
                                     "#####",
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
+
+
                                 if (it.errorCode >= 500) {
-                                    binding.layEmptyView.tvNoData.text = resources.getString(com.amri.emploihunt.R.string.msg_server_maintenance)
+                                    binding.layEmptyView.tvNoData.text =
+                                        getString(R.string.opps_no_any_jos_post)
                                 }
+                                binding.progressCircular.visibility = View.GONE
+                                binding.spinnerJob.visibility = View.GONE
                             }
                             hideProgressDialog()
                         }
@@ -220,6 +226,7 @@ class InterestedCandidateActivity : BaseActivity() {
                                     binding.layEmptyView.tvNoData.text =
                                         getString(com.amri.emploihunt.R.string.no_applied_candidate_s_found)
                                 }
+                                binding.progressCircular.visibility = View.GONE
                             }
                             hideProgressDialog()
                         }

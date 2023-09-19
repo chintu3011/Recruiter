@@ -108,19 +108,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/layProgressPagination"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
         app:layout_constraintTop_toBottomOf="@+id/appBar"/>
-
     <include
         android:id="@+id/layProgressPagination"
         layout="@layout/layout_progress_pagination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine" />
+
 
     <ProgressBar
         android:id="@+id/progress_circular"
@@ -131,5 +132,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:indeterminateTint="@color/colorPrimary"/>
+
+    <include
+        android:id="@+id/layEmptyView"
+        layout="@layout/layout_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

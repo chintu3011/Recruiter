@@ -35,6 +35,7 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.RECRUITER
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -48,7 +49,6 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
     private var userType: Int? = null
     private var userId: String? = null
 
-    private lateinit var userList: MutableList<User>
     private lateinit var filterUserList: MutableList<User>
 
     lateinit var prefManager: SharedPreferences
@@ -83,7 +83,6 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
         supportActionBar?.title = "Make New Chat"
         setMenuItemListener()
 
-        userList = mutableListOf()
         filterUserList = mutableListOf()
 
         /*userType = intent.getStringExtra("userType")*/
@@ -98,12 +97,11 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
         Log.d(TAG, "$userId :: $userType")
 
         userType?.let { userType ->
-            getUsersList(userType) {
+            getUsersList(userType,"") {
                 if (it) {
                     newUserMessageAdapter = NewUserMessageAdapter(filterUserList, this)
                     binding.recyclerView.adapter = newUserMessageAdapter
-                } else {
-                    makeToast(getString(R.string.something_error), 0)
+                    binding.recyclerView.visibility = View.VISIBLE
                 }
             }
         }
@@ -136,15 +134,16 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
 
-                    getUsersList(userType!!){
+                    getUsersList(userType!!,""){
                         newUserMessageAdapter.notifyDataSetChanged()
+
                     }
                 }
             }
         })
     }
 
-    private fun getUsersList(userType: Int, callBack: (Boolean) -> Unit) {
+    private fun getUsersList(userType: Int,tag:String, callBack: (Boolean) -> Unit) {
 
         if (Utils.isNetworkAvailable(this)) {
             if (currentPage != 1 && currentPage > totalPages) {
@@ -160,6 +159,7 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                     AndroidNetworking.get(NetworkUtils.GET_ALL_JOBSEEKER)
                         .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                         .addQueryParameter("current_page", currentPage.toString())
+                        .addQueryParameter("tag", tag)
                         .setPriority(Priority.MEDIUM).build()
                         .getAsObject(
                             GetAllUsers::class.java,
@@ -171,12 +171,11 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                                             hideProgressDialog()
                                             Log.d("###", "onResponse: ${it.data}")
                                             filterUserList.addAll(it.data)
-                                            userList.addAll(it.data)
-                                            if (userList.isNotEmpty()) {
+                                            if (filterUserList.isNotEmpty()) {
                                                 totalPages = it.total_pages
-                                                /*hideShowEmptyView(true)*/
+                                                hideShowEmptyView(true)
                                             } else {
-                                                /*hideShowEmptyView(false)*/
+                                                hideShowEmptyView(false)
                                             }
                                             binding.progressCircular.visibility = View.GONE
                                             callBack(true)
@@ -185,23 +184,32 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                                     } catch (e: Exception) {
                                         Log.e("#####", "onResponse: catch: ${e.message}")
                                         callBack(false)
+                                        hideShowEmptyView(false)
 
                                     }
                                 }
 
                                 override fun onError(anError: ANError?) {
                                     /*hideShowEmptyView(false)*/
+                                    hideShowEmptyView(false)
                                     anError?.let {
                                         Log.e(
                                             "#####",
                                             "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+
                                         )
+                                        if (it.errorCode >= 500) {
+                                            binding.layEmptyView.tvNoData.text =
+                                                getString(R.string.opps_can_t_find_user)
+                                        }
+
                                         /*if (it.errorCode >= 500) {
                                                 binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
                                             }*/
                                     }
                                     //                                hideProgressDialog()
                                     callBack(false)
+
                                 }
                             })
                 }
@@ -210,6 +218,7 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                     AndroidNetworking.get(NetworkUtils.GET_ALL_RECRUITER)
                         .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                         .addQueryParameter("current_page", currentPage.toString())
+                        .addQueryParameter("tag", tag)
                         .setPriority(Priority.MEDIUM).build()
                         .getAsObject(
                             GetAllUsers::class.java,
@@ -221,8 +230,7 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                                             hideProgressDialog()
                                             Log.d("###", "onResponse: ${it.data}")
                                             filterUserList.addAll(it.data)
-                                            userList.addAll(it.data)
-                                            if (userList.isNotEmpty()) {
+                                            if (filterUserList.isNotEmpty()) {
                                                 totalPages = it.total_pages
                                                 /*hideShowEmptyView(true)*/
                                             } else {
@@ -239,15 +247,16 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                                 }
 
                                 override fun onError(anError: ANError?) {
-                                    /*hideShowEmptyView(false)*/
+                                    hideShowEmptyView(false)
                                     anError?.let {
                                         Log.e(
                                             "#####",
                                             "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                         )
-                                        /*if (it.errorCode >= 500) {
-                                                binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
-                                            }*/
+                                        if (it.errorCode >= 500) {
+                                            binding.layEmptyView.tvNoData.text =
+                                                getString(R.string.opps_can_t_find_user)
+                                        }
                                     }
                                     //                                hideProgressDialog()
                                     callBack(false)
@@ -265,7 +274,7 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                 }
             }
         } else {
-            Utils.showNoInternetBottomSheet(this, this)
+           hideShowEmptyView(isShow = true, isInternetAvailable = true)
             callBack(false)
 //            hideShowEmptyView(isShow = false, isInternetAvailable = false)
         }
@@ -275,21 +284,20 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
     override fun updateUserList(query: String) {
 
         filterUserList.clear()
+        currentPage = 1
+        binding.recyclerView.visibility = View.GONE
+        binding.layEmptyView.root.visibility = View.GONE
+        userType?.let {
+            getUsersList(it,query){ bIt ->
+                if (bIt) {
+                    newUserMessageAdapter.notifyDataSetChanged()
+                    binding.recyclerView.visibility = View.VISIBLE
+                } else {
 
-        if (!TextUtils.isEmpty(query)){
-            for (user in userList) {
-                val fullName = user.vFirstName + " " + user.vLastName
-                if (fullName.lowercase(Locale.ROOT)
-                        .contains(query.lowercase(Locale.ROOT))
-                ) {
-                    filterUserList.add(user)
                 }
             }
         }
-        else{
-            filterUserList.addAll(userList)
-        }
-        newUserMessageAdapter.notifyDataSetChanged()
+
     }
 
     private var btnSearch: MenuItem? = null
@@ -364,5 +372,30 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
             Toast.makeText(this, "Try Again!", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun hideShowEmptyView(
+        isShow: Boolean,  isInternetAvailable: Boolean = true
+    ) {
+        binding.recyclerView.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.layEmptyView.root.visibility = if (isShow) View.GONE else View.VISIBLE
+        binding.layProgressPagination.root.visibility = View.GONE
+        binding.progressCircular.visibility = View.GONE
+        if (isInternetAvailable) {
+            binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_job_found)
+            binding.layEmptyView.btnRetry.visibility = View.GONE
+        } else {
+            binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
+            binding.layEmptyView.btnRetry.visibility = View.VISIBLE
+            binding.layEmptyView.btnRetry.setOnClickListener {
+                getUsersList(userType!!, ""){
+                    if (it){
+                        newUserMessageAdapter = NewUserMessageAdapter(filterUserList, this)
+                        binding.recyclerView.adapter = newUserMessageAdapter
+                    }else{
 
+                    }
+                }
+
+            }
+        }
+    }
 }
