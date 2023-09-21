@@ -24,20 +24,34 @@ import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityChatBoardBinding
+import com.amri.emploihunt.model.GetUserById
+import com.amri.emploihunt.model.LatestChatMsg
 import com.amri.emploihunt.model.MessageData
 import com.amri.emploihunt.model.User
+import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.settings.ProfileActivity
+import com.amri.emploihunt.store.UserDataRepository
+import com.amri.emploihunt.util.APIKEY
+import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.IMG_TYPE
 import com.amri.emploihunt.util.PDF_TYPE
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
+import com.amri.emploihunt.util.PrefManager.set
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.TXT_TYPE
 import com.amri.emploihunt.util.Utils
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.imageview.ShapeableImageView
@@ -54,6 +68,8 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.showAlignTop
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -79,11 +95,12 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
     private var userPhoneNumber:String ?= null
 
 //    private lateinit var popupWindow:PopupWindow
+    private lateinit var userDataRepository: UserDataRepository
 
     private lateinit var prefManager: SharedPreferences
 
     private var user:User ?= null
-
+    private var fullName: String? = null
     private lateinit var balloon: Balloon
 
     @SuppressLint("NotifyDataSetChanged")
@@ -98,7 +115,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         val window: Window = this@ChatBoardActivity.window
         window.statusBarColor = ContextCompat.getColor(this@ChatBoardActivity,R.color.colorPrimary)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-
+        userDataRepository = UserDataRepository(this)
         prefManager = prefManager(this)
 
         userType = prefManager.get(ROLE,0)
@@ -107,50 +124,69 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         Log.d(TAG,"$fromId :: $userType")
         messageList = mutableListOf()
 
+        if (!intent.getBooleanExtra("isNotification",false)){
 
-        user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Log.d(TAG,"${Build.VERSION.SDK_INT}")
-            intent.getSerializableExtra("userObject", User::class.java)
-        } else {
-            Log.d(TAG,"${Build.VERSION.SDK_INT}")
-            val bundle = intent.extras
-            bundle?.getSerializable("userObject") as? User
+            user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Log.d(TAG,"${Build.VERSION.SDK_INT}")
+                intent.getSerializableExtra("userObject", User::class.java)
+            } else {
+                Log.d(TAG,"${Build.VERSION.SDK_INT}")
+                val bundle = intent.extras
+                bundle?.getSerializable("userObject") as? User
+            }
+            if (user != null){
+                userFName = user!!.vFirstName +" "+ (user!!.vLastName)
+                Log.d("userFName", "onCreate: $userFName")
+
+
+                supportActionBar?.elevation = 0f
+                toId = user!!.vFirebaseId
+                if(user!!.tProfileUrl != null){
+                    Glide.with(this@ChatBoardActivity)
+                        .load(user!!.tProfileUrl)
+                        .apply(
+                            RequestOptions
+                                .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
+                                .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
+                        )
+                        .into(binding.profileImg)
+                }
+                userPhoneNumber = user!!.vMobile
+            }
+            setSupportActionBar(binding.toolbar)
+            binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+            listenerForMessages {
+                Log.d(TAG, messageList.size.toString())
+                adapter = ChatAdapter(this,messageList,fromId)
+                binding.recyclerView.adapter = adapter
+                binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+            }
+        }else{
+            retrieveUserData(intent.getStringExtra("userId")!!){
+
+                binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+                listenerForMessages {
+                    Log.d(TAG, messageList.size.toString())
+                    adapter = ChatAdapter(this,messageList,fromId)
+                    binding.recyclerView.adapter = adapter
+                    binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+                }
+            }
         }
-
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.elevation = 0f
+        supportActionBar?.title = userFName
 
         /*fromId = FirebaseAuth.getInstance().currentUser?.uid.toString()*/
 
-        if (user != null){
-            userFName = user!!.vFirstName +" "+ (user!!.vLastName)
-            if (userFName!!.isNotEmpty()) supportActionBar?.title = userFName
-            toId = user!!.vFirebaseId
-            if(user!!.tProfileUrl != null){
-                Glide.with(this@ChatBoardActivity)
-                    .load(user!!.tProfileUrl)
-                    .apply(
-                        RequestOptions
-                            .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                            .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
-                    )
-                    .into(binding.profileImg)
-            }
-            userPhoneNumber = user!!.vMobile
-        }
-        binding.recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
 
         setOnClickListener()
 
         textWatcherForMsgEditText()
 
-        listenerForMessages {
-            Log.d(TAG, messageList.size.toString())
-            adapter = ChatAdapter(this,messageList,fromId)
-            binding.recyclerView.adapter = adapter
-            binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
 
-        }
 
         /*popupWindow = PopupWindow(this@ChatBoardActivity)
         val popupView = layoutInflater.inflate(R.layout.chat_board_add_popup,null)
@@ -236,6 +272,14 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
         }
 
 
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserFullName().collect{
+                fullName = it
+            }
+        }.invokeOnCompletion {
+            Log.d(ProfileActivity.TAG, "setProfileData: Full name data is updated")
+        }
+
     }
 
 
@@ -304,7 +348,7 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.e(TAG, "onCancelled: $error", ) 
+                        Log.e(TAG, "onCancelled: $error")
                     }
                 })
         }
@@ -585,6 +629,8 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                     binding.inputMessage.text?.clear()
                     binding.recyclerView.scrollToPosition(messageList.size -1)
                     Log.d(TAG,"SuccessFully saved Send Msg To database:${fromReference.key}")
+                    sendNotification(message)
+
                 }
                 .addOnFailureListener {
                     binding.inputMessage.text?.clear()
@@ -623,5 +669,140 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
 
         }
 
+    }
+
+    fun sendNotification(message: String?) {
+        Log.d("testNotification", "sendNotification: ")
+        try {
+
+            val jsonObject = JSONObject()
+            val notificationObj = JSONObject()
+            notificationObj.put("title", fullName)
+            notificationObj.put("body", message)
+            val dataObj = JSONObject()
+            dataObj.put("userId", prefManager[FIREBASE_ID, ""])
+            dataObj.put("notification_type", "1")
+            jsonObject.put("notification", notificationObj)
+            jsonObject.put("data", dataObj)
+            jsonObject.put("to", user!!.tDeviceToken)
+            Log.d("###", "sendNotification: ${user!!.tDeviceToken}")
+            callApi(jsonObject)
+        } catch (e: Exception) {
+            Log.d("testNotification", "sendNotification: ${e.message}")
+        }
+    }
+
+    fun callApi(jsonObject: JSONObject) {
+
+        AndroidNetworking.post("https://fcm.googleapis.com/fcm/send")
+            .addHeaders("Authorization", "Bearer ${prefManager[APIKEY, ""]}")
+            .addJSONObjectBody(jsonObject)
+            .setPriority(Priority.MEDIUM).build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    // do anything with response
+                    Log.d("testNotification", "onResponse: $response")
+                }
+
+                override fun onError(error: ANError) {
+                    // handle error
+                    Log.d("testNotification", "onResponse: ${error.message}")
+                }
+            })
+
+        /*val JSON: MediaType = "application/json; charset=utf-8".toMediaType()
+        val client = OkHttpClient()
+        val url = "https://fcm.googleapis.com/fcm/send"
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+        Log.d("testNotification", "callApi: $jsonObject")
+        val request: Request = Request.Builder()
+            .url(url)
+            .post(body)
+            .header("Authorization", "Bearer AIzaSyBr0KdGDKP380cNUqQd00V8A7diax4RQJQ")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("testNotification", "onFailure: ${e.message}")
+            }
+
+
+            override fun onResponse(call: Call, response: Response) {
+                Log.d("testNotification", "onResponse: ${response.code}")
+
+            }
+        })*/
+    }
+    private fun retrieveUserData(iUserId: String,completion: () -> Unit) {
+
+        if (Utils.isNetworkAvailable(this)) {
+            showProgressDialog("Please Wait...")
+            AndroidNetworking.get(NetworkUtils.GET_USER_BY_FIREBASE_ID)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter("vFirebaseId",iUserId)
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetUserById::class.java,
+                    object : ParsedRequestListener<GetUserById> {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(response: GetUserById?) {
+                            try {
+                                response?.let {
+
+                                    Log.d("###", "onResponse: ${it.data}")
+                                    user = response.data
+                                    hideProgressDialog()
+                                    userFName = user!!.vFirstName +" "+ (user!!.vLastName)
+                                    toId = user!!.vFirebaseId
+                                    if(user!!.tProfileUrl != null){
+                                        Glide.with(this@ChatBoardActivity)
+                                            .load(user!!.tProfileUrl)
+                                            .apply(
+                                                RequestOptions
+                                                    .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
+                                                    .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
+                                            )
+                                            .into(binding.profileImg)
+                                    }
+                                    userPhoneNumber = user!!.vMobile
+                                    supportActionBar?.title = userFName
+                                    completion()
+
+                                    /*if (latestMessageList.isNotEmpty()) {
+                                        totalPages = it.total_pages
+                                        adapter.notifyDataSetChanged()
+                                        *//*hideShowEmptyView(true)*//*
+                                    } else {
+                                        *//*hideShowEmptyView(false)*//*
+                                    }*/
+                                }
+                            } catch (e: Exception) {
+                                hideProgressDialog()
+                                Log.e("#####", "onResponse: catch: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            /*hideShowEmptyView(false)*/
+                            anError?.let {
+                                Log.e(
+                                    "#####",
+                                    "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
+                                )
+                                /*if (it.errorCode >= 500) {
+                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+
+                                }*/
+                            hideProgressDialog()
+                            }
+
+
+
+                        }
+                    })
+        } else {
+
+            Utils.showNoInternetBottomSheet(this,this@ChatBoardActivity)
+//            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+        }
     }
 }

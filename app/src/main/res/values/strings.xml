@@ -178,5 +178,6 @@
     <string name="present">Present</string>
     <string name="opps_can_t_find_user">Opps! Can\'t find user</string>
     <string name="opps_no_any_jos_post">Opps! No Any jos post</string>
+    <string name="sorry_you_have_no_any_chats_please_add_chat_user_using_below_add_people">Sorry you have no any chats, Please add chat user using below Add People</string>
 
 </resources>

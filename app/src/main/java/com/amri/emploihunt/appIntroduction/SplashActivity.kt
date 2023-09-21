@@ -35,6 +35,7 @@ import com.amri.emploihunt.model.UpdateAppModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.settings.ContactUsActivity
+import com.amri.emploihunt.util.APIKEY
 import com.amri.emploihunt.util.DEVICE_ID
 import com.amri.emploihunt.util.DEVICE_NAME
 import com.amri.emploihunt.util.DEVICE_TYPE
@@ -151,6 +152,7 @@ class SplashActivity : BaseActivity() {
 
                                     val currentVersionCode = BuildConfig.VERSION_CODE
                                     prefManager[IS_BLOCKED] = it.data.isBlock
+                                    prefManager[APIKEY] = it.data.nothing.vKey
                                     if (it.data.isBlock == 1){
                                         showAccountBlockBottomSheet()
                                     }else{

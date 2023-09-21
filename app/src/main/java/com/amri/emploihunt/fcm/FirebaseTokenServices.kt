@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat
 
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.R
+import com.amri.emploihunt.messenger.ChatBoardActivity
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
@@ -41,6 +42,7 @@ class FirebaseTokenServices : FirebaseMessagingService() {
     @RequiresApi(api = Build.VERSION_CODES.O)
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Log.d("test", "onMessageReceived: $message")
         if (message.notification != null) {
             prefManager = PrefManager.prefManager(this)
             val title: String = message.notification!!.title.toString()
@@ -48,15 +50,17 @@ class FirebaseTokenServices : FirebaseMessagingService() {
 
             val objData: MutableMap<String, String> = message.data
             val notiType: String = objData["notification_type"].toString()
+            val userId: String = objData["userId"].toString()
 
-            showNotification(title, msg, notiType)
+            showNotification(title, msg, notiType,userId)
         }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
     @RequiresApi(api = Build.VERSION_CODES.O)
     fun showNotification(
-        title: String?, message: String?, notiType: String?) {
+        title: String?, message: String?, notiType: String?, userId: String
+    ) {
         // val notificationChannel = NotificationChannel(channelId, "name", NotificationManager.IMPORTANCE_LOW)
         val channelId = "Recruitment App"
         createNotificationChannel(channelId)
@@ -65,6 +69,12 @@ class FirebaseTokenServices : FirebaseMessagingService() {
 
         val intent = when (notiType) {
             "1" -> {
+                Intent(applicationContext, ChatBoardActivity::class.java).apply {
+                    putExtra("userId",userId)
+                    putExtra("isNotification",true)
+                }
+            }
+            "5" -> {
                 Intent(applicationContext, HomeJobSeekerActivity::class.java).apply {
 
                 }
@@ -98,7 +108,7 @@ class FirebaseTokenServices : FirebaseMessagingService() {
         }
         val builder =
             NotificationCompat.Builder(applicationContext, channelId).setContentText(title)
-                .setContentTitle(message).addAction(R.drawable.logo, "Title", pendingIntent)
+                .setContentTitle(message).addAction(R.mipmap.ic_logo, "Title", pendingIntent)
                 //.setChannelId(channelId)
                 .setSmallIcon(R.drawable.logo).setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

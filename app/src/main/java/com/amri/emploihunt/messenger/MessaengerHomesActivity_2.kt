@@ -38,6 +38,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatClickListener {
 
@@ -124,55 +125,88 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
         latestMessageList.clear()
         filterLatestMessageList.clear()
         if(userId != null){
-            FirebaseDatabase.getInstance().getReference("Messenger")
-                .child("LatestMessage")
-                .child(userId!!)
-                .addChildEventListener(object : ChildEventListener {
-                    override fun onChildAdded(chatSnapshot: DataSnapshot, previousChildName: String?) {
-                        /*Log.d(TAG,"previousChildName : $previousChildName")*/
-                        Log.d("###", "onChildAdded: ${chatSnapshot.value}")
-                        val chatMessage = chatSnapshot.getValue(MessageData::class.java)
+           
+            Log.d("###", "listenerForLatestMsg: $userId")
+            val databaseReference = FirebaseDatabase.getInstance().getReference("Messenger").child("LatestMessage").child(userId!!)
 
-                        if (chatMessage != null) {
-                            Log.d("####", "onChildAdded: ${chatMessage.fromId}")
-                            /***/
-                            retrieveUserData(chatMessage)
-                        }
-                        /*sortMainList()*/
-                        completion()
+            databaseReference.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        // The userId exists in the database, you can add the child event listener here
+                        Log.d("###", "onDataChange: ")
+                        databaseReference .addChildEventListener(object : ChildEventListener {
+                            override fun onChildAdded(chatSnapshot: DataSnapshot, previousChildName: String?) {
+                                /*Log.d(TAG,"previousChildName : $previousChildName")*/
+                                Log.d("###", "onChildAdded: ${chatSnapshot.value}")
+                                val chatMessage = chatSnapshot.getValue(MessageData::class.java)
 
-                    }
+                                if (chatMessage != null) {
+                                    Log.d("####", "onChildAdded: ${chatMessage.fromId}")
+                                    /***/
+                                    retrieveUserData(chatMessage)
+                                }
+                                hideShowEmptyView(true)
+                                /*sortMainList()*/
+                                completion()
+                                Log.d("test", "onChildAdded: ")
 
-                    override fun onChildChanged(chatSnapshot: DataSnapshot, previousChildName: String?) {
-                        Log.d(TAG,"previousChildName : $previousChildName")
-                        val chatMessage = chatSnapshot.getValue(MessageData::class.java)
-                        /***/
-                        if (chatMessage != null) {
-                            Log.d("####", "onChildAdded: ${chatMessage.fromId}")
-                            /***/
-                            retrieveUserData(chatMessage)
-                        }
-                        /*sortMainList()*/
-                        completion()
+                            }
 
-                    }
+                            override fun onChildChanged(chatSnapshot: DataSnapshot, previousChildName: String?) {
+                                Log.d(TAG,"previousChildName : $previousChildName")
+                                val chatMessage = chatSnapshot.getValue(MessageData::class.java)
+                                /***/
+                                if (chatMessage != null) {
+                                    Log.d("####", "onChildAdded: ${chatMessage.fromId}")
+                                    /***/
+                                    retrieveUserData(chatMessage)
+                                }
+                                Log.d("test", "onChildAdded: ")
 
-                    override fun onChildRemoved(snapshot: DataSnapshot) {
+                                /*sortMainList()*/
+                                completion()
+
+                            }
+
+                            override fun onChildRemoved(snapshot: DataSnapshot) {
+                                binding.progressCircular.visibility = View.GONE
+                                
+                                Log.d("test", "onChildAdded: ")
+                            }
+
+                            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                                binding.progressCircular.visibility = View.GONE
+                                
+                                Log.d("test", "onChildAdded: ")
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                binding.progressCircular.visibility = View.GONE
+                                
+                                Log.d("test", "onChildAdded: ")
+                            }
+
+                        })
+                    } else {
+                        // The userId does not exist in the database, handle it accordingly
+                        hideShowEmptyView(false)
                         binding.progressCircular.visibility = View.GONE
-                        hideProgressDialog()
+                        binding.layEmptyView.tvNoData.text =
+                            getString(R.string.sorry_you_have_no_any_chats_please_add_chat_user_using_below_add_people)
+                      
                     }
+                }
 
-                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                        binding.progressCircular.visibility = View.GONE
-                        hideProgressDialog()
-                    }
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the onCancelled event if needed
+                }
+            })
 
-                    override fun onCancelled(error: DatabaseError) {
-                        binding.progressCircular.visibility = View.GONE
-                        hideProgressDialog()
-                    }
 
-                })
+
+
+
+
         }
         else{
             makeToast("Didn't get user-Id",0)
@@ -182,6 +216,30 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
 
     }
 
+    private fun hideShowEmptyView(
+        isShow: Boolean,  isInternetAvailable: Boolean = true
+    ) {
+        binding.recyclerView.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.layEmptyView.root.visibility = if (isShow) View.GONE else View.VISIBLE
+        binding.layProgressPagination.root.visibility = View.GONE
+        binding.progressCircular.visibility = View.GONE
+        if (isInternetAvailable) {
+            binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_job_found)
+            binding.layEmptyView.btnRetry.visibility = View.GONE
+        } else {
+            binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
+            binding.layEmptyView.btnRetry.visibility = View.VISIBLE
+            binding.layEmptyView.btnRetry.setOnClickListener {
+                listenerForLatestMsg {
+                    latestMessageAdapter = LatestMessageAdapter(filterLatestMessageList,this@MessaengerHomesActivity_2,userId,userType!!,this)
+
+                    binding.recyclerView.adapter = latestMessageAdapter
+
+                }
+
+            }
+        }
+    }
     private fun retrieveUserData(chatMessage: MessageData) {
 
         if (Utils.isNetworkAvailable(this)) {
@@ -202,7 +260,7 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
                         override fun onResponse(response: GetUserById?) {
                             try {
                                 response?.let {
-                                    hideProgressDialog()
+                                    
                                     Log.d("###", "onResponse: ${it.data}")
 
                                     updateOrAddLatestMessage(latestMessageList,LatestChatMsg(chatMessage,response.data))
@@ -222,7 +280,7 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
                                     }*/
                                 }
                             } catch (e: Exception) {
-                                hideProgressDialog()
+                                
                                 binding.recyclerView.visibility = View.VISIBLE
                                 binding.progressCircular.visibility = View.GONE
                                 Log.e("#####", "onResponse: catch: ${e.message}")
@@ -242,11 +300,11 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
                             }
                             binding.recyclerView.visibility = View.VISIBLE
                             binding.progressCircular.visibility = View.GONE
-                            hideProgressDialog()
+                            
                         }
                     })
         } else {
-            hideProgressDialog()
+            
             binding.recyclerView.visibility = View.VISIBLE
             binding.progressCircular.visibility = View.GONE
             Utils.showNoInternetBottomSheet(this,this@MessaengerHomesActivity_2)
@@ -355,6 +413,7 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
         val intent = Intent(this@MessaengerHomesActivity_2, ChatBoardActivity::class.java)
         intent.putExtra("userId",userId)
         intent.putExtra("userObject",user)
+        intent.putExtra("isNotification",false)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         overridePendingTransition(

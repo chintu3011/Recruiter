@@ -109,6 +109,7 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
+        android:visibility="gone"
         android:layout_marginVertical="@dimen/_10sdp"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuildLine"
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"
@@ -140,6 +141,14 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <include
+        android:id="@+id/layEmptyView"
+        layout="@layout/layout_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
