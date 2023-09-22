@@ -158,7 +158,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         timer.start()
                         storedVerificationId = verificationId
                         resendToken = token
-                        makeToast("code sent to :${this@OTPVerificationLoginActivity.phoneNo}",0)
+                        makeToast("code sent to :${phoneNo}",0)
                         hideProgressDialog()
                     }
                 }
