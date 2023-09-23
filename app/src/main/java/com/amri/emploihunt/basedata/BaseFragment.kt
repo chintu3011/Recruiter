@@ -227,7 +227,8 @@ open class BaseFragment : Fragment() {
             Log.d("Version*", Build.VERSION.SDK_INT.toString())
             val requiredPermissions = listOf( Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS)
             val deniedPermissions: MutableList<String> = mutableListOf()
             for(permission in requiredPermissions){
                 if(ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_DENIED ){

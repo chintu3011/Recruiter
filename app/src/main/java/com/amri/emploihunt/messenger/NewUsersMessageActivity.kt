@@ -49,6 +49,7 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
     private var userType: Int? = null
     private var userId: String? = null
 
+
     private lateinit var filterUserList: MutableList<User>
 
     lateinit var prefManager: SharedPreferences
@@ -81,6 +82,8 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Make New Chat"
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setMenuItemListener()
 
         filterUserList = mutableListOf()
@@ -136,12 +139,23 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
 
                     getUsersList(userType!!,""){
                         newUserMessageAdapter.notifyDataSetChanged()
-
                     }
                 }
             }
         })
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun getUsersList(userType: Int,tag:String, callBack: (Boolean) -> Unit) {
 
@@ -274,11 +288,11 @@ class NewUsersMessageActivity : BaseActivity(), UserListUpdateListener {
                 }
             }
         } else {
-           hideShowEmptyView(isShow = true, isInternetAvailable = true)
+            hideShowEmptyView(isShow = true, isInternetAvailable = true)
             callBack(false)
 //            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+            }
         }
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun updateUserList(query: String) {

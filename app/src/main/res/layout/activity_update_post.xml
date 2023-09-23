@@ -7,31 +7,45 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/framelayoutpost"
         android:orientation="vertical"
-        tools:context=".recruiterSide.PostRecruitFragment">
+        tools:context=".settings.UpdatePostActivity">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:scaleType="center"
-            android:id="@+id/ivBack"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:visibility="visible"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            app:collapseIcon="@drawable/ic_back"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:src="@drawable/ic_back" />
+            >
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:title="Update post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:gravity="center_vertical"
+                android:padding="0dp"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             android:scrollbars="vertical"
-            android:scrollbarAlwaysDrawVerticalTrack="true">
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -43,6 +57,7 @@
                     android:layout_margin="@dimen/_12sdp"
                     android:paddingHorizontal="@dimen/_5sdp"
                     app:layout_constraintBottom_toTopOf="@+id/companynameadd"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -77,7 +92,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +178,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutJobRole"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -199,7 +214,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +250,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutExpDuration"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -270,7 +285,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutTechSkills"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -296,8 +311,8 @@
                     android:elevation="@dimen/_1sdp"
                     android:hint="@string/required_technical_skills"
                     android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
                     android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
                     android:paddingBottom="0dp"
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="outline"
@@ -308,7 +323,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:helperTextTextColor="@color/blue"
                     app:hintTextColor="@color/blue"
                     app:placeholderText="Developer"
@@ -327,17 +342,17 @@
                     android:id="@+id/btnAddTechSkills"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    app:cardCornerRadius="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_2sdp"
                     android:orientation="vertical"
-                    android:layout_margin="@dimen/_2sdp">
+                    app:cardCornerRadius="@dimen/_5sdp">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/_2sdp"
-                        android:tint="@color/blue"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/ic_add"
+                        android:tint="@color/blue" />
 
 
                 </androidx.cardview.widget.CardView>
@@ -347,14 +362,14 @@
                     android:id="@+id/flow19"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/_2sdp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    app:flow_horizontalGap="@dimen/_5sdp"
+                    android:background="@color/blueLight"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:constraint_referenced_ids="textLayoutTechSkills,btnAddTechSkills"
                     app:flow_horizontalAlign="center"
+                    app:flow_horizontalGap="@dimen/_5sdp"
                     app:flow_verticalAlign="center"
                     app:flow_verticalStyle="packed"
-                    android:background="@color/blueLight"
-                    app:constraint_referenced_ids="textLayoutTechSkills,btnAddTechSkills"
                     app:layout_constraintBottom_toTopOf="@+id/techSkillsChipGrp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -380,12 +395,12 @@
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:elevation="@dimen/_1sdp"
                     android:hint="@string/required_soft_skills"
-                    android:paddingTop="0dp"
                     android:paddingStart="0dp"
+                    android:paddingTop="0dp"
                     android:paddingEnd="0dp"
                     android:paddingBottom="0dp"
-                    android:elevation="@dimen/_1sdp"
                     app:boxBackgroundColor="#FFFFFF"
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -395,7 +410,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:helperTextTextColor="@color/blue"
                     app:hintTextColor="@color/blue"
                     app:placeholderText="Communication"
@@ -415,17 +430,17 @@
                     android:id="@+id/btnAddSoftSkills"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    app:cardCornerRadius="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_2sdp"
                     android:orientation="vertical"
-                    android:layout_margin="@dimen/_2sdp">
+                    app:cardCornerRadius="@dimen/_5sdp">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/_2sdp"
-                        android:tint="@color/blue"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/ic_add"
+                        android:tint="@color/blue" />
 
 
                 </androidx.cardview.widget.CardView>
@@ -435,14 +450,14 @@
                     android:id="@+id/flow20"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/_2sdp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    app:flow_horizontalGap="@dimen/_5sdp"
+                    android:background="@color/blueLight"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:constraint_referenced_ids="textLayoutSoftSkills,btnAddSoftSkills"
                     app:flow_horizontalAlign="center"
+                    app:flow_horizontalGap="@dimen/_5sdp"
                     app:flow_verticalAlign="center"
                     app:flow_verticalStyle="packed"
-                    android:background="@color/blueLight"
-                    app:constraint_referenced_ids="textLayoutSoftSkills,btnAddSoftSkills"
                     app:layout_constraintBottom_toTopOf="@+id/softSkillsChipGrp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -526,7 +541,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/textLayoutWorkingMode"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -626,7 +641,7 @@
                     app:boxStrokeColor="@color/edit_text_color"
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
-                    app:endIconTint="@color/gray"
+                    app:endIconTint="@color/grey"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/flow9"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -713,5 +728,5 @@
         </ScrollView>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

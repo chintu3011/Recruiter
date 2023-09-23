@@ -23,7 +23,7 @@
         app:counterMaxLength="2000"
         app:endIconCheckable="true"
         app:endIconMode="clear_text"
-        app:endIconTint="@color/gray"
+        app:endIconTint="@color/grey"
         app:hintTextColor="@color/ed_theme_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

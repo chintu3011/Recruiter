@@ -131,19 +131,25 @@ class PostRecruitFragment : BaseFragment() {
 
         techSkillList = mutableListOf()
         binding.btnAddTechSkills.setOnClickListener{
-            val chip = LayoutInflater.from(requireContext()).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = binding.technicalSkills.text.toString().trim()
-            techSkillList.add(binding.technicalSkills.text.toString().trim())
-            binding.technicalSkills.setText("")
-            binding.techSkillsChipGrp.addView(chip)
+            if(binding.technicalSkills.text.toString().trim().isNotEmpty()) {
+                val chip = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.single_chip_qualification, null) as Chip
+                chip.text = binding.technicalSkills.text.toString().trim()
+                techSkillList.add(binding.technicalSkills.text.toString().trim())
+                binding.technicalSkills.setText("")
+                binding.techSkillsChipGrp.addView(chip)
+            }
         }
         softSkillList = mutableListOf()
         binding.btnAddSoftSkills.setOnClickListener{
-            val chip = LayoutInflater.from(requireContext()).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = binding.softSkills.text.toString().trim()
-            softSkillList.add(binding.softSkills.text.toString().trim())
-            binding.softSkills.setText("")
-            binding.softSkillsChipGrp.addView(chip)
+            if(binding.softSkills.text.toString().trim().isNotEmpty()) {
+                val chip = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.single_chip_qualification, null) as Chip
+                chip.text = binding.softSkills.text.toString().trim()
+                softSkillList.add(binding.softSkills.text.toString().trim())
+                binding.softSkills.setText("")
+                binding.softSkillsChipGrp.addView(chip)
+            }
         }
         binding.btnpostjob.setOnClickListener {
             showProgressDialog("Please wait")

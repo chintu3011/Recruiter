@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-        android:textColor="@color/gray"
+        android:textColor="@color/grey"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

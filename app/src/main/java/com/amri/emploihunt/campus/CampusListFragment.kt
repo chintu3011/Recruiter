@@ -138,6 +138,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                                     hideProgressDialog()
                                     Log.d("#####", "onResponse: ${it.data}")
                                     filteredDataList.addAll(it.data)
+                                    Log.d("#####", "onResponse: ${filteredDataList[1].tVacancy}")
                                     if (filteredDataList.isNotEmpty()) {
                                         totalPages = it.total_pages
                                         binding.campusAdapter!!.notifyDataSetChanged()
@@ -206,6 +207,8 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
             val campusModel = dataList[position]
 
+            Log.d(">>>>>", "onBindViewHolder: ${campusModel.tVacancy}")
+
             holder.onBind(campusModel)
         }
 
@@ -236,6 +239,8 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
 
                 val vacancyList = splitVacancy(campusModel.tVacancy)
 
+                Log.d("^^^^^", "onBind: vacancyList = \n$campusModel.tVacancy")
+                Log.d(",,,,,,", "onBind: vacancyList = \n$vacancyList")
                 createTableRow(binding.vacancyTable,vacancyList)
                 createQualificationChips(binding.qualificationChipGrp,campusModel.vQulification.split(","))
 
@@ -288,9 +293,15 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                 val map:MutableMap<String,String>  = mutableMapOf()
                 for(str in vacancy.split(","))
                 {
+                    Log.d("......", "splitVacancy: $str")
                     val list = str.split("-")
                     val vacCount:String = list[1].trim().subSequence(0,list[1].trim().indexOf(" ")).toString()
-                    map[list[0].trim()] = vacCount
+                    if(map.containsKey(list[0].trim())){
+                        map[list[0].trim()] = (vacCount.toInt() + (map[list[0].trim()]?.toInt() ?: 0)).toString()
+                    }
+                    else {
+                        map[list[0].trim()] = vacCount
+                    }
                 }
                 return map
             }

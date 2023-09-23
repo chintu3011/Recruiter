@@ -266,7 +266,11 @@ open class BaseActivity : AppCompatActivity() {
         Log.d("Version*", Build.VERSION.SDK_INT.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Log.d("Version*", Build.VERSION.SDK_INT.toString())
-            val requiredPermissions = listOf( Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
+            val requiredPermissions = listOf(
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS)
             val deniedPermissions: MutableList<String> = mutableListOf()
             for(permission in requiredPermissions){
                 if(ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED ){
@@ -276,8 +280,11 @@ open class BaseActivity : AppCompatActivity() {
             return deniedPermissions
         } else {
             Log.d("Version**", Build.VERSION.SDK_INT.toString())
-            val requiredPermissions = listOf( Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
+            val requiredPermissions = listOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
             val deniedPermissions: MutableList<String> = mutableListOf()
 
             for(permission in requiredPermissions){
@@ -303,26 +310,6 @@ open class BaseActivity : AppCompatActivity() {
         }
         builder.setNegativeButton("Cancel") { dialog, which ->
             makeToast(("Permission in not Granted. You can not User this Feature"),0)
-  /*          val snackbar = Snackbar
-                .make(
-                    binding.layout,
-                    "Sorry! you are not register, Please register first.",
-                    Snackbar.LENGTH_LONG
-                )
-                .setAction(
-                    "REGISTER"
-                )  // If the Undo button
-// is pressed, show
-// the message using Toast
-                {
-                    startActivity(Intent(this, AskActivity::class.java))
-                    overridePendingTransition(
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
-                }
-
-            snackbar.show()*/
             dialog.cancel()
         }
         builder.show()

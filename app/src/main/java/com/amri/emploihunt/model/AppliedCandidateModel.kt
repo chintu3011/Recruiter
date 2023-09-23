@@ -31,6 +31,7 @@ data class UserJobPref(
     val vEmail: String,
     val vQualification: String,
     val tProfileUrl: String,
+    val tProfileBannerUrl:String,
     val tResumeUrl: String,
     val vCurrentCompany: String,
     val vDesignation: String,

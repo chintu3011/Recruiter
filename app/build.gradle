@@ -133,7 +133,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
 
     //Expandable TV
-    implementation 'com.github.gifffert:ExpandableTextView:0.1.6'
+    /*implementation 'com.github.gifffert:ExpandableTextView:0.1.6'*/
     implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.4'
 
 

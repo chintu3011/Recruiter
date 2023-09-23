@@ -13,6 +13,7 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -80,10 +81,11 @@ class UpdatePostActivity : BaseActivity() {
         binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
         binding.spJobTitle.arrowPaddingRight = 19
         binding.spJobTitle.item = resources.getStringArray(R.array.indian_designations).toList()
+        binding.spJobTitle.setSelection(resources.getStringArray(R.array.indian_designations).toList().indexOf(selectedPost.vJobTitle))
         binding.spJobTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 binding.spJobTitle.isOutlined = true
-                selectedJobLocation = binding.spJobTitle.item[position].toString()
+                selectedJobTitle = binding.spJobTitle.item[position].toString()
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -109,44 +111,65 @@ class UpdatePostActivity : BaseActivity() {
         techSkillList = selectedPost.tTechnicalSkill!!.split(" || ").toMutableList()
 
         binding.techSkillsChipGrp.removeAllViews()
-        for(skill in techSkillList){
+        if(techSkillList.isNotEmpty()) {
+            for (skill in techSkillList) {
 
-            val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = skill
+                val chip = LayoutInflater.from(this)
+                    .inflate(R.layout.single_chip_qualification, null) as Chip
+                chip.text = skill
 
-            binding.techSkillsChipGrp.addView(chip)
+                binding.techSkillsChipGrp.addView(chip)
 
+            }
         }
         binding.btnAddTechSkills.setOnClickListener{
-            val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = binding.technicalSkills.text.toString().trim()
-            techSkillList.add(binding.technicalSkills.text.toString().trim())
-            binding.technicalSkills.setText("")
-            binding.techSkillsChipGrp.addView(chip)
+            if(binding.technicalSkills.text.toString().trim().isEmpty()){
+                binding.technicalSkills.error = "Please enter a skill"
+                return@setOnClickListener
+            }
+            else{
+                val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
+                chip.text = binding.technicalSkills.text.toString().trim()
+                techSkillList.add(binding.technicalSkills.text.toString().trim())
+                binding.technicalSkills.setText("")
+                binding.techSkillsChipGrp.addView(chip)
+            }
+
         }
         softSkillList =  selectedPost.tSoftSkill!!.split(" || ").toMutableList()
 
         binding.softSkillsChipGrp.removeAllViews()
-        for(skill in softSkillList){
+        if(softSkillList.isNotEmpty()) {
+            for (skill in softSkillList) {
 
-            val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = skill
+                val chip = LayoutInflater.from(this)
+                    .inflate(R.layout.single_chip_qualification, null) as Chip
+                chip.text = skill
 
-            binding.softSkillsChipGrp.addView(chip)
+                binding.softSkillsChipGrp.addView(chip)
 
+            }
         }
 
         binding.btnAddSoftSkills.setOnClickListener{
-            val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
-            chip.text = binding.softSkills.text.toString().trim()
-            softSkillList.add(binding.softSkills.text.toString().trim())
-            binding.softSkills.setText("")
-            binding.softSkillsChipGrp.addView(chip)
+            if(binding.softSkills.text.toString().trim().isEmpty())   {
+                binding.softSkills.error = "Please enter a skill"
+                return@setOnClickListener
+            }
+            else{
+                val chip = LayoutInflater.from(this).inflate(R.layout.single_chip_qualification,null) as Chip
+                chip.text = binding.softSkills.text.toString().trim()
+                softSkillList.add(binding.softSkills.text.toString().trim())
+                binding.softSkills.setText("")
+                binding.softSkillsChipGrp.addView(chip)
+            }
+
         }
 
         binding.spEducation.setSearchDialogGravity(Gravity.TOP)
         binding.spEducation.arrowPaddingRight = 19
         binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
+        binding.spEducation.setSelection(resources.getStringArray(R.array.degree_array).toList().indexOf(selectedPost.vEducation))
         binding.spEducation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                 binding.spEducation.isOutlined = true
@@ -171,11 +194,12 @@ class UpdatePostActivity : BaseActivity() {
         getAllCity(cityList){
             binding.spJobLocation.setSearchDialogGravity(Gravity.TOP)
             binding.spJobLocation.arrowPaddingRight = 19
-            binding.spJobLocation.item = resources.getStringArray(R.array.degree_array).toList()
+            binding.spJobLocation.item = cityList.toList()
+            binding.spJobLocation.setSelection(cityList.toList().indexOf(selectedPost.vAddress))
             binding.spJobLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
                     binding.spJobLocation.isOutlined = true
-                    selectedEducation = binding.spJobLocation.item[position].toString()
+                    selectedJobLocation = binding.spJobLocation.item[position].toString()
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -245,12 +269,21 @@ class UpdatePostActivity : BaseActivity() {
                 callUpdateJobPost()
             }
         }
-        binding.ivBack.setOnClickListener {
-            finish()
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
         }
-
-        
-
+        return super.onOptionsItemSelected(item)
     }
     fun getBitmapFromURL(url:URL) : Bitmap?
     {

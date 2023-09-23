@@ -92,7 +92,7 @@
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     app:collapsedLines="2"
-                    app:ellipsizeTextColor="@color/gray"
+                    app:ellipsizeTextColor="@color/grey"
                     app:expandType="layout"
                     app:isExpanded="false"
                     app:layout_constraintBottom_toBottomOf="parent"

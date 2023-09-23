@@ -134,9 +134,9 @@
     <string name="qualification">Qualification</string>
     <string name="fresher">Fresher</string>
     <string name="experienced">Experienced</string>
-    <string name="residential_city">Residencialy City</string>
-    <string name="about">about</string>
-    <string name="experience">experience</string>
+    <string name="residential_city">Residential City</string>
+    <string name="about">About</string>
+    <string name="experience">Experience</string>
     <string name="show_more">show more\n</string>
     <string name="current_position">Current position</string>
     <string name="working_mode">Working mode</string>
@@ -176,7 +176,11 @@
     <string name="job_description">Job description</string>
     <string name="required_education">Required Education</string>
     <string name="present">Present</string>
+    <string name="applied_candidate_profile">Applied Candidate Profile</string>
+    <string name="please_let_us_know_if_you_have_any_query">Please let us know if you have any query</string>
     <string name="opps_can_t_find_user">Opps! Can\'t find user</string>
     <string name="opps_no_any_jos_post">Opps! No Any jos post</string>
+    <string name="add_new_experience">Add New Experience</string>
+    <string name="some_thing_wrong_try_later">" Something wrong \n Please try again Later... "</string>
 
 </resources>

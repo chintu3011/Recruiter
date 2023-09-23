@@ -15,7 +15,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class JobPostDescriptionFragment() : BaseFragment() {
+class JobPostDescriptionFragment : BaseFragment() {
     private lateinit var database: DatabaseReference
     private lateinit var dataList: MutableList<Jobs>
     lateinit var sv : ScrollView

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
@@ -88,9 +89,21 @@ class ApplyListActivity : BaseActivity() {
             }
         })
 
-        binding.ivBack.setOnClickListener {
-            finish()
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
         }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun retrieveApplyData() {

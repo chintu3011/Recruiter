@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.AdapterView
 import com.amri.emploihunt.databinding.ActivityMainBinding
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-import ru.embersoft.expandabletextview.ExpandableTextView
 
 class MainActivity : AppCompatActivity() {
 

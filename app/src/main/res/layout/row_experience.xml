@@ -8,155 +8,384 @@
     android:layout_height="wrap_content"
     android:visibility="visible" >
 
-    <LinearLayout
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:drawableTint="@color/white"
-        android:id="@+id/btnDelete"
-        android:background="@drawable/circle_bg"
-        android:elevation="@dimen/_4sdp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/baseline_delete_18"
-            android:tint="@color/white"
-            android:scaleType="center"
-            android:padding="@dimen/_2sdp"/>
-
-    </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dataLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_5sdp"
         android:visibility="visible"
-        app:cardElevation="@dimen/_3sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/inputLayoutExperience"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:contentPadding="@dimen/_10sdp"
-        android:layout_margin="@dimen/_5sdp">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bg"
+            android:drawableTint="@color/white"
+            android:elevation="@dimen/_4sdp"
+            android:visibility="visible"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintEnd_toStartOf="@+id/layout2"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnEdit"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:padding="@dimen/_2sdp"
+                android:scaleType="center"
+                android:visibility="gone"
+                android:src="@drawable/baseline_edit_18"
+                android:tint="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bg"
+            android:drawableTint="@color/white"
+            android:elevation="@dimen/_4sdp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toEndOf="@+id/layout1"
+            app:layout_constraintTop_toTopOf="@+id/cardView">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:padding="@dimen/_2sdp"
+                android:scaleType="center"
+                android:visibility="gone"
+                android:src="@drawable/baseline_delete_18"
+                android:tint="@color/white" />
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:visibility="visible"
+            app:cardElevation="@dimen/_3sdp"
+            app:contentPadding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/designation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="#FF02397C"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/companyName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toStartOf="@id/duration"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/designation" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/duration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="gone"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/companyName"
+                    app:layout_constraintTop_toBottomOf="@id/designation"
+                    app:layout_constraintWidth_default="wrap" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="companyName,duration"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:flow_verticalStyle="packed"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintBottom_toTopOf="@+id/jobLocation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/designation" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/jobLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/grey"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@id/companyName"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="@id/companyName"
+                    app:layout_constraintTop_toBottomOf="@id/flow" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtPresent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/present"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/jobLocation"
+                    app:layout_constraintTop_toTopOf="@+id/jobLocation"
+                    app:layout_constraintWidth_default="wrap" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow21"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="jobLocation,txtPresent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flow" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/inputLayoutExperience"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/designation"
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/inputDesignation"
+                style="@style/spinnerStyle"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/inputTextLayoutCompanyName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:smsp_hint="@string/designation"
+                app:smsp_hintColor="@color/blue"
+                app:smsp_isOutlined="false"
+                app:smsp_isSearchable="true"
+                app:smsp_multilineError="true"
+                app:smsp_outlinedBoxColor="@color/black"
+                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                app:smsp_outlinedHintPadding="4dp"
+                app:smsp_outlinedHintStartX="10dp"
+                app:smsp_outlinedStrokeWidth="1dp"
+                app:smsp_searchHeaderTextColor="#ffff"
+                app:smsp_searchHintColor="@color/search_hint_color"
+                app:smsp_searchTextColor="@color/search_text_color" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputTextLayoutCompanyName"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text=""
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="#FF02397C"
+                android:gravity="center"
+                android:hint="@string/company_name"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/grey"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/inputJobLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputDesignation"
+                app:placeholderText="Microsoft corporation"
+                app:startIconDrawable="@drawable/ic_company"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputCompanyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/inputJobLocation"
+                style="@style/spinnerStyle"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/inputCheckBox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputTextLayoutCompanyName"
+                app:smsp_hint="@string/job_location"
+                app:smsp_hintColor="@color/blue"
+                app:smsp_isOutlined="false"
+                app:smsp_isSearchable="true"
+                app:smsp_multilineError="true"
+                app:smsp_outlinedBoxColor="@color/black"
+                app:smsp_outlinedBoxRadius="@dimen/_4sdp"
+                app:smsp_outlinedHintPadding="4dp"
+                app:smsp_outlinedHintStartX="10dp"
+                app:smsp_outlinedStrokeWidth="1dp"
+                app:smsp_searchHeaderTextColor="#ffff"
+                app:smsp_searchHintColor="@color/search_hint_color"
+                app:smsp_searchTextColor="@color/search_text_color" />
+
+            <CheckBox
+                android:id="@+id/inputCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:buttonTint="@color/blue"
+                android:text="Are you working here?"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toTopOf="@+id/inputTextLayoutDuration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputJobLocation" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputTextLayoutDuration"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/duration"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/grey"
+                app:helperText="Enter Duration in years"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/btnUpdateExperience"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputCheckBox"
+                app:placeholderText="3 Years"
+                app:startIconDrawable="@drawable/ic_duration"
+                app:startIconTint="@color/ed_theme_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppinsregular"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateExperience"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:backgroundTint="#C5E8E0"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
-                android:visibility="visible"
+                app:cornerRadius="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/inputTextLayoutDuration" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/companyName"
+            <ProgressBar
+                android:id="@+id/updateExpProgress"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text=""
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@id/duration"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/designation" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/duration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text=""
-                android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/_5sdp"
+                android:elevation="@dimen/_2sdp"
                 android:visibility="gone"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/companyName"
-                app:layout_constraintTop_toBottomOf="@id/designation"
-                app:layout_constraintWidth_default="wrap" />
+                app:layout_constraintBottom_toBottomOf="@id/btnUpdateExperience"
+                app:layout_constraintEnd_toEndOf="@id/btnUpdateExperience"
+                app:layout_constraintStart_toStartOf="@id/btnUpdateExperience"
+                app:layout_constraintTop_toTopOf="@+id/btnUpdateExperience" />
 
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="companyName,duration"
-                app:flow_horizontalStyle="spread_inside"
-                app:flow_verticalStyle="packed"
-                app:flow_wrapMode="chain"
-                app:layout_constraintBottom_toTopOf="@+id/jobLocation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/designation" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/jobLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text=""
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:textColor="@color/gray"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@id/companyName"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="@id/companyName"
-                app:layout_constraintTop_toBottomOf="@id/flow" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtPresent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="@string/present"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorPrimary"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:visibility="gone"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/jobLocation"
-                app:layout_constraintTop_toTopOf="@+id/jobLocation"
-                app:layout_constraintWidth_default="wrap" />
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flow21"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="jobLocation,txtPresent"
-                app:layout_constraintTop_toBottomOf="@+id/flow"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

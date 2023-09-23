@@ -10,63 +10,59 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".jobSeekerSide.JobPostDescriptionFragment">
+        tools:context=".jobSeekerSide.JobPostActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
-            android:id="@+id/toolbarLay"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            app:collapseIcon="@drawable/ic_back"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgBack"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/_4sdp"
-                android:src="@drawable/ic_back"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/jobTitleToolbar"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:textAlignment="center"
-                android:textColor="@color/black"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                android:textSize="@dimen/_15sdp"
-                android:visibility="gone"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_30sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgBack"
-                app:layout_constraintEnd_toEndOf="parent"/>
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgSave"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/_4sdp"
-                android:src="@drawable/unfilled_heart"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    app:title=" "
+                    android:visibility="visible"
+                    android:gravity="center_vertical"
+                    android:padding="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgSave"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/unfilled_heart"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLay"
+            app:layout_constraintTop_toBottomOf="@+id/appBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/btnApply"
@@ -120,7 +116,6 @@
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:elevation="@dimen/_3sdp"
                     android:scaleType="centerInside"
                     app:layout_constraintEnd_toStartOf="@+id/companyName"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -309,24 +304,28 @@
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider" />
 
-                <ru.embersoft.expandabletextview.ExpandableTextView
+
+
+                <io.github.glailton.expandabletextview.ExpandableTextView
                     android:id="@+id/jobDes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    app:etv_animationTime="10"
-                    app:etv_expandLines="3"
-                    app:etv_showLine="false"
-                    app:etv_textExpand="Show more"
-                    app:etv_textShrink="Show less"
-                    app:etv_textContentSize="15sp"
-                    app:etv_textContentColor="@color/black"
-                    app:etv_textStateColor="#9F000000"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu sit amet, sodales dignissim mauris. Maecenas consequat tortor vel nunc auctor tempus vitae quis enim. Nunc arcu ipsum, lobortis porta fermentum in, pulvinar et velit. Nullam eu magna a lacus sagittis gravida ut sed sem. Suspendisse ullamcorper neque augue, ornare consectetur diam cursus porta. Suspendisse lacinia dignissim lectus a ullamcorper. Cras imperdiet sodales metus at tincidunt. In condimentum fermentum augue sit amet fermentum. Sed in mattis est. Aenean faucibus enim velit, ornare sagittis tortor tristique eu. Integer posuere laoreet lacus a bibendum."
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:text="@string/short_lorem_ipsum"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:collapsedLines="3"
+                    app:ellipsizeTextColor="@color/grey"
+                    app:expandType="layout"
+                    app:isExpanded="false"
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                    app:layout_constraintTop_toBottomOf="@+id/txtJobDes" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtJobDes"
+                    app:readLessText="Read less"
+                    app:readMoreText="Read more"
+                    app:textMode="line" />
 
                 <View
                     android:id="@+id/lineDivider1"
@@ -359,24 +358,29 @@
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
                     app:layout_constraintTop_toBottomOf="@id/lineDivider1" />
 
-                <ru.embersoft.expandabletextview.ExpandableTextView
+
+                <io.github.glailton.expandabletextview.ExpandableTextView
                     android:id="@+id/rolDes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    app:etv_animationTime="10"
-                    app:etv_expandLines="3"
-                    app:etv_showLine="false"
-                    app:etv_textExpand="Show more"
-                    app:etv_textShrink="Show less"
-                    app:etv_textContentSize="15sp"
-                    app:etv_textContentColor="@color/black"
-                    app:etv_textStateColor="#9F000000"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu sit amet, sodales dignissim mauris. Maecenas consequat tortor vel nunc auctor tempus vitae quis enim. Nunc arcu ipsum, lobortis porta fermentum in, pulvinar et velit. Nullam eu magna a lacus sagittis gravida ut sed sem. Suspendisse ullamcorper neque augue, ornare consectetur diam cursus porta. Suspendisse lacinia dignissim lectus a ullamcorper. Cras imperdiet sodales metus at tincidunt. In condimentum fermentum augue sit amet fermentum. Sed in mattis est. Aenean faucibus enim velit, ornare sagittis tortor tristique eu. Integer posuere laoreet lacus a bibendum."
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:text="@string/short_lorem_ipsum"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:collapsedLines="3"
+                    app:ellipsizeTextColor="@color/grey"
+                    app:expandType="layout"
+                    app:isExpanded="false"
                     app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                     app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                    app:layout_constraintTop_toBottomOf="@+id/txtRolDes" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtRolDes"
+                    app:readLessText="Read less"
+                    app:readMoreText="Read more"
+                    app:textMode="line" />
+
+
 
                 <View
                     android:id="@+id/lineDivider12"

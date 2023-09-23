@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +17,13 @@ import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityInterestedCandidateBinding
-import com.amri.emploihunt.databinding.SinglerowjsBinding
+import com.amri.emploihunt.databinding.RowAppicationsBinding
 import com.amri.emploihunt.jobSeekerSide.JobSeekerDetailsActivity
 import com.amri.emploihunt.model.AppliedCandidateModel
 import com.amri.emploihunt.model.DataAppliedCandidate
@@ -35,6 +38,12 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignTop
 
 
 class InterestedCandidateActivity : BaseActivity() {
@@ -123,9 +132,6 @@ class InterestedCandidateActivity : BaseActivity() {
                 }
             }
         })
-        binding.ivBack.setOnClickListener {
-            finish()
-        }
 
     }
     private fun retrieveJobData() {
@@ -310,7 +316,7 @@ class InterestedCandidateActivity : BaseActivity() {
     ) : RecyclerView.Adapter<CandidateAdapter.CategoriesHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesHolder {
             return CategoriesHolder(
-                SinglerowjsBinding.inflate(
+                RowAppicationsBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
@@ -319,24 +325,90 @@ class InterestedCandidateActivity : BaseActivity() {
         override fun onBindViewHolder(holder: CategoriesHolder, position: Int) {
 
             val dataAppliedCandidate: DataAppliedCandidate = dataList[position]
-            holder.binding.jsname.text = dataAppliedCandidate.userJobPref.vFirstName + " " + dataAppliedCandidate.userJobPref.vLastName
-            holder.binding.qualificationjs.text = dataAppliedCandidate.userJobPref.vQualification
-            holder.binding.citypref.text = dataAppliedCandidate.userJobPref. vPreferCity
-            holder.binding.jsjobtype.text = dataAppliedCandidate.userJobPref.vWorkingMode
-            holder.binding.jobrole.text = dataAppliedCandidate.userJobPref.vDesignation
-            holder.binding.jscontact.text = dataAppliedCandidate.userJobPref.vMobile
-            holder.binding.jsemail.text = dataAppliedCandidate.userJobPref.vEmail
-            holder.binding.jscontact.setOnClickListener {
-                val num: String =  holder.binding.jscontact.text.toString()
-                makePhoneCall(num)
+
+            holder.binding.applicantName.text = dataAppliedCandidate.userJobPref.vFirstName.plus(" ").plus(dataAppliedCandidate.userJobPref.vLastName)
+            holder.binding.applicantQualification.text = dataAppliedCandidate.userJobPref.vQualification
+            holder.binding.applicantPrefCity.text = dataAppliedCandidate.userJobPref. vPreferCity
+            holder.binding.applicantWorkingMode.text = dataAppliedCandidate.userJobPref.vWorkingMode
+            holder.binding.applicantDesignation.text = dataAppliedCandidate.userJobPref.vDesignation
+
+            var callBalloon: Balloon?= null
+            var emailBalloon: Balloon?= null
+            val phoneNo: String =  dataAppliedCandidate.userJobPref.vMobile
+            if (phoneNo.isNotEmpty()) {
+                callBalloon = createMsgBalloon(phoneNo, R.drawable.ic_call, mActivity)
+                if (callBalloon != null) {
+                    callBalloon.setOnBalloonClickListener {
+                        makePhoneCall(phoneNo)
+                        callBalloon!!.dismiss()
+                    }
+                    callBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        callBalloon!!.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+
+                callBalloon = createMsgBalloon(
+                    "Phone no. Not Found",
+                    R.drawable.ic_call,
+                    mActivity
+                )
+                if (callBalloon != null) {
+                    callBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        callBalloon.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
             }
-            holder.binding.jsemail.setOnClickListener {
-                val emailsend = holder.binding.jsemail.text.toString()
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailsend))
-                intent.type = "message/rfc822"
-                holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+            holder.binding.btnPhone.setOnClickListener {
+
+                if(callBalloon != null){
+                    holder.binding.btnPhone.showAlignTop(callBalloon)
+                }
+
             }
+
+            val email = dataAppliedCandidate.userJobPref.vEmail
+            if (email.isNotEmpty()) {
+                emailBalloon = createMsgBalloon(email, R.drawable.ic_email, mActivity)
+
+                if (emailBalloon != null) {
+                    emailBalloon.setOnBalloonClickListener {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                        intent.type = "message/rfc822"
+                        holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
+                        emailBalloon!!.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                emailBalloon = createMsgBalloon(
+                    "Email Id Not Found",
+                    R.drawable.ic_email,
+                    mActivity
+                )
+                if (emailBalloon != null) {
+                    emailBalloon.setOnBalloonOutsideTouchListener { view, motionEvent ->
+                        emailBalloon.dismiss()
+                    }
+                } else {
+                    Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            holder.binding.btnEmail.setOnClickListener {
+                if(emailBalloon != null){
+                    holder.binding.btnEmail.showAlignTop(emailBalloon)
+                }
+
+            }
+
+
             holder.itemView.setOnClickListener {
                 val intent =
                     Intent(mActivity, JobSeekerDetailsActivity::class.java)
@@ -345,7 +417,37 @@ class InterestedCandidateActivity : BaseActivity() {
             }
 
         }
-        fun makePhoneCall(num: String) {
+
+
+        private fun createMsgBalloon(msg: String, icon: Int, baseContext: Context): Balloon {
+            val balloon = createBalloon(baseContext){
+                setWidth(BalloonSizeSpec.WRAP)
+                setHeight(BalloonSizeSpec.WRAP)
+                setText(msg)
+                setText(msg)
+                setTextSize(8f)
+                setTextTypeface(Typeface.BOLD)
+                setTextColorResource(R.color.black)
+                setTextGravity(Gravity.CENTER)
+                setIconDrawableResource(icon)
+                setIconHeight(12)
+                setIconWidth(12)
+                setIconColorResource(R.color.black)
+                setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                setArrowSize(8)
+                setArrowPosition(0.5f)
+                setPadding(12)
+                setCornerRadius(8f)
+                setBackgroundColorResource(R.color.white)
+                setElevation(3)
+                setBalloonAnimation(BalloonAnimation.ELASTIC)
+                setLifecycleOwner(lifecycleOwner)
+                build()
+            }
+
+            return balloon
+        }
+        private fun makePhoneCall(num: String) {
             val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num"))
             mActivity.startActivity(dialIntent)
         }
@@ -354,7 +456,7 @@ class InterestedCandidateActivity : BaseActivity() {
             return dataList.size
         }
 
-        inner class CategoriesHolder(val binding: SinglerowjsBinding) :
+        inner class CategoriesHolder(val binding: RowAppicationsBinding) :
             RecyclerView.ViewHolder(binding.root)
 
         interface OnCategoryClick {

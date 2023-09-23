@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -133,11 +134,23 @@ class AddJobPreferenceActivity : BaseActivity() {
             }
 
         }
-        binding.imgBack.setOnClickListener {
 
-            finish()
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
         }
-
+        return super.onOptionsItemSelected(item)
     }
 
     private fun checkValidation(): Boolean {

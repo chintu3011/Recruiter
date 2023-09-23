@@ -239,24 +239,27 @@
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
                 app:layout_constraintTop_toBottomOf="@id/lineDivider" />
 
-            <ru.embersoft.expandabletextview.ExpandableTextView
+
+            <io.github.glailton.expandabletextview.ExpandableTextView
                 android:id="@+id/jobDes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                app:etv_animationTime="10"
-                app:etv_expandLines="3"
-                app:etv_showLine="false"
-                app:etv_textExpand="Show more"
-                app:etv_textShrink="Show less"
-                app:etv_textContentSize="15sp"
-                app:etv_textContentColor="@color/black"
-                app:etv_textStateColor="#9F000000"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dignissim et arcu eu venenatis. Aenean ligula sem, consequat posuere arcu sit amet, sodales dignissim mauris. Maecenas consequat tortor vel nunc auctor tempus vitae quis enim. Nunc arcu ipsum, lobortis porta fermentum in, pulvinar et velit. Nullam eu magna a lacus sagittis gravida ut sed sem. Suspendisse ullamcorper neque augue, ornare consectetur diam cursus porta. Suspendisse lacinia dignissim lectus a ullamcorper. Cras imperdiet sodales metus at tincidunt. In condimentum fermentum augue sit amet fermentum. Sed in mattis est. Aenean faucibus enim velit, ornare sagittis tortor tristique eu. Integer posuere laoreet lacus a bibendum."
-                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="@string/short_lorem_ipsum"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                app:collapsedLines="3"
+                app:ellipsizeTextColor="@color/grey"
+                app:expandType="layout"
+                app:isExpanded="false"
                 app:layout_constraintEnd_toStartOf="@id/endGuildLine"
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                app:layout_constraintTop_toBottomOf="@+id/txtJobDes" />
+                app:layout_constraintTop_toBottomOf="@+id/txtJobDes"
+                app:readLessText="Read less"
+                app:readMoreText="Read more"
+                app:textMode="line" />
 
             <View
                 android:id="@+id/lineDivider1"

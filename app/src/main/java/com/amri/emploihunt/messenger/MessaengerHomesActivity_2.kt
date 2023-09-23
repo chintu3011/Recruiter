@@ -84,6 +84,8 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Messenger"
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
         latestMessageList = mutableListOf()
@@ -115,6 +117,17 @@ class MessaengerHomesActivity_2 : BaseActivity(), LatestMessageAdapter.OnChatCli
             }
 
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

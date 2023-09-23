@@ -10,47 +10,36 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".settings.ContactUsActivity">
+        tools:context=".settings.TermsPrivacyActivity">
 
-        <RelativeLayout
-            android:id="@+id/rlToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            app:collapseIcon="@drawable/ic_back"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_30sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:title="@string/privacy_policy"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_back"
-                android:id="@+id/ivBack"
-                android:visibility="visible"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5sdp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:id="@+id/tvTitle"
-                android:text="@string/privacy_policy"
-                android:textSize="@dimen/_15sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
-
-
-        </RelativeLayout>
+                android:layout_margin="0dp"
+                android:gravity="center_vertical"
+                android:padding="0dp" />
+        </com.google.android.material.appbar.AppBarLayout>
 
        <WebView
            android:id="@+id/webView"
            android:layout_width="match_parent"
            android:layout_height="0dp"
            android:visibility="gone"
-           app:layout_constraintTop_toBottomOf="@+id/rlToolbar"
+           app:layout_constraintTop_toBottomOf="@+id/appBar"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintEnd_toEndOf="parent"/>

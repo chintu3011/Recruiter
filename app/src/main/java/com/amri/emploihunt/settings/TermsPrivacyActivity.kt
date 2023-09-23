@@ -2,6 +2,7 @@ package com.amri.emploihunt.settings
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
@@ -20,17 +21,32 @@ class TermsPrivacyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTermsPrivacyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         if (intent.getBooleanExtra("Privacy",false)){
-            binding.tvTitle.text = resources.getString(R.string.privacy_policy)
+            binding.toolbar.title = resources.getString(R.string.privacy_policy)
             callPolicyAPI(1)
 
         }else{
-            binding.tvTitle.text = resources.getString(R.string.terms_amp_amp_condition)
+            binding.toolbar.title = resources.getString(R.string.terms_amp_amp_condition)
             callPolicyAPI(2)
         }
-        binding.ivBack.setOnClickListener {
-            finish()
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
         }
+        return super.onOptionsItemSelected(item)
     }
     private fun callPolicyAPI(id: Int) {
 

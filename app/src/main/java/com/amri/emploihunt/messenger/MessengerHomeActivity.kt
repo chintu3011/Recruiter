@@ -61,6 +61,8 @@ class MessengerHomeActivity : BaseActivity() {
         binding.toolbar.menu.clear()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Messenger"
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         /*userId = FirebaseAuth.getInstance().currentUser!!.uid*/
         /*userId = intent.getStringExtra("userId")
@@ -106,6 +108,18 @@ class MessengerHomeActivity : BaseActivity() {
         })
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private var btnSearch: MenuItem? = null
     private var btnVoiceSearch: MenuItem? = null
     private var btnDelete: MenuItem? = null

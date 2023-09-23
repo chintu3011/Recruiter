@@ -12,7 +12,33 @@
         android:layout_height="match_parent"
         tools:context=".settings.ContactUsActivity">
 
-        <RelativeLayout
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            app:collapseIcon="@drawable/ic_back"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:title="@string/contact_us"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:gravity="center_vertical"
+                android:padding="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--<RelativeLayout
             android:id="@+id/rlToolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
@@ -41,21 +67,21 @@
                 android:layout_centerVertical="true" />
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/contactus"
             android:id="@+id/ivContactUs"
-            app:layout_constraintTop_toBottomOf="@+id/rlToolbar"
+            app:layout_constraintTop_toBottomOf="@+id/appBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_us"
+            android:text="@string/please_let_us_know_if_you_have_any_query"
             android:id="@+id/tvContactUs"
             android:textColor="@color/blue"
             android:textSize="@dimen/_15sdp"
@@ -79,7 +105,7 @@
             app:boxStrokeColor="@color/blue"
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
-            app:endIconTint="@color/gray"
+            app:endIconTint="@color/grey"
             app:hintTextColor="@color/blue"
             android:layout_marginHorizontal="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +174,7 @@
                 app:boxStrokeColor="@color/blue"
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
-                app:endIconTint="@color/gray"
+                app:endIconTint="@color/grey"
                 app:helperTextTextColor="@color/blue"
                 app:hintTextColor="@color/blue"
                 app:placeholderText="+9199131*****"
@@ -186,7 +212,7 @@
             app:boxStrokeColor="@color/blue"
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
-            app:endIconTint="@color/gray"
+            app:endIconTint="@color/grey"
             app:hintTextColor="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -227,7 +253,7 @@
             app:counterMaxLength="5000"
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
-            app:endIconTint="@color/gray"
+            app:endIconTint="@color/grey"
             app:hintTextColor="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

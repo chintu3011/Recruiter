@@ -38,7 +38,11 @@ object NetworkUtils {
     const val DELETE_POST = "$BASE_URL/job/delete"
     const val FIlTER_JOBS = "$BASE_URL/job/jobs_filter"
     const val INSERT_EXPERIENCE = "$BASE_URL/experince/insert_experince"
+    const val DELETE_EXPERIENCE = "$BASE_URL/experince/delete_experince"
+    const val UPDATE_EXPERIENCE = "$BASE_URL/experince/update_experince"
     const val GET_ALL_EXPERIENCE = "$BASE_URL/experince/experince"
+    const val GET_ALL_EXPERIENCE_BY_ID = "$BASE_URL/experince/get_experince_by_id"
+
     const val UPDATE_PROFILE_DETAILS = "$BASE_URL/user/update_profile_details"
 
     const val GET_LATEST_APP_VERSION_CODE = "$BASE_URL/update_app/get_latest_app_version_code"

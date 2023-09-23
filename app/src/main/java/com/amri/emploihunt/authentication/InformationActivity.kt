@@ -26,6 +26,7 @@ import com.amri.emploihunt.databinding.ActivityInformationBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.model.CommonMessageModel
 import com.amri.emploihunt.model.Experience
+import com.amri.emploihunt.model.ExperienceModel
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
@@ -170,7 +171,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         // set the animation type to ViewFlipper
         binding.jsViewFlipper.inAnimation = inn
         binding.jsViewFlipper.outAnimation = out
-        
+
         binding.rViewFlipper.inAnimation = inn
         binding.rViewFlipper.outAnimation = out
 
@@ -189,27 +190,27 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     }
 
-   /* private fun setAdapters() {
+    /* private fun setAdapters() {
 
-        val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,cityList)
-        jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.JobLocationSpinnerR.adapter = jobLocationAdapter
-        binding.JobLocationSpinnerJ.adapter = jobLocationAdapter
+         val jobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,cityList)
+         jobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+         binding.JobLocationSpinnerR.adapter = jobLocationAdapter
+         binding.JobLocationSpinnerJ.adapter = jobLocationAdapter
 
-        val prefJobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,prefLocations)
-        prefJobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.inputCitySpinnerJ.adapter = prefJobLocationAdapter
+         val prefJobLocationAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,prefLocations)
+         prefJobLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+         binding.inputCitySpinnerJ.adapter = prefJobLocationAdapter
 
-        val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
-        qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.inputDegreeTypeSpinner.adapter = qualificationsAdapter
-        binding.inputDegreeRSpinner.adapter = qualificationsAdapter
+         val qualificationsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,qualifications)
+         qualificationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+         binding.inputDegreeTypeSpinner.adapter = qualificationsAdapter
+         binding.inputDegreeRSpinner.adapter = qualificationsAdapter
 
-        val jobsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobs)
-        jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+         val jobsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,jobs)
+         jobsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        binding.inputJobTypeSpinner.adapter = jobsAdapter
-    }*/
+         binding.inputJobTypeSpinner.adapter = jobsAdapter
+     }*/
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         /*selectedJobLocation = cityList[position]
 
@@ -249,14 +250,14 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     var experienced = false
     private fun setTabSelectedListener(){
 
-
+        prefWorkingMode = binding.tbWorkingModeJ.getTabAt(binding.tbWorkingModeJ.selectedTabPosition)?.text.toString()
         binding.tbWorkingModeJ.addOnTabSelectedListener(object :OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 prefWorkingMode = tab?.text.toString()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-              
+
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -264,6 +265,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
 
         })
+
+        workingMode = binding.tbWorkingModeR.getTabAt(binding.tbWorkingModeR.selectedTabPosition)?.text.toString()
         binding.tbWorkingModeR.addOnTabSelectedListener(object :OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 workingMode = tab?.text.toString()
@@ -278,6 +281,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
 
         })
+
+
         binding.tbFreshExpJ.addOnTabSelectedListener( object : OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab?.position == 0){
@@ -307,7 +312,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
     private fun setOnClickListener() {
         binding.layoutCV.setOnClickListener(this)
-       /* binding.uploadBtn.setOnClickListener(this)*/
+        /* binding.uploadBtn.setOnClickListener(this)*/
         binding.addProfileImgJ.setOnClickListener(this)
         binding.addProfileImgR.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
@@ -395,7 +400,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 binding.spJobLocationJ.setSearchDialogGravity(Gravity.TOP)
                 binding.spJobLocationJ.arrowPaddingRight = 19
                 binding.spJobLocationJ.item = cityList.toList()
-                    /*resources.getStringArray(R.array.indian_designations).toList()*/
+                /*resources.getStringArray(R.array.indian_designations).toList()*/
                 binding.spJobLocationJ.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
@@ -416,7 +421,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 binding.spJobLocationR.setSearchDialogGravity(Gravity.TOP)
                 binding.spJobLocationR.arrowPaddingRight = 19
                 binding.spJobLocationR.item =  cityList.toList()
-                   /* resources.getStringArray(R.array.degree_array).toList()*/
+                /* resources.getStringArray(R.array.degree_array).toList()*/
                 binding.spJobLocationR.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
@@ -713,56 +718,56 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             JOB_SEEKER -> {
                 binding.jsScrollView.scrollTo(0,0)
                 when (binding.jsViewFlipper.currentView) {
-                      binding.jsAboutGrp -> {
-                          experienced = false
-                          binding.btnNext.visibility = VISIBLE
-                          binding.btnBack.visibility = GONE
-                          binding.submitBtnLayout.visibility = GONE
-                          setChecks(binding.jsAboutGrp)
-                      }
+                    binding.jsAboutGrp -> {
+                        experienced = false
+                        binding.btnNext.visibility = VISIBLE
+                        binding.btnBack.visibility = GONE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.jsAboutGrp)
+                    }
 
-                      binding.jsExperienceGrp -> {
-                          if(isBackPress && !experienced){
-                              binding.jsViewFlipper.showPrevious()
-                              binding.submitBtnLayout.visibility = GONE
-                              changeLayout(true)
-                          }
-                          else{
-                              binding.btnNext.visibility = VISIBLE
-                              binding.btnBack.visibility = VISIBLE
-                              binding.submitBtnLayout.visibility = GONE
-                              setChecks(binding.jsExperienceGrp)
-                          }
+                    binding.jsExperienceGrp -> {
+                        if(isBackPress && !experienced){
+                            binding.jsViewFlipper.showPrevious()
+                            binding.submitBtnLayout.visibility = GONE
+                            changeLayout(true)
+                        }
+                        else{
+                            binding.btnNext.visibility = VISIBLE
+                            binding.btnBack.visibility = VISIBLE
+                            binding.submitBtnLayout.visibility = GONE
+                            setChecks(binding.jsExperienceGrp)
+                        }
 
-                      }
+                    }
 
-                      binding.jsPreferJobGrp ->{
-                          binding.btnBack.visibility = VISIBLE
-                          binding.btnNext.visibility = VISIBLE
-                          binding.submitBtnLayout.visibility = GONE
-                          setChecks(binding.jsPreferJobGrp)
-                      }
-                      binding.jsResumeGrp-> {
-                          binding.btnBack.visibility = VISIBLE
-                          binding.btnNext.visibility = VISIBLE
-                          binding.submitBtnLayout.visibility = GONE
-                          setChecks(binding.jsResumeGrp)
-                      }
+                    binding.jsPreferJobGrp ->{
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = VISIBLE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.jsPreferJobGrp)
+                    }
+                    binding.jsResumeGrp-> {
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = VISIBLE
+                        binding.submitBtnLayout.visibility = GONE
+                        setChecks(binding.jsResumeGrp)
+                    }
 
-                      binding.profileImgLayoutJ -> {
-                          binding.btnBack.visibility = VISIBLE
-                          binding.btnNext.visibility = GONE
-                          if(isImgSelected){
-                              binding.submitBtnLayout.visibility = VISIBLE
-                          }
-                          else{
-                              binding.submitBtnLayout.visibility = GONE
-                          }
-                          setChecks(binding.profileImgLayoutJ)
-                      }
+                    binding.profileImgLayoutJ -> {
+                        binding.btnBack.visibility = VISIBLE
+                        binding.btnNext.visibility = GONE
+                        if(isImgSelected){
+                            binding.submitBtnLayout.visibility = VISIBLE
+                        }
+                        else{
+                            binding.submitBtnLayout.visibility = GONE
+                        }
+                        setChecks(binding.profileImgLayoutJ)
+                    }
 
-                  }
-              }
+                }
+            }
 
             RECRUITER ->{
                 binding.rScrollView.scrollTo(0,0)
@@ -985,10 +990,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                                                 )
 
                                                 userDataRepository.storeCurrentPositionData(
-                                                        response.data.user.vCurrentCompany,
-                                                        response.data.user.vDesignation,
-                                                        response.data.user.vJobLocation,
-                                                        ""
+                                                    response.data.user.vCurrentCompany,
+                                                    response.data.user.vDesignation,
+                                                    response.data.user.vJobLocation,
+                                                    ""
                                                 )
 
                                                 userDataRepository.storeJobPreferenceData(
@@ -1166,9 +1171,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         jsonObject.put("vCompany",currentCompany)
         jsonObject.put("bIsCurrentCompany",0)
         jsonObject.put("vJobLocation",jobLocation)
-        jsonObject.put("vDuration", "")
 
-        val experienceList:MutableList<Experience> = mutableListOf(Experience(designation,currentCompany,jobLocation,1,""))
 
         AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
             .addHeaders("Authorization", "Bearer $tAuthToken")
@@ -1177,12 +1180,26 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             )
             .setPriority(Priority.MEDIUM).build()
             .getAsObject(
-                CommonMessageModel::class.java,
-                object : ParsedRequestListener<CommonMessageModel>{
-                    override fun onResponse(response: CommonMessageModel?) {
+                ExperienceModel::class.java,
+                object : ParsedRequestListener<ExperienceModel>{
+                    override fun onResponse(response: ExperienceModel?) {
                         try {
                             response?.let {
                                 Log.d(TAG, "onResponse: $jsonObject added in experience list")
+                                val experienceList:MutableList<Experience> = mutableListOf(
+                                    Experience(
+                                        response.data.id,
+                                        response.data.vDesignation,
+                                        response.data.vCompanyName,
+                                        response.data.vJobLocation,
+                                        response.data.bIsCurrentCompany,
+                                        null,
+                                        response.data.iUserId,
+                                        response.data.tCreatedAt,
+                                        response.data.tUpadatedAt
+                                    )
+                                )
+
                                 experienceViewModel.writeToLocal(experienceList.toList())
                                     .invokeOnCompletion {
                                         Log.d(
@@ -1212,85 +1229,83 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     }
 
     private fun storeInfoJBySkip() {
-            showProgressDialog("Please wait")
-            if (Utils.isNetworkAvailable(this)){
-                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
-                    .setOkHttpClient(NetworkUtils.okHttpClient)
-                    .addQueryParameter("vFirebaseId",userId)
-                    .addQueryParameter("iRole","0")
-                    .addQueryParameter(MOB_NO,phoneNumber)
-                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
-                    .addQueryParameter(DEVICE_TYPE,"0")
-                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
-                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
-                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
-                    .addQueryParameter("vFirstName",fName)
-                    .addQueryParameter("vLastName",lName)
-                    .addQueryParameter("vEmail",emailId)
-                    .addQueryParameter("vCity",residentialCity)
-                    .addQueryParameter("tTagLine",designation)
-                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
-                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
-                    .addQueryParameter("tAppVersion",versionCodeAndName)
-                    .setPriority(Priority.MEDIUM).build().getAsObject(
-                        RegisterUserModel::class.java,
-                        object : ParsedRequestListener<RegisterUserModel> {
-                            override fun onResponse(response: RegisterUserModel?) {
-                                try {
-                                    response?.let {
+        showProgressDialog("Please wait")
+        if (Utils.isNetworkAvailable(this)){
+            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+            AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addQueryParameter("vFirebaseId",userId)
+                .addQueryParameter("iRole","0")
+                .addQueryParameter(MOB_NO,phoneNumber)
+                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                .addQueryParameter(DEVICE_TYPE,"0")
+                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                .addQueryParameter("vFirstName",fName)
+                .addQueryParameter("vLastName",lName)
+                .addQueryParameter("vEmail",emailId)
+                .addQueryParameter("vCity",residentialCity)
+                .addQueryParameter("tTagLine",designation)
+                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                .addQueryParameter("tAppVersion",versionCodeAndName)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    RegisterUserModel::class.java,
+                    object : ParsedRequestListener<RegisterUserModel> {
+                        override fun onResponse(response: RegisterUserModel?) {
+                            try {
+                                response?.let {
 
-                                        CoroutineScope(Dispatchers.IO).launch {
+                                    CoroutineScope(Dispatchers.IO).launch {
 
-                                            val userDataRepository =
-                                                UserDataRepository(this@InformationActivity)
-                                            userDataRepository.storeBasicInfo(
-                                                response.data.user.vFirstName,
-                                                response.data.user.vLastName,
-                                                response.data.user.vMobile,
-                                                response.data.user.vEmail,
-                                                response.data.user.tTagLine,
-                                                response.data.user.vCity
-                                            )
-
-                                        }
-                                        Log.d(
-                                            TAG,
-                                            "onResponse: Received Data : ${response.data.user}"
+                                        val userDataRepository =
+                                            UserDataRepository(this@InformationActivity)
+                                        userDataRepository.storeBasicInfo(
+                                            response.data.user.vFirstName,
+                                            response.data.user.vLastName,
+                                            response.data.user.vMobile,
+                                            response.data.user.vEmail,
+                                            response.data.user.tTagLine,
+                                            response.data.user.vCity
                                         )
-                                        binding.btnSubmit.visibility = GONE
-                                        binding.btnBack.visibility = GONE
-                                        prefManager[IS_LOGIN] = true
-                                        prefManager[ROLE] = 0
-                                        prefManager[USER_ID] = response.data.user.id
-                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
-                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
-                                        hideProgressDialog()
-                                        navigateToHomeActivity()
 
                                     }
-                                } catch (e: Exception) {
-                                    Log.e("#####", "onResponse Exception: ${e.message}")
-                                    makeToast(getString(R.string.server_is_under_maintenance),0)
-                                    hideProgressDialog()
-                                }
-                            }
-
-                            override fun onError(anError: ANError?) {
-                                hideProgressDialog()
-                                anError?.let {
-                                    Log.e(
-                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    Log.d(
+                                        TAG,
+                                        "onResponse: Received Data : ${response.data.user}"
                                     )
-
+                                    binding.btnSubmit.visibility = GONE
+                                    binding.btnBack.visibility = GONE
+                                    prefManager[IS_LOGIN] = true
+                                    prefManager[ROLE] = 0
+                                    prefManager[USER_ID] = response.data.user.id
+                                    prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
+                                    prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                    hideProgressDialog()
+                                    navigateToHomeActivity()
 
                                 }
+                            } catch (e: Exception) {
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                                makeToast(getString(R.string.server_is_under_maintenance),0)
+                                hideProgressDialog()
                             }
-                        })
-            }else{
-                showNoInternetBottomSheet(this,this)
-                hideProgressDialog()
-            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            hideProgressDialog()
+                            anError?.let {
+                                Log.e(
+                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+                            }
+                        }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+            hideProgressDialog()
+        }
 
 
     }
@@ -1488,82 +1503,82 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private fun storeInfoRSkip() {
         showProgressDialog("Please wait")
         if (Utils.isNetworkAvailable(this)){
-                val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
-                    .setOkHttpClient(NetworkUtils.okHttpClient)
-                    .addQueryParameter("vFirebaseId",userId)
-                    .addQueryParameter("iRole","1")
-                    .addQueryParameter(MOB_NO,phoneNumber)
-                    .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
-                    .addQueryParameter(DEVICE_TYPE,"0")
-                    .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
-                    .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
-                    .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
-                    .addQueryParameter("vFirstName",fName)
-                    .addQueryParameter("vLastName",lName)
-                    .addQueryParameter("vEmail",emailId)
-                    .addQueryParameter("tBio",bio)
-                    .addQueryParameter("vCity",residentialCity)
-                    .addQueryParameter("fbid","")
-                    .addQueryParameter("googleid","")
-                    .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
-                    .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
-                    .addQueryParameter("tAppVersion",versionCodeAndName)
-                    .setPriority(Priority.MEDIUM).build().getAsObject(
-                        RegisterUserModel::class.java,
-                        object : ParsedRequestListener<RegisterUserModel> {
-                            override fun onResponse(response: RegisterUserModel?) {
-                                try {
-                                    response?.let {
+            val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+            AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addQueryParameter("vFirebaseId",userId)
+                .addQueryParameter("iRole","1")
+                .addQueryParameter(MOB_NO,phoneNumber)
+                .addQueryParameter(DEVICE_ID,prefManager.get(DEVICE_ID))
+                .addQueryParameter(DEVICE_TYPE,"0")
+                .addQueryParameter(OS_VERSION,prefManager.get(OS_VERSION))
+                .addQueryParameter(FCM_TOKEN,prefManager.get(FCM_TOKEN))
+                .addQueryParameter(DEVICE_NAME,prefManager.get(DEVICE_NAME))
+                .addQueryParameter("vFirstName",fName)
+                .addQueryParameter("vLastName",lName)
+                .addQueryParameter("vEmail",emailId)
+                .addQueryParameter("tBio",bio)
+                .addQueryParameter("vCity",residentialCity)
+                .addQueryParameter("fbid","")
+                .addQueryParameter("googleid","")
+                .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
+                .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
+                .addQueryParameter("tAppVersion",versionCodeAndName)
+                .setPriority(Priority.MEDIUM).build().getAsObject(
+                    RegisterUserModel::class.java,
+                    object : ParsedRequestListener<RegisterUserModel> {
+                        override fun onResponse(response: RegisterUserModel?) {
+                            try {
+                                response?.let {
 
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            val userDataRepository = UserDataRepository(this@InformationActivity)
-                                            userDataRepository.storeBasicInfo(
-                                                response.data.user.vFirstName,
-                                                response.data.user.vLastName,
-                                                response.data.user.vMobile,
-                                                response.data.user.vEmail,
-                                                response.data.user.tTagLine,
-                                                response.data.user.vCity
-                                            )
-                                        }
-                                        Log.d(
-                                            TAG,
-                                            "onResponse: Received Data : ${response.data.user}"
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        val userDataRepository = UserDataRepository(this@InformationActivity)
+                                        userDataRepository.storeBasicInfo(
+                                            response.data.user.vFirstName,
+                                            response.data.user.vLastName,
+                                            response.data.user.vMobile,
+                                            response.data.user.vEmail,
+                                            response.data.user.tTagLine,
+                                            response.data.user.vCity
                                         )
-                                        binding.btnSubmit.visibility = GONE
-                                        binding.btnBack.visibility = GONE
-                                        prefManager[IS_LOGIN] = true
-                                        prefManager[USER_ID] = response.data.user.id
-                                        prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
-                                        prefManager[ROLE] = 1
-                                        prefManager[AUTH_TOKEN] = response.data.tAuthToken
-                                        hideProgressDialog()
-                                        navigateToHomeActivity()
-
-
-
                                     }
-                                } catch (e: Exception) {
-                                    makeToast(getString(R.string.server_is_under_maintenance),0)
-                                    Log.e("#####", "onResponse Exception: ${e.message}")
-                                    hideProgressDialog()
-                                }
-                            }
-
-                            override fun onError(anError: ANError?) {
-                                hideProgressDialog()
-                                anError?.let {
-                                    Log.e(
-                                        "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    Log.d(
+                                        TAG,
+                                        "onResponse: Received Data : ${response.data.user}"
                                     )
+                                    binding.btnSubmit.visibility = GONE
+                                    binding.btnBack.visibility = GONE
+                                    prefManager[IS_LOGIN] = true
+                                    prefManager[USER_ID] = response.data.user.id
+                                    prefManager[FIREBASE_ID] = response.data.user.vFirebaseId
+                                    prefManager[ROLE] = 1
+                                    prefManager[AUTH_TOKEN] = response.data.tAuthToken
+                                    hideProgressDialog()
+                                    navigateToHomeActivity()
+
+
+
                                 }
+                            } catch (e: Exception) {
+                                makeToast(getString(R.string.server_is_under_maintenance),0)
+                                Log.e("#####", "onResponse Exception: ${e.message}")
+                                hideProgressDialog()
                             }
-                        })
-            }else{
-                showNoInternetBottomSheet(this,this)
-                hideProgressDialog()
-            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            hideProgressDialog()
+                            anError?.let {
+                                Log.e(
+                                    "#####", "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+                            }
+                        }
+                    })
+        }else{
+            showNoInternetBottomSheet(this,this)
+            hideProgressDialog()
+        }
 
 
     }

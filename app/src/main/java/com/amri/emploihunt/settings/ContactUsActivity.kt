@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
+import android.view.MenuItem
 import android.view.View
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
@@ -31,12 +32,21 @@ class ContactUsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityContactUsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+
+
         if (intent.getBooleanExtra("for_block",false)){
-            binding.ivBack.visibility = View.GONE
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
         }
-        binding.ivBack.setOnClickListener {
+        else{
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+       /* binding.ivBack.setOnClickListener {
             finish()
-        }
+        }*/
         binding.cpp.registerCarrierNumberEditText(binding.phoneNo)
         prefManager = PrefManager.prefManager(this)
         binding.btnRegistration.setOnClickListener {
@@ -48,6 +58,17 @@ class ContactUsActivity : BaseActivity() {
                 callContactUsAPI(firstName,email,phoneNo,message)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -138,6 +159,9 @@ class ContactUsActivity : BaseActivity() {
                                 binding.phoneNo.text?.clear()
                                 binding.email.text?.clear()
                                 binding.message.text?.clear()
+                                if(intent.getBooleanExtra("for_block",false)){
+                                    finishAffinity()
+                                }
                             }
                         } catch (e: Exception) {
                             Log.e("#####", "onResponse Exception: ${e.message}")

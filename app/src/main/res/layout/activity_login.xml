@@ -123,7 +123,7 @@
                             app:endIconCheckable="true"
                             app:endIconMode="clear_text"
                             android:maxLength="10"
-                            app:endIconTint="@color/gray"
+                            app:endIconTint="@color/grey"
                             app:hintTextColor="@color/blue"
                             app:layout_constraintBottom_toTopOf="@+id/textLayoutEmployeeNeed"
                             app:layout_constraintEnd_toEndOf="parent"

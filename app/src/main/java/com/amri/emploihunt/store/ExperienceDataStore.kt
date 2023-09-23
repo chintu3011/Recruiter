@@ -57,23 +57,53 @@ class ExperienceDataStore @Inject constructor(
 }
 
 private fun Experience.toProto(): Experiences.Experience {
-    return Experiences.Experience.newBuilder()
+    val builder = Experiences.Experience.newBuilder()
+        .setId(id)
         .setVDesignation(vDesignation)
         .setVCompanyName(vCompanyName)
         .setVJobLocation(vJobLocation)
         .setBIsCurrentCompany(bIsCurrentCompany)
-        .setVDuration(vDuration)
-        .build()
+        .setIUserId(iUserId)
+        .setTCreatedAt(tCreatedAt)
+        .setTUpadatedAt(tUpadatedAt)
+
+    if (vDuration != null) {
+        builder.vDuration = vDuration
+    } else {
+        builder.clearVDuration()
+    }
+
+    return builder.build()
 }
 
 private fun Experiences.Experience.toExperience(): Experience {
-    return Experience(
-        vDesignation = vDesignation,
-        vCompanyName = vCompanyName,
-        vJobLocation = vJobLocation,
-        bIsCurrentCompany = bIsCurrentCompany,
-        vDuration = vDuration
-    )
+
+    return if(hasVDuration()) {
+        Experience(
+            id = id,
+            vDesignation = vDesignation,
+            vCompanyName = vCompanyName,
+            vJobLocation = vJobLocation,
+            bIsCurrentCompany = bIsCurrentCompany,
+            vDuration = vDuration,
+            iUserId = iUserId,
+            tCreatedAt = tCreatedAt,
+            tUpadatedAt = tUpadatedAt
+
+        )
+    }else{
+        Experience(
+            id = id,
+            vDesignation = vDesignation,
+            vCompanyName = vCompanyName,
+            vJobLocation = vJobLocation,
+            bIsCurrentCompany = bIsCurrentCompany,
+            vDuration = vDuration.takeIf { hasVDuration() } ,
+            iUserId = iUserId,
+            tCreatedAt = tCreatedAt,
+            tUpadatedAt = tUpadatedAt
+        )
+    }
 }
 
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
@@ -51,6 +52,23 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
 
         binding.frame.viewTreeObserver.addOnScrollChangedListener(this)
         retreivedescription()
+
+        binding.toolbar.menu.clear()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun callSaveJob() {
@@ -159,7 +177,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
 
     private fun retreivedescription() {
         binding.jobTitle.text = selectedPost.vJobTitle
-        binding.jobTitleToolbar.text = selectedPost.vJobTitle
+
         binding.companyName.text = selectedPost.vCompanyName
         binding.jobLocation.text = selectedPost.vAddress
         binding.jobPostDuration.text = getTimeAgo(this, selectedPost.tCreatedAt!!.toLong())
@@ -191,9 +209,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         binding.btnApply.setOnClickListener {
             callApplyJob()
         }
-        binding.imgBack.setOnClickListener {
-            finish()
-        }
+
         binding.imgSave.setOnClickListener {
             if (binding.imgSave.drawable.constantState == ContextCompat.getDrawable(this,
                     R.drawable.unfilled_heart
@@ -205,6 +221,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
 
         }
     }
+
     private fun callApplyJob() {
 
         if (Utils.isNetworkAvailable(this)){
@@ -282,10 +299,12 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         val topDetector = binding.frame.scrollY
         val bottomDetector: Int = view.bottom - (binding.frame.height + binding.frame.scrollY)
         if (bottomDetector > 0) {
-            binding.jobTitleToolbar.visibility = View.VISIBLE
+            binding.toolbar.title = selectedPost.vJobTitle
+            binding.jobTitle.visibility = View.GONE
         }
         if (topDetector <= 0) {
-            binding.jobTitleToolbar.visibility = View.GONE
+            binding.toolbar.title = " "
+            binding.jobTitle.visibility = View.VISIBLE
         }
     }
 }

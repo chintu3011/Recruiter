@@ -127,7 +127,10 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                     val user = task.result?.user
                                     val uid = user?.uid
                                     Log.d(TAG, "userId: $uid")
-                                    callUSerLogin(uid, user?.phoneNumber)
+                                    makeEmptyDataStoreForNewUser {
+                                        callUSerLogin(uid, user?.phoneNumber)
+                                    }
+
 
                                 } else {
                                     Log.d(TAG, "Login failed: ${task.exception}")
@@ -139,7 +142,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                             }
                     }
                     override fun onVerificationFailed(e: FirebaseException) {
-
 
                         Toast.makeText(
                             this@OTPVerificationLoginActivity,
@@ -165,6 +167,17 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             )
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+
+    }
+
+
+    private fun makeEmptyDataStoreForNewUser(callback: () -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val userDataRepository = UserDataRepository(this@OTPVerificationLoginActivity)
+            userDataRepository.emptyDataStore()
+            callback()
+        }
+        experienceViewModel.clearFromLocal()
 
     }
 
@@ -271,7 +284,10 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                         val user = task.result?.user
                                         val uid = user?.uid
                                         Log.d(TAG, "userId: $uid")
-                                        callUSerLogin(uid, user?.phoneNumber)
+                                        makeEmptyDataStoreForNewUser {
+                                            callUSerLogin(uid, user?.phoneNumber)
+                                        }
+
 
                                     } else {
                                         Log.d(TAG, "Login failed: ${task.exception}")
@@ -323,7 +339,10 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     val user = task.result?.user
                     val uid = user?.uid
                     Log.d(TAG, "userId: $uid")
-                    callUSerLogin(uid, user?.phoneNumber)
+                    makeEmptyDataStoreForNewUser {
+                        callUSerLogin(uid, user?.phoneNumber)
+                    }
+
 
                 } else {
                     hideProgressDialog()
@@ -334,7 +353,6 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                     }, 1000)
                 }
             }
-
     }
 
     private val experienceViewModel: ExperienceViewModel by viewModels()
@@ -506,6 +524,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
             AndroidNetworking.get(NetworkUtils.GET_ALL_EXPERIENCE)
                 .setOkHttpClient(NetworkUtils.okHttpClient)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                 .setPriority(Priority.MEDIUM).build().getAsObject(
                     UserExpModel::class.java,
                     object : ParsedRequestListener<UserExpModel> {

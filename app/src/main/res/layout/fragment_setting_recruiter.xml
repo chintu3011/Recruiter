@@ -62,7 +62,7 @@
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileIv"
                 android:layout_width="@dimen/_55sdp"
                 android:layout_height="@dimen/_55sdp"
@@ -71,6 +71,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
+                app:shapeAppearanceOverlay="@style/circle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +89,7 @@
                 android:text="Chintan Patel"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_20sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCompany"
@@ -105,10 +106,10 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
+       <!-- <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_2sdp"
-            android:background="@color/gray" />
+            android:background="@color/grey" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -160,7 +161,7 @@
             android:visibility="visible"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -202,7 +203,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:id="@+id/rlContactUs"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -244,7 +245,7 @@
             android:id="@+id/rlPolicy"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -287,7 +288,7 @@
             android:id="@+id/rlterms"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView

@@ -4,11 +4,18 @@ package com.amri.emploihunt.proto;
  // Replace with your package name
 
 message Experience {
-  string vDesignation = 1;
-  string vCompanyName = 2;
-  string vJobLocation = 3;
-  int32 bIsCurrentCompany = 4;
-  string vDuration = 5;
+  int32 id = 1;
+  string vDesignation = 2;
+  string vCompanyName = 3;
+  string vJobLocation = 4;
+  int32 bIsCurrentCompany = 5;
+  oneof duration {
+    string vDuration = 6;
+  }
+  int32 iUserId = 7;
+  string tCreatedAt = 8;
+  string tUpadatedAt = 9;
+
 }
 
 message ExperienceList {
