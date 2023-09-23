@@ -79,13 +79,13 @@
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/uploadProgressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:progressBackgroundTint="#9EA3AF"
-        android:progressTint="#00BCD4"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"

@@ -70,6 +70,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
@@ -87,6 +88,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
+import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -127,7 +129,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     lateinit var cityList:ArrayList<String>
 
-   //common data
+    //common data
     private var fName: String? = null
     private var lName: String? = null
     private var fullName: String? = null
@@ -1007,7 +1009,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     }
 
     private lateinit var tvResumeFileName: TextView
-    private lateinit var uploadProgressBar: ProgressBar
+    private lateinit var uploadProgressBar: LinearProgressIndicator
     private fun resumeInfoDialogView() {
         val resumeDialogView = layoutInflater.inflate(R.layout.dialog_resume_info, null)
 
@@ -1026,10 +1028,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setView(resumeDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
+                storeResume(resumeFile){
+                    if(it) {
+                        /*dialog.dismiss()*/
+                    }
+                    else{
+                        makeToast(getString(R.string.some_thing_wrong_try_later),0)
+                    }
+                    uploadProgressBar.visibility = GONE
+                }
 
-
-                storeResume(resumeFile)
-                dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -1422,151 +1430,151 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
             if(selectedDesignation.isNotEmpty() && enteredCompanyName.isNotEmpty() && selectedJobLocation.isNotEmpty()){
 
-                    val jsonObject = JSONObject()
-                    if (checkBox.isChecked) {
+                val jsonObject = JSONObject()
+                if (checkBox.isChecked) {
+                    jsonObject.put("vDesignation", selectedDesignation)
+                    jsonObject.put("vCompany", enteredCompanyName)
+                    jsonObject.put("vJobLocation", selectedJobLocation)
+                    jsonObject.put("bIsCurrentCompany", 1)
+                } else {
+                    if (enteredDuration.isNotEmpty()){
                         jsonObject.put("vDesignation", selectedDesignation)
                         jsonObject.put("vCompany", enteredCompanyName)
                         jsonObject.put("vJobLocation", selectedJobLocation)
-                        jsonObject.put("bIsCurrentCompany", 1)
-                    } else {
-                        if (enteredDuration.isNotEmpty()){
-                            jsonObject.put("vDesignation", selectedDesignation)
-                            jsonObject.put("vCompany", enteredCompanyName)
-                            jsonObject.put("vJobLocation", selectedJobLocation)
-                            jsonObject.put("bIsCurrentCompany", 0)
-                            jsonObject.put("vDuration", enteredDuration)
-                        }else{
-                            edDuration.error = "Enter Duration"
-                            return@setOnClickListener
-                        }
-
+                        jsonObject.put("bIsCurrentCompany", 0)
+                        jsonObject.put("vDuration", enteredDuration)
+                    }else{
+                        edDuration.error = "Enter Duration"
+                        return@setOnClickListener
                     }
 
-                    if (Utils.isNetworkAvailable(this)) {
-                        AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
-                            .addHeaders("Authorization", "Bearer " + prefmanger[AUTH_TOKEN, ""])
-                            .addJSONObjectBody(
-                                jsonObject
-                            )
-                            .setPriority(Priority.MEDIUM).build()
-                            .getAsObject(
-                                ExperienceModel::class.java,
-                                object : ParsedRequestListener<ExperienceModel> {
-                                    override fun onResponse(response: ExperienceModel?) {
-                                        try {
-                                            response?.let {
-                                                Log.d(
-                                                    TAG,
-                                                    "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
-                                                )
-                                                if (checkBox.isChecked) {
+                }
 
-                                                    currentCompany = enteredCompanyName
-                                                    designation = selectedDesignation
-                                                    jobLocation = selectedJobLocation
-                                                    binding.currentCompany.text = currentCompany
-                                                    val userDataRepository =
-                                                        UserDataRepository(this@ProfileActivity)
-                                                    CoroutineScope(Dispatchers.IO).launch {
-                                                        userDataRepository.storeCurrentPositionData(
-                                                            enteredCompanyName,
-                                                            selectedDesignation,
-                                                            selectedJobLocation,
-                                                            ""
-                                                        )
-                                                    }
-                                                    experienceList.add(
-                                                        Experience(
-                                                            response.data.id,
-                                                            response.data.vDesignation,
-                                                            response.data.vCompanyName,
-                                                            response.data.vJobLocation,
-                                                            1,
-                                                            null,
-                                                            response.data.iUserId,
-                                                            response.data.tCreatedAt,
-                                                            response.data.tUpadatedAt
-                                                        )
-                                                    )
-                                                } else {
-                                                    experienceList.add(
-                                                        Experience(
-                                                            response.data.id,
-                                                            response.data.vDesignation,
-                                                            response.data.vCompanyName,
-                                                            response.data.vJobLocation,
-                                                            0,
-                                                            response.data.vDuration,
-                                                            response.data.iUserId,
-                                                            response.data.tCreatedAt,
-                                                            response.data.tUpadatedAt
-                                                        )
+                if (Utils.isNetworkAvailable(this)) {
+                    AndroidNetworking.post(NetworkUtils.INSERT_EXPERIENCE)
+                        .addHeaders("Authorization", "Bearer " + prefmanger[AUTH_TOKEN, ""])
+                        .addJSONObjectBody(
+                            jsonObject
+                        )
+                        .setPriority(Priority.MEDIUM).build()
+                        .getAsObject(
+                            ExperienceModel::class.java,
+                            object : ParsedRequestListener<ExperienceModel> {
+                                override fun onResponse(response: ExperienceModel?) {
+                                    try {
+                                        response?.let {
+                                            Log.d(
+                                                TAG,
+                                                "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
+                                            )
+                                            if (checkBox.isChecked) {
+
+                                                currentCompany = enteredCompanyName
+                                                designation = selectedDesignation
+                                                jobLocation = selectedJobLocation
+                                                binding.currentCompany.text = currentCompany
+                                                val userDataRepository =
+                                                    UserDataRepository(this@ProfileActivity)
+                                                CoroutineScope(Dispatchers.IO).launch {
+                                                    userDataRepository.storeCurrentPositionData(
+                                                        enteredCompanyName,
+                                                        selectedDesignation,
+                                                        selectedJobLocation,
+                                                        ""
                                                     )
                                                 }
-
-                                                recyclerView.scrollToPosition(adapter.itemCount - 1)
-                                                inputLayout.visibility = GONE
-                                                btnAddNewExperience.visibility = VISIBLE
-                                                adapter.notifyDataSetChanged()
+                                                experienceList.add(
+                                                    Experience(
+                                                        response.data.id,
+                                                        response.data.vDesignation,
+                                                        response.data.vCompanyName,
+                                                        response.data.vJobLocation,
+                                                        1,
+                                                        null,
+                                                        response.data.iUserId,
+                                                        response.data.tCreatedAt,
+                                                        response.data.tUpadatedAt
+                                                    )
+                                                )
+                                            } else {
+                                                experienceList.add(
+                                                    Experience(
+                                                        response.data.id,
+                                                        response.data.vDesignation,
+                                                        response.data.vCompanyName,
+                                                        response.data.vJobLocation,
+                                                        0,
+                                                        response.data.vDuration,
+                                                        response.data.iUserId,
+                                                        response.data.tCreatedAt,
+                                                        response.data.tUpadatedAt
+                                                    )
+                                                )
                                             }
-                                        } catch (e: Exception) {
-                                            Log.e("#####", "onResponse Exception: ${e.message}")
-                                            makeToast(" Something wrong \n Please try again... ",0)
-                                            inputLayout.visibility = VISIBLE
-                                            btnAddNewExperience.visibility = GONE
-                                        }
-                                        finally {
-                                            spDesignation.clearFocus()
-                                            spDesignation.clearSelection()
-                                            spJobLocation.clearFocus()
-                                            spJobLocation.clearSelection()
-                                            edCompanyName.text?.clear()
-                                            edCompanyName.clearFocus()
-                                            edDuration.text?.clear()
-                                            edDuration.clearFocus()
-                                            selectedDesignation = ""
-                                            enteredCompanyName = ""
-                                            selectedJobLocation = ""
-                                            enteredDuration = ""
-                                            checkBox.isChecked = false
-                                            btnAddExperience.visibility = VISIBLE
-                                            addExpProgress.visibility = GONE
-                                        }
 
+                                            recyclerView.scrollToPosition(adapter.itemCount - 1)
+                                            inputLayout.visibility = GONE
+                                            btnAddNewExperience.visibility = VISIBLE
+                                            adapter.notifyDataSetChanged()
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("#####", "onResponse Exception: ${e.message}")
+                                        makeToast(" Something wrong \n Please try again... ",0)
+                                        inputLayout.visibility = VISIBLE
+                                        btnAddNewExperience.visibility = GONE
                                     }
-
-                                    override fun onError(anError: ANError?) {
-                                        anError?.let {
-                                            Log.e(
-                                                "#####",
-                                                "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                            )
-                                        }
-                                        makeToast(getString(R.string.some_thing_wrong_try_later),0)
+                                    finally {
+                                        spDesignation.clearFocus()
+                                        spDesignation.clearSelection()
+                                        spJobLocation.clearFocus()
+                                        spJobLocation.clearSelection()
+                                        edCompanyName.text?.clear()
+                                        edCompanyName.clearFocus()
+                                        edDuration.text?.clear()
+                                        edDuration.clearFocus()
+                                        selectedDesignation = ""
+                                        enteredCompanyName = ""
+                                        selectedJobLocation = ""
+                                        enteredDuration = ""
+                                        checkBox.isChecked = false
                                         btnAddExperience.visibility = VISIBLE
                                         addExpProgress.visibility = GONE
                                     }
 
                                 }
-                            )
 
-                    } else {
-                        Utils.showNoInternetBottomSheet(this, this@ProfileActivity)
-                        spDesignation.clearFocus()
-                        spDesignation.clearSelection()
-                        spJobLocation.clearFocus()
-                        spJobLocation.clearSelection()
-                        edCompanyName.text?.clear()
-                        edCompanyName.clearFocus()
-                        edDuration.text?.clear()
-                        edDuration.clearFocus()
-                        selectedDesignation = ""
-                        enteredCompanyName = ""
-                        selectedJobLocation = ""
-                        enteredDuration = ""
-                        btnAddExperience.visibility = VISIBLE
-                        addExpProgress.visibility = GONE
-                    }
+                                override fun onError(anError: ANError?) {
+                                    anError?.let {
+                                        Log.e(
+                                            "#####",
+                                            "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                        )
+                                    }
+                                    makeToast(getString(R.string.some_thing_wrong_try_later),0)
+                                    btnAddExperience.visibility = VISIBLE
+                                    addExpProgress.visibility = GONE
+                                }
+
+                            }
+                        )
+
+                } else {
+                    Utils.showNoInternetBottomSheet(this, this@ProfileActivity)
+                    spDesignation.clearFocus()
+                    spDesignation.clearSelection()
+                    spJobLocation.clearFocus()
+                    spJobLocation.clearSelection()
+                    edCompanyName.text?.clear()
+                    edCompanyName.clearFocus()
+                    edDuration.text?.clear()
+                    edDuration.clearFocus()
+                    selectedDesignation = ""
+                    enteredCompanyName = ""
+                    selectedJobLocation = ""
+                    enteredDuration = ""
+                    btnAddExperience.visibility = VISIBLE
+                    addExpProgress.visibility = GONE
+                }
             }
             else {
                 if (selectedDesignation.isEmpty()) {
@@ -1854,7 +1862,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         }
                         isClickedEditBtn = !isClickedEditBtn
                     }
-                    }
+                }
             }
         }
         interface ExperienceEditUpdateListener{
@@ -1902,12 +1910,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 spQualification.isOutlined = true
 
                 qualification = spQualification.item[position]
-               /* val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
-                makeToast(spQualification.item[position],0)
-                chip.text = spQualification.item[position]
-                selectedQualifications.add(spQualification.item[position])
-                chipGroup.addView(chip)
-                *//*chip.startAnimation(animation)
+                /* val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
+                 makeToast(spQualification.item[position],0)
+                 chip.text = spQualification.item[position]
+                 selectedQualifications.add(spQualification.item[position])
+                 chipGroup.addView(chip)
+                 *//*chip.startAnimation(animation)
                 chip.postDelayed({  }, 20)*//*
 
                 chip.setOnClickListener {
@@ -2149,12 +2157,10 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     @SuppressLint("Range")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 SELECT_RESUME_FILE -> if (resultCode == RESULT_OK) {
                     uploadProgressBar.visibility = View.VISIBLE
-                    uploadProgressBar.progress = 10
                     val pdfUri = data?.data!!
 
                     resumeFile = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
@@ -2229,6 +2235,10 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         override fun onResponse(response: GetUserById?) {
                             try {
                                 if (response != null) {
+                                    Log.d(
+                                        TAG,
+                                        "onResponse: Profile img update ${response.data.tProfileUrl}"
+                                    )
                                     CoroutineScope(Dispatchers.IO).launch {
                                         userDataRepository.storeProfileImg(
                                             response.data.tProfileUrl,
@@ -2321,8 +2331,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     }
 
-    private fun storeResume(resumeFile: File){
-        showProgressDialog("please wait")
+    private fun storeResume(resumeFile: File,callback: (Boolean) -> Unit){
+        /*showProgressDialog("please wait")*/
         if (Utils.isNetworkAvailable(this@ProfileActivity)) {
             AndroidNetworking.upload(NetworkUtils.UPDATE_RESUME)
                 .setOkHttpClient(NetworkUtils.okHttpClient)
@@ -2333,7 +2343,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     object : ParsedRequestListener<GetUserById> {
                         override fun onResponse(response: GetUserById?) {
                             try {
+                                Log.d(TAG, "onResponse: resume response ${response!!.data.tResumeUrl}")
                                 if (response != null) {
+
                                     CoroutineScope(Dispatchers.IO).launch {
                                         userDataRepository.storeResumeData(
                                             response.data.tResumeUrl,
@@ -2345,9 +2357,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                         )
                                     }
                                     resumeUri = response.data.tResumeUrl
+                                    callback(true)
                                 }
                             } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
+                                callback(false)
                             } finally {
                                 hideProgressDialog()
                             }
@@ -2361,12 +2375,14 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                     "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                 )
                             }
+                            callback(false)
                         }
 
                     })
         }
         else {
             Utils.showNoInternetBottomSheet(this, this)
+            callback(false)
             hideProgressDialog()
         }
     }
@@ -2382,12 +2398,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         startActivity(dialIntent)
     }
 
-  /*  override fun onDestroy() {
-        super.onDestroy()
+    /*  override fun onDestroy() {
+          super.onDestroy()
 
-        val updateDataServiceIntent = Intent(this, UpdateProfileDataService::class.java)
-        startService(updateDataServiceIntent)
-    }*/
+          val updateDataServiceIntent = Intent(this, UpdateProfileDataService::class.java)
+          startService(updateDataServiceIntent)
+      }*/
     override fun updateData() {
         lifecycle.coroutineScope.launch{
             Log.d(TAG, "updateData: Updated data process service running")
@@ -2516,53 +2532,53 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }).withErrorListener { error -> Log.e("#####", "onError $error") }.check()
     }*/
 
-/*    private fun isGrantedPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Log.d("Version*", Build.VERSION.SDK_INT.toString())
-            listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
-        } else {
-            Log.d("Version**", Build.VERSION.SDK_INT.toString())
-            val isGranted1 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            val isGranted2 =
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            val isGranted3 =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    /*    private fun isGrantedPermission(): Boolean {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Log.d("Version*", Build.VERSION.SDK_INT.toString())
+                listOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
+                val isGranted1 =
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    )
+                val isGranted2 =
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED
+            } else {
+                Log.d("Version**", Build.VERSION.SDK_INT.toString())
+                val isGranted1 =
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                val isGranted2 =
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                val isGranted3 =
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
 
-            return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED && isGranted3 == PackageManager.PERMISSION_GRANTED
+                return isGranted1 == PackageManager.PERMISSION_GRANTED && isGranted2 == PackageManager.PERMISSION_GRANTED && isGranted3 == PackageManager.PERMISSION_GRANTED
+            }
         }
-    }
 
-    private fun showSettingsDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Need Permissions")
-        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.")
-        builder.setPositiveButton("GOTO SETTINGS") { dialog, which ->
-            dialog.cancel()
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri: Uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-        }
-        builder.setNegativeButton("Cancel") { dialog, which ->
-            dialog.cancel()
-        }
-        builder.show()
-    }*/
+        private fun showSettingsDialog() {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setTitle("Need Permissions")
+            builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.")
+            builder.setPositiveButton("GOTO SETTINGS") { dialog, which ->
+                dialog.cancel()
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+            builder.setNegativeButton("Cancel") { dialog, which ->
+                dialog.cancel()
+            }
+            builder.show()
+        }*/
 
     /*fun showLogoutBottomSheet() {
 

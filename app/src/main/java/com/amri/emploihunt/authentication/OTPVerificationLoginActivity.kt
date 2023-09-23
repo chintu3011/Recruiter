@@ -64,7 +64,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
     private lateinit var binding:ActivityOtpverificationLoginBinding
 
-
+    private val experienceViewModel: ExperienceViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
 
     lateinit var phoneNo: String
@@ -177,7 +177,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             userDataRepository.emptyDataStore()
             callback()
         }
-        experienceViewModel.clearFromLocal()
+        /*experienceViewModel.clearFromLocal()*/
 
     }
 
@@ -355,7 +355,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
             }
     }
 
-    private val experienceViewModel: ExperienceViewModel by viewModels()
+
     private fun callUSerLogin(uid: String?, phoneNumber: String?) {
 
         if (Utils.isNetworkAvailable(this)){
@@ -426,21 +426,22 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 prefManager[USER_ID] = response.data.user.id
                                                 prefManager[AUTH_TOKEN] = response.data.tAuthToken
                                                 prefManager[IS_BLOCKED] = response.data.user.isBlock
-                                                val intent = Intent(
-                                                    this@OTPVerificationLoginActivity,
-                                                    HomeJobSeekerActivity::class.java
-                                                )
 
-                                                intent.putExtra("userId",response.data.user.vFirebaseId)
-                                                intent.putExtra("role",response.data.user.iRole)
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                                startActivity(intent)
-                                                overridePendingTransition(
-                                                    R.anim.flip_in,
-                                                    R.anim.flip_out
-                                                )
-                                                finish()
-
+                                                getExperienceData{
+                                                    val intent = Intent(
+                                                        this@OTPVerificationLoginActivity,
+                                                        HomeJobSeekerActivity::class.java
+                                                    )
+                                                    intent.putExtra("userId",response.data.user.vFirebaseId)
+                                                    intent.putExtra("role",response.data.user.iRole)
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                    startActivity(intent)
+                                                    overridePendingTransition(
+                                                        R.anim.flip_in,
+                                                        R.anim.flip_out
+                                                    )
+                                                    finish()
+                                                }
                                             }
                                             RECRUITER -> {
                                                 val userDataRepository = UserDataRepository(this@OTPVerificationLoginActivity)
@@ -522,6 +523,14 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         }
                     })
 
+
+        }else{
+            Utils.showNoInternetBottomSheet(this,this)
+        }
+    }
+
+    private fun getExperienceData(callback: () -> Unit)    {
+        if (Utils.isNetworkAvailable(this)) {
             AndroidNetworking.get(NetworkUtils.GET_ALL_EXPERIENCE)
                 .setOkHttpClient(NetworkUtils.okHttpClient)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
@@ -531,17 +540,21 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         override fun onResponse(response: UserExpModel?) {
                             try {
                                 if (response != null) {
-                                    Log.d(TAG, "onResponse: Experience data received: ${response.data}")
+                                    Log.d(
+                                        TAG,
+                                        "onResponse: Experience data received: ${response.data}"
+                                    )
                                     experienceViewModel.writeToLocal(response.data.toList())
                                         .invokeOnCompletion {
                                             Log.d(
                                                 TAG,
                                                 "experienceInfoDialogView: experienceList is updated in datastore"
                                             )
+                                            callback()
                                         }
                                 }
 
-                            }catch (e: Exception) {
+                            } catch (e: Exception) {
                                 Log.e("#####", "onResponse Exception: ${e.message}")
                                 hideProgressDialog()
                             }
@@ -566,7 +579,8 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
 
                     }
                 )
-        }else{
+        }
+        else{
             Utils.showNoInternetBottomSheet(this,this)
         }
     }

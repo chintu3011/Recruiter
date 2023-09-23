@@ -49,12 +49,12 @@ class IntroductionActivity : BaseActivity() {
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 ),
                 OnBoardingItem(
-                    orboardingImage = R.drawable.hiring,
+                    orboardingImage = R.drawable.hiering_img,
                     title = "Recruit best employee.",
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 ),
                 OnBoardingItem(
-                    orboardingImage = R.drawable.jobsearch,
+                    orboardingImage = R.drawable.jobseekers_img,
                     title = "Get your Best Jog Here.",
                     description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 )
