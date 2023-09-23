@@ -34,5 +34,6 @@ data class User(
     val isLogin: String,
     val isBlock: Int,
     val tCreatedAt: String,
-    val tUpadatedAt: String
+    val tUpadatedAt: String,
+    val tDeviceToken: String? = null
 ):Serializable

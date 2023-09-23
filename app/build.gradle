@@ -88,26 +88,22 @@ dependencies {
     implementation 'com.google.firebase:firebase-appcheck:17.0.1'
     implementation 'com.google.firebase:firebase-database:20.2.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
-    implementation platform('com.google.firebase:firebase-bom:32.0.0')
-    implementation 'com.google.firebase:firebase-auth-ktx'
-
+    implementation 'androidx.browser:browser:1.6.0'
     implementation 'com.karumi:dexter:6.2.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.3'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
-    implementation 'com.google.firebase:firebase-auth:22.0.0'
-    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.firebase:firebase-auth:22.1.2'
     implementation 'com.google.firebase:firebase-appcheck-debug:17.0.1'
     implementation 'com.google.firebase:firebase-appcheck-playintegrity:17.0.1'
 
 
     //datastore
-    implementation 'androidx.datastore:datastore-core-android:1.1.0-alpha04'
-    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha04'
-    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha04'
+    implementation 'androidx.datastore:datastore-core-android:1.1.0-alpha05'
+    implementation 'androidx.datastore:datastore-preferences:1.1.0-alpha05'
+    implementation 'androidx.datastore:datastore-preferences-core:1.1.0-alpha05'
 
     implementation "androidx.datastore:datastore:1.0.0"
-    implementation "com.google.protobuf:protobuf-javalite:3.21.5"
+    implementation "com.google.protobuf:protobuf-javalite:3.21.7"
     implementation 'com.google.protobuf:protobuf-kotlin-lite:3.21.5'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
@@ -131,7 +127,7 @@ dependencies {
 
     //sdp dimen
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
-
+    implementation 'com.google.android.play:integrity:1.2.0'
     //Expandable TV
     /*implementation 'com.github.gifffert:ExpandableTextView:0.1.6'*/
     implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.4'
@@ -152,8 +148,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:6.0.0'
 
     //Coroutine Lifecycle Scopes
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
@@ -175,5 +171,7 @@ dependencies {
 
     //smart spinner
     implementation ("com.github.chivorns:smartmaterialspinner:1.5.0")
+
+
 
 }

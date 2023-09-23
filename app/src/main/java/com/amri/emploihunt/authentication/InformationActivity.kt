@@ -1666,7 +1666,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             val alterDialog  = AlertDialog.Builder(this@InformationActivity)
                 .setTitle("Alert!!!")
                 .setIcon(R.drawable.ic_alert)
-                .setMessage("Your Phone Number is Registered.But your data will save..")
+                .setMessage("Are your want sure?Your data will be lose...")
                 .setPositiveButton("Continue"){ dialog, _ ->
                     startActivity(Intent(this@InformationActivity, RegistrationActivity::class.java))
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
