@@ -45,6 +45,8 @@ import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityProfileBinding
+import com.amri.emploihunt.messenger.FullImageViewActivity
+import com.amri.emploihunt.messenger.PDfViewActivity
 import com.amri.emploihunt.model.CommonMessageModel
 import com.amri.emploihunt.model.Experience
 import com.amri.emploihunt.model.ExperienceModel
@@ -789,6 +791,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         binding.editAboutR.setOnClickListener(this)
         binding.editCurrPosR.setOnClickListener(this)
         binding.editQualificationR.setOnClickListener(this)
+        binding.resumeFileNameJ.setOnClickListener(this)
+        binding.profileImg.setOnClickListener(this)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -797,11 +801,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             R.id.profileBackImg -> {
                 profileBannerDialogView()
             }
-
             R.id.addProfileImg -> {
                 profileImgDialogView()
             }
-
             R.id.editBasicInfo -> {
                 basicInfoDialogView()
             }
@@ -908,7 +910,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 binding.btnShowMore.isActivated = !binding.btnShowMore.isActivated*/
 
             }
-
             R.id.editResumeJ -> {
                 addResumeImg!!.visibility = GONE
                 resumeInfoDialogView()
@@ -925,7 +926,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 addCurrentPosImg!!.visibility = GONE
                 currentPositionDialogView()
             }
-
             R.id.btnPhone -> {
                 if(callBalloon != null){
                     binding.btnPhone.showAlignTop(callBalloon!!)
@@ -934,6 +934,26 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             R.id.btnEmail -> {
                 if(emailBalloon != null){
                     binding.btnEmail.showAlignTop(emailBalloon!!)
+                }
+            }
+            R.id.resumeFileNameJ -> {
+                if(!resumeUri.isNullOrEmpty()) {
+                    val intent = Intent(this, PDfViewActivity::class.java)
+                    intent.putExtra("Uri", resumeUri)
+                    startActivity(intent)
+                }
+                else{
+                    makeToast("Resume not found",0)
+                }
+            }
+            R.id.profileImg -> {
+                if(!profileImgUri.isNullOrEmpty()) {
+                    val intent = Intent(this, FullImageViewActivity::class.java)
+                    intent.putExtra("Uri", profileImgUri)
+                    startActivity(intent)
+                }
+                else{
+                    makeToast("Profile image not found",0)
                 }
             }
         }
@@ -1101,6 +1121,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             layoutInflater.inflate(R.layout.dialog_profile_cover_img, null)
 
         profileBackImg = profileBannerDialogView.findViewById(R.id.profileBackImg)
+        profileBackImg.setOnClickListener{
+            if(!profileBannerImgUri.isNullOrEmpty()) {
+                val intent = Intent(this, FullImageViewActivity::class.java)
+                intent.putExtra("Uri", profileBannerImgUri)
+                startActivity(intent)
+            }
+            else{
+                makeToast("Profile banner image not found",0)
+            }
+        }
         profileBackImgLodding = profileBannerDialogView.findViewById(R.id.profileBackImgLodding)
         profileBackImgLodding.visibility  = GONE
 
@@ -2296,6 +2326,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     val photoUri = data?.data!!
 
                     profileBackImg.visibility = INVISIBLE
+                    profileBackImg.isClickable = false
                     profileBackImgLodding.visibility = VISIBLE
                     profileBackImgLodding.playAnimation()
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -2311,6 +2342,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                             )
                             .into(profileBackImg)
                         profileBackImg.visibility = VISIBLE
+                        profileBackImg.isClickable = true
                         profileBackImgLodding.visibility = GONE
                         profileBannerImgUri = photoUri.toString()
                     },3000)

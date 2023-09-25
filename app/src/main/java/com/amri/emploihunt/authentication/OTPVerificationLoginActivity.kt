@@ -562,19 +562,20 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                         }
 
                         override fun onError(anError: ANError?) {
-                            try {
 
-                                anError?.let {
+                            anError?.let {
+                                if(anError.errorCode == 500){
+                                    callback()
+                                }
+                                else{
                                     Log.e(
                                         "#####",
                                         "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                     )
-                                    /** errorCode == 404 means User number is not registered or New user */
-                                    hideProgressDialog()
                                 }
-                            } catch (e: Exception) {
-                                Log.e("#####", "onError: ${e.message}")
+                                hideProgressDialog()
                             }
+                            
                         }
 
                     }
