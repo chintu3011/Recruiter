@@ -19,6 +19,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
 import com.amri.emploihunt.R
 import com.amri.emploihunt.messenger.ChatBoardActivity
+import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.util.FCM_TOKEN
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
@@ -74,12 +75,26 @@ class FirebaseTokenServices : FirebaseMessagingService() {
                     putExtra("isNotification",true)
                 }
             }
-            "5" -> {
+            "2" -> {
                 Intent(applicationContext, HomeJobSeekerActivity::class.java).apply {
 
                 }
             }
+            "3" -> {
+                Intent(applicationContext, HomeRecruiterActivity::class.java).apply {
 
+                }
+            }
+            "4" -> {
+                Intent(applicationContext, HomeJobSeekerActivity::class.java).apply {
+
+                }
+            }
+            "5" -> {
+                Intent(applicationContext, HomeRecruiterActivity::class.java).apply {
+
+                }
+            }
             else -> {
                 Intent(applicationContext, HomeJobSeekerActivity::class.java)
             }

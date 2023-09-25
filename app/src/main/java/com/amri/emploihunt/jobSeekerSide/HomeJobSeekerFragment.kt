@@ -252,7 +252,7 @@ FilterParameterTransferClass.FilterJobListListener {
         }
 
         binding.imgOpenDrawer.showAlignLeft(balloon)
-        balloon.dismissWithDelay(5000)
+        balloon.dismissWithDelay(2000)
 
 
         binding.btnMessenger.setOnClickListener {
