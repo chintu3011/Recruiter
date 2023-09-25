@@ -326,6 +326,7 @@ class InterestedCandidateActivity : BaseActivity() {
 
             val dataAppliedCandidate: DataAppliedCandidate = dataList[position]
 
+
             holder.binding.applicantName.text = dataAppliedCandidate.userJobPref.vFirstName.plus(" ").plus(dataAppliedCandidate.userJobPref.vLastName)
             holder.binding.applicantQualification.text = dataAppliedCandidate.userJobPref.vQualification
             holder.binding.applicantPrefCity.text = dataAppliedCandidate.userJobPref. vPreferCity
@@ -409,7 +410,7 @@ class InterestedCandidateActivity : BaseActivity() {
             }
 
 
-            holder.itemView.setOnClickListener {
+            holder.binding.layout.setOnClickListener {
                 val intent =
                     Intent(mActivity, JobSeekerDetailsActivity::class.java)
                 intent.putExtra("ARG_JOB_TITLE", dataAppliedCandidate)

@@ -9,6 +9,8 @@ import android.database.Cursor
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
@@ -16,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -38,6 +41,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityProfileBinding
@@ -50,6 +54,7 @@ import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.store.ExperienceViewModel
 import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.CURRENT_COMPANY
 import com.amri.emploihunt.util.FIREBASE_ID
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
@@ -66,6 +71,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -555,30 +561,34 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** Experience */
         if(userType == 0) {
             lifecycle.coroutineScope.launch {
-                Log.d(TAG, "setProfileData: trying to update experience data")
                 addExperienceImg = createAddDataImg(binding.experienceLayout, R.id.txtExperienceJ)
 
-                lifecycle.coroutineScope.launch {
-                    experienceViewModel.readFromLocal().collect { list ->
-                        Log.d(TAG, "getExperienceList: Experience $list \n ${list.size}")
-                        experienceList.clear()
-                        experienceList.addAll(list)
+                experienceViewModel.readFromLocal().collect { list ->
+                    Log.d(TAG, "getExperienceList: Experience $list \n ${list.size}")
+                    experienceList.clear()
+                    experienceList.addAll(list)
 
-                        binding.experienceRecyclerView.visibility = GONE
-                        if (addExperienceImg != null) {
-                            decideAddImgToVisibility(
-                                experienceList.isEmpty(),
-                                binding.experienceRecyclerView,
-                                addExperienceImg!!
-                            )
-                        } else {
-                            makeToast(getString(R.string.something_error), 0)
-                            Log.d(TAG, "setProfileData: addExperienceImg is null")
+                    for(index in 0 until experienceList.size){
+                        if(experienceList[index].bIsCurrentCompany == CURRENT_COMPANY){
+                             val currExp = experienceList[index]
+                            experienceList.removeAt(index)
+                            experienceList.add(0,currExp)
+                            break
                         }
-                        setExperiences(experienceList)
                     }
+                    binding.experienceRecyclerView.visibility = GONE
+                    if (addExperienceImg != null) {
+                        decideAddImgToVisibility(
+                            experienceList.isEmpty(),
+                            binding.experienceRecyclerView,
+                            addExperienceImg!!
+                        )
+                    } else {
+                        makeToast(getString(R.string.something_error), 0)
+                        Log.d(TAG, "setProfileData: addExperienceImg is null")
+                    }
+                    setExperiences(experienceList)
                 }
-
             }.invokeOnCompletion {
                 Log.d(TAG, "setProfileData: experience data is updated")
             }
@@ -933,11 +943,34 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         val currentPositionDialog = layoutInflater.inflate(R.layout.dialog_current_position_info, null)
 
         var selectedJobLocation = String()
+        var selectedDesignation = String()
         var selectedWorkingMode = String()
 
         val edCompanyName = currentPositionDialog.findViewById<EditText>(R.id.companyName)
-        val edJobTitle = currentPositionDialog.findViewById<EditText>(R.id.designation)
-        val spJobLocation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
+        if(!currentCompany.isNullOrEmpty()) {
+            edCompanyName.setText(currentCompany)
+        }
+        val spDesignation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.spDesignation)
+        spDesignation.setSearchDialogGravity(Gravity.TOP)
+        spDesignation.arrowPaddingRight = 19
+        spDesignation.item = resources.getStringArray(R.array.indian_designations).toList()
+        if(!designation.isNullOrEmpty()){
+            spDesignation.setSelection(resources.getStringArray(R.array.indian_designations).toList().indexOf(designation))
+        }
+        spDesignation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+                spDesignation.isOutlined = true
+                selectedDesignation = spDesignation.item[position]
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
+        }
+
+
+
+        val spJobLocation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.spJobLocation)
         if(!jobLocation.isNullOrEmpty()){
             spJobLocation.setSelection(cityList.indexOf(jobLocation))
         }
@@ -954,6 +987,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
             }
         }
+        
         val tbWorkingMode = currentPositionDialog.findViewById<TabLayout>(R.id.tbWorkingMode)
         selectedWorkingMode = tbWorkingMode.getTabAt(tbWorkingMode.selectedTabPosition)?.text.toString()
         tbWorkingMode.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -977,7 +1011,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
                 currentCompany = edCompanyName.text.toString().trim()
-                designation = edJobTitle.text.toString().trim()
+                designation = selectedDesignation.trim()
                 jobLocation = selectedJobLocation.trim()
                 workingMode = selectedWorkingMode.trim()
 
@@ -1010,14 +1044,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     private lateinit var tvResumeFileName: TextView
     private lateinit var uploadProgressBar: LinearProgressIndicator
+    private lateinit var btnUpload:LottieAnimationView
     private fun resumeInfoDialogView() {
         val resumeDialogView = layoutInflater.inflate(R.layout.dialog_resume_info, null)
 
-        val btnUpload = resumeDialogView.findViewById<ShapeableImageView>(R.id.btnUpload)
+        btnUpload = resumeDialogView.findViewById<LottieAnimationView>(R.id.btnUpload)
 
         tvResumeFileName = resumeDialogView.findViewById(R.id.resumeFileName)
         tvResumeFileName.text = resumeFileName!!
         btnUpload.setOnClickListener{
+            tvResumeFileName.visibility = GONE
             selectPdf(SELECT_RESUME_FILE)
         }
 
@@ -1030,7 +1066,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setPositiveButton("Done") { dialog, _ ->
                 storeResume(resumeFile){
                     if(it) {
-                        /*dialog.dismiss()*/
+                        dialog.dismiss()
                     }
                     else{
                         makeToast(getString(R.string.some_thing_wrong_try_later),0)
@@ -1059,11 +1095,14 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
     private lateinit var profileBackImg: ImageView
     private lateinit var btnSelectImg: ImageView
+    private lateinit var profileBackImgLodding:LottieAnimationView
     private fun profileBannerDialogView() {
         val profileBannerDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_cover_img, null)
 
         profileBackImg = profileBannerDialogView.findViewById(R.id.profileBackImg)
+        profileBackImgLodding = profileBannerDialogView.findViewById(R.id.profileBackImgLodding)
+        profileBackImgLodding.visibility  = GONE
 
         if(profileBannerImgUri != null) {
             Glide.with(this@ProfileActivity)
@@ -1126,6 +1165,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     }
     private lateinit var profileImgDia: ImageView
     private lateinit var btnChangeImg: ImageView
+    private lateinit var profileImgLodding:LottieAnimationView
     private fun profileImgDialogView() {
         val profileImgDialogView =
             layoutInflater.inflate(R.layout.dialog_profile_img, null)
@@ -1145,6 +1185,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }
 
         btnChangeImg = profileImgDialogView.findViewById(R.id.btnChangeImg)
+        profileImgLodding = profileImgDialogView.findViewById(R.id.profileImgLodding)
+        profileImgLodding.speed = 2f
         btnChangeImg.setOnClickListener {
             val deniedPermissions:MutableList<String> = isGrantedPermission()
 
@@ -1278,7 +1320,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                             Log.d(TAG, "onResponse: ${response?.message}")
                                             makeToast("Experience deleted.",0)
                                             experienceList.removeAt(position)
-                                            adapter.notifyDataSetChanged()
+                                            adapter.notifyItemRemoved(position)
                                         }
                                         catch (e: Exception) {
                                             Log.e("#####", "onResponse Exception: ${e.message}")
@@ -1314,10 +1356,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     if(experience.vDuration !=  null) {
                         jsonObject.put("vDuration",experience.vDuration)
                     }
-                    jsonObject.put("iUserId",experience.iUserId)
+                    /*jsonObject.put("iUserId",experience.iUserId)
                     jsonObject.put("tCreatedAt",experience.tCreatedAt)
-                    jsonObject.put("tUpadatedAt",experience.tUpadatedAt)
-
+                    jsonObject.put("tUpadatedAt",experience.tUpadatedAt)*/
 
                     if (Utils.isNetworkAvailable(this@ProfileActivity)){
                         AndroidNetworking.post(NetworkUtils.UPDATE_EXPERIENCE)
@@ -1336,37 +1377,42 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                                     TAG,
                                                     "onResponse: updated experience data  \n ${response.data}"
                                                 )
+                                                if (response.data.bIsCurrentCompany == CURRENT_COMPANY) {
 
-
-                                                if (!response.data.vDuration.isNullOrEmpty()) {
-
-                                                    currentCompany = enteredCompanyName
-                                                    designation = selectedDesignation
-                                                    jobLocation = selectedJobLocation
+                                                    currentCompany = response.data.vCompanyName
+                                                    designation = response.data.vDesignation
+                                                    jobLocation = response.data.vJobLocation
                                                     binding.currentCompany.text = currentCompany
                                                     val userDataRepository =
                                                         UserDataRepository(this@ProfileActivity)
 
                                                     CoroutineScope(Dispatchers.IO).launch {
                                                         userDataRepository.storeCurrentPositionData(
-                                                            enteredCompanyName,
-                                                            selectedDesignation,
-                                                            selectedJobLocation,
+                                                            response.data.vCompanyName,
+                                                            response.data.vDesignation,
+                                                            response.data.vJobLocation,
                                                             ""
                                                         )
-                                                    }
-
-                                                    experienceList[position] = Experience(
+                                                    }/*.invokeOnCompletion {
+                                                        makeToast("Current position updated",0)
+                                                    }*/
+                                                    experienceList.removeAt(position)
+                                                    adapter.notifyItemRemoved(position)
+                                                    experienceList.add(
+                                                        0,
+                                                        Experience(
                                                         response.data.id,
                                                         response.data.vDesignation,
                                                         response.data.vCompanyName,
                                                         response.data.vJobLocation,
-                                                        1,
+                                                        response.data.bIsCurrentCompany,
                                                         null,
                                                         response.data.iUserId,
                                                         response.data.tCreatedAt,
-                                                        response.data.tUpadatedAt
+                                                        response.data.tUpadatedAt)
                                                     )
+                                                    adapter.notifyItemInserted(0)
+                                                    adapter.notifyItemChanged(0)
 
                                                 } else {
                                                     experienceList[position] = Experience(
@@ -1374,15 +1420,17 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                                         response.data.vDesignation,
                                                         response.data.vCompanyName,
                                                         response.data.vJobLocation,
-                                                        0,
+                                                        response.data.bIsCurrentCompany,
                                                         response.data.vDuration,
                                                         response.data.iUserId,
                                                         response.data.tCreatedAt,
                                                         response.data.tUpadatedAt
                                                     )
+                                                    adapter.notifyItemChanged(position)
                                                 }
                                                 recyclerView.scrollToPosition(position)
-                                                adapter.notifyItemChanged(position)
+
+                                                /*adapter.notifyDataSetChanged()*/
                                             }
                                         }
                                         catch (e: Exception) {
@@ -1447,7 +1495,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         edDuration.error = "Enter Duration"
                         return@setOnClickListener
                     }
-
                 }
 
                 if (Utils.isNetworkAvailable(this)) {
@@ -1482,20 +1529,42 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                                         selectedJobLocation,
                                                         ""
                                                     )
-                                                }
-                                                experienceList.add(
-                                                    Experience(
-                                                        response.data.id,
-                                                        response.data.vDesignation,
-                                                        response.data.vCompanyName,
-                                                        response.data.vJobLocation,
-                                                        1,
-                                                        null,
-                                                        response.data.iUserId,
-                                                        response.data.tCreatedAt,
-                                                        response.data.tUpadatedAt
+                                                }/*.invokeOnCompletion {
+                                                    makeToast("Current position updated",0)
+                                                }*/
+                                                if(experienceList.isNotEmpty()) {
+                                                    experienceList.add(
+                                                        0,
+                                                        Experience(
+                                                            response.data.id,
+                                                            response.data.vDesignation,
+                                                            response.data.vCompanyName,
+                                                            response.data.vJobLocation,
+                                                            1,
+                                                            null,
+                                                            response.data.iUserId,
+                                                            response.data.tCreatedAt,
+                                                            response.data.tUpadatedAt
+                                                        )
                                                     )
-                                                )
+                                                    adapter.notifyItemInserted(0)
+                                                }
+                                                else{
+                                                    experienceList.add(
+                                                        Experience(
+                                                            response.data.id,
+                                                            response.data.vDesignation,
+                                                            response.data.vCompanyName,
+                                                            response.data.vJobLocation,
+                                                            1,
+                                                            null,
+                                                            response.data.iUserId,
+                                                            response.data.tCreatedAt,
+                                                            response.data.tUpadatedAt
+                                                        )
+                                                    )
+                                                    adapter.notifyItemInserted(experienceList.size -1)
+                                                }
                                             } else {
                                                 experienceList.add(
                                                     Experience(
@@ -1510,12 +1579,14 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                                         response.data.tUpadatedAt
                                                     )
                                                 )
+                                                adapter.notifyItemInserted(experienceList.size -1)
                                             }
 
                                             recyclerView.scrollToPosition(adapter.itemCount - 1)
                                             inputLayout.visibility = GONE
                                             btnAddNewExperience.visibility = VISIBLE
-                                            adapter.notifyDataSetChanged()
+
+
                                         }
                                     } catch (e: Exception) {
                                         Log.e("#####", "onResponse Exception: ${e.message}")
@@ -1663,7 +1734,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         private var experienceList: MutableList<Experience>,
         private val experienceEditUpdateListener: ExperienceEditUpdateListener?,
         private val cityList: ArrayList<String>
-    ) : RecyclerView.Adapter<ExperienceAdapter.ExperiencesHolder>(){
+    ) : RecyclerView.Adapter<ExperienceAdapter.ExperiencesHolder>()
+    {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperiencesHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.row_experience,parent,
@@ -1681,6 +1753,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             return experienceList.size
         }
 
+
         override fun onBindViewHolder(holder: ExperiencesHolder, position: Int) {
             val experience = experienceList[position]
 
@@ -1690,6 +1763,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         inner class ExperiencesHolder(itemView: View,experienceEditUpdateListener: ExperienceEditUpdateListener?):RecyclerView.ViewHolder(itemView) {
 
             private val dataLayout = itemView.findViewById<ConstraintLayout>(R.id.dataLayout)
+            private val dataCard = itemView.findViewById<MaterialCardView>(R.id.dataCard)
             private val designation = itemView.findViewById<MaterialTextView>(R.id.designation)
             private val companyName = itemView.findViewById<MaterialTextView>(R.id.companyName)
             private val jobLocation = itemView.findViewById<MaterialTextView>(R.id.jobLocation)
@@ -1712,10 +1786,22 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             private var enteredCompanyName = String()
             private var selectedJobLocation = String()
             private var enteredDuration = String()
-
+            private var isClickedEditBtn = false
 
             private fun setEditLayout(experience: Experience) {
 
+
+                edCompanyName.setText(experience.vCompanyName)
+                edDuration.setText(experience.vDuration)
+
+                if(experience.bIsCurrentCompany == CURRENT_COMPANY){
+                    checkBox.isChecked = true
+                    edDurationLayout.visibility = GONE
+                }
+                else{
+                    checkBox.isChecked = false
+                    edDurationLayout.visibility = VISIBLE
+                }
                 spDesignation.setSearchDialogGravity(Gravity.TOP)
                 spDesignation.arrowPaddingRight = 19
                 spDesignation.item = mActivity.resources.getStringArray(R.array.indian_designations).toList()
@@ -1746,9 +1832,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     }
                 }
 
+
                 checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                     if(isChecked) {
                         edDurationLayout.visibility = GONE
+                        edDuration.setText("")
                     }
                     else{
                         edDurationLayout.visibility = VISIBLE
@@ -1811,6 +1899,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         }
                         updateExpProgress.visibility = GONE
                     }
+                    btnEdit.setImageResource(R.drawable.baseline_edit_18)
+                    itemView.setBackgroundResource(R.color.white)
+                    isClickedEditBtn = false
+                    inputLayoutExperience.visibility = GONE
+                    /*notifyItemChanged(absoluteAdapterPosition)*/
 
                 }
             }
@@ -1823,6 +1916,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 if(experience.bIsCurrentCompany == 1){
                     duration.visibility = GONE
                     txtPresent.visibility = VISIBLE
+                    dataCard.strokeWidth = 4
+                    dataCard.strokeColor = ContextCompat.getColor(mActivity,R.color.blue)
                 }
                 else {
                     txtPresent.visibility = GONE
@@ -1830,6 +1925,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         duration.visibility = VISIBLE
                         duration.text = experience.vDuration.plus(" Years")
                     }
+                    dataCard.strokeWidth = 0
+                    dataCard.strokeColor = ContextCompat.getColor(mActivity,android.R.color.transparent)
                 }
                 if(btnVisibility){
                     btnDelete.visibility = VISIBLE
@@ -1841,7 +1938,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                 }
 
-                var isClickedEditBtn = false
+
                 if(experienceEditUpdateListener != null) {
                     btnDelete.setOnClickListener {
                         experienceEditUpdateListener.delete(absoluteAdapterPosition,experience)
@@ -1873,7 +1970,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     }
 
     private fun qualificationDialogView(){
-        val animation: Animation = AnimationUtils.loadAnimation(this, R.anim.sp_fade)
 
         /*var selectedQualifications:MutableList<String> = mutableListOf()
         if(qualification != null){
@@ -1884,6 +1980,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         }*/
 
         val qualificationDialog = layoutInflater.inflate(R.layout.dialog_qualification_info,null)
+
         /*val chipGroup = qualificationDialog.findViewById<ChipGroup>(R.id.chipGroup)
         for(qualification in selectedQualifications){
             val chip = layoutInflater.inflate(R.layout.chip_layout, null) as Chip
@@ -2160,63 +2257,86 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 SELECT_RESUME_FILE -> if (resultCode == RESULT_OK) {
-                    uploadProgressBar.visibility = View.VISIBLE
+                    uploadProgressBar.visibility = View.GONE
                     val pdfUri = data?.data!!
 
-                    resumeFile = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
-
-                    if (pdfUri.toString().startsWith("content://")) {
-                        var myCursor: Cursor? = null
-                        try {
-                            myCursor = this.contentResolver.query(
-                                pdfUri,
-                                null,
-                                null,
-                                null,
-                                null
-                            )
-                            if (myCursor != null && myCursor.moveToFirst()) {
-                                resumeFileName =
-                                    myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                resumeUri = pdfUri.toString()
-                                tvResumeFileName.text = resumeFileName
+                    btnUpload.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        resumeFile = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
+                        if (pdfUri.toString().startsWith("content://")) {
+                            var myCursor: Cursor? = null
+                            try {
+                                myCursor = this.contentResolver.query(
+                                    pdfUri,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                )
+                                if (myCursor != null && myCursor.moveToFirst()) {
+                                    resumeFileName =
+                                        myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                    resumeUri = pdfUri.toString()
+                                    tvResumeFileName.text = resumeFileName
+                                    tvResumeFileName.visibility = VISIBLE
+                                }
+                            } finally {
+                                myCursor?.close()
                             }
-                        } finally {
-                            myCursor?.close()
                         }
-                    }
-                    resumeUri = pdfUri.toString()
+
+                    },3000)
+
+
+
 
                 }
 
                 SELECT_PROFILE_BANNER_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-                    profileBannerFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                    Glide.with(this@ProfileActivity)
-                        .load(photoUri)
-                        .apply(
-                            RequestOptions
-                                .placeholderOf(R.drawable.profile_default_back_img)
-                                .error(R.drawable.profile_default_back_img)
-                                .fitCenter()
-                        )
-                        .into(profileBackImg)
-                    profileBannerImgUri = photoUri.toString()
+
+                    profileBackImg.visibility = INVISIBLE
+                    profileBackImgLodding.visibility = VISIBLE
+                    profileBackImgLodding.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        profileBannerFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
+
+                        Glide.with(this@ProfileActivity)
+                            .load(photoUri)
+                            .apply(
+                                RequestOptions
+                                    .placeholderOf(R.drawable.profile_default_back_img)
+                                    .error(R.drawable.profile_default_back_img)
+                                    .fitCenter()
+                            )
+                            .into(profileBackImg)
+                        profileBackImg.visibility = VISIBLE
+                        profileBackImgLodding.visibility = GONE
+                        profileBannerImgUri = photoUri.toString()
+                    },3000)
+
                 }
 
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
-                    profileImgFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                    Glide.with(this@ProfileActivity)
-                        .load(photoUri)
-                        .apply(
-                            RequestOptions
-                                .placeholderOf(R.drawable.profile_default_image)
-                                .error(R.drawable.profile_default_image)
-                                .fitCenter()
-                        )
-                        .into(profileImgDia)
+                    profileImgLodding.visibility = VISIBLE
+                    profileImgDia.visibility = INVISIBLE
+                    profileImgLodding.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        profileImgFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
 
+                        Glide.with(this@ProfileActivity)
+                            .load(photoUri)
+                            .apply(
+                                RequestOptions
+                                    .placeholderOf(R.drawable.profile_default_image)
+                                    .error(R.drawable.profile_default_image)
+                                    .circleCrop()
+                            )
+                            .into(profileImgDia)
+                        profileImgDia.visibility = VISIBLE
+                        profileImgLodding.visibility = GONE
+                    }, 3000)
                     /*profileImgUri = photoUri.toString()*/
                 }
             }
@@ -2237,7 +2357,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                 if (response != null) {
                                     Log.d(
                                         TAG,
-                                        "onResponse: Profile img update ${response.data.tProfileUrl}"
+                                        "onResponse: storeProfileImg ${response.data.tProfileUrl}"
                                     )
                                     CoroutineScope(Dispatchers.IO).launch {
                                         userDataRepository.storeProfileImg(
@@ -2293,6 +2413,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         override fun onResponse(response: GetUserById?) {
                             try {
                                 if (response != null) {
+                                    Log.d("test", "onResponse: storeProfileBannerImg : ${response.data}")
                                     CoroutineScope(Dispatchers.IO).launch {
                                         userDataRepository.storeProfileBannerImg(
                                             response.data.tProfileBannerUrl,
@@ -2337,15 +2458,15 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             AndroidNetworking.upload(NetworkUtils.UPDATE_RESUME)
                 .setOkHttpClient(NetworkUtils.okHttpClient)
                 .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
-                .addMultipartFile("bannerPic", resumeFile)
+                .addMultipartFile("resume", resumeFile)
                 .setPriority(Priority.MEDIUM).build().getAsObject(
                     GetUserById::class.java,
                     object : ParsedRequestListener<GetUserById> {
                         override fun onResponse(response: GetUserById?) {
                             try {
-                                Log.d(TAG, "onResponse: resume response ${response!!.data.tResumeUrl}")
-                                if (response != null) {
 
+                                if (response != null) {
+                                    Log.d("test", "onResponse: storeResume : ${response.data}")
                                     CoroutineScope(Dispatchers.IO).launch {
                                         userDataRepository.storeResumeData(
                                             response.data.tResumeUrl,

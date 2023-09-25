@@ -19,7 +19,7 @@
             app:cardElevation="@dimen/_5sdp"
             android:id="@+id/cardViewinfo"
             android:background="@drawable/lay_bg"
-            app:rippleColor="@color/card_ripple_color"
+            app:rippleColor="@color/card_ripple_color_primary"
             app:cardPreventCornerOverlap="false"
 
             android:layout_marginTop="@dimen/_15sdp"

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/_2sdp"
         android:id="@+id/cardViewinfo"
-        app:rippleColor="@color/card_ripple_color"
+        app:rippleColor="@color/card_ripple_color_primary"
         android:clickable="true"
         android:layout_margin="@dimen/_5sdp"
         android:focusable="true"
@@ -152,10 +152,10 @@
                 android:id="@+id/lineDivider1"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:background="#46C8C8C8"
+                android:background="@color/blue"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                app:layout_constraintEnd_toStartOf="@id/endGuildLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWorkingMode" />
 
 

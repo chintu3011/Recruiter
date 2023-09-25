@@ -9,6 +9,8 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,7 +55,14 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.database.DatabaseReference
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignLeft
 
 class HomeJobSeekerFragment : BaseFragment(),JobListUpdateListener,
 FilterParameterTransferClass.FilterJobListListener {
@@ -78,6 +88,10 @@ FilterParameterTransferClass.FilterJobListListener {
     private var location = ""
     private var workingMode = ""
     private var packageRange = ""
+
+
+    private lateinit var balloon: Balloon
+
     companion object{
         const val TAG = "HomeJobSeekerFragment"
     }
@@ -217,6 +231,30 @@ FilterParameterTransferClass.FilterJobListListener {
         binding.imgOpenDrawer.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.END)
         }
+
+        val balloonLayout = LayoutInflater.from(requireContext()).inflate(R.layout.messenger_balloon,null,false)
+        val txtMessage = balloonLayout.findViewById<MaterialTextView>(R.id.txtMessage)
+        txtMessage.text = "Chat with \n Recruiters!."
+
+        balloon = createBalloon(requireContext()){
+            setLayout(balloonLayout)
+            setArrowSize(10)
+            setArrowOrientation(ArrowOrientation.END)
+            setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            setArrowPosition(0.5f)
+            setWidth(200)
+            setHeight(200)
+            setCornerRadius(30f)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.card_ripple_color_blue))
+            setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+            setLifecycleOwner(lifecycleOwner)
+            build()
+        }
+
+        binding.imgOpenDrawer.showAlignLeft(balloon)
+        balloon.dismissWithDelay(5000)
+
+
         binding.btnMessenger.setOnClickListener {
             val intent = Intent(requireContext(), MessaengerHomesActivity_2::class.java)
             intent.putExtra("userType", userType!!)

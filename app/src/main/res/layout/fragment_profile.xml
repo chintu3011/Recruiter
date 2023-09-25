@@ -68,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_100sdp"
                 android:scaleType="fitXY"
-                android:background="@color/white"
+                android:background="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBar"
@@ -81,6 +81,7 @@
                 android:layout_marginTop="@dimen/_100sdp"
                 android:elevation="@dimen/_6sdp"
                 android:padding="@dimen/_5sdp"
+                android:background="@color/white"
                 android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="@+id/profileBackImg"
                 app:layout_constraintEnd_toEndOf="@+id/profileBackImg"
@@ -124,7 +125,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/profileBackImg"
-                app:rippleColor="@color/card_ripple_color"
+                app:rippleColor="@color/card_ripple_color_primary"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -294,7 +295,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/space"
                 android:clickable="true"
                 android:focusable="true"
-                app:rippleColor="@color/card_ripple_color"
+                app:rippleColor="@color/card_ripple_color_primary"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -415,7 +416,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space1"
-                app:rippleColor="@color/card_ripple_color"
+                app:rippleColor="@color/card_ripple_color_primary"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -531,7 +532,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space2"
-                app:rippleColor="@color/card_ripple_color"
+                app:rippleColor="@color/card_ripple_color_primary"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -610,7 +611,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space3"
-                app:rippleColor="@color/card_ripple_color"
+                app:rippleColor="@color/card_ripple_color_primary"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -780,7 +781,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/space"
                 android:clickable="true"
                 android:focusable="true"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

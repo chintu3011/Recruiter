@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -40,6 +41,7 @@ import com.amri.emploihunt.model.UserExpModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.settings.ProfileActivity
 import com.amri.emploihunt.util.AUTH_TOKEN
+import com.amri.emploihunt.util.CURRENT_COMPANY
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.Utils
@@ -51,6 +53,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.skydoves.balloon.ArrowPositionRules
@@ -107,7 +110,7 @@ class JobSeekerDetailsActivity : BaseActivity() {
                     RequestOptions
                         .placeholderOf(R.drawable.profile_default_back_img)
                         .error(R.drawable.profile_default_back_img)
-                        .fitCenter()
+                        .circleCrop()
 
                 )
                 .into(binding.profileImg)
@@ -206,6 +209,15 @@ class JobSeekerDetailsActivity : BaseActivity() {
 
         getExperiences(selectedCandidate.userJobPref.id){ experienceList ->
             if(experienceList.isNotEmpty()) {
+                for(index in 0 until experienceList.size){
+                    if(experienceList[index].bIsCurrentCompany == CURRENT_COMPANY){
+                        val currExp = experienceList[index]
+                        experienceList.removeAt(index)
+                        experienceList.add(0,currExp)
+                        break
+                    }
+                }
+
                 Log.d(TAG, "onCreate: getExperiences : $experienceList")
                 setExperiences(experienceList)
                 binding.btnShowMoreLayout.setOnClickListener {
@@ -533,24 +545,33 @@ class JobSeekerDetailsActivity : BaseActivity() {
 
         inner class ExperiencesHolder(itemView: View/*,onExperienceClickLiner: OnExperienceClickLiner*/):RecyclerView.ViewHolder(itemView) {
 
+            private val dataLayout = itemView.findViewById<ConstraintLayout>(R.id.dataLayout)
+            private val dataCard = itemView.findViewById<MaterialCardView>(R.id.dataCard)
             private val designation = itemView.findViewById<MaterialTextView>(R.id.designation)
             private val companyName = itemView.findViewById<MaterialTextView>(R.id.companyName)
             private val jobLocation = itemView.findViewById<MaterialTextView>(R.id.jobLocation)
 
             private val txtPresent = itemView.findViewById<MaterialTextView>(R.id.txtPresent)
             private val duration = itemView.findViewById<MaterialTextView>(R.id.duration)
-
-            private val cardView = itemView.findViewById<CardView>(R.id.cardView)
-            private val btnDelete = itemView.findViewById<LinearLayout>(R.id.btnDelete)
+            private val inputLayoutExperience = itemView.findViewById<CardView>(R.id.inputLayoutExperience)
+            private val btnDelete = itemView.findViewById<AppCompatImageView>(R.id.btnDelete)
+            private val btnEdit = itemView.findViewById<AppCompatImageView>(R.id.btnEdit)
 
             @SuppressLint("NotifyDataSetChanged")
             fun bind(experience: Experience){
+                dataLayout.visibility = View.VISIBLE
+                btnDelete.visibility = View.GONE
+                btnEdit.visibility  = View.GONE
+                inputLayoutExperience.visibility = View.GONE
+                
                 designation.text = experience.vDesignation
                 companyName.text = experience.vCompanyName
                 jobLocation.text = experience.vJobLocation
                 if(experience.bIsCurrentCompany == 1){
                     duration.visibility = View.GONE
                     txtPresent.visibility = View.VISIBLE
+                    dataCard.strokeWidth = 4
+                    dataCard.strokeColor = ContextCompat.getColor(mActivity,R.color.blue)
                 }
                 else {
                     txtPresent.visibility = View.GONE
@@ -558,18 +579,8 @@ class JobSeekerDetailsActivity : BaseActivity() {
                         duration.visibility = View.VISIBLE
                         duration.text = experience.vDuration.plus(" Years")
                     }
-                }
-                btnDelete.visibility = View.GONE
-                /*if(btnVisibility){
-                    btnDelete.visibility = View.VISIBLE
-                }
-                else{
-                    btnDelete.visibility = View.GONE
-                }*/
-                btnDelete.setOnClickListener {
-                    btnDelete.visibility = View.GONE
-                    experienceList.removeAt(absoluteAdapterPosition)
-                    notifyDataSetChanged()
+                    dataCard.strokeWidth = 0
+                    dataCard.strokeColor = ContextCompat.getColor(mActivity,android.R.color.transparent)
                 }
             }
         }

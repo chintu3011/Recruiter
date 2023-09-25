@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
@@ -655,54 +657,77 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
                     val uri: Uri = data?.data!!
                     val uriString: String = uri.toString()
-                    resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
 
-                    if (uriString.startsWith("content://")) {
-                        var myCursor: Cursor? = null
-                        try {
-                            myCursor = this.contentResolver.query(
-                                uri,
-                                null,
-                                null,
-                                null,
-                                null
-                            )
-                            if (myCursor != null && myCursor.moveToFirst()) {
-                                resumeFileName =
-                                    myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                binding.textPdfName.text = resumeFileName
+                    binding.resumeLoddingAnim.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
+
+                        if (uriString.startsWith("content://")) {
+                            var myCursor: Cursor? = null
+                            try {
+                                myCursor = this.contentResolver.query(
+                                    uri,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                )
+                                if (myCursor != null && myCursor.moveToFirst()) {
+                                    resumeFileName =
+                                        myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                    binding.textPdfName.text = resumeFileName
+                                }
+                            } finally {
+                                myCursor?.close()
                             }
-                        } finally {
-                            myCursor?.close()
                         }
-                    }
+                    },3000)
+
                 }
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
 
                     if(userType == JOB_SEEKER){
-                        profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                        Glide.with(this@InformationActivity)
-                            .load(photoUri)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(R.drawable.profile_default_image)
-                                    .error(R.drawable.profile_default_image)
-                                    .circleCrop()
-                            )
-                            .into(binding.profileImgJ)
+                        binding.profileImgJ.visibility = INVISIBLE
+                        binding.profileImgLoddingJ.visibility = VISIBLE
+                        binding.profileImgLoddingJ.speed = 2f
+                        binding.profileImgLoddingJ.playAnimation()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                            Glide.with(this@InformationActivity)
+                                .load(photoUri)
+                                .apply(
+                                    RequestOptions
+                                        .placeholderOf(R.drawable.profile_default_image)
+                                        .error(R.drawable.profile_default_image)
+                                        .circleCrop()
+                                )
+                                .into(binding.profileImgJ)
+                            binding.profileImgJ.visibility = VISIBLE
+                            binding.profileImgLoddingJ.visibility = GONE
+                        },3000)
                     }
+
                     else{
-                        profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                        Glide.with(this@InformationActivity)
-                            .load(photoUri)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(R.drawable.profile_default_image)
-                                    .error(R.drawable.profile_default_image)
-                                    .circleCrop()
-                            )
-                            .into(binding.profileImgR)
+                        binding.profileImgR.visibility = INVISIBLE
+                        binding.profileImgLoddingR.visibility = VISIBLE
+                        binding.profileImgLoddingR.speed = 2f
+                        binding.profileImgLoddingR.playAnimation()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
+
+                            Glide.with(this@InformationActivity)
+                                .load(photoUri)
+                                .apply(
+                                    RequestOptions
+                                        .placeholderOf(R.drawable.profile_default_image)
+                                        .error(R.drawable.profile_default_image)
+                                        .circleCrop()
+                                )
+                                .into(binding.profileImgR)
+                            binding.profileImgR.visibility = VISIBLE
+                            binding.profileImgLoddingR.visibility = GONE
+                        },3000)
                     }
                     binding.submitBtnLayout.visibility = VISIBLE
                     isImgSelected = true

@@ -94,6 +94,7 @@
                     android:elevation="@dimen/_6sdp"
                     android:padding="@dimen/_5sdp"
                     android:scaleType="centerInside"
+                    android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/profileBackImg"
                     app:layout_constraintEnd_toEndOf="@+id/profileBackImg"
                     app:layout_constraintStart_toStartOf="@+id/profileBackImg"
@@ -139,7 +140,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/profileBackImg"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/basicInfoLayout"
@@ -258,9 +259,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:text=""
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                             android:textColor="@color/blue"
+                            android:drawableStart="@drawable/ic_company"
+                            android:drawablePadding="@dimen/_5sdp"
+                            app:drawableTint="@color/blue"
                             android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -342,7 +346,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/space"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/aboutInfoLayoutJ"
@@ -465,7 +469,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/space6"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/qualificationLayoutJ"
@@ -541,7 +545,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/space1"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/experienceLayout"
@@ -640,7 +644,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/space2"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/jobPreferLayout"
@@ -703,7 +707,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/space4"
-                    app:rippleColor="@color/card_ripple_color">
+                    app:rippleColor="@color/card_ripple_color_primary">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/resumeLayout"
@@ -720,7 +724,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/resume"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"

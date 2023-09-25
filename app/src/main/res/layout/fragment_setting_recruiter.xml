@@ -86,7 +86,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvCompany"
                 app:layout_constraintStart_toEndOf="@id/profileIv"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="Chintan Patel"
+                android:text=""
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_20sdp" />
@@ -100,7 +100,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/profileIv"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-                android:text="Amri system"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp" />
 

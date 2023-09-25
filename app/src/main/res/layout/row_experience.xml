@@ -27,12 +27,12 @@
             android:elevation="@dimen/_4sdp"
             android:visibility="visible"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintBottom_toTopOf="@+id/dataCard"
             app:layout_constraintEnd_toStartOf="@+id/layout2"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="@+id/cardView">
+            app:layout_constraintStart_toStartOf="@+id/dataCard"
+            app:layout_constraintTop_toTopOf="@+id/dataCard">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnEdit"
@@ -54,11 +54,11 @@
             android:drawableTint="@color/white"
             android:elevation="@dimen/_4sdp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
-            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintBottom_toTopOf="@+id/dataCard"
+            app:layout_constraintEnd_toEndOf="@+id/dataCard"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toEndOf="@+id/layout1"
-            app:layout_constraintTop_toTopOf="@+id/cardView">
+            app:layout_constraintTop_toTopOf="@+id/dataCard">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnDelete"
@@ -73,19 +73,21 @@
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView"
+            android:id="@+id/dataCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:visibility="visible"
+
             app:cardElevation="@dimen/_3sdp"
             app:contentPadding="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/card_ripple_color_primary">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -259,7 +261,7 @@
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/grey"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/inputJobLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -267,7 +269,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/inputDesignation"
                 app:placeholderText="Microsoft corporation"
                 app:startIconDrawable="@drawable/ic_company"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputCompanyName"
@@ -336,14 +338,14 @@
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/grey"
                 app:helperText="Enter Duration in years"
-                app:hintTextColor="@color/ed_theme_color"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/btnUpdateExperience"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/inputCheckBox"
                 app:placeholderText="3 Years"
                 app:startIconDrawable="@drawable/ic_duration"
-                app:startIconTint="@color/ed_theme_color">
+                app:startIconTint="@color/blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputDuration"

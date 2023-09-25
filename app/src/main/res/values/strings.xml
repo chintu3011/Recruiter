@@ -182,5 +182,8 @@
     <string name="opps_no_any_jos_post">Opps! No Any jos post</string>
     <string name="add_new_experience">Add New Experience</string>
     <string name="some_thing_wrong_try_later">" Something wrong \n Please try again Later... "</string>
+    <string name="sorry_you_have_no_any_chats_please_add_chat_user_using_below_add_people">Sorry you have no any chats, Please add chat user using below Add People</string>
+    <string name="select_here_to_upload">Select Here to Upload</string>
+    <string name="upload_your_resume">Upload your resume</string>
 
 </resources>

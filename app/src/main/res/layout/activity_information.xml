@@ -685,24 +685,39 @@
                                 app:layout_constraintTop_toBottomOf="@id/jsResumeGrpTitle" />
 
 
+
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@+id/resumeLoddingAnim"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="@dimen/_150sdp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:lottie_autoPlay="false"
+                                app:lottie_loop="false"
+                                app:lottie_rawRes="@raw/resume"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider4"
+                                app:layout_constraintBottom_toTopOf="@+id/layoutCV"/>
+
+
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/layoutCV"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="@dimen/_20sdp"
+
                                 android:padding="@dimen/_10sdp"
-                                android:background="@drawable/tab_bg"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:background="@drawable/lay_bg"
+
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/titleDivider4"
+                                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/resumeLoddingAnim"
                                 app:layout_constraintVertical_bias="0.0">
 
                                 <com.google.android.material.imageview.ShapeableImageView
                                     android:id="@+id/btnSelectPdf"
-                                    android:layout_width="@dimen/_50sdp"
-                                    android:layout_height="@dimen/_50sdp"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
                                     android:src="@drawable/uploadfile"
                                     app:tint="@color/blue"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -713,7 +728,6 @@
                                     android:id="@+id/textPdfName"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp"
                                     android:text="@string/choose_pdf_file"
                                     android:textColor="@color/black"
                                     android:textStyle="bold"
@@ -787,6 +801,23 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/jsProfileGrpTitle" />
 
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@+id/profileImgLoddingJ"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:visibility="gone"
+                                app:lottie_rawRes="@raw/image_lodding"
+                                app:lottie_autoPlay="false"
+                                app:lottie_loop="false"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:layout_constraintTop_toTopOf="@+id/profileImgJ"
+                                app:layout_constraintBottom_toBottomOf="@id/profileImgJ"
+                                app:layout_constraintStart_toStartOf="@id/profileImgJ"
+                                app:layout_constraintEnd_toEndOf="@id/profileImgJ"
+                                />
+
+
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:id="@+id/profileImgJ"
                                 android:layout_width="@dimen/_200sdp"
@@ -798,7 +829,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/titleDivider5"
-                                app:layout_constraintVertical_bias="0.51"
+                                app:layout_constraintVertical_bias="0.50"
                                 app:shapeAppearanceOverlay="@style/circle"
                                 app:srcCompat="@drawable/profile_default_image"
                                 app:strokeColor="@color/white"
@@ -866,8 +897,7 @@
                     <ViewFlipper
                     android:id="@+id/rViewFlipper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/rAboutGrp"
@@ -1214,6 +1244,24 @@
                             app:layout_constraintTop_toBottomOf="@id/rProfileGrpTitle" />
 
 
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/profileImgLoddingR"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone"
+                            app:lottie_rawRes="@raw/image_lodding"
+                            app:lottie_autoPlay="false"
+                            app:lottie_loop="false"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintTop_toTopOf="@+id/profileImgR"
+                            app:layout_constraintBottom_toBottomOf="@id/profileImgR"
+                            app:layout_constraintStart_toStartOf="@id/profileImgR"
+                            app:layout_constraintEnd_toEndOf="@id/profileImgR"
+                            />
+
+
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/profileImgR"
                             android:layout_width="@dimen/_200sdp"
@@ -1224,8 +1272,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.51"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDivider8"
+                            app:layout_constraintVertical_bias="0.50"
                             app:shapeAppearanceOverlay="@style/circle"
                             app:srcCompat="@drawable/profile_default_image"
                             app:strokeColor="@color/white"

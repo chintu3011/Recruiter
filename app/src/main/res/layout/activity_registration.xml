@@ -282,7 +282,7 @@
                     app:endIconCheckable="true"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/grey"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:nextFocusDown="@id/checkBox"
                     app:hintTextColor="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/checkBox"
@@ -354,7 +354,7 @@
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:progressBarStyleInverse"
-                        android:backgroundTint="@color/glass_color"
+                        android:backgroundTint="@color/blue"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"

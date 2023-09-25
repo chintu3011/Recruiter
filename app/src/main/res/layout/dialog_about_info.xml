@@ -33,7 +33,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:placeholderText="I am john Mcavan. Passionate in Android development. Experience of 5 years"
         app:startIconDrawable="@drawable/ic_biography"
-        app:startIconTint="@color/ed_theme_color">
+        app:startIconTint="@color/blue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bio"

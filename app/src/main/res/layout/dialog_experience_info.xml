@@ -111,7 +111,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/designation"
                         app:placeholderText="Microsoft corporation"
                         app:startIconDrawable="@drawable/ic_company"
-                        app:startIconTint="@color/ed_theme_color">
+                        app:startIconTint="@color/blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/companyName"
@@ -188,7 +188,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/checkBox"
                         app:placeholderText="3 Years"
                         app:startIconDrawable="@drawable/ic_duration"
-                        app:startIconTint="@color/ed_theme_color">
+                        app:startIconTint="@color/blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/duration"
@@ -267,7 +267,7 @@
             android:layout_marginVertical="@dimen/_20sdp"
             android:fadeScrollbars="false"
             android:maxHeight="@dimen/_250sdp"
-            android:nestedScrollingEnabled="false"
+            
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

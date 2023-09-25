@@ -171,6 +171,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/ivSalary"
                         android:gravity="center_vertical"
+                        android:background="@color/white"
                         app:tint="@color/blue"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:src="@drawable/ic_salary"/>

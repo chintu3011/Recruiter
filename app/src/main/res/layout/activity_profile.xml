@@ -71,7 +71,7 @@
                 android:id="@+id/profileBackImg"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_100sdp"
-                android:background="@color/white"
+                android:background="@color/colorPrimary"
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,7 +132,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/profileBackImg"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/basicInfoLayout"
@@ -253,11 +253,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:text=""
-                        android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:gravity="center_vertical"
                         android:textStyle="bold"
                         android:textColor="@color/blue"
                         android:visibility="visible"
+                        android:drawableStart="@drawable/ic_company"
+                        app:drawableTint="@color/blue"
+                        android:drawablePadding="@dimen/_5sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
@@ -338,7 +341,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/aboutInfoLayoutJ"
@@ -463,7 +466,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space6"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/qualificationLayoutJ"
@@ -540,7 +543,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space1"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/experienceLayout"
@@ -639,7 +642,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space2"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/resumeLayout"
@@ -880,7 +883,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/aboutInfoLayoutR"
@@ -1007,7 +1010,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space7"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/currPosLayoutR"
@@ -1047,14 +1050,26 @@
                         app:shapeAppearanceOverlay="@style/circle"
                         app:srcCompat="@drawable/pencil_edit" />
 
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="0dp"
+                        android:background="@color/blue"
+                        app:layout_constraintTop_toTopOf="@+id/positionLayoutR"
+                        app:layout_constraintBottom_toBottomOf="@id/positionLayoutR"
+                        app:layout_constraintStart_toStartOf="@id/positionLayoutR"
+                        app:layout_constraintEnd_toStartOf="@+id/positionLayoutR"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/positionLayoutR"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/currnt_pos_layout_bg"
+                        android:padding="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view"
                         app:layout_constraintTop_toBottomOf="@+id/editCurrPosR" >
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/designationR"
@@ -1062,10 +1077,10 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            android:text=""
+                            android:text="Hr Head"
                             android:textAlignment="textStart"
-                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                            android:textColor="@color/black"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                            android:textColor="@color/blue"
                             android:textStyle="bold"
                             android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -1078,38 +1093,54 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            android:text=""
+                            android:text="Hari Om"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:textStyle="bold"
                             android:textAlignment="textStart"
-                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                            android:textColor="@color/blue"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textColor="@color/black"
                             android:visibility="visible"
-                            app:layout_constraintEnd_toStartOf="@+id/jobLocation"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/designationR" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/jobLocation"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            android:text=""
+                            android:text="Ahemdabad"
                             android:textAlignment="textStart"
                             android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:textStyle="normal"
                             app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintTop_toBottomOf="@+id/companyNameR"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toEndOf="@+id/companyNameR" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/workingModeR"/>
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/workingModeR"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="on-site"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="@color/black"
+                            android:textStyle="normal"
+                            app:layout_constraintStart_toEndOf="@+id/jobLocation"
+                            app:layout_constraintBottom_toBottomOf="@id/jobLocation"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="@id/jobLocation" />
                         <androidx.constraintlayout.helper.widget.Flow
                             android:id="@+id/flow16"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:constraint_referenced_ids="companyNameR,jobLocation"
+                            app:constraint_referenced_ids="jobLocation,workingModeR"
                             app:flow_horizontalGap="@dimen/_10sdp"
                             app:flow_horizontalStyle="spread_inside"
                             app:flow_verticalGap="@dimen/_3sdp"
@@ -1117,20 +1148,7 @@
                             app:flow_wrapMode="chain"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/designationR" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/workingModeR"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="#504F4F"
-                            android:textStyle="normal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintTop_toBottomOf="@+id/flow16" />
+                            app:layout_constraintTop_toBottomOf="@+id/companyNameR" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1159,7 +1177,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@+id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@+id/space5"
-                app:rippleColor="@color/card_ripple_color">
+                app:rippleColor="@color/card_ripple_color_primary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/qualificationLayoutR"
@@ -1230,7 +1248,7 @@
                 android:id="@+id/groupRecruiter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:constraint_referenced_ids="aboutInfoCardR,space7,currentPosCardR,space5,qualificationCardR,space8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

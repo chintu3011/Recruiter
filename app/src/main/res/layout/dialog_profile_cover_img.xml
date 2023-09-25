@@ -5,6 +5,21 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/_10sdp">
 
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/profileBackImgLodding"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/imag_lodding_rectangle"
+        app:lottie_autoPlay="false"
+        android:background="@drawable/lotti_back_bg"
+        app:layout_constraintTop_toTopOf="@+id/profileBackImg"
+        app:layout_constraintBottom_toBottomOf="@+id/profileBackImg"
+        app:layout_constraintStart_toStartOf="@+id/profileBackImg"
+        app:layout_constraintEnd_toEndOf="@+id/profileBackImg"/>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileBackImg"
         android:layout_width="0dp"
@@ -19,6 +34,7 @@
         android:id="@+id/btnChangeImg"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
+        android:background="@color/white"
         app:srcCompat="@drawable/default_change_banner_img"
         app:shapeAppearanceOverlay="@style/circle"
         android:padding="@dimen/_5sdp"

@@ -32,7 +32,24 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="@dimen/_10sdp" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btnUpload"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:clickable="true"
+        android:focusable="true"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/resume"
+
+        app:layout_constraintBottom_toTopOf="@+id/upload_your_resume"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
+        app:layout_constraintStart_toStartOf="@+id/startGuildLine"
+        app:layout_constraintTop_toTopOf="@+id/topGuildLine"
+        app:layout_constraintVertical_chainStyle="packed"/>
+ <!--   <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnUpload"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
@@ -45,16 +62,16 @@
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
         app:layout_constraintTop_toTopOf="@+id/topGuildLine"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/upload_img" />
+        app:srcCompat="@drawable/upload_img" />-->
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textView8"
+        android:id="@+id/upload_your_resume"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppinsregular"
-        android:text="Select Here to Upload"
+        android:text="@string/upload_your_resume"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/resumeFileName"
@@ -77,7 +94,7 @@
         app:layout_constraintBottom_toTopOf="@+id/uploadProgressBar"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/upload_your_resume" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/uploadProgressBar"
@@ -85,7 +102,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
-
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
         app:layout_constraintStart_toStartOf="@+id/startGuildLine"

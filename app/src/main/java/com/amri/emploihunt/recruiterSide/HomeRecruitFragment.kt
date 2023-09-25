@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,13 +45,16 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.showAlignLeft
 import com.skydoves.balloon.showAlignTop
 import java.util.Locale
 
@@ -77,6 +81,8 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
     private var totalPages = 1
 
     lateinit var prefManager: SharedPreferences
+
+    private lateinit var balloon: Balloon
 
     companion object {
         private const val TAG = "HomeRecruitFragment"
@@ -179,6 +185,28 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         binding.imgOpenDrawer.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.END)
         }
+
+        val balloonLayout = LayoutInflater.from(requireContext()).inflate(R.layout.messenger_balloon,null,false)
+        val txtMessage = balloonLayout.findViewById<MaterialTextView>(R.id.txtMessage)
+        txtMessage.text = "Chat with \n Job Seekers!."
+
+        balloon = createBalloon(requireContext()){
+            setLayout(balloonLayout)
+            setArrowSize(10)
+            setArrowOrientation(ArrowOrientation.END)
+            setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            setArrowPosition(0.5f)
+            setWidth(200)
+            setHeight(200)
+            setCornerRadius(30f)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.card_ripple_color_blue))
+            setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+            setLifecycleOwner(lifecycleOwner)
+            build()
+        }
+
+        binding.imgOpenDrawer.showAlignLeft(balloon)
+        balloon.dismissWithDelay(5000)
         binding.btnMessenger.setOnClickListener {
 
             val intent = Intent(requireContext(), MessaengerHomesActivity_2::class.java)

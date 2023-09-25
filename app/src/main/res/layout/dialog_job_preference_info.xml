@@ -21,7 +21,7 @@
         app:boxStrokeColor="@color/edit_text_color"
         app:endIconMode="clear_text"
         app:endIconTint="@color/grey"
-        app:hintTextColor="@color/ed_theme_color"
+        app:hintTextColor="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/textLayoutSalary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,7 +30,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:placeholderText="Android Developer"
         app:startIconDrawable="@drawable/ic_job_title"
-        app:startIconTint="@color/ed_theme_color">
+        app:startIconTint="@color/blue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/jobTitle"
@@ -59,7 +59,7 @@
         app:endIconCheckable="true"
         app:endIconMode="clear_text"
         app:endIconTint="@color/grey"
-        app:hintTextColor="@color/ed_theme_color"
+        app:hintTextColor="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/textLayoutJobLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
         app:placeholderText="place holder"
         app:startIconDrawable="@drawable/ic_salary"
-        app:startIconTint="@color/ed_theme_color"
+        app:startIconTint="@color/blue"
         app:suffixText=" LPA">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -97,6 +97,7 @@
         app:endIconCheckable="true"
         app:endIconMode="clear_text"
         app:endIconTint="@color/grey"
+        app:hintTextColor="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/radioGrpWorkingMode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -104,7 +105,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textLayoutSalary"
         app:placeholderText="New York"
         app:startIconDrawable="@drawable/ic_job_location"
-        app:startIconTint="@color/ed_theme_color">
+        app:startIconTint="@color/blue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/jobLocation"

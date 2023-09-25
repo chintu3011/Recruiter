@@ -4,12 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/profileImgLodding"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/image_lodding"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@+id/profileImg"
+        app:layout_constraintBottom_toBottomOf="@id/profileImg"
+        app:layout_constraintStart_toStartOf="@id/profileImg"
+        app:layout_constraintEnd_toEndOf="@id/profileImg"
+        />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/_20sdp"
         android:elevation="@dimen/_3sdp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/btnChangeImg"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"

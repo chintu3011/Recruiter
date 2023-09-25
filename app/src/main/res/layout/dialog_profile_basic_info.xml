@@ -29,10 +29,10 @@
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
             app:endIconTint="@color/grey"
-            app:hintTextColor="@color/ed_theme_color"
+            app:hintTextColor="@color/blue"
             app:placeholderText="John"
             app:startIconDrawable="@drawable/baseline_person_24"
-            app:startIconTint="@color/ed_theme_color">
+            app:startIconTint="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/userFName"
@@ -61,10 +61,10 @@
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
             app:endIconTint="@color/grey"
-            app:hintTextColor="@color/ed_theme_color"
+            app:hintTextColor="@color/blue"
             app:placeholderText="Macavn"
             app:startIconDrawable="@drawable/baseline_person_24"
-            app:startIconTint="@color/ed_theme_color">
+            app:startIconTint="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/userLName"
@@ -108,10 +108,10 @@
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
             app:endIconTint="@color/grey"
-            app:hintTextColor="@color/ed_theme_color"
+            app:hintTextColor="@color/blue"
             app:placeholderText="Expertise"
             app:startIconDrawable="@drawable/ic_experties"
-            app:startIconTint="@color/ed_theme_color">
+            app:startIconTint="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/expertise"
@@ -212,14 +212,14 @@
             app:endIconCheckable="true"
             app:endIconMode="clear_text"
             app:endIconTint="@color/grey"
-            app:hintTextColor="@color/ed_theme_color"
+            app:hintTextColor="@color/blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spResidentialCity"
             app:placeholderText="xyz@gmail.com"
             app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/ed_theme_color">
+            app:startIconTint="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
