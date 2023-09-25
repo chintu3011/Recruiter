@@ -183,7 +183,7 @@ open class BaseActivity : AppCompatActivity() {
     fun getAllCity(cityList: ArrayList<String>,callback:() -> Unit){
 
         if (Utils.isNetworkAvailable(this)){
-            showProgressDialog("Please wait....")
+//            showProgressDialog("Please wait....")
             AndroidNetworking.get(NetworkUtils.GET_CITIES)
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(
