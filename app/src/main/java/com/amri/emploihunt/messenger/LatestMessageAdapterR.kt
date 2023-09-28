@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.model.MessageData
 import com.amri.emploihunt.model.User
+import com.amri.emploihunt.networking.NetworkUtils
 import com.bumptech.glide.Glide
 import com.amri.emploihunt.recruiterSide.UsersRecruiter
 import com.google.firebase.auth.FirebaseAuth
@@ -122,7 +123,7 @@ class LatestMessageAdapterR(
                 if (user.userProfileImgUri.isNotEmpty()) {
                     /*Log.d(TAG, user.userProfileImgUri)*/
                     Glide.with(itemView)
-                        .load(user.userProfileImgUri)
+                        .load(NetworkUtils.BASE_URL_MEDIA+user.userProfileImgUri)
                         .placeholder(R.drawable.profile_default_image)
                         .into(profileImg)
                 }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -28,7 +29,6 @@ import android.widget.AdapterView
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -40,6 +40,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
@@ -58,6 +59,7 @@ import com.amri.emploihunt.store.UserDataRepository
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.CURRENT_COMPANY
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.PDF_TYPE
 import com.amri.emploihunt.util.PrefManager
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.ROLE
@@ -84,6 +86,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
+import com.shockwave.pdfium.PdfiumCore
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -91,11 +94,17 @@ import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.showAlignTop
 import dagger.hilt.android.AndroidEntryPoint
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.resolution
+import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
+import java.io.FileOutputStream
 import kotlin.math.log
 
 
@@ -148,9 +157,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private var residentialCity:String? = null
 
     private var profileImgUri: String? = null
-    private lateinit var profileImgFile: File
+    private var profileImgFile: File? =null
     private var profileBannerImgUri: String? = null
-    private lateinit var profileBannerFile: File
+    private var profileBannerFile: File? =null
     //User Data
     private var bio: String? = null
     private var qualification: String? = null
@@ -163,7 +172,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private lateinit var experienceList:MutableList<Experience>
 
     private var resumeUri: String? = null
-    private lateinit var resumeFile:File
+    private var resumeFile:File? = null
     private var resumeFileName: String? = null
 
     private lateinit var experienceAdapter:ExperienceAdapter
@@ -253,25 +262,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private fun setProfileData() {
 
 
-        /** profile banner */
-        lifecycle.coroutineScope.launch {
-            userDataRepository.getUserProfileBannerUrl().collect {
-                Log.d(TAG, "setProfileData: trying to update profile banner data $it")
-                profileBannerImgUri = it
-                Glide.with(this@ProfileActivity)
-                    .load(profileBannerImgUri)
-                    .apply(
-                        RequestOptions
-                            .placeholderOf(R.drawable.profile_default_back_img)
-                            .error(R.drawable.profile_default_back_img)
-                            .fitCenter()
 
-                    )
-                    .into(binding.profileBackImg)
-            }
-        }.invokeOnCompletion {
-            Log.d(TAG, "setProfileData: profile banner data is updated")
-        }
         /** profile Img */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserProfileImgUrl().collect {
@@ -289,6 +280,25 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             }
         }.invokeOnCompletion {
             Log.d(TAG, "setProfileData: profile img data is updated")
+        }
+        /** profile banner */
+        lifecycle.coroutineScope.launch {
+            userDataRepository.getUserProfileBannerUrl().collect {
+                Log.d(TAG, "setProfileData: trying to update profile banner data $it")
+                profileBannerImgUri = it
+                Glide.with(this@ProfileActivity)
+                    .load(NetworkUtils.BASE_URL_MEDIA+profileBannerImgUri)
+                    .apply(
+                        RequestOptions
+                            .placeholderOf(R.drawable.profile_default_back_img)
+                            .error(R.drawable.profile_default_back_img)
+                            .fitCenter()
+
+                    )
+                    .into(binding.profileBackImg)
+            }
+        }.invokeOnCompletion {
+            Log.d(TAG, "setProfileData: profile banner data is updated")
         }
         /** FName */
         lifecycle.coroutineScope.launch {
@@ -575,7 +585,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                              val currExp = experienceList[index]
                             experienceList.removeAt(index)
                             experienceList.add(0,currExp)
-                            break
                         }
                     }
                     binding.experienceRecyclerView.visibility = GONE
@@ -938,8 +947,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             }
             R.id.resumeFileNameJ -> {
                 if(!resumeUri.isNullOrEmpty()) {
+
                     val intent = Intent(this, PDfViewActivity::class.java)
-                    intent.putExtra("Uri", resumeUri)
+                    intent.putExtra("Uri", resumeUri!!)
                     startActivity(intent)
                 }
                 else{
@@ -949,7 +959,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             R.id.profileImg -> {
                 if(!profileImgUri.isNullOrEmpty()) {
                     val intent = Intent(this, FullImageViewActivity::class.java)
-                    intent.putExtra("Uri", profileImgUri)
+                    intent.putExtra("Uri", profileImgUri!!)
                     startActivity(intent)
                 }
                 else{
@@ -1072,6 +1082,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         tvResumeFileName = resumeDialogView.findViewById(R.id.resumeFileName)
         tvResumeFileName.text = resumeFileName!!
+
         btnUpload.setOnClickListener{
             tvResumeFileName.visibility = GONE
             selectPdf(SELECT_RESUME_FILE)
@@ -1084,12 +1095,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setView(resumeDialogView)
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
-                storeResume(resumeFile){
-                    if(it) {
+                storeResume(resumeFile) {
+                    if (it) {
                         dialog.dismiss()
-                    }
-                    else{
-                        makeToast(getString(R.string.some_thing_wrong_try_later),0)
+                    } else {
+                        makeToast(getString(R.string.some_thing_wrong_try_later), 0)
                     }
                     uploadProgressBar.visibility = GONE
                 }
@@ -1136,7 +1146,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
         if(profileBannerImgUri != null) {
             Glide.with(this@ProfileActivity)
-                .load(profileBannerImgUri)
+                .load(NetworkUtils.BASE_URL_MEDIA+profileBannerImgUri)
                 .apply(
                     RequestOptions
                         .placeholderOf(R.drawable.profile_default_back_img)
@@ -1253,7 +1263,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setView(profileImgDialogView)
             .setPositiveButton("Done") { dialog, _ ->
                 storeProfileImg(profileImgFile)
-
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -2271,7 +2280,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         imgIntent.type = "image/*"
         imgIntent.addCategory(Intent.CATEGORY_OPENABLE)
         startActivityForResult(imgIntent, code)
-
     }
 
     private fun selectPdf(code: Int) {
@@ -2289,35 +2297,37 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 SELECT_RESUME_FILE -> if (resultCode == RESULT_OK) {
                     uploadProgressBar.visibility = View.GONE
                     val pdfUri = data?.data!!
-
-                    btnUpload.playAnimation()
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        resumeFile = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
-                        if (pdfUri.toString().startsWith("content://")) {
-                            var myCursor: Cursor? = null
-                            try {
-                                myCursor = this.contentResolver.query(
-                                    pdfUri,
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                                )
-                                if (myCursor != null && myCursor.moveToFirst()) {
-                                    resumeFileName =
-                                        myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                    resumeUri = pdfUri.toString()
-                                    tvResumeFileName.text = resumeFileName
-                                    tvResumeFileName.visibility = VISIBLE
+                    val file = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
+                    if(file.length().toFloat() > (1024 * 1024).toFloat()) {
+                        makeToast("FIle size should be less then 1 Mb",0)
+                    }
+                    else{
+                        btnUpload.playAnimation()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            resumeFile = file
+                            if (pdfUri.toString().startsWith("content://")) {
+                                var myCursor: Cursor? = null
+                                try {
+                                    myCursor = this.contentResolver.query(
+                                        pdfUri,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+                                    )
+                                    if (myCursor != null && myCursor.moveToFirst()) {
+                                        resumeFileName =
+                                            myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                        /*resumeUri = pdfUri.toString()*/
+                                        tvResumeFileName.text = resumeFileName
+                                        tvResumeFileName.visibility = VISIBLE
+                                    }
+                                } finally {
+                                    myCursor?.close()
                                 }
-                            } finally {
-                                myCursor?.close()
                             }
-                        }
-
-                    },3000)
-
-
+                        },3000)
+                    }
 
 
                 }
@@ -2330,213 +2340,223 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     profileBackImgLodding.visibility = VISIBLE
                     profileBackImgLodding.playAnimation()
                     Handler(Looper.getMainLooper()).postDelayed({
-                        profileBannerFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                        compressImg(this@ProfileActivity,photoUri,profileBackImg){
 
-                        Glide.with(this@ProfileActivity)
-                            .load(photoUri)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(R.drawable.profile_default_back_img)
-                                    .error(R.drawable.profile_default_back_img)
-                                    .fitCenter()
-                            )
-                            .into(profileBackImg)
-                        profileBackImg.visibility = VISIBLE
-                        profileBackImg.isClickable = true
-                        profileBackImgLodding.visibility = GONE
-                        profileBannerImgUri = photoUri.toString()
+                            profileBannerFile = it
+                            Glide.with(this@ProfileActivity)
+                                .load(profileBannerFile)
+                                .apply(
+                                    RequestOptions
+                                        .placeholderOf(R.drawable.profile_default_back_img)
+                                        .error(R.drawable.profile_default_back_img)
+                                        .fitCenter()
+                                )
+                                .into(profileBackImg)
+                            profileBackImg.visibility = VISIBLE
+                            profileBackImg.isClickable = true
+                            profileBackImgLodding.visibility = GONE
+                            /*profileBannerImgUri = photoUri.toString()*/
+                        }
                     },3000)
 
                 }
 
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
+                    val file = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                    Log.d(TAG, "onActivityResult: img size : ${file.length()/ (1024*1024).toFloat()} mb ")
                     profileImgLodding.visibility = VISIBLE
                     profileImgDia.visibility = INVISIBLE
                     profileImgLodding.playAnimation()
                     Handler(Looper.getMainLooper()).postDelayed({
-                        profileImgFile = File(Utils.getRealPathFromURI(this, photoUri).toString())
+                        compressImg(this@ProfileActivity,photoUri,profileImgDia){
+                            profileImgFile = it
+                            Glide.with(this@ProfileActivity)
+                                .load(profileImgFile)
+                                .apply(
+                                    RequestOptions
+                                        .placeholderOf(R.drawable.profile_default_image)
+                                        .error(R.drawable.profile_default_image)
+                                        .circleCrop()
+                                )
+                                .into(profileImgDia)
+                            profileImgDia.visibility = VISIBLE
+                            profileImgLodding.visibility = GONE
+                            /*profileImgUri = photoUri.toString()*/
+                        }
 
-                        Glide.with(this@ProfileActivity)
-                            .load(photoUri)
-                            .apply(
-                                RequestOptions
-                                    .placeholderOf(R.drawable.profile_default_image)
-                                    .error(R.drawable.profile_default_image)
-                                    .circleCrop()
-                            )
-                            .into(profileImgDia)
-                        profileImgDia.visibility = VISIBLE
-                        profileImgLodding.visibility = GONE
                     }, 3000)
-                    /*profileImgUri = photoUri.toString()*/
+
                 }
             }
         }
     }
-    private fun storeProfileImg(profileImg: File){
-        showProgressDialog("please wait")
-        if (Utils.isNetworkAvailable(this@ProfileActivity)) {
-            AndroidNetworking.upload(NetworkUtils.UPDATE_PROFILE_PIC)
-                .setOkHttpClient(NetworkUtils.okHttpClient)
-                .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
-                .addMultipartFile("profilePic",profileImg)
-                .setPriority(Priority.MEDIUM).build().getAsObject(
-                    GetUserById::class.java,
-                    object : ParsedRequestListener<GetUserById>   {
-                        override fun onResponse(response: GetUserById?) {
-                            try {
-                                if (response != null) {
-                                    Log.d(
-                                        TAG,
-                                        "onResponse: storeProfileImg ${response.data.tProfileUrl}"
+    private fun storeProfileImg(profileImg: File?) {
+        if(profileImg != null) {
+            showProgressDialog("please wait")
+            if (Utils.isNetworkAvailable(this@ProfileActivity)) {
+                AndroidNetworking.upload(NetworkUtils.UPDATE_PROFILE_PIC)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
+                    .addMultipartFile("profilePic", profileImg)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        GetUserById::class.java,
+                        object : ParsedRequestListener<GetUserById> {
+                            override fun onResponse(response: GetUserById?) {
+                                try {
+                                    if (response != null) {
+                                        Log.d(
+                                            TAG,
+                                            "onResponse: storeProfileImg ${response.data.tProfileUrl}"
+                                        )
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            userDataRepository.storeProfileImg(
+                                                response.data.tProfileUrl,
+                                            )
+                                        }.invokeOnCompletion {
+                                            Log.d(
+                                                TAG,
+                                                "onActivityResult: Profile Img is Stored in datastore"
+                                            )
+                                        }
+                                        profileImgUri = response.data.tProfileUrl
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                } finally {
+                                    hideProgressDialog()
+                                }
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                     )
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        userDataRepository.storeProfileImg(
-                                            response.data.tProfileUrl,
-                                        )
-                                    }.invokeOnCompletion {
-                                        Log.d(
-                                            TAG,
-                                            "onActivityResult: Profile Img is Stored in datastore"
-                                        )
-                                    }
-                                    profileImgUri = response.data.tProfileUrl
                                 }
                             }
-                            catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
-                            }
-                            finally {
-                                hideProgressDialog()
-                            }
-                        }
 
-                        override fun onError(anError: ANError?) {
-                            hideProgressDialog()
-                            anError?.let {
-                                Log.e(
-                                    "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-                            }
-                        }
-
-                    })
+                        })
+            } else {
+                Utils.showNoInternetBottomSheet(this, this)
+                hideProgressDialog()
+            }
         }
-        else{
-            Utils.showNoInternetBottomSheet(this, this)
-            hideProgressDialog()
-        }
-
-
     }
 
-    private fun storeProfileBannerImg(profileBannerImg:File) {
-        showProgressDialog("please wait")
-        if (Utils.isNetworkAvailable(this@ProfileActivity)) {
-            AndroidNetworking.upload(NetworkUtils.UPDATE_BANNER_PIC)
-                .setOkHttpClient(NetworkUtils.okHttpClient)
-                .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
-                .addMultipartFile("bannerPic", profileBannerImg)
-                .setPriority(Priority.MEDIUM).build().getAsObject(
-                    GetUserById::class.java,
-                    object : ParsedRequestListener<GetUserById> {
-                        override fun onResponse(response: GetUserById?) {
-                            try {
-                                if (response != null) {
-                                    Log.d("test", "onResponse: storeProfileBannerImg : ${response.data}")
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        userDataRepository.storeProfileBannerImg(
-                                            response.data.tProfileBannerUrl,
-                                        )
-                                    }.invokeOnCompletion {
+    private fun storeProfileBannerImg(profileBannerImg:File?) {
+        if(profileBannerImg!=null) {
+            showProgressDialog("please wait")
+            if (Utils.isNetworkAvailable(this@ProfileActivity)) {
+                AndroidNetworking.upload(NetworkUtils.UPDATE_BANNER_PIC)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
+                    .addMultipartFile("bannerPic", profileBannerImg)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        GetUserById::class.java,
+                        object : ParsedRequestListener<GetUserById> {
+                            override fun onResponse(response: GetUserById?) {
+                                try {
+                                    if (response != null) {
                                         Log.d(
-                                            TAG,
-                                            "onActivityResult: Profile Img is Stored in datastore"
+                                            "test",
+                                            "onResponse: storeProfileBannerImg : ${response.data}"
                                         )
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            userDataRepository.storeProfileBannerImg(
+                                                response.data.tProfileBannerUrl,
+                                            )
+                                        }.invokeOnCompletion {
+                                            Log.d(
+                                                TAG,
+                                                "onActivityResult: Profile Img is Stored in datastore"
+                                            )
+                                        }
+                                        profileBannerImgUri = response.data.tProfileUrl
                                     }
-                                    profileBannerImgUri = response.data.tProfileUrl
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                } finally {
+                                    hideProgressDialog()
                                 }
-                            } catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
-                            } finally {
+                            }
+
+                            override fun onError(anError: ANError?) {
                                 hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                }
                             }
-                        }
 
-                        override fun onError(anError: ANError?) {
-                            hideProgressDialog()
-                            anError?.let {
-                                Log.e(
-                                    "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-                            }
-                        }
-
-                    })
-        }
-        else {
-            Utils.showNoInternetBottomSheet(this, this)
-            hideProgressDialog()
+                        })
+            } else {
+                Utils.showNoInternetBottomSheet(this, this)
+                hideProgressDialog()
+            }
         }
 
     }
 
-    private fun storeResume(resumeFile: File,callback: (Boolean) -> Unit){
-        /*showProgressDialog("please wait")*/
-        if (Utils.isNetworkAvailable(this@ProfileActivity)) {
-            AndroidNetworking.upload(NetworkUtils.UPDATE_RESUME)
-                .setOkHttpClient(NetworkUtils.okHttpClient)
-                .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
-                .addMultipartFile("resume", resumeFile)
-                .setPriority(Priority.MEDIUM).build().getAsObject(
-                    GetUserById::class.java,
-                    object : ParsedRequestListener<GetUserById> {
-                        override fun onResponse(response: GetUserById?) {
-                            try {
+    private fun storeResume(resumeFile: File?,callback: (Boolean) -> Unit){
 
-                                if (response != null) {
-                                    Log.d("test", "onResponse: storeResume : ${response.data}")
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        userDataRepository.storeResumeData(
-                                            response.data.tResumeUrl,
-                                        )
-                                    }.invokeOnCompletion {
-                                        Log.d(
-                                            TAG,
-                                            "onActivityResult: Profile Img is Stored in datastore"
-                                        )
+        if(resumeFile != null) {
+            showProgressDialog("please wait")
+            if (Utils.isNetworkAvailable(this@ProfileActivity)) {
+                AndroidNetworking.upload(NetworkUtils.UPDATE_RESUME)
+                    .setOkHttpClient(NetworkUtils.okHttpClient)
+                    .addHeaders("Authorization", "Bearer ${prefmanger.get(AUTH_TOKEN, "")}")
+                    .addMultipartFile("resume", resumeFile)
+                    .setPriority(Priority.MEDIUM).build().getAsObject(
+                        GetUserById::class.java,
+                        object : ParsedRequestListener<GetUserById> {
+                            override fun onResponse(response: GetUserById?) {
+                                try {
+
+                                    if (response != null) {
+                                        Log.d("test", "onResponse: storeResume : ${response.data}")
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            userDataRepository.storeResumeData(
+                                                response.data.tResumeUrl,
+                                            )
+                                        }.invokeOnCompletion {
+                                            Log.d(
+                                                TAG,
+                                                "onActivityResult: Profile Img is Stored in datastore"
+                                            )
+                                        }
+                                        resumeUri = response.data.tResumeUrl
+                                        callback(true)
                                     }
-                                    resumeUri = response.data.tResumeUrl
-                                    callback(true)
+                                } catch (e: Exception) {
+                                    Log.e("#####", "onResponse Exception: ${e.message}")
+                                    callback(false)
+                                } finally {
+                                    hideProgressDialog()
                                 }
-                            } catch (e: Exception) {
-                                Log.e("#####", "onResponse Exception: ${e.message}")
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                hideProgressDialog()
+                                anError?.let {
+                                    Log.e(
+                                        "#####",
+                                        "onError: code: ${it.errorCode} & message: ${it.errorBody}"
+                                    )
+                                }
                                 callback(false)
-                            } finally {
-                                hideProgressDialog()
                             }
-                        }
 
-                        override fun onError(anError: ANError?) {
-                            hideProgressDialog()
-                            anError?.let {
-                                Log.e(
-                                    "#####",
-                                    "onError: code: ${it.errorCode} & message: ${it.errorBody}"
-                                )
-                            }
-                            callback(false)
-                        }
-
-                    })
-        }
-        else {
-            Utils.showNoInternetBottomSheet(this, this)
-            callback(false)
-            hideProgressDialog()
+                        })
+            } else {
+                Utils.showNoInternetBottomSheet(this, this)
+                callback(false)
+                hideProgressDialog()
+            }
         }
     }
 

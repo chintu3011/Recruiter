@@ -34,6 +34,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +58,7 @@ class UpdatePostActivity : BaseActivity() {
     private val PICK_IMAGE_REQUEST = 1
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
-    lateinit var companyLogoFile: File
+    private var companyLogoFile: File? =null
     /*var cityList: ArrayList<String> = ArrayList()*/
     lateinit var  jobLocationAdapter: ArrayAdapter<String>
     var selectedJobLocation = String()
@@ -98,10 +99,20 @@ class UpdatePostActivity : BaseActivity() {
 
         GlobalScope.launch(Dispatchers.IO) {
             /*val imgURL = URL(NetworkUtils.STATIC_BASE_URL + response.user.profile_pic_url)*/
-            val imgURL = URL("https://cdn.pixabay.com/photo/2015/03/10/17/23/youtube-667451_1280.png")
+            val imgURL =
+                URL(NetworkUtils.BASE_URL_MEDIA+selectedPost.tCompanyLogoUrl)
             val imgBitmap = getBitmapFromURL(imgURL)
+            Glide.with(this@UpdatePostActivity)
+                .load(imgURL)
+                .apply(
+                    RequestOptions
+                        .placeholderOf(R.drawable.default_company_logo)
+                        .error(R.drawable.default_company_logo)
+                        .circleCrop()
+                )
+                .into(binding.companyLogoIv)
             setProfileImage(false, fileUri = null, imgBitmap)
-            }
+        }
 
         binding.descadd.setText(selectedPost.tDes)
         binding.jobroleadd.setText(selectedPost.vJobRoleResponsbility)
@@ -313,12 +324,8 @@ class UpdatePostActivity : BaseActivity() {
                 val fileName = "image_$timestamp.jpg"
                 binding.fileName.text = fileName
 
-
-
-
                 setProfileImage(true,imageUri,null)
 
-                Glide.with(this).load(imageUri).into(binding.companyLogoIv)
 //                uploadImageAndStoreUrl(imageUri)
             }
         }
@@ -330,9 +337,21 @@ class UpdatePostActivity : BaseActivity() {
                 val name = getFileName(this, uri = it)
                 val extension = name?.let { it1 -> getExtension(it1) }
 
-                Glide.with(this).load(fileUri).into(binding.companyLogoIv)
+                compressImg(this@UpdatePostActivity,fileUri,binding.companyLogoIv){file ->
 
-                companyLogoFile = File(Utils.getRealPathFromURI(this, fileUri).toString())
+                    Glide.with(this@UpdatePostActivity)
+                        .load(file)
+                        .apply(
+                            RequestOptions
+                                .placeholderOf(R.drawable.default_company_logo)
+                                .error(R.drawable.default_company_logo)
+                                .circleCrop()
+                        )
+                        .into(binding.companyLogoIv)
+                    companyLogoFile = file
+                }
+
+
                 /*profile_pic = uriToFile(
                     this, fileUri,
                     "${System.currentTimeMillis()}.$extension"
@@ -344,13 +363,13 @@ class UpdatePostActivity : BaseActivity() {
                 //Log.e("URL", "setProfileImage imgBitmap is -------> NULL <-------")
                 return
             }
-            companyLogoFile = getFileFromBitmap(this, imgBitmap, "UserProfileImg")
+            companyLogoFile = getFileFromBitmap(this, imgBitmap, "CompanyLogo")
         }
     }
 
-    fun getFileFromBitmap(context:Context, bitmap:Bitmap ,folder_name:String ): File  {
+    private fun getFileFromBitmap(context:Context, bitmap:Bitmap, folderName:String ): File  {
         
-        val file:File  = File(context.getCacheDir(), folder_name+".png");
+        val file:File  = File(context.cacheDir, "$folderName.png")
         try {
             file.createNewFile();
 
@@ -370,7 +389,7 @@ class UpdatePostActivity : BaseActivity() {
 
         }
 
-    fun getFileName(context: Context, uri: Uri): String? {
+    private fun getFileName(context: Context, uri: Uri): String? {
         var name: String? = null
         val cursor = context.contentResolver.query(uri, null, null, null, null)
         if (cursor != null && cursor.moveToFirst()) {
@@ -381,7 +400,7 @@ class UpdatePostActivity : BaseActivity() {
 
     }
 
-    fun getExtension(name: String): String {
+    private fun getExtension(name: String): String {
         return name.substring(name.lastIndexOf(".",1))
     }
     private fun callUpdateJobPost() {

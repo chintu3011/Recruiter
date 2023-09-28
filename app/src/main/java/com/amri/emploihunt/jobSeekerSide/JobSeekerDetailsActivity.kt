@@ -91,7 +91,7 @@ class JobSeekerDetailsActivity : BaseActivity() {
         prefManager = prefManager(this)
         if (!selectedCandidate.userJobPref.tProfileBannerUrl.isNullOrEmpty()) {
             Glide.with(this@JobSeekerDetailsActivity)
-                .load(selectedCandidate.userJobPref.tProfileBannerUrl)
+                .load(NetworkUtils.BASE_URL_MEDIA+selectedCandidate.userJobPref.tProfileBannerUrl)
                 .apply(
                     RequestOptions
                         .placeholderOf(R.drawable.profile_default_back_img)
@@ -105,7 +105,7 @@ class JobSeekerDetailsActivity : BaseActivity() {
 
         if (!selectedCandidate.userJobPref.tProfileUrl.isNullOrEmpty()) {
             Glide.with(this@JobSeekerDetailsActivity)
-                .load(selectedCandidate.userJobPref.tProfileUrl)
+                .load(NetworkUtils.BASE_URL_MEDIA+selectedCandidate.userJobPref.tProfileUrl)
                 .apply(
                     RequestOptions
                         .placeholderOf(R.drawable.profile_default_back_img)

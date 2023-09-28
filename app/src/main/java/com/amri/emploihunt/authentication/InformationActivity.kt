@@ -657,31 +657,40 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
                     val uri: Uri = data?.data!!
                     val uriString: String = uri.toString()
+                    val file = convertUriToPdfFile(this@InformationActivity, uri)!!
+                    if(file.length().toFloat() > (1024 * 1024).toFloat()) {
+                        makeToast("FIle size should be less then 1 Mb",0)
+                    }
+                    else {
+                        binding.resumeLoddingAnim.playAnimation()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            resumePdf = file
 
-                    binding.resumeLoddingAnim.playAnimation()
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        resumePdf = convertUriToPdfFile(this@InformationActivity,uri)!!
-
-                        if (uriString.startsWith("content://")) {
-                            var myCursor: Cursor? = null
-                            try {
-                                myCursor = this.contentResolver.query(
-                                    uri,
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                                )
-                                if (myCursor != null && myCursor.moveToFirst()) {
-                                    resumeFileName =
-                                        myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                    binding.textPdfName.text = resumeFileName
+                            if (uriString.startsWith("content://")) {
+                                var myCursor: Cursor? = null
+                                try {
+                                    myCursor = this.contentResolver.query(
+                                        uri,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+                                    )
+                                    if (myCursor != null && myCursor.moveToFirst()) {
+                                        resumeFileName =
+                                            myCursor.getString(
+                                                myCursor.getColumnIndex(
+                                                    OpenableColumns.DISPLAY_NAME
+                                                )
+                                            )
+                                        binding.textPdfName.text = resumeFileName
+                                    }
+                                } finally {
+                                    myCursor?.close()
                                 }
-                            } finally {
-                                myCursor?.close()
                             }
-                        }
-                    },3000)
+                        }, 3000)
+                    }
 
                 }
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
@@ -693,19 +702,23 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         binding.profileImgLoddingJ.speed = 2f
                         binding.profileImgLoddingJ.playAnimation()
                         Handler(Looper.getMainLooper()).postDelayed({
-                            profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                            Glide.with(this@InformationActivity)
-                                .load(photoUri)
-                                .apply(
-                                    RequestOptions
-                                        .placeholderOf(R.drawable.profile_default_image)
-                                        .error(R.drawable.profile_default_image)
-                                        .circleCrop()
-                                )
-                                .into(binding.profileImgJ)
-                            binding.profileImgJ.visibility = VISIBLE
-                            binding.profileImgLoddingJ.visibility = GONE
+                            compressImg(this@InformationActivity,photoUri,binding.profileImgJ) {
+
+                                profileImg = it
+                                Glide.with(this@InformationActivity)
+                                    .load(profileImg)
+                                    .apply(
+                                        RequestOptions
+                                            .placeholderOf(R.drawable.profile_default_image)
+                                            .error(R.drawable.profile_default_image)
+                                            .circleCrop()
+                                    )
+                                    .into(binding.profileImgJ)
+                                binding.profileImgJ.visibility = VISIBLE
+                                binding.profileImgLoddingJ.visibility = GONE
+                            }
                         },3000)
+
                     }
 
                     else{
@@ -714,19 +727,23 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                         binding.profileImgLoddingR.speed = 2f
                         binding.profileImgLoddingR.playAnimation()
                         Handler(Looper.getMainLooper()).postDelayed({
-                            profileImg = File(Utils.getRealPathFromURI(this, photoUri).toString())
 
-                            Glide.with(this@InformationActivity)
-                                .load(photoUri)
-                                .apply(
-                                    RequestOptions
-                                        .placeholderOf(R.drawable.profile_default_image)
-                                        .error(R.drawable.profile_default_image)
-                                        .circleCrop()
-                                )
-                                .into(binding.profileImgR)
-                            binding.profileImgR.visibility = VISIBLE
-                            binding.profileImgLoddingR.visibility = GONE
+                            compressImg(this@InformationActivity,photoUri,binding.profileImgR) {
+
+                                profileImg = it
+
+                                Glide.with(this@InformationActivity)
+                                    .load(profileImg)
+                                    .apply(
+                                        RequestOptions
+                                            .placeholderOf(R.drawable.profile_default_image)
+                                            .error(R.drawable.profile_default_image)
+                                            .circleCrop()
+                                    )
+                                    .into(binding.profileImgR)
+                                binding.profileImgR.visibility = VISIBLE
+                                binding.profileImgLoddingR.visibility = GONE
+                            }
                         },3000)
                     }
                     binding.submitBtnLayout.visibility = VISIBLE

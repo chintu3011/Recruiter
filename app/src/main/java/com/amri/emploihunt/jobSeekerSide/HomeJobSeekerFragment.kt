@@ -427,7 +427,7 @@ FilterParameterTransferClass.FilterJobListListener {
             holder.binding.createTimeTV.text = getTimeAgo(holder.itemView.context ,
                 jobModel.tCreatedAt!!.toLong())
             Glide.with(holder.itemView.context)
-                .load(jobModel.tCompanyLogoUrl)
+                .load(NetworkUtils.BASE_URL_MEDIA+jobModel.tCompanyLogoUrl)
                 .placeholder(R.mipmap.ic_logo)
                 .into(holder.binding.profileImg)
 //            onCategoryClick.onCategoryClicked(it, templateModel)

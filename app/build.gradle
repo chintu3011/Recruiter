@@ -73,8 +73,9 @@ kapt {
 
 dependencies {
     kapt 'com.android.databinding:compiler:3.4.0'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
@@ -87,7 +88,7 @@ dependencies {
     //Firebase Dependencies
     implementation 'com.google.firebase:firebase-appcheck:17.0.1'
     implementation 'com.google.firebase:firebase-database:20.2.2'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.3'
     implementation 'androidx.browser:browser:1.6.0'
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.3'
@@ -152,8 +153,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
 
     // Fast Android Networking & gson
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -171,6 +172,12 @@ dependencies {
 
     //smart spinner
     implementation ("com.github.chivorns:smartmaterialspinner:1.5.0")
+
+    //pdf compress
+    implementation 'com.github.barteksc:pdfium-android:1.9.0'
+
+    //image compress
+    implementation 'id.zelory:compressor:3.0.1'
 
 
 

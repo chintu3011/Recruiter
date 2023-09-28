@@ -13,9 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import com.amri.emploihunt.R
-import com.amri.emploihunt.authentication.AskActivity
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -23,7 +21,6 @@ import com.androidnetworking.interfaces.ParsedRequestListener
 import com.bumptech.glide.Glide
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentPostRecruitBinding
-import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.RegisterUserModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.AUTH_TOKEN
@@ -31,6 +28,7 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.Utils
 import com.amri.emploihunt.util.Utils.toast
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
@@ -48,7 +46,7 @@ class PostRecruitFragment : BaseFragment() {
     private val PICK_IMAGE_REQUEST = 1
     lateinit var downloadUrl : String
     private  lateinit var prefManager: SharedPreferences
-    lateinit var profilePicFile: File
+    private var companyLogoFile: File? = null
     /*var cityList: ArrayList<String> = ArrayList()*/
     var selectedJobLocation = String()
     var selectedJobTitle = String()
@@ -278,11 +276,22 @@ class PostRecruitFragment : BaseFragment() {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
                 // Upload image and store URL
-                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-                val fileName = "image_$timestamp.jpg"
-                binding.fileName.text = fileName
-                profilePicFile = File(Utils.getRealPathFromURI(requireContext(), imageUri).toString())
-                Glide.with(requireContext()).load(imageUri).into(binding.companyLogoIv)
+                compressImg(requireContext(),imageUri,binding.companyLogoIv){
+                    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                    val fileName = "image_$timestamp.jpg"
+                    binding.fileName.text = fileName
+                    companyLogoFile = it
+                    Glide.with(requireContext())
+                        .load(imageUri)
+                        .apply(
+                            RequestOptions
+                                .placeholderOf(R.drawable.default_company_logo)
+                                .error(R.drawable.default_company_logo)
+                                .circleCrop()
+                        )
+                        .into(binding.companyLogoIv)
+                }
+
 //                uploadImageAndStoreUrl(imageUri)
             }
         }
@@ -325,7 +334,12 @@ class PostRecruitFragment : BaseFragment() {
             binding.currentCompany.error = "Please enter current company"
             return  false
 
-        }else if (binding.fileName.text.toString().isBlank()){
+        }else if (companyLogoFile == null){
+            binding.companyLogoIv.requestFocus()
+            makeToast("Please upload your company logo",0)
+            return false
+        }
+        else if (binding.fileName.text.toString().isBlank()){
             binding.fileName.requestFocus()
             binding.fileName.error = "Please upload your company logo"
             return  false
@@ -411,6 +425,7 @@ class PostRecruitFragment : BaseFragment() {
         val postduration = "02/04/2023"
         val jobapps = 20
 
+
         if (Utils.isNetworkAvailable(requireContext())){
             AndroidNetworking.upload(NetworkUtils.INSERT_POST)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
@@ -427,7 +442,7 @@ class PostRecruitFragment : BaseFragment() {
                 .addQueryParameter("iNumberOfVacancy",empneed)
                 .addQueryParameter("vWrokingMode",workmode)
                 .addQueryParameter("vJobRoleResponsbility",role)
-                .addMultipartFile("tCompanyPic",profilePicFile)
+                .addMultipartFile("tCompanyPic",companyLogoFile)
 
                 .setPriority(Priority.MEDIUM).build().getAsObject(
                     RegisterUserModel::class.java,

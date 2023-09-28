@@ -2,8 +2,10 @@ package com.amri.emploihunt.basedata
 
 import android.Manifest
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -23,6 +25,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 
@@ -30,6 +33,7 @@ import com.amri.emploihunt.databinding.LayoutCommonDialogBinding
 import com.amri.emploihunt.databinding.LayoutProgressbarBinding
 import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.settings.ProfileActivity
 import com.amri.emploihunt.util.Utils
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -40,6 +44,12 @@ import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.resolution
+import kotlinx.coroutines.launch
+import java.io.File
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -171,12 +181,26 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun isNumeric(input: String): Boolean {
+    fun isNumeric(input: String): Boolean {
         return try {
             input.toInt()
             true
         } catch (e: NumberFormatException) {
             false
+        }
+    }
+
+    fun compressImg(context: Context, photoUri:Uri,view:View, callBack: (File) -> Unit){
+        val file = File(Utils.getRealPathFromURI(context, photoUri).toString())
+        Log.d("ImageCompression", "Original img size : ${file.length()/ (1024*1024).toFloat()} Mb")
+        lifecycleScope.launch {
+            val compressedFile = Compressor.compress(context, file) {
+                resolution(view.width, view.height)
+                quality(100)
+                format(Bitmap.CompressFormat.JPEG)
+            }
+            Log.d("ImageCompression", "Compressed img size : ${compressedFile.length()/ (1024*1024).toFloat()} Mb")
+            callBack(compressedFile)
         }
     }
 

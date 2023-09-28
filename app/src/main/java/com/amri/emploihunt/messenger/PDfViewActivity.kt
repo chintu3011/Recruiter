@@ -27,6 +27,7 @@ class PDfViewActivity : BaseActivity() {
         binding.closeIv.setOnClickListener {
             finish()
         }
+
         RetrievePDFFromURL(binding.idPDFView,binding.progressCircular).execute(NetworkUtils.BASE_URL_MEDIA+intent.getStringExtra("Uri"))
     }
     class RetrievePDFFromURL(pdfView: PDFView, processBar: ProgressBar) :

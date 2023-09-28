@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.model.User
+import com.amri.emploihunt.networking.NetworkUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
@@ -134,7 +135,7 @@ class NewUserMessageAdapter(
             personName.text = userFullName
             tagLine.text = user.tTagLine
             if ( user.tProfileUrl != null ){
-                Glide.with(profileImg.context).load(user.tProfileUrl).placeholder(R.drawable.profile_default_image).into(profileImg)
+                Glide.with(profileImg.context).load(NetworkUtils.BASE_URL_MEDIA+user.tProfileUrl).placeholder(R.drawable.profile_default_image).into(profileImg)
             }
 
             cardView.setOnClickListener{

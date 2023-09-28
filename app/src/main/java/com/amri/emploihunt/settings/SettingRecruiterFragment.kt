@@ -13,6 +13,7 @@ import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentSettingRecruiterBinding
 import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerActivity
+import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.recruiterSide.HomeRecruitFragment
 import com.amri.emploihunt.recruiterSide.HomeRecruiterActivity
 import com.amri.emploihunt.store.JobSeekerProfileInfo
@@ -99,7 +100,7 @@ class SettingRecruiterFragment : BaseFragment() {
                 Log.d(ProfileActivity.TAG, "setProfileData: trying to update profile img data $it")
 
                 Glide.with(requireContext())
-                    .load(it)
+                    .load(NetworkUtils.BASE_URL_MEDIA+it)
                     .apply(
                         RequestOptions
                             .placeholderOf(R.drawable.profile_default_image)

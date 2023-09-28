@@ -277,9 +277,7 @@
                             android:layout_height="@dimen/_10sdp"
                             app:layout_constraintEnd_toStartOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/currentCompany">
-
-                        </androidx.legacy.widget.Space>
+                            app:layout_constraintTop_toBottomOf="@+id/currentCompany"/>
 
                         <com.google.android.material.imageview.ShapeableImageView
 

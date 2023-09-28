@@ -14,6 +14,7 @@ import com.amri.emploihunt.R
 import com.amri.emploihunt.model.LatestChatMsg
 
 import com.amri.emploihunt.model.User
+import com.amri.emploihunt.networking.NetworkUtils
 
 import com.bumptech.glide.Glide
 
@@ -73,7 +74,7 @@ class LatestMessageAdapter(
             if (messageData.user.tProfileUrl != null) {
                 /*Log.d(TAG, user.userProfileImgUri)*/
                 Glide.with(itemView)
-                    .load(messageData.user.tProfileUrl)
+                    .load(NetworkUtils.BASE_URL_MEDIA+messageData.user.tProfileUrl)
                     .placeholder(R.drawable.profile_default_image)
                     .into(profileImg)
             }

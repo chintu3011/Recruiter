@@ -143,13 +143,24 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                 toId = user!!.vFirebaseId
                 if(user!!.tProfileUrl != null){
                     Glide.with(this@ChatBoardActivity)
-                        .load(user!!.tProfileUrl)
+                        .load(NetworkUtils.BASE_URL_MEDIA+user!!.tProfileUrl)
                         .apply(
                             RequestOptions
                                 .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
                                 .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
                         )
                         .into(binding.profileImg)
+
+                    binding.profileImg.setOnClickListener{
+                        if(user!!.tProfileUrl.isNotEmpty()) {
+                            val intent = Intent(this, FullImageViewActivity::class.java)
+                            intent.putExtra("Uri", user!!.tProfileUrl)
+                            startActivity(intent)
+                        }
+                        else{
+                            makeToast("Profile image not found",0)
+                        }
+                    }
                 }
                 userPhoneNumber = user!!.vMobile
             }
@@ -755,13 +766,26 @@ class ChatBoardActivity : BaseActivity() ,OnClickListener{
                                     toId = user!!.vFirebaseId
                                     if(user!!.tProfileUrl != null){
                                         Glide.with(this@ChatBoardActivity)
-                                            .load(user!!.tProfileUrl)
+                                            .load(NetworkUtils.BASE_URL_MEDIA+user!!.tProfileUrl)
                                             .apply(
                                                 RequestOptions
                                                     .placeholderOf(DEFAULT_PROFILE_IMAGE_RESOURCE)
                                                     .error(DEFAULT_PROFILE_IMAGE_RESOURCE)
                                             )
                                             .into(binding.profileImg)
+
+                                        binding.profileImg.setOnClickListener {
+                                            if (user!!.tProfileUrl.isNotEmpty()) {
+                                                val intent = Intent(
+                                                    this@ChatBoardActivity,
+                                                    FullImageViewActivity::class.java
+                                                )
+                                                intent.putExtra("Uri", user!!.tProfileUrl)
+                                                startActivity(intent)
+                                            } else {
+                                                makeToast("Profile image not found", 0)
+                                            }
+                                        }
                                     }
                                     userPhoneNumber = user!!.vMobile
                                     supportActionBar?.title = userFName
