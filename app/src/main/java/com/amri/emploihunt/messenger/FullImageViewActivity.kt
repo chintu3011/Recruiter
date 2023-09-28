@@ -9,6 +9,7 @@ import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityFullImageViewBinding
 import com.amri.emploihunt.databinding.FullScreenImageViewBinding
 import com.amri.emploihunt.databinding.PdfViewerDialogBinding
+import com.amri.emploihunt.networking.NetworkUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -23,7 +24,7 @@ class FullImageViewActivity : BaseActivity() {
         setContentView(binding.root)
         window.setBackgroundDrawableResource(R.color.transparent)
         Glide.with(this)
-            .load(intent.getStringExtra("Uri"))
+            .load(NetworkUtils.BASE_URL_MEDIA+intent.getStringExtra("Uri"))
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,

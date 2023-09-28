@@ -278,7 +278,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 Log.d(TAG, "setProfileData: trying to update profile img data $it")
                 profileImgUri = it
                 Glide.with(this@ProfileActivity)
-                    .load(profileImgUri)
+                    .load(NetworkUtils.BASE_URL_MEDIA+profileImgUri)
                     .apply(
                         RequestOptions
                             .placeholderOf(R.drawable.profile_default_image)

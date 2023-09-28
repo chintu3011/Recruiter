@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityPdfViewActvityBinding
+import com.amri.emploihunt.networking.NetworkUtils
 import com.github.barteksc.pdfviewer.PDFView
 import java.io.BufferedInputStream
 import java.io.InputStream
@@ -26,7 +27,7 @@ class PDfViewActivity : BaseActivity() {
         binding.closeIv.setOnClickListener {
             finish()
         }
-        RetrievePDFFromURL(binding.idPDFView,binding.progressCircular).execute(intent.getStringExtra("Uri"))
+        RetrievePDFFromURL(binding.idPDFView,binding.progressCircular).execute(NetworkUtils.BASE_URL_MEDIA+intent.getStringExtra("Uri"))
     }
     class RetrievePDFFromURL(pdfView: PDFView, processBar: ProgressBar) :
         AsyncTask<String, Void, InputStream>() {

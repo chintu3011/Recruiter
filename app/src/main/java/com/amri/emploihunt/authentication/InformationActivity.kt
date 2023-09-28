@@ -1424,7 +1424,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             if (Utils.isNetworkAvailable(this)){
                 Log.d(TAG, "storeInfoJ: $residentialCity $jobLocation")
                 val versionCodeAndName = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-                AndroidNetworking.post(NetworkUtils.REGISTER_USER)
+                AndroidNetworking.upload(NetworkUtils.REGISTER_USER)
                     .setOkHttpClient(NetworkUtils.okHttpClient)
                     .addQueryParameter("vFirebaseId",userId)
                     .addQueryParameter("iRole","1")
@@ -1450,6 +1450,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     .addQueryParameter("tLongitude",prefManager.get(LONGITUDE))
                     .addQueryParameter("tLatitude",prefManager.get(LATITUDE))
                     .addQueryParameter("tAppVersion",versionCodeAndName)
+                    .addMultipartFile("profilePic", profileImg)
                     .setPriority(Priority.MEDIUM).build().getAsObject(
                         RegisterUserModel::class.java,
                         object : ParsedRequestListener<RegisterUserModel> {

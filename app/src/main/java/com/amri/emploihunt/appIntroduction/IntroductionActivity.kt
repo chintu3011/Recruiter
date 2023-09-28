@@ -46,18 +46,24 @@ class IntroductionActivity : BaseActivity() {
                 OnBoardingItem(
                     orboardingImage = R.drawable.logo,
                     title = "Welcome to EmploiHunt",
-                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    description = "Discover your ideal job here"
                 ),
                 OnBoardingItem(
-                    orboardingImage = R.drawable.hiering_img,
+                    orboardingImage = R.drawable.candidate_search,
                     title = "Recruit best employee.",
-                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    description = "Employ the best talent more quickly with Emploihunt."
                 ),
                 OnBoardingItem(
-                    orboardingImage = R.drawable.jobseekers_img,
-                    title = "Get your Best Jog Here.",
-                    description = "  Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    orboardingImage = R.drawable.job_search,
+                    title = "Get your Best Job Here.",
+                    description = "Discover your ideal position right here."
+                ),
+                OnBoardingItem(
+                    orboardingImage = R.drawable.campus_placement,
+                    title = "Campus Placement",
+                    description = "Emploihunt can help you find your ideal job on campus."
                 )
+
 
             )
         )
