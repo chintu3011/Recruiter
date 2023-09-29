@@ -45,6 +45,8 @@ import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.ROLE
 import com.amri.emploihunt.util.Utils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -291,7 +293,8 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 if (it.errorCode >= 500) {
-                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                    binding.layEmptyView.tvNoData.text =
+                                        getString(R.string.opps_sorry_job_seeker_not_available_at_the_moment)
                                 }
                             }
                             hideProgressDialog()
@@ -602,7 +605,15 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             holder.binding.applicantPrefCity.text = job. vPreferCity
             holder.binding.applicantWorkingMode.text = job.vWorkingMode
             holder.binding.applicantDesignation.text = job.vDesignation
-
+            Glide.with(mActivity)
+                .load(NetworkUtils.BASE_URL_MEDIA+job.tProfileUrl)
+                .apply(
+                    RequestOptions
+                        .placeholderOf(R.drawable.profile_default_image)
+                        .error(R.drawable.profile_default_image)
+                        .circleCrop()
+                )
+                .into(holder.binding.profileImg)
             var callBalloon: Balloon ?= null
             var emailBalloon: Balloon ?= null
             val phoneNo: String =  job.vMobile

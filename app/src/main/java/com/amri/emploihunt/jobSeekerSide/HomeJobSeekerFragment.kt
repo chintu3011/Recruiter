@@ -359,7 +359,8 @@ FilterParameterTransferClass.FilterJobListListener {
                                     "onError: code: ${it.errorCode} & message: ${it.errorBody}"
                                 )
                                 if (it.errorCode >= 500) {
-                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                    binding.layEmptyView.tvNoData.text =
+                                        getString(R.string.opps_sorry_jobs_not_available_at_moment)
                                 }
                             }
                             hideProgressDialog()

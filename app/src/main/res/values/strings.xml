@@ -185,5 +185,7 @@
     <string name="sorry_you_have_no_any_chats_please_add_chat_user_using_below_add_people">Sorry you have no any chats, Please add chat user using below Add People</string>
     <string name="select_here_to_upload">Select Here to Upload</string>
     <string name="upload_your_resume">Upload your resume</string>
+    <string name="opps_sorry_jobs_not_available_at_moment">Opps sorry! jobs not available at moment</string>
+    <string name="opps_sorry_job_seeker_not_available_at_the_moment">Opps sorry! Job seeker not available at the moment</string>
 
 </resources>
