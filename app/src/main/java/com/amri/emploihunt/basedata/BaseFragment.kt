@@ -129,7 +129,19 @@ open class BaseFragment : Fragment() {
             callBack(compressedFile)
         }
     }
-
+    fun compressImgForCompanyLogo(context: Context, photoUri:Uri, callBack: (File) -> Unit){
+        val file = File(Utils.getRealPathFromURI(context, photoUri).toString())
+        Log.d("ImageCompression", "Original img size : ${file.length()/ (1024*1024).toFloat()} Mb")
+        lifecycleScope.launch {
+            val compressedFile = Compressor.compress(context, file) {
+                resolution(300, 300)
+                quality(100)
+                format(Bitmap.CompressFormat.JPEG)
+            }
+            Log.d("ImageCompression", "Compressed img size : ${compressedFile.length()/ (1024*1024).toFloat()} Mb")
+            callBack(compressedFile)
+        }
+    }
     fun makeToast(msg: String, len: Int) {
         if (len == 0) Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
         if (len == 1) Toast.makeText(requireActivity(), msg, Toast.LENGTH_LONG).show()
@@ -173,7 +185,6 @@ open class BaseFragment : Fragment() {
     fun getAllCity(cityList: ArrayList<String>,callback:() -> Unit){
 
         if (Utils.isNetworkAvailable(requireContext())){
-            showProgressDialog("Please wait....")
             AndroidNetworking.get(NetworkUtils.GET_CITIES)
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(
@@ -200,7 +211,7 @@ open class BaseFragment : Fragment() {
                                     "onError: code: ${it.errorCode} & message: ${it.message}"
                                 )
                                 callback()
-                                hideProgressDialog()
+
 
                             }
                         }

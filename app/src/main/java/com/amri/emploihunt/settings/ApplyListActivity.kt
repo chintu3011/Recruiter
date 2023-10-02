@@ -154,7 +154,8 @@ class ApplyListActivity : BaseActivity() {
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 if (it.errorCode >= 500) {
-                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                    binding.layEmptyView.tvNoData.text =
+                                        getString(R.string.opps_no_any_apply_data_at_the_moment)
                                 }
                             }
                             hideProgressDialog()

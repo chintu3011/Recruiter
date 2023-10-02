@@ -38,6 +38,9 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.protobuf.method
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -80,6 +83,8 @@ class InterestedCandidateActivity : BaseActivity() {
                 // Here you get the current item (a userJobPref object) that is selected by its position
                 val job: Jobs = adapter!!.getItem(position)
                 // Here you can do the action you want to...
+                binding.candidateListRv.visibility = View.GONE
+                binding.layEmptyView.root.visibility = View.GONE
                 candidateList.clear()
                 currentPage = 1
                 retrieveCandidateData(job.id!!)
@@ -332,7 +337,15 @@ class InterestedCandidateActivity : BaseActivity() {
             holder.binding.applicantPrefCity.text = dataAppliedCandidate.userJobPref. vPreferCity
             holder.binding.applicantWorkingMode.text = dataAppliedCandidate.userJobPref.vWorkingMode
             holder.binding.applicantDesignation.text = dataAppliedCandidate.userJobPref.vDesignation
-
+            Glide.with(holder.itemView.context)
+                .load(NetworkUtils.BASE_URL_MEDIA+dataAppliedCandidate.userJobPref.tProfileUrl)
+                .apply(
+                    RequestOptions
+                        .placeholderOf(R.drawable.profile_default_image)
+                        .error(R.drawable.profile_default_image)
+                        .circleCrop()
+                )
+                .into( holder.binding.profileImg)
             var callBalloon: Balloon?= null
             var emailBalloon: Balloon?= null
             val phoneNo: String =  dataAppliedCandidate.userJobPref.vMobile

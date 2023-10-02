@@ -337,7 +337,7 @@ class UpdatePostActivity : BaseActivity() {
                 val name = getFileName(this, uri = it)
                 val extension = name?.let { it1 -> getExtension(it1) }
 
-                compressImg(this@UpdatePostActivity,fileUri,binding.companyLogoIv){file ->
+                compressImgForCompanyLogo(this@UpdatePostActivity,fileUri){file ->
 
                     Glide.with(this@UpdatePostActivity)
                         .load(file)

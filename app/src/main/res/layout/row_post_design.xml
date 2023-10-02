@@ -163,21 +163,13 @@
                 android:fontFamily="@font/poppinsregular"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="@color/black"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/dotDivider1"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/employees"
                 app:layout_constraintStart_toEndOf="@id/startGuildLine"
-                app:layout_constraintTop_toTopOf="@+id/dotDivider1"
+                app:layout_constraintTop_toTopOf="@+id/employees"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintWidth_default="wrap" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/dotDivider1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/employees"
-                app:layout_constraintStart_toEndOf="@+id/companyName"
-                app:layout_constraintTop_toTopOf="@+id/employees"
-                app:srcCompat="@drawable/ic_dot" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/employees"
@@ -188,22 +180,22 @@
                 android:scrollHorizontally="true"
                 android:text=""
                 android:fontFamily="@font/poppinsregular"
-                android:textAlignment="textStart"
+                android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="@color/black"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toTopOf="@+id/companyName"
                 app:layout_constraintEnd_toStartOf="@+id/endGuildLine"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/dotDivider1"
-                app:layout_constraintTop_toBottomOf="@+id/dotDivider1" />
+                app:layout_constraintStart_toEndOf="@+id/companyName"
+                app:layout_constraintTop_toBottomOf="@+id/companyName" />
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:id="@+id/flow3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                app:constraint_referenced_ids="companyName,dotDivider1,employees"
+                app:constraint_referenced_ids="companyName,employees"
                 app:flow_horizontalGap="@dimen/_6sdp"
                 app:flow_horizontalStyle="packed"
                 app:flow_verticalGap="@dimen/_6sdp"
@@ -243,23 +235,14 @@
                 android:fontFamily="@font/poppinsregular"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                app:layout_constraintBottom_toBottomOf="@+id/dotDivider2"
-                app:layout_constraintEnd_toStartOf="@+id/dotDivider2"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/profileImg"
-                app:layout_constraintTop_toTopOf="@+id/dotDivider2"
-                app:layout_constraintWidth_default="wrap" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/dotDivider2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/designatio"
                 app:layout_constraintEnd_toStartOf="@+id/designatio"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/recruiterName"
+                app:layout_constraintStart_toEndOf="@+id/profileImg"
                 app:layout_constraintTop_toTopOf="@+id/designatio"
-                app:srcCompat="@drawable/ic_dot" />
+                app:layout_constraintWidth_default="wrap" />
+
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/designatio"
@@ -271,11 +254,11 @@
                 android:textColor="@color/black"
                 android:textStyle="normal"
                 android:fontFamily="@font/poppinsregular"
-                app:layout_constraintBottom_toBottomOf="@id/dotDivider2"
+                app:layout_constraintBottom_toBottomOf="@id/recruiterName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/dotDivider2"
-                app:layout_constraintTop_toTopOf="@id/dotDivider2"
+                app:layout_constraintStart_toEndOf="@+id/recruiterName"
+                app:layout_constraintTop_toTopOf="@id/recruiterName"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:scrollHorizontally="true" />
@@ -284,8 +267,7 @@
                 android:id="@+id/flow4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="profileImg,recruiterName,
-            dotDivider2,designatio"
+                app:constraint_referenced_ids="profileImg,recruiterName,designatio"
                 app:flow_horizontalGap="@dimen/_6sdp"
                 app:flow_horizontalStyle="packed"
                 app:flow_verticalGap="@dimen/_6sdp"

@@ -203,7 +203,19 @@ open class BaseActivity : AppCompatActivity() {
             callBack(compressedFile)
         }
     }
-
+    fun compressImgForCompanyLogo(context: Context, photoUri:Uri, callBack: (File) -> Unit){
+        val file = File(Utils.getRealPathFromURI(context, photoUri).toString())
+        Log.d("ImageCompression", "Original img size : ${file.length()/ (1024*1024).toFloat()} Mb")
+        lifecycleScope.launch {
+            val compressedFile = Compressor.compress(context, file) {
+                resolution(300, 300)
+                quality(100)
+                format(Bitmap.CompressFormat.JPEG)
+            }
+            Log.d("ImageCompression", "Compressed img size : ${compressedFile.length()/ (1024*1024).toFloat()} Mb")
+            callBack(compressedFile)
+        }
+    }
     fun getAllCity(cityList: ArrayList<String>,callback:() -> Unit){
 
         if (Utils.isNetworkAvailable(this)){

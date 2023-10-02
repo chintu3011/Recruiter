@@ -34,6 +34,7 @@ import com.amri.emploihunt.settings.AddJobPreferenceActivity
 import com.amri.emploihunt.databinding.ActivityJobSeekarDetailsBinding
 import com.amri.emploihunt.databinding.PdfViewerDialogBinding
 import com.amri.emploihunt.databinding.RowJobPreferenceForRecruiterBinding
+import com.amri.emploihunt.messenger.FullImageViewActivity
 import com.amri.emploihunt.model.DataAppliedCandidate
 import com.amri.emploihunt.model.DataJobPreferenceList
 import com.amri.emploihunt.model.Experience
@@ -114,6 +115,17 @@ class JobSeekerDetailsActivity : BaseActivity() {
 
                 )
                 .into(binding.profileImg)
+        }
+
+        binding.profileImg.setOnClickListener {
+            if(!selectedCandidate.userJobPref.tProfileUrl.isNullOrEmpty()) {
+                val intent = Intent(this, FullImageViewActivity::class.java)
+                intent.putExtra("Uri", selectedCandidate.userJobPref.tProfileUrl)
+                startActivity(intent)
+            }
+            else{
+                makeToast("Profile image not found",0)
+            }
         }
 
         val fullName = "${selectedCandidate.userJobPref.vFirstName} ${selectedCandidate.userJobPref.vLastName}"

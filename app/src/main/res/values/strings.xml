@@ -187,5 +187,7 @@
     <string name="upload_your_resume">Upload your resume</string>
     <string name="opps_sorry_jobs_not_available_at_moment">Opps sorry! jobs not available at moment</string>
     <string name="opps_sorry_job_seeker_not_available_at_the_moment">Opps sorry! Job seeker not available at the moment</string>
+    <string name="opps_no_any_apply_data_at_the_moment">Opps! No any Apply data at the moment</string>
+    <string name="opps_sorry_no_any_save_jobs_at_moment">Opps!Sorry no any save jobs at moment</string>
 
 </resources>

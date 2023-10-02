@@ -276,7 +276,7 @@ class PostRecruitFragment : BaseFragment() {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
                 // Upload image and store URL
-                compressImg(requireContext(),imageUri,binding.companyLogoIv){
+                compressImgForCompanyLogo(requireContext(),imageUri){
                     val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
                     val fileName = "image_$timestamp.jpg"
                     binding.fileName.text = fileName

@@ -424,6 +424,7 @@ FilterParameterTransferClass.FilterJobListListener {
             holder.binding.city.text = jobModel.vAddress
             holder.binding.aboutPost.text = jobModel.tDes
             holder.binding.companyName.text = jobModel.vCompanyName
+            holder.binding.recruiterName.text = "${jobModel.user.vFirstName} ${jobModel.user.vLastName}"
             holder.binding.employees.text =  "${jobModel.iNumberOfVacancy} Vacancy"
             holder.binding.createTimeTV.text = getTimeAgo(holder.itemView.context ,
                 jobModel.tCreatedAt!!.toLong())

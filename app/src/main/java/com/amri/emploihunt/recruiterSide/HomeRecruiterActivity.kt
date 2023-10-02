@@ -376,6 +376,7 @@ class HomeRecruiterActivity : BaseActivity(),
     }
 
     fun replaceFragment(fragment: Fragment) {
+
         supportFragmentManager.beginTransaction().apply {
             if (fragment.isAdded) {
                 show(fragment)
@@ -394,7 +395,6 @@ class HomeRecruiterActivity : BaseActivity(),
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .addToBackStack(null)
             .commit()
-
 
     }
 

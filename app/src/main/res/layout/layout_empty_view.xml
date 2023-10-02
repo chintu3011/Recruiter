@@ -17,6 +17,7 @@
             android:layout_height="@dimen/_150sdp"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/jobsearch"
+            android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

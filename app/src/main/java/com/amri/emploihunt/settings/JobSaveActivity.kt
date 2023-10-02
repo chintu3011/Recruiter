@@ -153,7 +153,8 @@ class JobSaveActivity : BaseActivity() {
                                     "onError: code: ${it.errorCode} & message: ${it.errorDetail}"
                                 )
                                 if (it.errorCode >= 500) {
-                                    binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_server_maintenance)
+                                    binding.layEmptyView.tvNoData.text =
+                                        getString(R.string.opps_sorry_no_any_save_jobs_at_moment)
                                 }
                             }
                             hideProgressDialog()

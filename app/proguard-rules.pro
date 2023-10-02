@@ -22,3 +22,7 @@
 
 -keep class androidx.appcompat.widget.** { *; }
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+-keepclassmembers class com.amri.emploihunt.model.** {
+  *;}
+# For OkHttp
+-dontwarn okio.**
