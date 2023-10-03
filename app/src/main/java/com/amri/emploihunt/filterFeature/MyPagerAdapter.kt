@@ -8,12 +8,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amri.emploihunt.R
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MyPagerAdapter(
     /*private val adapterList: MutableList<FilterTagAdapter>,*/
@@ -88,7 +91,7 @@ class MyPagerAdapter(
 
             for (index in list.indices) {
                 val chip = activity.layoutInflater.inflate(R.layout.chip_layout, null) as Chip
-                
+
                 if(attribute == 4){
                     chip.text = list[index].plus(" LPA +")
                 }

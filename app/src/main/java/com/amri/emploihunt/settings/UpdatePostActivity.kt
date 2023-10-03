@@ -95,22 +95,22 @@ class UpdatePostActivity : BaseActivity() {
         }
         binding.currentCompany.setText(selectedPost.vCompanyName)
         binding.fileName.setText(selectedPost.tCompanyLogoUrl)
-
+        Glide.with(this@UpdatePostActivity)
+            .load(NetworkUtils.BASE_URL_MEDIA+selectedPost.tCompanyLogoUrl)
+            .apply(
+                RequestOptions
+                    .placeholderOf(R.drawable.default_company_logo)
+                    .error(R.drawable.default_company_logo)
+                    .circleCrop()
+            )
+            .into(binding.companyLogoIv)
 
         GlobalScope.launch(Dispatchers.IO) {
             /*val imgURL = URL(NetworkUtils.STATIC_BASE_URL + response.user.profile_pic_url)*/
             val imgURL =
                 URL(NetworkUtils.BASE_URL_MEDIA+selectedPost.tCompanyLogoUrl)
             val imgBitmap = getBitmapFromURL(imgURL)
-            Glide.with(this@UpdatePostActivity)
-                .load(imgURL)
-                .apply(
-                    RequestOptions
-                        .placeholderOf(R.drawable.default_company_logo)
-                        .error(R.drawable.default_company_logo)
-                        .circleCrop()
-                )
-                .into(binding.companyLogoIv)
+
             setProfileImage(false, fileUri = null, imgBitmap)
         }
 

@@ -304,22 +304,9 @@ class FilterDataActivity : BaseActivity()/*,
                     /** pass selected attributes to FilterParameterTransferClass */
                     when(userType){
                         UserType.JOB_SEEKERS -> {
-                            /*Log.d(TAG,selectedDomainList.toString())
-                            Log.d(TAG,selectedLocationList.toString())
-                            Log.d(TAG,selectedWorkingModeList.toString())
-                            Log.d(TAG,selectedPackageList.toString())*/
-                            Log.d(TAG,selectedDomain)
-                            Log.d(TAG,selectedLocation)
-                            Log.d(TAG,selectedWorkingMode)
-                            Log.d(TAG,selectedPackage)
+
 
                             FilterParameterTransferClass.instance!!
-                                /*.setJobData(
-                                    selectedDomainList,
-                                    selectedLocationList,
-                                    selectedWorkingModeList,
-                                    selectedPackageList
-                                )*/
                                 .setJobData(
                                     selectedDomain,
                                     selectedLocation,
@@ -330,14 +317,7 @@ class FilterDataActivity : BaseActivity()/*,
                             finish()
                         }
                         UserType.RECRUITER -> {
-                            /*Log.d(TAG,selectedDomainList.toString())
-                            Log.d(TAG,selectedLocationList.toString())
-                            Log.d(TAG,selectedWorkingModeList.toString())
-                            Log.d(TAG,selectedPackageList.toString())*/
-                            Log.d(TAG,selectedDomain)
-                            Log.d(TAG,selectedLocation)
-                            Log.d(TAG,selectedWorkingMode)
-                            Log.d(TAG,selectedPackage)
+
 
                             FilterParameterTransferClass.instance!!
                                 /*.setApplicationData(
