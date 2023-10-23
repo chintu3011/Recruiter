@@ -13,11 +13,11 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.amri.emploihunt"
+            applicationId "com.amri.emploihunt"
         minSdk 23
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -94,8 +94,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.3'
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
     implementation 'com.google.firebase:firebase-auth:22.1.2'
-    implementation 'com.google.firebase:firebase-appcheck-debug:17.0.1'
-    implementation 'com.google.firebase:firebase-appcheck-playintegrity:17.0.1'
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
+    // Add the dependencies for the App Check libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+    implementation("com.google.firebase:firebase-appcheck-ktx")
 
 
     //datastore
