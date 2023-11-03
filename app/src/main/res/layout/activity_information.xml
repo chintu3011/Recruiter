@@ -126,7 +126,7 @@
         app:layout_constraintEnd_toStartOf="@id/endGuildLine"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/startGuildLine"
-        app:layout_constraintTop_toBottomOf="@+id/btnSkip"
+        app:layout_constraintTop_toBottomOf="@+id/checkTikLayout"
         app:layout_constraintVertical_chainStyle="spread_inside" />
     <ImageView
         android:id="@+id/phoneImg"

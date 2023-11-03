@@ -306,17 +306,27 @@
 
                 <CheckBox
                     android:id="@+id/checkBox"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_20sdp"
                     android:layout_height="wrap_content"
-                    android:text="I have read and agreed to the terms &amp; conditions"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:buttonTint="@color/blue"
-                    app:layout_constraintBottom_toTopOf="@+id/btnLayout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    android:layout_marginStart="@dimen/_5sdp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/btnLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCity" />
+                <TextView
+                    android:id="@+id/checkBoxtx"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/i_have_read_and_agreed_to_the_terms_amp_conditions"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:buttonTint="@color/blue"
+                    app:layout_constraintStart_toEndOf="@+id/checkBox"
+                    app:layout_constraintBottom_toTopOf="@+id/btnLayout"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutCity" />
 
 

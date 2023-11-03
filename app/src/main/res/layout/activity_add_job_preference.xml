@@ -209,7 +209,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLayoutSalaryTitle"
                     app:layout_constraintVertical_chainStyle="packed"
-                    app:placeholderText="Android Developer"
+                    app:placeholderText="Ahmedabad"
                     app:startIconDrawable="@drawable/ic_job_location"
                     app:startIconTint="@color/blue">
 

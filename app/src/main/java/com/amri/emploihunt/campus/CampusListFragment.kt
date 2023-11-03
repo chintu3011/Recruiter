@@ -136,9 +136,7 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                             try {
                                 response?.let {
                                     hideProgressDialog()
-                                    Log.d("#####", "onResponse: ${it.data}")
                                     filteredDataList.addAll(it.data)
-                                    Log.d("#####", "onResponse: ${filteredDataList[1].tVacancy}")
                                     if (filteredDataList.isNotEmpty()) {
                                         totalPages = it.total_pages
                                         binding.campusAdapter!!.notifyDataSetChanged()

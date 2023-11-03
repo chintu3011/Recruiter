@@ -196,7 +196,7 @@ open class BaseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val compressedFile = Compressor.compress(context, file) {
                 resolution(view.width, view.height)
-                quality(100)
+                quality(80)
                 format(Bitmap.CompressFormat.JPEG)
             }
             Log.d("ImageCompression", "Compressed img size : ${compressedFile.length()/ (1024*1024).toFloat()} Mb")

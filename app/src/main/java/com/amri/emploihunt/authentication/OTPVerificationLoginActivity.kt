@@ -399,7 +399,7 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                     response.data.user.vCurrentCompany,
                                                     response.data.user.vDesignation,
                                                     response.data.user.vJobLocation,
-                                                    ""
+                                                    response.data.user.vWorkingMode,
                                                 )
                                                 userDataRepository.storeQualificationData(
                                                     response.data.user.vQualification

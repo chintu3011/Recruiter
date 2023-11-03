@@ -188,7 +188,7 @@ class JobPostActivity : BaseActivity() , ViewTreeObserver.OnScrollChangedListene
         binding.jobDes.setText(selectedPost.tDes)
         binding.technicalSkills.text = selectedPost.tTechnicalSkill
         binding.softSkills.text = selectedPost.tSoftSkill
-        binding.tvSalary.text = "Salary - ${selectedPost.vSalaryPackage.toString()} Lakh"
+        binding.tvSalary.text = "Salary - ${selectedPost.vSalaryPackage.toString()} Lakh LPA"
         binding.education.text = selectedPost.vEducation
         Glide.with(this)
             .load(NetworkUtils.BASE_URL_MEDIA+selectedPost.tCompanyLogoUrl)

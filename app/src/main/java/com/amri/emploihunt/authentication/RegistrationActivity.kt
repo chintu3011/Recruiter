@@ -28,6 +28,7 @@ import com.amri.emploihunt.databinding.ActivityRegistrationBinding
 import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.UserExistOrNotModel
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.settings.TermsPrivacyActivity
 import com.amri.emploihunt.util.LATITUDE
 import com.amri.emploihunt.util.LONGITUDE
 import com.amri.emploihunt.util.PrefManager
@@ -120,7 +121,13 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
                 makeToast(getString(R.string.something_error),0)
             }
         }
+        binding.checkBoxtx.setOnClickListener {
+            val intent = Intent(this, TermsPrivacyActivity::class.java)
+            intent.putExtra("Privacy",false)
+            startActivity(intent)
+        }
     }
+
 
     private fun setOnClickListener() {
         binding.btnRegistration.setOnClickListener(this)

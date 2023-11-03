@@ -156,6 +156,7 @@ class SplashActivity : BaseActivity() {
                                     if (it.data.isBlock == 1){
                                         showAccountBlockBottomSheet()
                                     }else{
+                                        Log.d("####", "onResponse: $currentVersionCode < $latestAppVersionCode")
                                         if (currentVersionCode < latestAppVersionCode) {
                                             //Log.e("#####","UPDATE AVAILABLE")
                                             openAppUpdateDialog(isForceUpdate,updateMsg)

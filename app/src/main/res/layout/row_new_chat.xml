@@ -47,6 +47,7 @@
             android:layout_height="@dimen/_50sdp"
             app:layout_constraintBottom_toTopOf="@id/bottomGuildLine"
             app:layout_constraintHorizontal_bias="0.5"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toEndOf="@id/startGuildLine"
             app:layout_constraintTop_toBottomOf="@id/topGuildLine"
             app:shapeAppearanceOverlay="@style/circle"

@@ -134,6 +134,11 @@
         <item>Vice President</item>
         <item>General Manager</item>
         <item>Assistant Manager</item>
+        <item>Assistant Manager</item>
+        <item>Intern/CA</item>
+        <item>Charted Accountant (CA)</item>
+        <item>Accountant</item>
+        <item>CA Foundation</item>
         <item>Associate</item>
         <item>Consultant</item>
         <item>Engineer</item>
@@ -159,7 +164,6 @@
         <item>Musician</item>
         <item>Photographer</item>
         <item>Chef</item>
-        <item>Fashion Designer</item>
         <item>Public Relations Manager</item>
         <item>Financial Analyst</item>
         <item>IT Specialist</item>
@@ -263,5 +267,78 @@
         <item>Real-time Systems Developer</item>
         <item>Automation Test Developer</item>
         <item>GIS Developer (Geographic Information Systems)</item>
+        <item>Sales Representative</item>
+        <item>Financial Analyst</item>
+        <item>Accountant</item>
+        <item>Marketing Manager</item>
+        <item>Business Development Manager</item>
+        <item>Supply Chain Manager</item>
+        <item>E-commerce Manager</item>
+        <item>Financial Manager</item>
+        <item>Retail Store Manager</item>
+        <item>Graphic Designer</item>
+        <item>Art Director</item>
+        <item>Copywriter</item>
+        <item>Animator</item>
+        <item>Film Director</item>
+        <item>Music Composer</item>
+        <item>Gallery Curator</item>
+        <item>Art Therapist</item>
+        <item>Theater Director</item>
+        <item>Fashion Designer</item>
+        <item>Executive Assistant</item>
+        <item>Customer Service Representative</item>
+        <item>Operations Coordinator</item>
+        <item>Public Relations Specialist</item>
+        <item>Supply Chain Analyst</item>
+        <item>Quality Control Inspector</item>
+        <item>Business Operations Manager</item>
+        <item>Logistics Coordinator</item>
+        <item>Administrative Assistant</item>
+        <item>Financial Controller</item>
+        <item>Market Research Analyst</item>
+        <item>Event Planner</item>
+        <item>Business Consultant</item>
+        <item>Procurement Specialist</item>
+        <item>Business Intelligence Analyst</item>
+        <item>Technical Support Specialist</item>
+        <item>Customer Success Manager</item>
+        <item>Content Marketing Specialist</item>
+        <item>Compliance Officer</item>
+        <item>Web Content Manager</item>
+        <item>SEO Specialist</item>
+        <item>Investment Analyst</item>
+        <item>Risk Analyst</item>
+        <item>Art Conservator</item>
+        <item>Art Historian</item>
+        <item>Art Gallery Assistant</item>
+        <item>Media Planner</item>
+        <item>Grant Writer</item>
+        <item>Technical Writer</item>
+        <item>UX/UI Designer</item>
+        <item>Interior Decorator</item>
+        <item>Event Coordinator</item>
+        <item>Curator</item>
+        <item>Librarian</item>
+        <item>Market Development Manager</item>
+        <item>Publicist</item>
+        <item>Customer Experience Manager</item>
+        <item>Inventory Manager</item>
+        <item>Community Manager</item>
+        <item>Business Manager</item>
+        <item>Information Security Analyst</item>
+        <item>Network Administrator</item>
+        <item>Technical Project Manager</item>
+        <item>Systems Engineer</item>
+        <item>UX Researcher</item>
+        <item>Environmental Specialist</item>
+        <item>Corporate Trainer</item>
+        <item>Property Manager</item>
+        <item>Program Coordinator</item>
+        <item>Operations Analyst</item>
+        <item>Investment Banker</item>
+        <item>Forensic Accountant</item>
+        <item>Actuary</item>
+        <item>Market Development Specialist</item>
     </string-array>
 </resources>

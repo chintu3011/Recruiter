@@ -202,6 +202,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
+                Log.d("######", "handleOnBackPressed: $workingMode")
                 val user = User(
                     -1,
                     "",
@@ -544,7 +545,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         /** working mode */
         lifecycle.coroutineScope.launch {
             userDataRepository.getUserWorkingMode().collect {
-                Log.d(TAG, "setProfileData: trying to update working mode data $it")
+                Log.d("#####", "setProfileData: trying to update working mode data $it")
+
                 workingMode = it
                 if (userType == 1) {
                     showViewIfNotEmpty(it, binding.workingModeR)
@@ -1257,6 +1259,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setTitle("Change Image")
             .setView(profileImgDialogView)
             .setPositiveButton("Done") { dialog, _ ->
+
                 storeProfileImg(profileImgFile)
                 dialog.dismiss()
             }
@@ -2359,7 +2362,6 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
                     val photoUri = data?.data!!
                     val file = File(Utils.getRealPathFromURI(this, photoUri).toString())
-                    Log.d(TAG, "onActivityResult: img size : ${file.length()/ (1024*1024).toFloat()} mb ")
                     profileImgLodding.visibility = VISIBLE
                     profileImgDia.visibility = INVISIBLE
                     profileImgLodding.playAnimation()

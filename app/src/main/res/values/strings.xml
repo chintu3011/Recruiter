@@ -38,7 +38,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="default_internet_message">There is problem with internet connection. Please check network.</string>
-    <string name="thank_you_dear_candidate_please_wait_hr_are_contact_soon">Thank you dear Candidate. Please wait %1$s HR are contact soon</string>
+    <string name="thank_you_dear_candidate_please_wait_hr_are_contact_soon">Thank you dear Candidate. Please wait %1$s HR will contact soon</string>
     <string name="view_applylist">View ApplyList</string>
     <string name="job_preference">Job Preference</string>
     <string name="save_job">Save Job</string>
@@ -189,5 +189,6 @@
     <string name="opps_sorry_job_seeker_not_available_at_the_moment">Opps sorry! Job seeker not available at the moment</string>
     <string name="opps_no_any_apply_data_at_the_moment">Opps! No any Apply data at the moment</string>
     <string name="opps_sorry_no_any_save_jobs_at_moment">Opps!Sorry no any save jobs at moment</string>
+    <string name="i_have_read_and_agreed_to_the_terms_amp_conditions"><u><![CDATA[I have read and agreed to the terms & conditions]]></u></string>
 
 </resources>
