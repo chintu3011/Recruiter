@@ -165,6 +165,7 @@ class UpdateProfileDataService : Service() {
                         .addQueryParameter("vJobLocation", user!!.vJobLocation)
                         .addQueryParameter("vQualification", user!!.vQualification)
                         .addQueryParameter("tTagLine", user!!.tTagLine)
+                        .addQueryParameter("vWorkingMode", user!!.vWorkingMode)
                         .setPriority(Priority.MEDIUM).build().getAsObject(
                             GetUserById::class.java,
                             object : ParsedRequestListener<GetUserById> {
