@@ -79,7 +79,11 @@ class UpdatePostActivity : BaseActivity() {
         selectedPost = intent.extras?.serializable("ARG_JOB_TITLE")!!
 
 
-        binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
+        binding.jobTitle.setText(selectedPost.vJobTitle)
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.jobTitle.setAdapter(adapter)
+        /*binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
         binding.spJobTitle.arrowPaddingRight = 19
         binding.spJobTitle.item = resources.getStringArray(R.array.indian_designations).toList()
         binding.spJobTitle.setSelection(resources.getStringArray(R.array.indian_designations).toList().indexOf(selectedPost.vJobTitle))
@@ -92,7 +96,7 @@ class UpdatePostActivity : BaseActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
         binding.currentCompany.setText(selectedPost.vCompanyName)
         binding.fileName.setText(selectedPost.tCompanyLogoUrl)
         Glide.with(this@UpdatePostActivity)
@@ -404,7 +408,7 @@ class UpdatePostActivity : BaseActivity() {
         return name.substring(name.lastIndexOf(".",1))
     }
     private fun callUpdateJobPost() {
-        val title : String = selectedJobTitle
+        val title : String = binding.jobTitle.text.toString().trim()
         val compname : String = binding.currentCompany.text.toString().trim()
         val desc : String = binding.descadd.text.toString().trim()
         /*val jobLevel : String = binding.jobLevel.text.toString().trim()*/
@@ -485,8 +489,8 @@ class UpdatePostActivity : BaseActivity() {
 
     private fun checkValidation(): Boolean {
         if (selectedJobTitle.isEmpty()){
-            binding.spJobTitle.requestFocus()
-            binding.spJobTitle.errorText = "Please enter job title"
+            binding.jobTitle.requestFocus()
+            binding.jobTitle.error = "Please enter job title"
             return  false
 
         }else if (binding.currentCompany.text.toString().isBlank()){

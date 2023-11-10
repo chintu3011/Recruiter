@@ -18,7 +18,6 @@ import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityAddJobPreferenceBinding
 import com.amri.emploihunt.databinding.PickerDialogBinding
 import com.amri.emploihunt.model.DataJobPreferenceList
-import com.amri.emploihunt.model.GetAllCity
 import com.amri.emploihunt.model.InsertJobPreferenceModel
 import com.amri.emploihunt.networking.NetworkUtils
 import com.amri.emploihunt.util.AUTH_TOKEN
@@ -56,6 +55,9 @@ class AddJobPreferenceActivity : BaseActivity() {
         binding = ActivityAddJobPreferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.jobTitle.setAdapter(adapter)
         if (intent.extras!!.getBoolean("update")){
             selectedjobPreference = intent.extras?.serializable("jobPref")!!
             binding.jobTitle.setText(selectedjobPreference.vJobTitle)
@@ -156,7 +158,7 @@ class AddJobPreferenceActivity : BaseActivity() {
     private fun checkValidation(): Boolean {
 
         if (binding.jobTitle.text.isNullOrBlank() ){
-            binding.jobTitle.error = "Please Enter job title"
+            binding.jobTitle.error = "Please enter job title"
             return false
         }else if (binding.radioGrpWorkingMode.checkedRadioButtonId == -1 ){
             toast("Please select working mode")
@@ -165,7 +167,7 @@ class AddJobPreferenceActivity : BaseActivity() {
             binding.tvSalary.error = "Please select Expected Salary"
             return false
         }else if (binding.cityTitle.text.isNullOrBlank() && !cityValidator) {
-            binding.cityTitle.error  = "Please choose Job Location"
+            binding.cityTitle.error  = "Please choose job location"
             return false
         }else {
             return true

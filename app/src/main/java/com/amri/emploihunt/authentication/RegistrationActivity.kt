@@ -295,7 +295,7 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             binding.phoneNo.requestFocus()
             return false
         }
-//        makeToast(exist.toString(),0)
+
         if(exist){
             binding.phoneNo.error = "This phone number is already exist"
             binding.phoneNo.requestFocus()

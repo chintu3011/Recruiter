@@ -218,7 +218,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutDesignation"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/designation"
+                android:paddingTop="0dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/grey"
+                app:hintTextColor="@color/ed_theme_color"
+                app:layout_constraintBottom_toTopOf="@+id/inputTextLayoutCompanyName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:placeholderText="Microsoft corporation"
+                app:startIconDrawable="@drawable/ic_designation"
+                app:startIconTint="@color/blue">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/inputDesignation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/_13sdp"
+                    android:inputType="textAutoComplete"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                 android:id="@+id/inputDesignation"
                 style="@style/spinnerStyle"
                 android:layout_margin="@dimen/_12sdp"
@@ -241,7 +279,7 @@
                 app:smsp_outlinedStrokeWidth="1dp"
                 app:smsp_searchHeaderTextColor="#ffff"
                 app:smsp_searchHintColor="@color/search_hint_color"
-                app:smsp_searchTextColor="@color/search_text_color" />
+                app:smsp_searchTextColor="@color/search_text_color" />-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputTextLayoutCompanyName"
@@ -266,7 +304,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputDesignation"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutDesignation"
                 app:placeholderText="Microsoft corporation"
                 app:startIconDrawable="@drawable/ic_company"
                 app:startIconTint="@color/blue">

@@ -17,6 +17,7 @@ import android.view.View.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.viewModels
@@ -322,8 +323,10 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         binding.btnSkip.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
 
-
-        binding.spDesignationJ.setSearchDialogGravity(Gravity.TOP)
+        val adapterJ: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.designationJ.setAdapter(adapterJ)
+        /*binding.spDesignationJ.setSearchDialogGravity(Gravity.TOP)
         binding.spDesignationJ.arrowPaddingRight = 19
         binding.spDesignationJ.item = resources.getStringArray(R.array.indian_designations).toList()
         binding.spDesignationJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -335,7 +338,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
 
         binding.spQualificationJ.setSearchDialogGravity(Gravity.TOP)
         binding.spQualificationJ.arrowPaddingRight = 19
@@ -379,7 +382,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             }
         }
 
-        binding.spDesignationR.setSearchDialogGravity(Gravity.TOP)
+
+        val adapterR: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.designationR.setAdapter(adapterR)
+
+        /*binding.spDesignationR.setSearchDialogGravity(Gravity.TOP)
         binding.spDesignationR.arrowPaddingRight = 19
         binding.spDesignationR.item = resources.getStringArray(R.array.indian_designations).toList()
         binding.spDesignationR.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -391,7 +399,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
 
 
         val cityList:ArrayList<String> = arrayListOf()
@@ -958,7 +966,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         qualification = selectedQualification.trim()
         bio = binding.bio.text.toString().trim()
         currentCompany = binding.companyName.text.toString().trim()
-        designation = selectedDesignation.trim()
+        /*designation = selectedDesignation.trim()*/
+        designation = binding.designationJ.text.toString().trim()
         jobLocation = selectedJobLocation.trim()
 
         prefJobTitle = selectedPrefJobTitle.trim()
@@ -1385,13 +1394,13 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                 return false
             }
             if(designation.isEmpty()){
-                binding.spDesignationJ.errorText = "Select your designation"
+                binding.designationJ.error = "Select your designation"
                 binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsExperienceGrp)
                 changeLayout(false)
                 return false
             }
             if(jobLocation.isEmpty()){
-                binding.spDesignationJ.errorText = "Enter your job location"
+                binding.spJobLocationJ.errorText = "Enter your job location"
                 binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsExperienceGrp)
                 changeLayout(false)
                 return false
@@ -1430,7 +1439,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         bio = binding.bioR.text.toString().trim()
 
         currentCompany = binding.companyNameR.text.toString().trim()
-        designation = selectedDesignation.trim()
+        /*designation = selectedDesignation.trim()*/
+        designation = binding.designationR.text.toString().trim()
         jobLocation = selectedJobLocation.trim()
 
         /*workingMode = getSelectedRadioItem(binding.radioGrpWorkingModeR)*/
@@ -1653,7 +1663,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             return false
         }
         if(designation.isEmpty()) {
-            binding.spDesignationR.errorText = "Select your designation"
+            binding.designationR.error = "Select your designation"
             binding.rViewFlipper.displayedChild = binding.rViewFlipper.indexOfChild(binding.rCurrPosGrp)
             changeLayout(false)
             return false

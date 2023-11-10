@@ -26,6 +26,8 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -83,6 +85,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -970,14 +973,21 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         val currentPositionDialog = layoutInflater.inflate(R.layout.dialog_current_position_info, null)
 
         var selectedJobLocation = String()
-        var selectedDesignation = String()
+        /*var selectedDesignation = String()*/
         var selectedWorkingMode = String()
 
         val edCompanyName = currentPositionDialog.findViewById<EditText>(R.id.companyName)
         if(!currentCompany.isNullOrEmpty()) {
             edCompanyName.setText(currentCompany)
         }
-        val spDesignation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.spDesignation)
+        val edDesignation = currentPositionDialog.findViewById<AutoCompleteTextView>(R.id.inputDesignation)
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        edDesignation.setAdapter(adapter)
+        if(!designation.isNullOrEmpty()){
+            edDesignation.setText(designation)
+        }
+        /*val spDesignation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.spDesignation)
         spDesignation.setSearchDialogGravity(Gravity.TOP)
         spDesignation.arrowPaddingRight = 19
         spDesignation.item = resources.getStringArray(R.array.indian_designations).toList()
@@ -993,7 +1003,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
 
 
 
@@ -1038,7 +1048,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             .setTitle("Change Info")
             .setPositiveButton("Done") { dialog, _ ->
                 currentCompany = edCompanyName.text.toString().trim()
-                designation = selectedDesignation.trim()
+                designation = edDesignation.text.toString().trim()
                 jobLocation = selectedJobLocation.trim()
                 workingMode = selectedWorkingMode.trim()
 
@@ -1276,8 +1286,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
     private fun experienceInfoDialogView() {
 
         val expDialogView = layoutInflater.inflate(R.layout.dialog_experience_info, null)
-
-        var selectedDesignation = String()
+        var enteredDesignation = String()
+        /*var selectedDesignation = String()*/
         var enteredCompanyName = String()
         var selectedJobLocation = String()
         var enteredDuration = String()
@@ -1289,8 +1299,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             btnAddNewExperience.visibility = GONE
         }
 
-        val spDesignation = expDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.designation)
-        spDesignation.setSearchDialogGravity(Gravity.TOP)
+        val edDesignation = expDialogView.findViewById<MaterialAutoCompleteTextView>(R.id.designation)
+        val adapterDesignation: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        edDesignation.setAdapter(adapterDesignation)
+        /*spDesignation.setSearchDialogGravity(Gravity.TOP)
         spDesignation.arrowPaddingRight = 19
         spDesignation.item = resources.getStringArray(R.array.indian_designations).toList()
         spDesignation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -1302,7 +1315,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
         val edCompanyName = expDialogView.findViewById<TextInputEditText>(R.id.companyName)
         val spJobLocation = expDialogView.findViewById<SmartMaterialSpinner<String>>(R.id.jobLocation)
         spJobLocation.setSearchDialogGravity(Gravity.TOP)
@@ -1500,10 +1513,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
 
         btnAddExperience.setOnClickListener {
+            enteredDesignation = edDesignation.text.toString().trim()
             enteredCompanyName = edCompanyName.text.toString().trim()
             enteredDuration = (edDuration.text.toString().trim())
             btnAddExperience.visibility = GONE
             addExpProgress.visibility = VISIBLE
+
 
             /*try {
                 enteredDuration = (edDuration.text.toString().trim())
@@ -1513,17 +1528,17 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 edDuration.error = "Enter Valid Number"
             }*/
 
-            if(selectedDesignation.isNotEmpty() && enteredCompanyName.isNotEmpty() && selectedJobLocation.isNotEmpty()){
+            if(enteredDesignation.isNotEmpty() && enteredCompanyName.isNotEmpty() && selectedJobLocation.isNotEmpty()){
 
                 val jsonObject = JSONObject()
                 if (checkBox.isChecked) {
-                    jsonObject.put("vDesignation", selectedDesignation)
+                    jsonObject.put("vDesignation", enteredDesignation)
                     jsonObject.put("vCompany", enteredCompanyName)
                     jsonObject.put("vJobLocation", selectedJobLocation)
                     jsonObject.put("bIsCurrentCompany", 1)
                 } else {
                     if (enteredDuration.isNotEmpty()){
-                        jsonObject.put("vDesignation", selectedDesignation)
+                        jsonObject.put("vDesignation", enteredDesignation)
                         jsonObject.put("vCompany", enteredCompanyName)
                         jsonObject.put("vJobLocation", selectedJobLocation)
                         jsonObject.put("bIsCurrentCompany", 0)
@@ -1549,12 +1564,12 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                         response?.let {
                                             Log.d(
                                                 TAG,
-                                                "onResponse: data \n $selectedDesignation, $edCompanyName, $enteredDuration"
+                                                "onResponse: data \n $enteredDesignation, $edCompanyName, $enteredDuration"
                                             )
                                             if (checkBox.isChecked) {
 
                                                 currentCompany = enteredCompanyName
-                                                designation = selectedDesignation
+                                                designation = enteredDesignation
                                                 jobLocation = selectedJobLocation
                                                 binding.currentCompany.text = currentCompany
                                                 val userDataRepository =
@@ -1562,7 +1577,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                                 CoroutineScope(Dispatchers.IO).launch {
                                                     userDataRepository.storeCurrentPositionData(
                                                         enteredCompanyName,
-                                                        selectedDesignation,
+                                                        enteredDesignation,
                                                         selectedJobLocation,
                                                         ""
                                                     )
@@ -1632,15 +1647,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                         btnAddNewExperience.visibility = GONE
                                     }
                                     finally {
-                                        spDesignation.clearFocus()
-                                        spDesignation.clearSelection()
+                                        /*spDesignation.clearFocus()
+                                        spDesignation.clearSelection()*/
+                                        edDesignation.text?.clear()
                                         spJobLocation.clearFocus()
                                         spJobLocation.clearSelection()
                                         edCompanyName.text?.clear()
                                         edCompanyName.clearFocus()
                                         edDuration.text?.clear()
                                         edDuration.clearFocus()
-                                        selectedDesignation = ""
+                                        enteredDesignation = ""
                                         enteredCompanyName = ""
                                         selectedJobLocation = ""
                                         enteredDuration = ""
@@ -1668,15 +1684,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
 
                 } else {
                     Utils.showNoInternetBottomSheet(this, this@ProfileActivity)
-                    spDesignation.clearFocus()
-                    spDesignation.clearSelection()
+                    /*spDesignation.clearFocus()
+                    spDesignation.clearSelection()*/
+                    edDesignation.text?.clear()
                     spJobLocation.clearFocus()
                     spJobLocation.clearSelection()
                     edCompanyName.text?.clear()
                     edCompanyName.clearFocus()
                     edDuration.text?.clear()
                     edDuration.clearFocus()
-                    selectedDesignation = ""
+                    enteredDesignation = ""
                     enteredCompanyName = ""
                     selectedJobLocation = ""
                     enteredDuration = ""
@@ -1685,8 +1702,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 }
             }
             else {
-                if (selectedDesignation.isEmpty()) {
-                    spDesignation.errorText = "Select A Designation"
+                if (enteredDesignation.isEmpty()) {
+                    edDesignation.error = "Select A Designation"
                 }
 
                 if (enteredCompanyName.isEmpty()) {
@@ -1810,7 +1827,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             private val btnEdit = itemView.findViewById<AppCompatImageView>(R.id.btnEdit)
 
             private val inputLayoutExperience = itemView.findViewById<CardView>(R.id.inputLayoutExperience)
-            private val spDesignation = itemView.findViewById<SmartMaterialSpinner<String>>(R.id.inputDesignation)
+            private val edDesignation = itemView.findViewById<MaterialAutoCompleteTextView>(R.id.inputDesignation)
             private val edCompanyName = itemView.findViewById<TextInputEditText>(R.id.inputCompanyName)
             private val spJobLocation = itemView.findViewById<SmartMaterialSpinner<String>>(R.id.inputJobLocation)
             private val checkBox = itemView.findViewById<CheckBox>(R.id.inputCheckBox)
@@ -1819,18 +1836,16 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             private val btnUpdateExperience = itemView.findViewById<MaterialButton>(R.id.btnUpdateExperience)
             private val updateExpProgress = itemView.findViewById<ProgressBar>(R.id.updateExpProgress)
 
-            private var selectedDesignation = String()
+            /*private var selectedDesignation = String()*/
+            private var enteredDesignation = String()
             private var enteredCompanyName = String()
             private var selectedJobLocation = String()
             private var enteredDuration = String()
             private var isClickedEditBtn = false
 
             private fun setEditLayout(experience: Experience) {
-
-
                 edCompanyName.setText(experience.vCompanyName)
                 edDuration.setText(experience.vDuration)
-
                 if(experience.bIsCurrentCompany == CURRENT_COMPANY){
                     checkBox.isChecked = true
                     edDurationLayout.visibility = GONE
@@ -1839,7 +1854,13 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     checkBox.isChecked = false
                     edDurationLayout.visibility = VISIBLE
                 }
-                spDesignation.setSearchDialogGravity(Gravity.TOP)
+                edDesignation.setText(experience.vDesignation)
+                enteredDesignation = experience.vDesignation
+                val adapterJ: ArrayAdapter<String> =
+                    ArrayAdapter<String>(mActivity, android.R.layout.simple_dropdown_item_1line,mActivity.resources.getStringArray(R.array.indian_designations).toList())
+                edDesignation.setAdapter(adapterJ)
+
+                /*spDesignation.setSearchDialogGravity(Gravity.TOP)
                 spDesignation.arrowPaddingRight = 19
                 spDesignation.item = mActivity.resources.getStringArray(R.array.indian_designations).toList()
                 spDesignation.setSelection(mActivity.resources.getStringArray(R.array.indian_designations).toList().indexOf(experience.vDesignation))
@@ -1852,7 +1873,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
                     }
-                }
+                }*/
 
                 spJobLocation.setSearchDialogGravity(Gravity.TOP)
                 spJobLocation.arrowPaddingRight = 19
@@ -1885,13 +1906,13 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     enteredCompanyName = edCompanyName.text.toString().trim()
                     enteredDuration = edDuration.text.toString().trim()
 
-                    if(selectedDesignation.isNotEmpty() && enteredCompanyName.isNotEmpty() && selectedJobLocation.isNotEmpty()){
+                    if(enteredDesignation.isNotEmpty() && enteredCompanyName.isNotEmpty() && selectedJobLocation.isNotEmpty()){
                         if (checkBox.isChecked) {
                             experienceEditUpdateListener!!.edit(
                                 absoluteAdapterPosition,
                                 Experience(
                                     experience.id,
-                                    selectedDesignation,
+                                    enteredDesignation,
                                     enteredCompanyName,
                                     selectedJobLocation,
                                     1,
@@ -1907,7 +1928,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                                     absoluteAdapterPosition,
                                     Experience(
                                         experience.id,
-                                        selectedDesignation,
+                                        enteredDesignation,
                                         enteredCompanyName,
                                         selectedJobLocation,
                                         0,
@@ -1925,8 +1946,8 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                         }
                     }
                     else {
-                        if (selectedDesignation.isEmpty()) {
-                            spDesignation.errorText = "Select A Designation"
+                        if (enteredDesignation.isEmpty()) {
+                            edDesignation.error = "Select A Designation"
                         }
                         if (enteredCompanyName.isEmpty()) {
                             edCompanyName.error = "Enter Company Name"

@@ -69,7 +69,11 @@ class PostRecruitFragment : BaseFragment() {
         databaseReference = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance().reference
 
-        binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.jobTitle.setAdapter(adapter)
+
+        /*binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
         binding.spJobTitle.arrowPaddingRight = 19
         binding.spJobTitle.item = resources.getStringArray(R.array.indian_designations).toList()
         binding.spJobTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -81,7 +85,8 @@ class PostRecruitFragment : BaseFragment() {
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
+
         binding.spEducation.setSearchDialogGravity(Gravity.TOP)
         binding.spEducation.arrowPaddingRight = 19
         binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
@@ -325,8 +330,8 @@ class PostRecruitFragment : BaseFragment() {
     }
     private fun checkValidation(): Boolean {
         if (selectedJobTitle.isEmpty()){
-            binding.spJobTitle.requestFocus()
-            binding.spJobTitle.errorText = "Please enter job title"
+            binding.jobTitle.requestFocus()
+            binding.jobTitle.error = "Please enter job title"
             return  false
 
         }else if (binding.currentCompany.text.toString().isBlank()){
@@ -399,7 +404,7 @@ class PostRecruitFragment : BaseFragment() {
     }
     private fun adddata() {
 
-        val title : String = selectedJobTitle
+        val title : String = binding.jobTitle.text.toString().trim()
         val compname : String = binding.currentCompany.text.toString().trim()
         val desc : String = binding.descadd.text.toString().trim()
         /*val jobLevel : String = binding.jobLevel.text.toString().trim()*/
@@ -420,10 +425,10 @@ class PostRecruitFragment : BaseFragment() {
         }
         val sal : String = binding.salary.text.toString().trim()
         val empneed : String = binding.noOfEmployeeNeed.text.toString().trim()
-        val phone : Long = 9825154730
+        /*val phone : Long = 9825556830
         val email = "info@amrisystems.com"
         val postduration = "02/04/2023"
-        val jobapps = 20
+        val jobapps = 20*/
 
 
         if (Utils.isNetworkAvailable(requireContext())){
@@ -452,7 +457,8 @@ class PostRecruitFragment : BaseFragment() {
                                 response?.let {
 
 
-                                    binding.spJobTitle.clearSelection()
+                                    /*binding.spJobTitle.clearSelection()*/
+                                    binding.jobTitle.text.clear()
                                     binding.currentCompany.text!!.clear()
                                     binding.descadd.text!!.clear()
                                     /*binding.jobLevel.text!!.clear()*/

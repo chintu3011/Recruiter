@@ -54,7 +54,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayoutCompanyName"
+                    android:id="@+id/textLayoutJobTitle"
                     style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     app:startIconDrawable="@drawable/ic_job_title"
                     app:startIconTint="@color/blue">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/jobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -99,7 +99,7 @@
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_5sdp"
                     android:paddingBottom="@dimen/_5sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/textLayoutCompanyName"
+                    app:layout_constraintTop_toBottomOf="@+id/textLayoutJobTitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
