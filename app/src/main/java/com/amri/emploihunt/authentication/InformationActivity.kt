@@ -135,7 +135,8 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
     private var selectedQualification = String()
     private var selectedJobLocation = String()
     private var selectedDesignation = String()
-    private var selectedPrefJobTitle = String()
+    /*private var selectedPrefJobTitle = String()*/
+
     private var selectedPrefCity = String()
 
 
@@ -353,8 +354,12 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
 
             }
         }
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
+        binding.prefJobTitle.setAdapter(adapter)
 
-        binding.spPrefJobTitleJ.setSearchDialogGravity(Gravity.TOP)
+
+        /*binding.spPrefJobTitleJ.setSearchDialogGravity(Gravity.TOP)
         binding.spPrefJobTitleJ.arrowPaddingRight = 19
         binding.spPrefJobTitleJ.item = resources.getStringArray(R.array.indian_designations).toList()
         binding.spPrefJobTitleJ.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -366,7 +371,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
-        }
+        }*/
 
         binding.spQualificationR.setSearchDialogGravity(Gravity.TOP)
         binding.spQualificationR.arrowPaddingRight = 19
@@ -970,7 +975,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         designation = binding.designationJ.text.toString().trim()
         jobLocation = selectedJobLocation.trim()
 
-        prefJobTitle = selectedPrefJobTitle.trim()
+        prefJobTitle = binding.prefJobTitle.text.toString().trim()
         prefJobLocation = selectedPrefCity.trim()
 
 
@@ -1408,7 +1413,7 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
         }
 
         if(prefJobTitle.isEmpty()) {
-            binding.spPrefJobTitleJ.errorText = "Select your prefer job title"
+            binding.prefJobTitle.error = "Select your prefer job title"
             binding.jsViewFlipper.displayedChild = binding.jsViewFlipper.indexOfChild(binding.jsPreferJobGrp)
             changeLayout(false)
             return false

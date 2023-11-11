@@ -1856,9 +1856,9 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 }
                 edDesignation.setText(experience.vDesignation)
                 enteredDesignation = experience.vDesignation
-                val adapterJ: ArrayAdapter<String> =
+                val adapter: ArrayAdapter<String> =
                     ArrayAdapter<String>(mActivity, android.R.layout.simple_dropdown_item_1line,mActivity.resources.getStringArray(R.array.indian_designations).toList())
-                edDesignation.setAdapter(adapterJ)
+                edDesignation.setAdapter(adapter)
 
                 /*spDesignation.setSearchDialogGravity(Gravity.TOP)
                 spDesignation.arrowPaddingRight = 19

@@ -574,7 +574,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/jsPrefGrpTitle" />
 
-                            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                            <!--<com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                                 android:id="@+id/spPrefJobTitleJ"
                                 style="@style/spinnerStyle"
                                 android:layout_marginVertical="@dimen/_10sdp"
@@ -597,9 +597,50 @@
                                 app:smsp_outlinedStrokeWidth="1dp"
                                 app:smsp_searchHeaderTextColor="#ffff"
                                 app:smsp_searchHintColor="@color/search_hint_color"
-                                app:smsp_searchTextColor="@color/search_text_color" />
+                                app:smsp_searchTextColor="@color/search_text_color" />-->
 
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textLayoutPrefJobTitle"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:hint="@string/designation"
+                                android:paddingStart="0dp"
+                                android:paddingTop="0dp"
+                                android:paddingEnd="0dp"
+                                app:boxBackgroundColor="#FFFFFF"
+                                app:boxBackgroundMode="outline"
+                                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                                app:boxStrokeColor="@color/blue"
+                                app:endIconCheckable="true"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/grey"
+                                android:imeOptions="actionDone"
+                                android:nextFocusDown="@id/checkBox"
+                                app:hintTextColor="@color/blue"  app:layout_constraintBottom_toTopOf="@+id/spPrefCityJ"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDivider3"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                app:placeholderText="Android Developer"
+                                app:startIconDrawable="@drawable/ic_designation"
+                                app:startIconTint="@color/blue">
 
+                                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                    android:id="@+id/prefJobTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textSize="@dimen/_13sdp"
+                                    android:inputType="textAutoComplete"
+                                    android:padding="@dimen/_10sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
                             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                                 android:id="@+id/spPrefCityJ"
                                 style="@style/spinnerStyle"
@@ -609,7 +650,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/spPrefJobTitleJ"
+                                app:layout_constraintTop_toBottomOf="@+id/textLayoutPrefJobTitle"
                                 app:smsp_hint="@string/prefer_city"
                                 app:smsp_hintColor="@color/blue"
                                 app:smsp_isOutlined="false"
