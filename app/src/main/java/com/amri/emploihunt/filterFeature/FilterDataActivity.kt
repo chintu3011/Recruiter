@@ -134,7 +134,7 @@ class FilterDataActivity : BaseActivity()/*,
                 makeToast(getString(R.string.something_error),0)
             }
         }
-        filterWorkingModeList =mutableListOf("Hybrid","Remote","On site")
+        filterWorkingModeList =mutableListOf("Hybrid","Remote","On-Site")
         filterPackageList = resources.getStringArray(R.array.expected_salary).toMutableList()
 
         /*selectedDomainList = mutableListOf()
@@ -230,7 +230,6 @@ class FilterDataActivity : BaseActivity()/*,
                     filterDomainList,
                     filterLocationList,
                     filterWorkingModeList,
-                    filterPackageList
                 )
                 myPagerAdapter = MyPagerAdapter(categoriesLists,this@FilterDataActivity,this, this,FilterCategories.APPLICATION)
             }
@@ -329,8 +328,7 @@ class FilterDataActivity : BaseActivity()/*,
                                 .setApplicationData(
                                     selectedDomain,
                                     selectedLocation,
-                                    selectedWorkingMode,
-                                    selectedPackage
+                                    selectedWorkingMode
                                 )
 
                             finish()

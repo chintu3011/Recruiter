@@ -49,8 +49,7 @@ class FilterParameterTransferClass {
         fun onDataReceivedFilterApplicationList(
             domainList: String,
             locationList: String,
-            workingModeList: String,
-            packageList: String
+            workingModeList: String
         )
     }
 
@@ -65,10 +64,10 @@ class FilterParameterTransferClass {
             applicationListener!!.onDataReceivedFilterApplicationList(domainList,locationList,workingModeList,packageList)
         }
     }*/
-    fun setApplicationData(domain: String, location: String, workingMode: String, packageRange: String){
+    fun setApplicationData(domain: String, location: String, workingMode: String){
         if(applicationListener != null){
             Log.d("$$$$", applicationListener.toString())
-            applicationListener!!.onDataReceivedFilterApplicationList(domain,location,workingMode,packageRange)
+            applicationListener!!.onDataReceivedFilterApplicationList(domain,location,workingMode)
         }
     }
 

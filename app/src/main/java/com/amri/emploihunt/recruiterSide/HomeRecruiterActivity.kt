@@ -364,14 +364,12 @@ class HomeRecruiterActivity : BaseActivity(),
     override fun onDataReceivedFilterApplicationList(
         domain: String,
         location: String,
-        workingMode: String,
-        packageRange: String
+        workingMode: String
     ) {
         FilterParameterTransferClass.instance!!.setApplicationData(
             domain,
             location,
-            workingMode,
-            packageRange
+            workingMode
         )
     }
 

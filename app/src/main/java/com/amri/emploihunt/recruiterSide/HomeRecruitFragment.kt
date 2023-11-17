@@ -32,19 +32,25 @@ import com.amri.emploihunt.basedata.BaseFragment
 import com.amri.emploihunt.databinding.FragmentHomeRecruitBinding
 import com.amri.emploihunt.databinding.RowAppicationsBinding
 import com.amri.emploihunt.filterFeature.FilterParameterTransferClass
+import com.amri.emploihunt.jobSeekerSide.HomeJobSeekerFragment
 import com.amri.emploihunt.jobSeekerSide.JobPostActivity
 import com.amri.emploihunt.messenger.MessaengerHomesActivity_2
 import com.amri.emploihunt.messenger.MessengerHomeActivity
+import com.amri.emploihunt.model.GetAllJob
 import com.amri.emploihunt.model.GetAllUsers
 import com.amri.emploihunt.model.Jobs
 import com.amri.emploihunt.model.User
 import com.amri.emploihunt.networking.NetworkUtils
+import com.amri.emploihunt.util.ADDRESS
 import com.amri.emploihunt.util.AUTH_TOKEN
 import com.amri.emploihunt.util.FIREBASE_ID
+import com.amri.emploihunt.util.JOB_TITLE
 import com.amri.emploihunt.util.PrefManager.get
 import com.amri.emploihunt.util.PrefManager.prefManager
 import com.amri.emploihunt.util.ROLE
+import com.amri.emploihunt.util.SALARY_PACKAGE
 import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.WORKING_MODE
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textview.MaterialTextView
@@ -85,6 +91,10 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
     lateinit var prefManager: SharedPreferences
 
     private lateinit var balloon: Balloon
+    private var isFilter = false
+    private var domain = ""
+    private var location = ""
+    private var workingMode = ""
 
     companion object {
         private const val TAG = "HomeRecruitFragment"
@@ -131,7 +141,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                     }
 
                 })
-        retrieveJsData()
+        retrieveJsData("")
 
         binding.jobSeekerListRv.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -152,7 +162,12 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                     isScrolling = false
                     currentPage++
                     Log.d("###", "onScrolled: $currentPage")
-                    retrieveJsData()
+                    if (isFilter){
+                        filterJobSeekerApi(domain, location, workingMode)
+                    }else{
+                        retrieveJsData( "")
+                        isFilter = false
+                    }
                 }
             }
         })
@@ -181,7 +196,9 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             dataList.clear()
             filteredDataList.clear()
             currentPage = 1
-            retrieveJsData()
+            binding.jobSeekerListRv.visibility = View.GONE
+            binding.layEmptyView.root.visibility = View.GONE
+            retrieveJsData("")
             binding.swipeRefreshLayout.isRefreshing = false
         }
         binding.imgOpenDrawer.setOnClickListener {
@@ -248,7 +265,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             }
         })
     }
-    private fun retrieveJsData() {
+    private fun retrieveJsData(query: String) {
 
         if (Utils.isNetworkAvailable(requireContext())) {
             if (currentPage != 1 && currentPage > totalPages) {
@@ -261,6 +278,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             AndroidNetworking.get(NetworkUtils.GET_ALL_JOBSEEKER)
                 .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
                 .addQueryParameter("current_page",currentPage.toString())
+                .addQueryParameter("tag",query)
                 .setPriority(Priority.MEDIUM).build()
                 .getAsObject(
                     GetAllUsers::class.java,
@@ -318,7 +336,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             binding.layEmptyView.tvNoData.text = resources.getString(R.string.msg_no_internet)
             binding.layEmptyView.btnRetry.visibility = View.VISIBLE
             binding.layEmptyView.btnRetry.setOnClickListener {
-                retrieveJsData()
+                retrieveJsData("")
             }
         }
     }
@@ -329,7 +347,11 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
         // You can use this method to filter the jobs based on the query
         // For example, filter the jobs based on job title or description
         filteredDataList.clear()
-        if (!TextUtils.isEmpty(query)) {
+        currentPage = 1
+        binding.jobSeekerListRv.visibility = View.GONE
+        binding.layEmptyView.root.visibility = View.GONE
+        retrieveJsData(query)
+        /*if (!TextUtils.isEmpty(query)) {
             for (application in dataList) {
                 if (application.vDesignation.lowercase(Locale.ROOT)
                         .contains(query.lowercase(Locale.ROOT))
@@ -339,7 +361,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             }
         } else {
             filteredDataList.addAll(dataList)
-        }
+        }*/
 
         binding.jobSeekerAdapter!!.notifyDataSetChanged()
     }
@@ -457,78 +479,83 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
     override fun onDataReceivedFilterApplicationList(
         domain: String,
         location: String,
-        workingMode: String,
-        packageRange: String
+        workingMode: String
     ) {
-         Log.d(TAG,"${domain}, ${location},${workingMode} ,${packageRange}")
+         Log.d(TAG,"${domain}, ${location},${workingMode}")
 
-        filteredDataList.clear()
-        if (domain.isNotEmpty() || location.isNotEmpty() || workingMode.isNotEmpty() || packageRange.isNotEmpty()) {
-
-            for (application in dataList) {
-                val domainMatches = if (application.vDesignation.isNullOrEmpty()){
-                    false
-                }
-                else if (domain.isNullOrEmpty()) {
-                    Log.d(TAG, "onDataReceivedFilterApplicationList: $application")
-                    application.vDesignation.contains(
-                        domain.substring(
-                            0,
-                            if (domain.indexOf(" ") != -1) domain.indexOf(" ")
-                            else domain.length
-                        ),
-                        ignoreCase = true)
-                }
-                else {
-                    true
-                }
-                val locationMatches = if (location.isNotEmpty()){
-
-                    application.vPreferCity.contains(
-                        location.substring(
-                            0,
-                            if (location.indexOf(" ") != -1) location.indexOf(" ")
-                            else location.length
-                        ),
-                        ignoreCase = true)
-                }
-                else{
-                    true
-                }
-                val workingModeMatches = if (workingMode.isNotEmpty()){
-
-                    application.vWorkingMode.contains(
-                        workingMode.substring(
-                            0,
-                            if (workingMode.indexOf(" ") != -1) workingMode.indexOf(" ")
-                            else workingMode.length
-                        ),
-                        ignoreCase = true)
-
-                }
-                else{
-                    true
-                }
-                val packageMatches = if(packageRange.isNotEmpty()){
-                    application.vExpectedSalary.trim().toInt() >= packageRange.toInt()
-                }
-                else{
-                    true
-                }
-
-                // If all criteria match, add the job to the filteredJobs list
-                if (domainMatches && locationMatches && workingModeMatches && packageMatches) {
-                    filteredDataList.add(application)
-                }
-            }
-        } else {
-            filteredDataList.addAll(dataList)
-        }
-        Log.d(TAG, "FilteredList: $filteredDataList")
-        binding.jobSeekerAdapter!!.notifyDataSetChanged()
+         filteredDataList.clear()
+         currentPage = 1
+         totalPages = 1
+         binding.layEmptyView.root.visibility = View.GONE
+         binding.jobSeekerListRv.visibility = View.GONE
+         isFilter = true
+         this@HomeRecruitFragment.domain = domain
+         this@HomeRecruitFragment.location = location
+         this@HomeRecruitFragment.workingMode = workingMode
+         filterJobSeekerApi(domain,location,workingMode)
     }
 
+    fun filterJobSeekerApi(domain: String, location: String, workingMode: String) {
+        if (Utils.isNetworkAvailable(requireContext())) {
+            Log.d("###", "onDataReceivedFilterJobList: $currentPage $totalPages $domain $location $workingMode")
 
+            if (currentPage != 1 && currentPage > totalPages) {
+                return
+            }
+            if (currentPage != 1) binding.layProgressPagination.root.visibility = View.VISIBLE
+
+            if (currentPage == 1) binding.progressCircular.visibility = View.VISIBLE
+
+            AndroidNetworking.get(NetworkUtils.FIlTER_JOBSEEKAR)
+                .addHeaders("Authorization", "Bearer " + prefManager[AUTH_TOKEN, ""])
+                .addQueryParameter(JOB_TITLE,domain)
+                .addQueryParameter(ADDRESS,location)
+                .addQueryParameter(WORKING_MODE,workingMode)
+                .addQueryParameter("current_page",currentPage.toString())
+                .setPriority(Priority.MEDIUM).build()
+                .getAsObject(
+                    GetAllUsers::class.java,
+                    object : ParsedRequestListener<GetAllUsers> {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(response: GetAllUsers?) {
+                            try {
+                                response?.let {
+                                    hideProgressDialog()
+                                    binding.progressCircular.visibility = View.GONE
+                                    Log.d("###", "onResponse FilterJobList: ${it.data}")
+                                    filteredDataList.addAll(it.data)
+                                    binding.jobSeekerAdapter!!.notifyDataSetChanged()
+                                    hideShowEmptyView(true)
+                                }
+                            } catch (e: Exception) {
+                                binding.progressCircular.visibility = View.GONE
+                                hideShowEmptyView(false)
+                                Log.e("#####", "onResponse FilterJobList: catch: ${e.message}")
+                            }
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            binding.progressCircular.visibility = View.GONE
+                            hideShowEmptyView(false)
+                            anError?.let {
+                                Log.e(
+                                    TAG,
+                                    "onError FilterJobList: code: ${it.errorCode} & message: ${it.errorBody}"
+                                )
+                                if (it.errorCode >= 500) {
+                                    binding.layEmptyView.tvNoData.text =
+                                        activity?.getString(R.string.not_match_any_data_based_on_your_filter)
+                                }
+                            }
+                            hideProgressDialog()
+                        }
+                    })
+        } else {
+            binding.progressCircular.visibility = View.GONE
+            hideShowEmptyView(isShow = false, isInternetAvailable = false)
+        }
+        Log.d(HomeJobSeekerFragment.TAG,"FilteredList: $filteredDataList")
+    }
 
 
 /*    private inner class CustomAdapter : BaseAdapter() {
@@ -604,7 +631,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             holder.binding.applicantQualification.text = job.vQualification
             holder.binding.applicantPrefCity.text = job. vPreferCity
             holder.binding.applicantWorkingMode.text = job.vWorkingMode
-            holder.binding.applicantDesignation.text = job.vDesignation
+            holder.binding.applicantDesignation.text = job.vPreferJobTitle
             Glide.with(mActivity)
                 .load(NetworkUtils.BASE_URL_MEDIA+job.tProfileUrl)
                 .apply(

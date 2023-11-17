@@ -38,6 +38,7 @@ object NetworkUtils {
     const val UPDATE_POST = "$BASE_URL/job/update_jobs"
     const val DELETE_POST = "$BASE_URL/job/delete"
     const val FIlTER_JOBS = "$BASE_URL/job/jobs_filter"
+    const val FIlTER_JOBSEEKAR = "$BASE_URL/jobSeeker/get_jobSeeker_filter"
     const val INSERT_EXPERIENCE = "$BASE_URL/experince/insert_experince"
     const val DELETE_EXPERIENCE = "$BASE_URL/experince/delete_experince"
     const val UPDATE_EXPERIENCE = "$BASE_URL/experince/update_experince"

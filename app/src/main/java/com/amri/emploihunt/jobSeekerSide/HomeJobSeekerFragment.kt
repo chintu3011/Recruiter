@@ -582,6 +582,8 @@ FilterParameterTransferClass.FilterJobListListener {
         this@HomeJobSeekerFragment.workingMode = workingMode
         this@HomeJobSeekerFragment.packageRange = packageRange
         binding.jobPreferenceSp.visibility = View.GONE
+        binding.layEmptyView.root.visibility = View.GONE
+        binding.jobRvList.visibility = View.GONE
         filterJobsApi(domain,location,workingMode,packageRange)
 
 
@@ -590,6 +592,7 @@ FilterParameterTransferClass.FilterJobListListener {
     fun filterJobsApi(domain: String, location: String, workingMode: String, packageRange: String) {
         if (Utils.isNetworkAvailable(requireContext())) {
             Log.d("###", "onDataReceivedFilterJobList: $currentPage $totalPages")
+
             if (currentPage != 1 && currentPage > totalPages) {
                 return
             }
@@ -616,9 +619,11 @@ FilterParameterTransferClass.FilterJobListListener {
                                     Log.d("###", "onResponse FilterJobList: ${it.data}")
                                     filteredDataList.addAll(it.data)
                                     binding.jobsAdapter!!.notifyDataSetChanged()
+                                    hideShowEmptyView(true)
                                 }
                             } catch (e: Exception) {
                                 binding.progressCircular.visibility = GONE
+                                hideShowEmptyView(false)
                                 Log.e("#####", "onResponse FilterJobList: catch: ${e.message}")
                             }
                         }
