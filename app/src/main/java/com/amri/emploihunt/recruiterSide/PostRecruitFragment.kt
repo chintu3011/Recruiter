@@ -86,20 +86,10 @@ class PostRecruitFragment : BaseFragment() {
 
             }
         }*/
+        val adapter1: ArrayAdapter<String> =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.degree_array).toList())
+        binding.education.setAdapter(adapter1)
 
-        binding.spEducation.setSearchDialogGravity(Gravity.TOP)
-        binding.spEducation.arrowPaddingRight = 19
-        binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
-        binding.spEducation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                binding.spEducation.isOutlined = true
-                selectedEducation = binding.spEducation.item[position].toString()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
-            }
-        }
 
         binding.linearLayout2.setOnClickListener {
 
@@ -329,7 +319,7 @@ class PostRecruitFragment : BaseFragment() {
             }
     }
     private fun checkValidation(): Boolean {
-        if (selectedJobTitle.isEmpty()){
+        if (binding.jobTitle.text.isEmpty()){
             binding.jobTitle.requestFocus()
             binding.jobTitle.error = "Please enter job title"
             return  false
@@ -374,9 +364,9 @@ class PostRecruitFragment : BaseFragment() {
             binding.softSkills.error = "Please enter soft skill"
             return  false
 
-        }else if (selectedEducation.isEmpty()){
-            binding.spEducation.requestFocus()
-            binding.spEducation.errorText = "Please enter education"
+        }else if (binding.education.text.isEmpty()){
+            binding.education.requestFocus()
+            binding.education.error = "Please enter education"
             return  false
 
         }else if (selectedJobLocation.isEmpty()){
@@ -413,7 +403,7 @@ class PostRecruitFragment : BaseFragment() {
 
         val techskill : String = techSkillList.joinToString(" || ")
         val softskill : String = softSkillList.joinToString(" || ")
-        val edu : String = selectedEducation
+        val edu : String = binding.education.text.toString().trim()
         val city : String = selectedJobLocation
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
@@ -468,7 +458,7 @@ class PostRecruitFragment : BaseFragment() {
                                     binding.techSkillsChipGrp.removeAllViews()
                                     binding.softSkills.text!!.clear()
                                     binding.softSkillsChipGrp.removeAllViews()
-                                    binding.spEducation.clearSelection()
+                                    binding.education.text.clear()
                                     binding.spJobLocation.clearSelection()
                                     binding.textLayoutWorkingMode.clearCheck()
                                     binding.salary.text!!.clear()

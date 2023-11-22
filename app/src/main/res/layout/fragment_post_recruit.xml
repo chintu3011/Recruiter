@@ -475,20 +475,52 @@
                 android:background="@color/blueLight"
                 android:fadeScrollbars="false"
                 android:scrollbars="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/spEducation"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutEducation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/flow20" />
 
-            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                android:id="@+id/spEducation"
-                style="@style/spinnerStyle"
-                android:layout_margin="@dimen/_12sdp"
-                android:paddingHorizontal="@dimen/_5sdp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutEducation"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/required_education"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_5sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_5sdp"
+                app:boxCornerRadiusTopStart="@dimen/_5sdp"
+                app:boxStrokeColor="@color/edit_text_color"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/grey"
+                app:hintTextColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/spJobLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/softSkillsChipGrp"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:placeholderText="Android Developer"
+                app:startIconDrawable="@drawable/ic_qualification"
+                app:startIconTint="@color/blue">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/education"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/poppinsregular"
+                    android:padding="@dimen/_10sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--<com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/spEducation"
+                style="@style/spinnerStyle"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+
                 app:smsp_hint="@string/required_education"
                 app:smsp_hintColor="@color/blue"
                 app:smsp_isOutlined="false"
@@ -501,7 +533,7 @@
                 app:smsp_outlinedStrokeWidth="1dp"
                 app:smsp_searchHeaderTextColor="#ffff"
                 app:smsp_searchHintColor="@color/search_hint_color"
-                app:smsp_searchTextColor="@color/search_text_color" />
+                app:smsp_searchTextColor="@color/search_text_color" />-->
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                 android:id="@+id/spJobLocation"
@@ -512,7 +544,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spEducation"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutEducation"
                 app:smsp_hint="@string/job_location"
                 app:smsp_hintColor="@color/blue"
                 app:smsp_isOutlined="false"
@@ -557,8 +589,7 @@
                     android:id="@+id/salary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"
-
+                    android:inputType="phone"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 

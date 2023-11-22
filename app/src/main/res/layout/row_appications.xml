@@ -112,6 +112,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="12 LPA +"
+                    android:visibility="gone"
                     android:textAlignment="textStart"
                     android:textSize="@dimen/_12sdp"
                     android:textColor="@color/colorPrimary"
@@ -158,6 +159,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="3+"
+                    android:visibility="gone"
                     android:textAlignment="textStart"
                     android:textSize="@dimen/_12sdp"
                     android:textColor="@color/blue"
@@ -173,7 +175,8 @@
                     android:text="Years Experience"
                     android:textAlignment="textStart"
                     android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/blue" />
+                    android:textColor="@color/blue"
+                    android:textStyle="bold" />
 
                 <androidx.constraintlayout.helper.widget.Flow
                     android:id="@+id/flow"

@@ -632,6 +632,13 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             holder.binding.applicantPrefCity.text = job. vPreferCity
             holder.binding.applicantWorkingMode.text = job.vWorkingMode
             holder.binding.applicantDesignation.text = job.vPreferJobTitle
+            holder.binding.applicantExpSalary.text = "${job.vExpectedSalary} LPA +"
+            if (!job.vCurrentCompany.isNullOrBlank()){
+                holder.binding.txtExperience.text = mActivity.getString(R.string.experience)
+            }else {
+                holder.binding.txtExperience.text = mActivity.getString(R.string.fresher)
+            }
+
             Glide.with(mActivity)
                 .load(NetworkUtils.BASE_URL_MEDIA+job.tProfileUrl)
                 .apply(
@@ -644,7 +651,7 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
             var callBalloon: Balloon ?= null
             var emailBalloon: Balloon ?= null
             val phoneNo: String =  job.vMobile
-            if (phoneNo.isNotEmpty()) {
+            /*if (phoneNo.isNotEmpty()) {
                 callBalloon = createMsgBalloon(phoneNo, R.drawable.ic_call, mActivity)
                 if (callBalloon != null) {
                     callBalloon.setOnBalloonClickListener {
@@ -671,17 +678,15 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                 } else {
                     Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
                 }
-            }
+            }*/
             holder.binding.btnPhone.setOnClickListener {
 
-                if(callBalloon != null){
-                    holder.binding.btnPhone.showAlignTop(callBalloon)
-                }
+                makePhoneCall(phoneNo)
 
             }
 
             val email = job.vEmail
-            if (email.isNotEmpty()) {
+            /*if (email.isNotEmpty()) {
                 emailBalloon = createMsgBalloon(email, R.drawable.ic_email, mActivity)
 
                 if (emailBalloon != null) {
@@ -708,12 +713,13 @@ class HomeRecruitFragment : BaseFragment(),ApplicationListUpdateListener,
                 } else {
                     Toast.makeText(mActivity ,mActivity.getString(R.string.something_error), Toast.LENGTH_SHORT).show()
                 }
-            }
+            }*/
 
             holder.binding.btnEmail.setOnClickListener {
-                if(emailBalloon != null){
-                    holder.binding.btnEmail.showAlignTop(emailBalloon)
-                }
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                intent.type = "message/rfc822"
+                holder.itemView.context.startActivity(Intent.createChooser(intent, "Choose an Email Client: "))
 
             }
 

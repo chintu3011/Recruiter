@@ -83,6 +83,11 @@ class UpdatePostActivity : BaseActivity() {
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
         binding.jobTitle.setAdapter(adapter)
+
+        binding.education.setText(selectedPost.vJobTitle)
+        val adapter1: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.degree_array).toList())
+        binding.education.setAdapter(adapter1)
         /*binding.spJobTitle.setSearchDialogGravity(Gravity.TOP)
         binding.spJobTitle.arrowPaddingRight = 19
         binding.spJobTitle.item = resources.getStringArray(R.array.indian_designations).toList()
@@ -181,20 +186,20 @@ class UpdatePostActivity : BaseActivity() {
 
         }
 
-        binding.spEducation.setSearchDialogGravity(Gravity.TOP)
-        binding.spEducation.arrowPaddingRight = 19
-        binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
-        binding.spEducation.setSelection(resources.getStringArray(R.array.degree_array).toList().indexOf(selectedPost.vEducation))
-        binding.spEducation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
-                binding.spEducation.isOutlined = true
-                selectedEducation = binding.spEducation.item[position].toString()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
-            }
-        }
+//        binding.spEducation.setSearchDialogGravity(Gravity.TOP)
+//        binding.spEducation.arrowPaddingRight = 19
+//        binding.spEducation.item = resources.getStringArray(R.array.degree_array).toList()
+//        binding.spEducation.setSelection(resources.getStringArray(R.array.degree_array).toList().indexOf(selectedPost.vEducation))
+//        binding.spEducation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, position: Int, id: Long) {
+//                binding.spEducation.isOutlined = true
+//                selectedEducation = binding.spEducation.item[position].toString()
+//            }
+//
+//            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+//
+//            }
+//        }
 
 
         binding.salary.setText(selectedPost.vSalaryPackage)
@@ -416,7 +421,7 @@ class UpdatePostActivity : BaseActivity() {
         val exp : String = binding.experiencedDuration.text.toString().trim()
         val techskill : String = techSkillList.joinToString(" || ")
         val softskill : String = softSkillList.joinToString(" || ")
-        val edu : String = selectedEducation
+        val edu : String = binding.education.text.toString().trim()
         val city : String = selectedJobLocation
         val workmodeid : Int = binding.textLayoutWorkingMode.checkedRadioButtonId
         lateinit var workmode : String
@@ -488,7 +493,7 @@ class UpdatePostActivity : BaseActivity() {
 
 
     private fun checkValidation(): Boolean {
-        if (selectedJobTitle.isEmpty()){
+        if (binding.jobTitle.text.isEmpty()){
             binding.jobTitle.requestFocus()
             binding.jobTitle.error = "Please enter job title"
             return  false
@@ -528,9 +533,9 @@ class UpdatePostActivity : BaseActivity() {
             binding.softSkills.error = "Please enter soft skill"
             return  false
 
-        }else if (selectedEducation.isEmpty()){
-            binding.spEducation.requestFocus()
-            binding.spEducation.errorText = "Please enter education"
+        }else if (binding.education.text.isEmpty()){
+            binding.education.requestFocus()
+            binding.education.error = "Please enter education"
             return  false
 
         }else if (selectedJobLocation.isEmpty()){
