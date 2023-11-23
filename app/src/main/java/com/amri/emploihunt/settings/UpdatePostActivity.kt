@@ -84,7 +84,7 @@ class UpdatePostActivity : BaseActivity() {
             ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.indian_designations).toList())
         binding.jobTitle.setAdapter(adapter)
 
-        binding.education.setText(selectedPost.vJobTitle)
+        binding.education.setText(selectedPost.vEducation)
         val adapter1: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,resources.getStringArray(R.array.degree_array).toList())
         binding.education.setAdapter(adapter1)
@@ -444,7 +444,7 @@ class UpdatePostActivity : BaseActivity() {
                 .addQueryParameter("vJobTitle",title)
                 .addQueryParameter("vCompanyName",compname)
                 .addQueryParameter("tDes",desc)
-                /*.addQueryParameter("vJobLevel",jobLevel)*/
+                .addQueryParameter("vJobLevel","")
                 .addQueryParameter("vExperience",exp)
                 .addQueryParameter("tTechnicalSkill",techskill)
                 .addQueryParameter("tSoftSkill",softskill)
