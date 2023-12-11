@@ -396,6 +396,7 @@ FilterParameterTransferClass.FilterJobListListener {
                 dataList.clear()
                 filteredDataList.clear()
                 currentPage = 1
+                binding.jobRvList.visibility = GONE
                 retrieveJobData(0, "")
                 isFilter = false
             }

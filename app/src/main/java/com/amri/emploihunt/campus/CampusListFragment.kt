@@ -265,8 +265,11 @@ class CampusListFragment : BaseFragment(), JobListUpdateListener {
                 }
                 /*binding.executePendingBindings()*/
                 binding.btnRegister.setOnClickListener {
-                    notifyDataSetChanged()
-                    onCategoryClick.onCategoryClicked(it, campusModel,position)
+                    if (campusModel.iIsApplied != 1 ){
+                        notifyDataSetChanged()
+                        onCategoryClick.onCategoryClicked(it, campusModel,position)
+                    }
+
                 }
             }
 

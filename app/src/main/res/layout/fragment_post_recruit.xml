@@ -49,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:textSize="@dimen/_12sdp"
                     android:fontFamily="@font/poppinsregular"
                     android:padding="@dimen/_10sdp" />
@@ -109,7 +110,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textAutoComplete"
-
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -301,7 +301,7 @@
                     android:id="@+id/experiencedDuration"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="datetime"
+                    android:inputType="phone"
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -689,7 +689,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-
                     android:padding="@dimen/_10sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 

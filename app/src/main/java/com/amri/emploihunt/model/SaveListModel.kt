@@ -16,5 +16,4 @@ data class DataSaveList(
     val tCreatedAt: String,
     val tUpadatedAt: String,
     val job: Jobs,
-    val user: User
 )

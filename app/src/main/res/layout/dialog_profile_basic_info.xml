@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppinsregular"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:inputType="textPersonName"
                 android:padding="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -72,6 +73,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppinsregular"
                 android:inputType="textPersonName"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:padding="@dimen/_10sdp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +119,7 @@
                 android:id="@+id/expertise"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:fontFamily="@font/poppinsregular"
                 android:inputType="textAutoComplete"
                 android:padding="@dimen/_10sdp" />

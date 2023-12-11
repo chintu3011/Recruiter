@@ -60,7 +60,7 @@ class JobSaveActivity : BaseActivity() {
                     override fun onCategoryClicked(view: View, templateModel: DataSaveList) {
                         val intent = Intent(this@JobSaveActivity, JobPostActivity::class.java)
                         intent.putExtra("ARG_JOB_TITLE", templateModel.job)
-                        intent.putExtra("applyList", 1)
+                        intent.putExtra("applyList", 0)
                         changePostLauncher.launch(intent)
                     }
 

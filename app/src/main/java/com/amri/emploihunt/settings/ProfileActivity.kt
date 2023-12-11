@@ -13,7 +13,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.OpenableColumns
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -48,6 +50,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.amri.emploihunt.R
 import com.amri.emploihunt.basedata.BaseActivity
 import com.amri.emploihunt.databinding.ActivityProfileBinding
+import com.amri.emploihunt.databinding.BottomsheetPhoneChangeBinding
 import com.amri.emploihunt.messenger.FullImageViewActivity
 import com.amri.emploihunt.messenger.PDfViewActivity
 import com.amri.emploihunt.model.CommonMessageModel
@@ -69,6 +72,7 @@ import com.amri.emploihunt.util.SELECT_PROFILE_BANNER_IMG
 import com.amri.emploihunt.util.SELECT_PROFILE_IMG
 import com.amri.emploihunt.util.SELECT_RESUME_FILE
 import com.amri.emploihunt.util.Utils
+import com.amri.emploihunt.util.Utils.toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -103,7 +107,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
-
+import java.util.regex.Pattern
 
 
 @AndroidEntryPoint
@@ -2243,18 +2247,69 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                 /*phoneNumber = edPhoneNo.text.toString().trim()*/
                 emailId = edEmail.text.toString().trim()
 
+                if (fName!!.isEmpty()) {
+                    Log.d("###", "basicInfoDialogView:test")
+                        edUserFName.error = "Please provide a first-name"
+                        edUserFName.requestFocus()
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    userDataRepository.storeBasicInfo(
-                        fName!!,
-                        lName!!,
-                        phoneNumber!!,
-                        emailId!!,
-                        tagLine!!,
-                        residentialCity!!
-                    )
+                }else if (fName!!.length>15){
+                    edUserFName.error = "Sorry! only 15 character are allow"
+                    edUserFName.requestFocus()
+
+                }else if (lName!!.isEmpty()) {
+                        edUserLName.error = "Please provide a last-name"
+                        edUserLName.requestFocus()
+
+                }else if (lName!!.length>15) {
+                        edUserLName.error = "Sorry! only 15 character are allow"
+                        edUserLName.requestFocus()
+                        
+                }else if (fName.equals(
+                            "EmploiHunt", true
+                        ) || fName.equals("EmploiHunt", true) || fName.equals(
+                            "Emploi", true
+                        )) {
+                        toast(resources.getString(R.string.enter_another_first_name))
+                        
+                    }
+                else if (lName.equals(
+                            "EmploiHunt", true
+                        ) || fName.equals("EmploiHunt", true) || fName.equals(
+                            "Emploi", true
+                        )) {
+                        toast(resources.getString(R.string.enter_another_last_name))
+                        
+                }else if (fName == lName)  {
+                        toast(resources.getString(R.string.first_last_name_not_same))
+                        
+                }else if (fName!!.length == 2 || lName!!.length == 2)  {
+                        toast(resources.getString(R.string.first_last_name_required_min_2_letters))
+                        
+                }else if (TextUtils.isDigitsOnly(fName) || TextUtils.isDigitsOnly(lName))  {
+                        toast(resources.getString(R.string.first_last_name_should_be_character))
+                        
+                }else if (Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(fName)
+                            .find() || Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(lName)
+                            .find()) {
+                        toast(resources.getString(R.string.first_last_name_should_be_character))
+                        
+                }else {
+
+                    Log.d("###", "basicInfoDialogView: ")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        userDataRepository.storeBasicInfo(
+                            fName!!,
+                            lName!!,
+                            phoneNumber!!,
+                            emailId!!,
+                            tagLine!!,
+                            residentialCity!!
+                        )
+                    }
+//                    dialog.dismiss()
                 }
-                dialog.dismiss()
+
+
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -2294,6 +2349,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         alertDialogBasicInfo.show()
     }
 
+
     private fun selectImg(code: Int) {
         val imgIntent = Intent(Intent.ACTION_GET_CONTENT)
         imgIntent.type = "image/*"
@@ -2317,36 +2373,37 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
                     uploadProgressBar.visibility = View.GONE
                     val pdfUri = data?.data!!
                     val file = Utils.convertUriToPdfFile(this@ProfileActivity, pdfUri)!!
-                    if(file.length().toFloat() > (1024 * 1024).toFloat()) {
+                   /* if(file.length().toFloat() > (1024 * 1024).toFloat()) {
                         makeToast("FIle size should be less then 1 Mb",0)
                     }
                     else{
-                        btnUpload.playAnimation()
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            resumeFile = file
-                            if (pdfUri.toString().startsWith("content://")) {
-                                var myCursor: Cursor? = null
-                                try {
-                                    myCursor = this.contentResolver.query(
-                                        pdfUri,
-                                        null,
-                                        null,
-                                        null,
-                                        null
-                                    )
-                                    if (myCursor != null && myCursor.moveToFirst()) {
-                                        resumeFileName =
-                                            myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                                        /*resumeUri = pdfUri.toString()*/
-                                        tvResumeFileName.text = resumeFileName
-                                        tvResumeFileName.visibility = VISIBLE
-                                    }
-                                } finally {
-                                    myCursor?.close()
+
+                    }*/
+                    btnUpload.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        resumeFile = file
+                        if (pdfUri.toString().startsWith("content://")) {
+                            var myCursor: Cursor? = null
+                            try {
+                                myCursor = this.contentResolver.query(
+                                    pdfUri,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                )
+                                if (myCursor != null && myCursor.moveToFirst()) {
+                                    resumeFileName =
+                                        myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                                    /*resumeUri = pdfUri.toString()*/
+                                    tvResumeFileName.text = resumeFileName
+                                    tvResumeFileName.visibility = VISIBLE
                                 }
+                            } finally {
+                                myCursor?.close()
                             }
-                        },3000)
-                    }
+                        }
+                    },3000)
 
 
                 }

@@ -469,6 +469,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:textSize="@dimen/_13sdp"
+                                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                     android:inputType="textAutoComplete"
                                     android:padding="@dimen/_10sdp" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -638,6 +639,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:textSize="@dimen/_13sdp"
+                                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                     android:inputType="textAutoComplete"
                                     android:padding="@dimen/_10sdp" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -1205,6 +1207,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textSize="@dimen/_13sdp"
+                                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 android:inputType="textAutoComplete"
                                 android:padding="@dimen/_10sdp" />
                         </com.google.android.material.textfield.TextInputLayout>

@@ -248,8 +248,18 @@ class RegistrationActivity : BaseActivity() ,OnClickListener{
             binding.userFName.requestFocus()
             return false
         }
+        if (firstName.length>15) {
+            binding.userFName.error = "Sorry! only 15 character are allow"
+            binding.userFName.requestFocus()
+            return false
+        }
         if (lastName.isEmpty()) {
             binding.userLName.error = "Please provide a last-name"
+            binding.userLName.requestFocus()
+            return false
+        }
+        if (lastName.length>15) {
+            binding.userLName.error = "Sorry! only 15 character are allow"
             binding.userLName.requestFocus()
             return false
         }

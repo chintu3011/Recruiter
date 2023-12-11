@@ -671,39 +671,40 @@ class InformationActivity : BaseActivity() ,OnClickListener, AdapterView.OnItemS
                     val uri: Uri = data?.data!!
                     val uriString: String = uri.toString()
                     val file = convertUriToPdfFile(this@InformationActivity, uri)!!
-                    if(file.length().toFloat() > (1024 * 1024).toFloat()) {
+                   /* if(file.length().toFloat() > (1024 * 1024).toFloat()) {
                         makeToast("FIle size should be less then 1 Mb",0)
                     }
                     else {
-                        binding.resumeLoddingAnim.playAnimation()
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            resumePdf = file
 
-                            if (uriString.startsWith("content://")) {
-                                var myCursor: Cursor? = null
-                                try {
-                                    myCursor = this.contentResolver.query(
-                                        uri,
-                                        null,
-                                        null,
-                                        null,
-                                        null
-                                    )
-                                    if (myCursor != null && myCursor.moveToFirst()) {
-                                        resumeFileName =
-                                            myCursor.getString(
-                                                myCursor.getColumnIndex(
-                                                    OpenableColumns.DISPLAY_NAME
-                                                )
+                    }*/
+                    binding.resumeLoddingAnim.playAnimation()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        resumePdf = file
+
+                        if (uriString.startsWith("content://")) {
+                            var myCursor: Cursor? = null
+                            try {
+                                myCursor = this.contentResolver.query(
+                                    uri,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                )
+                                if (myCursor != null && myCursor.moveToFirst()) {
+                                    resumeFileName =
+                                        myCursor.getString(
+                                            myCursor.getColumnIndex(
+                                                OpenableColumns.DISPLAY_NAME
                                             )
-                                        binding.textPdfName.text = resumeFileName
-                                    }
-                                } finally {
-                                    myCursor?.close()
+                                        )
+                                    binding.textPdfName.text = resumeFileName
                                 }
+                            } finally {
+                                myCursor?.close()
                             }
-                        }, 3000)
-                    }
+                        }
+                    }, 3000)
 
                 }
                 SELECT_PROFILE_IMG -> if (resultCode == RESULT_OK) {
