@@ -1266,7 +1266,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             android:layout_marginStart="@dimen/_5sdp"
-                            android:text="@string/select_your_prefer_working_mode"
+                            android:text="@string/select_your_working_mode"
                             android:textAlignment="textStart"
                             android:textColor="@color/blue"
                             android:textSize="@dimen/_12sdp"

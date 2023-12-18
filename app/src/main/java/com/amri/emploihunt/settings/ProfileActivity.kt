@@ -991,6 +991,7 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
         if(!designation.isNullOrEmpty()){
             edDesignation.setText(designation)
         }
+
         /*val spDesignation = currentPositionDialog.findViewById<SmartMaterialSpinner<String>>(R.id.spDesignation)
         spDesignation.setSearchDialogGravity(Gravity.TOP)
         spDesignation.arrowPaddingRight = 19
@@ -1045,7 +1046,11 @@ class ProfileActivity : BaseActivity(),OnClickListener,UpdateSeverHelperClass.Up
             }
 
         })
-
+        when(workingMode){
+            "On-Site" -> tbWorkingMode.getTabAt(0)!!.select()
+            "Remote" -> tbWorkingMode.getTabAt(0)!!.select()
+            "Hybrid" -> tbWorkingMode.getTabAt(0)!!.select()
+        }
 
         alertDialogRecruiterInfo = AlertDialog.Builder(this, R.style.CustomAlertDialogStyle)
             .setView(currentPositionDialog)

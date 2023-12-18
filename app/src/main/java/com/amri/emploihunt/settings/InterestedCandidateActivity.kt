@@ -336,7 +336,7 @@ class InterestedCandidateActivity : BaseActivity() {
             holder.binding.applicantQualification.text = dataAppliedCandidate.userJobPref.vQualification
             holder.binding.applicantPrefCity.text = dataAppliedCandidate.userJobPref. vPreferCity
             holder.binding.applicantWorkingMode.text = dataAppliedCandidate.userJobPref.vWorkingMode
-            holder.binding.applicantDesignation.text = dataAppliedCandidate.userJobPref.vDesignation
+            holder.binding.applicantDesignation.text = dataAppliedCandidate.userJobPref.vPreferJobTitle
             Glide.with(holder.itemView.context)
                 .load(NetworkUtils.BASE_URL_MEDIA+dataAppliedCandidate.userJobPref.tProfileUrl)
                 .apply(

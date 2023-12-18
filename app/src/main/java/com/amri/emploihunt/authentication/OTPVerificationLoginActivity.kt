@@ -412,6 +412,9 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 userDataRepository.storeProfileImg(
                                                     response.data.user.tProfileUrl
                                                 )
+                                                userDataRepository.storeProfileBannerImg(
+                                                    response.data.user.tProfileBannerUrl,
+                                                )
                                                 userDataRepository.storeResumeData(
                                                     response.data.user.tResumeUrl
                                                 )
@@ -467,6 +470,9 @@ class OTPVerificationLoginActivity : BaseActivity(),OnClickListener{
                                                 )
                                                 userDataRepository.storeProfileImg(
                                                     response.data.user.tProfileUrl
+                                                )
+                                                userDataRepository.storeProfileBannerImg(
+                                                    response.data.user.tProfileBannerUrl,
                                                 )
                                                 Log.d(
                                                     TAG,
